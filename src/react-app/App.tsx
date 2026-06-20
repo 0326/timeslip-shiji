@@ -1,66 +1,45 @@
-// src/App.tsx
+import { Suspense, lazy } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Layout } from "./components/Layout/Layout";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { HomePage } from "./pages/Home/HomePage";
+import { GachaPage } from "./pages/Gacha/GachaPage";
+import { ArchivePage } from "./pages/Archive/ArchivePage";
+import { AchievementPage } from "./pages/Achievement/AchievementPage";
+import { ClassicsPage } from "./pages/Classics/ClassicsPage";
 
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import cloudflareLogo from "./assets/Cloudflare_Logo.svg";
-import honoLogo from "./assets/hono.svg";
-import "./App.css";
+// 重页面代码分割（D3 / VN 引擎 / 长篇原文）
+const PlayPage = lazy(() => import("./pages/Play/PlayPage"));
+const PanoramaPage = lazy(() => import("./pages/Panorama/PanoramaPage"));
+const ClassicReaderPage = lazy(() => import("./pages/Classics/ClassicReaderPage"));
 
-function App() {
-	const [count, setCount] = useState(0);
-	const [name, setName] = useState("unknown");
-
-	return (
-		<>
-			<div>
-				<a href="https://vite.dev" target="_blank">
-					<img src={viteLogo} className="logo" alt="Vite logo" />
-				</a>
-				<a href="https://react.dev" target="_blank">
-					<img src={reactLogo} className="logo react" alt="React logo" />
-				</a>
-				<a href="https://hono.dev/" target="_blank">
-					<img src={honoLogo} className="logo cloudflare" alt="Hono logo" />
-				</a>
-				<a href="https://workers.cloudflare.com/" target="_blank">
-					<img
-						src={cloudflareLogo}
-						className="logo cloudflare"
-						alt="Cloudflare logo"
-					/>
-				</a>
-			</div>
-			<h1>Vite + React + Hono + Cloudflare</h1>
-			<div className="card">
-				<button
-					onClick={() => setCount((count) => count + 1)}
-					aria-label="increment"
-				>
-					count is {count}
-				</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
-			</div>
-			<div className="card">
-				<button
-					onClick={() => {
-						fetch("/api/")
-							.then((res) => res.json() as Promise<{ name: string }>)
-							.then((data) => setName(data.name));
-					}}
-					aria-label="get name"
-				>
-					Name from API is: {name}
-				</button>
-				<p>
-					Edit <code>worker/index.ts</code> to change the name
-				</p>
-			</div>
-			<p className="read-the-docs">Click on the logos to learn more</p>
-		</>
-	);
+function lazyEl(node: React.ReactNode) {
+	return <Suspense fallback={<LoadingScreen />}>{node}</Suspense>;
 }
 
-export default App;
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <Layout />,
+		children: [
+			{ index: true, element: <HomePage /> },
+			{ path: "gacha", element: <GachaPage /> },
+			{ path: "archive", element: <ArchivePage /> },
+			{ path: "achieve", element: <AchievementPage /> },
+			{ path: "classics", element: <ClassicsPage /> },
+			{ path: "classics/:juan", element: lazyEl(<ClassicReaderPage />) },
+			{ path: "panorama/:storyId", element: lazyEl(<PanoramaPage />) },
+		],
+	},
+	// 游戏主界面：全屏，无导航
+	{ path: "/play/:storyId/:charId", element: lazyEl(<PlayPage />) },
+]);
+
+export default function App() {
+	return (
+		<ErrorBoundary>
+			<RouterProvider router={router} />
+		</ErrorBoundary>
+	);
+}

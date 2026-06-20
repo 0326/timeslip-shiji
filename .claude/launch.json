@@ -1,0 +1,12 @@
+{
+	"version": "0.0.1",
+	"configurations": [
+		{
+			"name": "shiji-preview",
+			"runtimeExecutable": "node",
+			"runtimeArgs": ["scripts/static-preview.mjs"],
+			"port": 4399,
+			"autoPort": true
+		}
+	]
+}

@@ -1,68 +1,320 @@
+/* ============================================================
+   穿越·史记 — 全局设计令牌与基础样式
+   水墨美学：墨黑底 · 宣纸白字 · 朱砂红警示 · 品牌金 · 穿越蓝
+   ============================================================ */
+
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	line-height: 1.5;
-	font-weight: 400;
+	/* ── 色彩系统 ── */
+	--color-ink: #0d0b08; /* 主背景·墨黑 */
+	--color-ink-light: #1c1a16; /* 卡片背景 */
+	--color-ink-mid: #2d2a24; /* 分割线 / 描边 */
+	--color-ink-soft: #14110d; /* 次级背景 */
+	--color-rice: #f2ecd8; /* 主文字·宣纸白 */
+	--color-rice-dim: rgba(242, 236, 216, 0.55);
+	--color-rice-faint: rgba(242, 236, 216, 0.28);
+	--color-vermilion: #c0392b; /* 朱砂红·死亡/警示/选择 */
+	--color-vermilion-light: #e05a4a;
+	--color-gold: #b8973a; /* 品牌金·标题/边框/成就 */
+	--color-gold-light: #d4af5a;
+	--color-gold-dim: rgba(184, 151, 58, 0.4);
+	--color-cyan: #1a6b8a; /* 穿越蓝·解锁/激活/正确 */
+	--color-cyan-light: #2d92b8;
+	--color-muted: #7a6e5c; /* 次要文字 */
+	--color-jade: #5a8f6b; /* 辅助·恩义/盟友 */
 
-	color-scheme: light dark;
-	color: rgba(255, 255, 255, 0.87);
-	background-color: #242424;
+	/* ── 字体 ── */
+	--font-serif: "Noto Serif SC", "Source Han Serif SC", "Songti SC", serif;
+	--font-sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", system-ui,
+		sans-serif;
 
+	/* ── 间距比例（8px基准） ── */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
+	--space-10: 40px;
+	--space-12: 48px;
+	--space-16: 64px;
+	--space-20: 80px;
+
+	/* ── 圆角 ── */
+	--radius-sm: 4px;
+	--radius: 8px;
+	--radius-lg: 14px;
+	--radius-xl: 22px;
+
+	/* ── 动效时长 ── */
+	--duration-fast: 150ms;
+	--duration-normal: 300ms;
+	--duration-slow: 600ms;
+	--duration-portal: 2800ms;
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+	/* ── 阴影 ── */
+	--shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+	--shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
+	--shadow-gold: 0 0 28px rgba(184, 151, 58, 0.28);
+	--shadow-cyan: 0 0 28px rgba(26, 107, 138, 0.35);
+
+	/* ── 层级 ── */
+	--z-base: 1;
+	--z-nav: 40;
+	--z-drawer: 50;
+	--z-modal: 100;
+	--z-overlay: 200;
+	--z-toast: 300;
+
+	color-scheme: dark;
+	font-family: var(--font-sans);
+	color: var(--color-rice);
+	background-color: var(--color-ink);
 	font-synthesis: none;
 	text-rendering: optimizeLegibility;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
 
-a {
-	font-weight: 500;
-	color: #646cff;
-	text-decoration: inherit;
+* {
+	box-sizing: border-box;
 }
-a:hover {
-	color: #535bf2;
+
+html,
+body,
+#root {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+	height: 100%;
 }
 
 body {
-	margin: 0;
-	display: flex;
-	place-items: center;
-	min-width: 320px;
-	min-height: 100vh;
+	background:
+		radial-gradient(
+			ellipse 80% 50% at 50% -10%,
+			rgba(184, 151, 58, 0.08),
+			transparent 60%
+		),
+		radial-gradient(
+			ellipse 60% 50% at 90% 110%,
+			rgba(26, 107, 138, 0.06),
+			transparent 60%
+		),
+		var(--color-ink);
+	color: var(--color-rice);
+	-webkit-tap-highlight-color: transparent;
 }
 
-h1 {
-	font-size: 3.2em;
-	line-height: 1.1;
+#root {
+	display: flex;
+	flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	margin: 0;
+	line-height: 1.2;
+	letter-spacing: 0.02em;
+}
+
+p {
+	margin: 0;
+	line-height: 1.7;
+}
+
+a {
+	color: var(--color-gold-light);
+	text-decoration: none;
 }
 
 button {
-	border-radius: 8px;
-	border: 1px solid transparent;
-	padding: 0.6em 1.2em;
-	font-size: 1em;
-	font-weight: 500;
-	font-family: inherit;
-	background-color: #1a1a1a;
+	font-family: var(--font-sans);
 	cursor: pointer;
-	transition: border-color 0.25s;
-}
-button:hover {
-	border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-	outline: 4px auto -webkit-focus-ring-color;
+	border: none;
+	background: none;
+	color: inherit;
 }
 
-@media (prefers-color-scheme: light) {
-	:root {
-		color: #213547;
-		background-color: #ffffff;
+button:focus-visible,
+a:focus-visible {
+	outline: 2px solid var(--color-gold);
+	outline-offset: 2px;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+::selection {
+	background: var(--color-gold-dim);
+	color: var(--color-rice);
+}
+
+/* ── 滚动条 ── */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+::-webkit-scrollbar-track {
+	background: var(--color-ink-soft);
+}
+::-webkit-scrollbar-thumb {
+	background: var(--color-ink-mid);
+	border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-muted);
+}
+
+/* ============================================================
+   通用工具类
+   ============================================================ */
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--space-6);
+}
+
+.serif {
+	font-family: var(--font-serif);
+}
+
+.classical {
+	font-family: var(--font-serif);
+	color: var(--color-rice-dim);
+	letter-spacing: 0.04em;
+	line-height: 2;
+}
+
+.gold {
+	color: var(--color-gold-light);
+}
+.cyan {
+	color: var(--color-cyan-light);
+}
+.vermilion {
+	color: var(--color-vermilion-light);
+}
+.dim {
+	color: var(--color-rice-dim);
+}
+
+.seal {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-serif);
+	color: var(--color-rice);
+	background: var(--color-vermilion);
+	border-radius: var(--radius-sm);
+	font-weight: 700;
+}
+
+/* 卷轴分割线（带印章感的装饰横线） */
+.rule {
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		var(--color-gold-dim),
+		transparent
+	);
+	border: none;
+	margin: var(--space-6) 0;
+}
+
+/* ── 动画 ── */
+@keyframes fadeUp {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
 	}
-	a:hover {
-		color: #747bff;
+	to {
+		opacity: 1;
+		transform: translateY(0);
 	}
-	button {
-		background-color: #f9f9f9;
+}
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.94);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+@keyframes pulseGold {
+	0%,
+	100% {
+		box-shadow: 0 0 0 rgba(184, 151, 58, 0);
+	}
+	50% {
+		box-shadow: 0 0 24px rgba(184, 151, 58, 0.45);
+	}
+}
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
+}
+@keyframes spinSlow {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes blink {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0;
+	}
+}
+
+.anim-fade-up {
+	animation: fadeUp var(--duration-slow) var(--ease-out) both;
+}
+.anim-fade-in {
+	animation: fadeIn var(--duration-slow) var(--ease-out) both;
+}
+.anim-scale-in {
+	animation: scaleIn var(--duration-normal) var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
 	}
 }

@@ -1,0 +1,440 @@
+/* ============ 抽卡页 ============ */
+.gacha-page {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: var(--space-10) var(--space-6) var(--space-16);
+}
+
+.gacha-banner {
+	position: relative;
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	border: 1px solid var(--color-gold-dim);
+	background:
+		radial-gradient(ellipse at 20% 0%, rgba(192, 57, 43, 0.16), transparent 50%),
+		radial-gradient(ellipse at 90% 100%, rgba(26, 107, 138, 0.16), transparent 50%),
+		linear-gradient(135deg, #1c1712, #14110d);
+	padding: var(--space-10) var(--space-8);
+	text-align: center;
+	margin-bottom: var(--space-8);
+}
+.gacha-banner h1 {
+	font-size: clamp(28px, 5vw, 42px);
+	letter-spacing: 0.1em;
+	color: var(--color-rice);
+}
+.gacha-banner .tagline {
+	color: var(--color-gold-light);
+	font-family: var(--font-serif);
+	margin-top: var(--space-3);
+	font-size: 15px;
+}
+.gacha-banner .pity-line {
+	margin-top: var(--space-5);
+	display: inline-flex;
+	align-items: center;
+	gap: var(--space-2);
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	background: rgba(0, 0, 0, 0.3);
+	padding: 6px 14px;
+	border-radius: 999px;
+	border: 1px solid var(--color-ink-mid);
+}
+
+.gacha-actions {
+	display: flex;
+	gap: var(--space-4);
+	justify-content: center;
+	margin-top: var(--space-6);
+	flex-wrap: wrap;
+}
+.gacha-cost {
+	font-size: 12px;
+	opacity: 0.85;
+}
+
+.pool-section {
+	margin-top: var(--space-12);
+}
+.pool-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: var(--space-4);
+}
+.pool-card {
+	border-radius: var(--radius);
+	border: 1px solid var(--color-ink-mid);
+	background: var(--color-ink-light);
+	padding: var(--space-4);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	text-align: center;
+	transition: border-color var(--duration-normal), transform var(--duration-normal);
+}
+.pool-card.owned {
+	border-color: var(--color-gold-dim);
+}
+.pool-card.owned:hover {
+	transform: translateY(-3px);
+}
+.pool-card .nm {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	font-size: 16px;
+	margin-top: 2px;
+}
+.pool-card .tt {
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	min-height: 28px;
+}
+
+/* ============ 时空召唤覆盖层 ============ */
+.summon-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-overlay);
+	background: radial-gradient(ellipse at 50% 42%, rgba(12, 16, 22, 0.94), rgba(4, 4, 3, 0.99));
+	backdrop-filter: blur(10px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-6);
+	overflow: hidden;
+	animation: fadeIn var(--duration-normal);
+	/* 稀有度色：默认穿越蓝，含新角色时由 .tone-gold 覆盖为品牌金 */
+	--tone: var(--color-cyan);
+	--tone-light: var(--color-cyan-light);
+}
+.summon-overlay.tone-gold {
+	--tone: var(--color-gold);
+	--tone-light: var(--color-gold-light);
+}
+.summon-overlay.phase-rift,
+.summon-overlay.phase-burst {
+	cursor: pointer;
+}
+
+/* ── 蓄力舞台：时空门 ── */
+.summon-stage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-8);
+}
+.summon-portal {
+	position: relative;
+	width: min(72vw, 360px);
+	aspect-ratio: 1;
+	display: grid;
+	place-items: center;
+	animation: portalOpen 700ms var(--ease-out) both;
+}
+
+/* 旋涡：锥形渐变环，遮罩成环带，营造时空隧道 */
+.portal-vortex {
+	position: absolute;
+	inset: 0;
+	border-radius: 50%;
+	background: conic-gradient(
+		from 0deg,
+		transparent 0deg,
+		color-mix(in srgb, var(--tone-light) 75%, transparent) 55deg,
+		transparent 120deg,
+		color-mix(in srgb, var(--tone) 60%, transparent) 195deg,
+		transparent 270deg,
+		color-mix(in srgb, var(--tone-light) 85%, transparent) 335deg,
+		transparent 360deg
+	);
+	-webkit-mask: radial-gradient(circle, transparent 28%, #000 40%, #000 62%, transparent 74%);
+	mask: radial-gradient(circle, transparent 28%, #000 40%, #000 62%, transparent 74%);
+	filter: blur(2px) saturate(1.25);
+	animation: portalSpin 3.2s linear infinite;
+}
+
+/* 放射光线 */
+.portal-rays {
+	position: absolute;
+	inset: -22%;
+	border-radius: 50%;
+	background: repeating-conic-gradient(
+		from 0deg,
+		transparent 0deg 7deg,
+		color-mix(in srgb, var(--tone-light) 24%, transparent) 7deg 8deg
+	);
+	-webkit-mask: radial-gradient(circle, #000 18%, transparent 64%);
+	mask: radial-gradient(circle, #000 18%, transparent 64%);
+	opacity: 0.7;
+	animation: spinSlow 20s linear infinite;
+}
+
+/* 门环 */
+.portal-ring {
+	position: absolute;
+	border-radius: 50%;
+	border: 1px solid color-mix(in srgb, var(--tone-light) 55%, transparent);
+	box-shadow:
+		0 0 26px color-mix(in srgb, var(--tone) 45%, transparent),
+		inset 0 0 26px color-mix(in srgb, var(--tone) 30%, transparent);
+}
+.portal-ring.r1 {
+	inset: 7%;
+	animation: ringPulse 2.4s var(--ease-out) infinite;
+}
+.portal-ring.r2 {
+	inset: 21%;
+	border-style: dashed;
+	opacity: 0.6;
+	animation: spinSlow 9s linear infinite reverse;
+}
+
+/* 核心强光 */
+.portal-core {
+	position: absolute;
+	width: 34%;
+	aspect-ratio: 1;
+	border-radius: 50%;
+	background: radial-gradient(circle, #fff 0%, var(--tone-light) 32%, transparent 72%);
+	filter: blur(4px);
+	animation: corePulse 2s ease-in-out infinite;
+}
+
+/* 被吸入裂隙的史册篆字 */
+.portal-glyphs span {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	font-family: var(--font-serif);
+	font-weight: 700;
+	color: color-mix(in srgb, var(--tone-light) 80%, #fff);
+	text-shadow: 0 0 12px var(--tone);
+	will-change: transform, opacity;
+	animation-name: glyphPull;
+	animation-timing-function: var(--ease-out);
+	animation-iteration-count: infinite;
+}
+
+/* 字幕 */
+.summon-caption {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	text-align: center;
+	animation: fadeUp 700ms var(--ease-out) 200ms both;
+}
+.summon-caption .t {
+	font-family: var(--font-serif);
+	font-size: 22px;
+	letter-spacing: 0.22em;
+	color: color-mix(in srgb, var(--tone-light) 85%, var(--color-rice));
+	text-shadow: 0 0 18px color-mix(in srgb, var(--tone) 50%, transparent);
+}
+.summon-caption .s {
+	font-size: 12px;
+	letter-spacing: 0.12em;
+	color: var(--color-rice-dim);
+	animation: blink 2.2s ease-in-out infinite;
+}
+
+/* 穿越闪光 */
+.summon-flash {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+	opacity: 0;
+	background: radial-gradient(circle at 50% 47%, #fff 0%, var(--tone-light) 28%, transparent 62%);
+}
+.summon-overlay.phase-burst .summon-flash {
+	animation: summonFlash 360ms ease-out forwards;
+}
+
+@keyframes portalOpen {
+	from {
+		opacity: 0;
+		transform: scale(0.18) rotate(-45deg);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1) rotate(0);
+	}
+}
+@keyframes portalSpin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes ringPulse {
+	0%,
+	100% {
+		transform: scale(1);
+		opacity: 0.9;
+	}
+	50% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+}
+@keyframes corePulse {
+	0%,
+	100% {
+		transform: scale(0.92);
+		opacity: 0.85;
+	}
+	50% {
+		transform: scale(1.12);
+		opacity: 1;
+	}
+}
+@keyframes glyphPull {
+	0% {
+		opacity: 0;
+		transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1) rotate(0);
+	}
+	22% {
+		opacity: 0.95;
+	}
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.25) rotate(40deg);
+	}
+}
+@keyframes summonFlash {
+	0% {
+		opacity: 0;
+		transform: scale(0.4);
+	}
+	45% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+		transform: scale(1.7);
+	}
+}
+
+/* ── 揭晓：史册人物自门中浮现 ── */
+.summon-overlay .reveal-card {
+	position: relative;
+	animation: cardEmerge 720ms var(--ease-out) both;
+}
+.summon-overlay .reveal-card.is-new {
+	animation:
+		cardEmerge 720ms var(--ease-out) both,
+		pulseGold 1.8s ease-in-out 760ms;
+}
+@keyframes cardEmerge {
+	0% {
+		opacity: 0;
+		transform: translateY(46px) scale(0.6);
+		filter: brightness(2.2) blur(3px);
+	}
+	60% {
+		opacity: 1;
+		filter: brightness(1.25) blur(0);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+		filter: none;
+	}
+}
+.reveal-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(110px, 130px));
+	gap: var(--space-4);
+	justify-content: center;
+	max-width: 760px;
+}
+.reveal-card {
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-ink-mid);
+	background: linear-gradient(180deg, #1c1813, #110e0a);
+	padding: var(--space-4) var(--space-3);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-2);
+	opacity: 0;
+	transform: translateY(20px) scale(0.9);
+	animation: revealCard var(--duration-slow) var(--ease-out) forwards;
+}
+.reveal-card.is-new {
+	border-color: var(--color-gold);
+	box-shadow: var(--shadow-gold);
+}
+@keyframes revealCard {
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+.reveal-card .nm {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	font-size: 15px;
+}
+.reveal-tag {
+	font-size: 11px;
+	font-weight: 600;
+	padding: 2px 8px;
+	border-radius: 999px;
+}
+.reveal-tag.new {
+	color: #1a140a;
+	background: var(--color-gold-light);
+}
+.reveal-tag.dup {
+	color: var(--color-cyan-light);
+	border: 1px solid rgba(26, 107, 138, 0.5);
+}
+.reveal-title {
+	font-family: var(--font-serif);
+	font-size: 24px;
+	color: var(--color-gold-light);
+	margin-bottom: var(--space-6);
+	letter-spacing: 0.1em;
+}
+.reveal-foot {
+	margin-top: var(--space-8);
+	display: flex;
+	gap: var(--space-4);
+}
+
+/* 碎片商店 */
+.shop-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	margin-top: var(--space-5);
+}
+.shop-row {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-3);
+	border-radius: var(--radius);
+	border: 1px solid var(--color-ink-mid);
+}
+.shop-row .info {
+	flex: 1;
+	min-width: 0;
+}
+.shop-row .nm {
+	font-family: var(--font-serif);
+	font-size: 15px;
+}
+.shop-row .tt {
+	font-size: 11px;
+	color: var(--color-rice-dim);
+}
+
+@media (max-width: 720px) {
+	.gacha-page {
+		padding: var(--space-6) var(--space-4) 84px;
+	}
+}
