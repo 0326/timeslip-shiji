@@ -13,8 +13,8 @@ const chapter: ClassicChapter = {
 	accent: "#1a6b8a",
 	sections: [
 		{
-			id: "sunwu",
-			title: "一 · 孙武演阵",
+			id: "sunwu-jianwang",
+			title: "一 · 兵法见吴王",
 			segments: [
 				{
 					original:
@@ -28,6 +28,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "sunwu-zhanji",
+			title: "二 · 斩姬演阵",
+			segments: [
 				{
 					original:
 						"于是鼓之右，妇人大笑。孙子曰：「约束不明，申令不熟，将之罪也。」复三令五申而鼓之左，妇人复大笑。孙子曰：「约束不明，申令不熟，将之罪也；既已明而不如法者，吏士之罪也。」乃欲斩左右队长。吴王从台上观，见且斩爱姬，大骇。趣使使下令曰：「寡人已知将军能用兵矣。寡人非此二姬，食不甘味，愿勿斩也。」",
@@ -40,6 +46,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "sunwu-baijiang",
+			title: "三 · 拜将破楚",
+			segments: [
 				{
 					original:
 						"孙子曰：「臣既已受命为将，将在军，君命有所不受。」遂斩队长二人以徇。用其次为队长，于是复鼓之。妇人左右前后跪起皆中规矩绳墨，无敢出声。于是孙子使使报王曰：「兵既整齐，王可试下观之，唯王所欲用之，虽赴水火犹可也。」吴王曰：「将军罢休就舍，寡人不愿下观。」孙子曰：「王徒好其言，不能用其实。」于是阖庐知孙子能用兵，卒以为将。西破强楚，入郢，北威齐晋，显名诸侯，孙子与有力焉。",
@@ -59,8 +71,8 @@ const chapter: ClassicChapter = {
 			],
 		},
 		{
-			id: "saima",
-			title: "二 · 孙膑赛马",
+			id: "pangjuan-yuebin",
+			title: "四 · 庞涓刖膑",
 			segments: [
 				{
 					original:
@@ -74,6 +86,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "tianji-saima",
+			title: "五 · 田忌赛马",
+			segments: [
 				{
 					original:
 						"齐使者如梁，孙膑以刑徒阴见，说齐使。齐使以为奇，窃载与之齐。齐将田忌善而客待之。忌数与齐诸公子驰逐重射。孙子见其马足不甚相远，马有上、中、下、辈。于是孙子谓田忌曰：「君弟重射，臣能令君胜。」田忌信然之，与王及诸公子逐射千金。及临质，孙子曰：「今以君之下驷与彼上驷，取君上驷与彼中驷，取君中驷与彼下驷。」既驰三辈毕，而田忌一不胜而再胜，卒得王千金。于是忌进孙子于威王。威王问兵法，遂以为师。",
@@ -90,7 +108,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "guiling",
-			title: "三 · 围魏救赵",
+			title: "六 · 围魏救赵",
 			segments: [
 				{
 					original:
@@ -107,8 +125,8 @@ const chapter: ClassicChapter = {
 			],
 		},
 		{
-			id: "maling",
-			title: "四 · 马陵减灶",
+			id: "jianzao-youdi",
+			title: "七 · 减灶诱敌",
 			segments: [
 				{
 					original:
@@ -126,6 +144,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "maling-funu",
+			title: "八 · 马陵伏弩",
+			segments: [
 				{
 					original:
 						"乃弃其步军，与其轻锐倍日并行逐之。孙子度其行，暮当至马陵。马陵道陜，而旁多阻隘，可伏兵，乃斫大树白而书之曰「庞涓死于此树之下」。于是令齐军善射者万弩，夹道而伏，期曰「暮见火举而俱发」。庞涓果夜至斫木下，见白书，乃钻火烛之。读其书未毕，齐军万弩俱发，魏军大乱相失。庞涓自知智穷兵败，乃自刭，曰：「遂成竖子之名！」齐因乘胜尽破其军，虏魏太子申以归。孙膑以此名显天下，世传其兵法。",
@@ -145,8 +169,8 @@ const chapter: ClassicChapter = {
 			],
 		},
 		{
-			id: "wuqi-qijiang",
-			title: "五 · 吴起起为将",
+			id: "wuqi-shaqi",
+			title: "九 · 杀妻求将",
 			segments: [
 				{
 					original:
@@ -160,6 +184,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "wuqi-caiyin",
+			title: "十 · 猜忍去鲁",
+			segments: [
 				{
 					original:
 						"鲁人或恶吴起曰：「起之为人，猜忍人也。其少时，家累千金，游仕不遂，遂破其家，乡党笑之，吴起杀其谤己者三十余人，而东出卫郭门。与其母诀，啮臂而盟曰：『起不为卿相，不复入卫。』遂事曾子。居顷之，其母死，起终不归。曾子薄之，而与起绝。起乃之鲁，学兵法以事鲁君。鲁君疑之，起杀妻以求将。夫鲁小国，而有战胜之名，则诸侯图鲁矣。且鲁卫兄弟之国也，而君用起，则是弃卫。」鲁君疑之，谢吴起。",
@@ -172,6 +202,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "wuqi-shunju",
+			title: "十一 · 吮疽得士",
+			segments: [
 				{
 					original:
 						"吴起于是闻魏文侯贤，欲事之。文侯问李克曰：「吴起何如人哉？」李克曰：「起贪而好色，然用兵司马穰苴不能过也。」于是魏文侯以为将，击秦，拔五城。起之为将，与士卒最下者同衣食。卧不设席，行不骑乘，亲裹赢粮，与士卒分劳苦。卒有病疽者，起为吮之。卒母闻而哭之。人曰：「子卒也，而将军自吮其疽，何哭为？」母曰：「非然也。往年吴公吮其父，其父战不旋踵，遂死于敌。吴公今又吮其子，妾不知其死所矣。是以哭之。」",
@@ -192,7 +228,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "zaide",
-			title: "六 · 在德不在险",
+			title: "十二 · 在德不在险",
 			segments: [
 				{
 					original:
@@ -209,8 +245,8 @@ const chapter: ClassicChapter = {
 			],
 		},
 		{
-			id: "lunGong",
-			title: "七 · 论功去魏",
+			id: "lungong-tianwen",
+			title: "十三 · 论功田文",
 			segments: [
 				{
 					original:
@@ -224,6 +260,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "gongshu-zhimou",
+			title: "十四 · 公叔之谋",
+			segments: [
 				{
 					original:
 						"田文既死，公叔为相，尚魏公主，而害吴起。公叔之仆曰：「起易去也。」公叔曰：「柰何？」其仆曰：「吴起为人节廉而自喜名也。君因先与武侯言曰：『夫吴起贤人也，而侯之国小，又与强秦壤界，臣窃恐起之无留心也。』武侯即曰：『柰何？』君因谓武侯曰：『试延以公主，起有留心则必受之。无留心则必辞矣。以此卜之。』君因召吴起而与归，即令公主怒而轻君。吴起见公主之贱君也，则必辞。」于是吴起见公主之贱魏相，果辞魏武侯。武侯疑之而弗信也。吴起惧得罪，遂去，即之楚。",
@@ -239,8 +281,8 @@ const chapter: ClassicChapter = {
 			],
 		},
 		{
-			id: "xiangchu-lun",
-			title: "八 · 相楚与太史公论",
+			id: "bianfa-xiangchu",
+			title: "十五 · 变法相楚与太史公论",
 			segments: [
 				{
 					original:

@@ -28,6 +28,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "yueqi",
+			title: "二 · 约期监军",
+			segments: [
 				{
 					original:
 						"穰苴曰：「臣素卑贱，君擢之闾伍之中，加之大夫之上，士卒未附，百姓不信，人微权轻，愿得君之宠臣，国之所尊，以监军，乃可。」于是景公许之，使庄贾往。穰苴既辞，与庄贾约曰：「旦日日中会于军门。」",
@@ -44,7 +50,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "zhanjia",
-			title: "二 · 斩贾徇军",
+			title: "三 · 斩贾徇军",
 			segments: [
 				{
 					original:
@@ -74,6 +80,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "junling",
+			title: "四 · 君令不受",
+			segments: [
 				{
 					original:
 						"久之，景公遣使者持节赦贾，驰入军中。穰苴曰：「将在军，君令有所不受。」问军正曰：「驰三军法何？」正曰：「当斩。」使者大惧。穰苴曰：「君之使不可杀之。」乃斩其仆、车之左驸、马之左骖，以徇三军。遣使者还报，然后行。",
@@ -94,7 +106,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "fuxun",
-			title: "三 · 抚循士卒",
+			title: "五 · 抚循士卒",
 			segments: [
 				{
 					original:
@@ -128,7 +140,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "houshi",
-			title: "四 · 身后与太史公论",
+			title: "六 · 身后与太史公论",
 			segments: [
 				{
 					original:

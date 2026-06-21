@@ -14,7 +14,7 @@ const chapter: ClassicChapter = {
 	sections: [
 		{
 			id: "guanbao",
-			title: "一 · 管鲍之交",
+			title: "一 · 管鲍知贤",
 			segments: [
 				{
 					original:
@@ -28,6 +28,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "zhiwozhe",
+			title: "二 · 知我者鲍子",
+			segments: [
 				{
 					original:
 						"管仲曰：「吾始困时，尝与鲍叔贾，分财利多自与，鲍叔不以我为贪，知我贫也。吾尝为鲍叔谋事而更穷困，鲍叔不以我为愚，知时有利不利也。吾尝三仕三见逐于君，鲍叔不以我为不肖，知我不遭时也。吾尝三战三走，鲍叔不以我怯，知我有老母也。公子纠败，召忽死之，吾幽囚受辱，鲍叔不以我为无耻，知我不羞小节而耻功名不显于天下也。生我者父母，知我者鲍子也。」",
@@ -56,7 +62,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "weizheng",
-			title: "二 · 管仲为政",
+			title: "三 · 仓廪礼节",
 			segments: [
 				{
 					original:
@@ -86,6 +92,12 @@ const chapter: ClassicChapter = {
 						},
 					],
 				},
+			],
+		},
+		{
+			id: "funi",
+			title: "四 · 富拟公室",
+			segments: [
 				{
 					original:
 						"管仲富拟于公室，有三归、反坫，齐人不以为侈。管仲卒，齐国遵其政，常强于诸侯。后百余年而有晏子焉。",
@@ -102,7 +114,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "yanying",
-			title: "三 · 晏婴节俭",
+			title: "五 · 晏婴节俭",
 			segments: [
 				{
 					original:
@@ -148,7 +160,7 @@ const chapter: ClassicChapter = {
 		},
 		{
 			id: "lun",
-			title: "四 · 太史公赞",
+			title: "六 · 太史公赞",
 			segments: [
 				{
 					original:
