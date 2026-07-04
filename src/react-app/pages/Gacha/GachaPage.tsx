@@ -3,6 +3,7 @@ import { Sparkles, Gift, Shield } from "lucide-react";
 import "./Gacha.css";
 import { CURRENT_POOL, FRAGMENT_COSTS } from "../../data/gachaPools";
 import { getCharacter } from "../../data/characters";
+import { useMergedCharacters } from "../../hooks/useMergedCharacters";
 import { useUserStore } from "../../store/userStore";
 import { useUiStore } from "../../store/uiStore";
 import { useGacha } from "../../hooks/useGacha";
@@ -16,6 +17,7 @@ export function GachaPage() {
 	const { pull, redeemCharacter } = useGacha();
 	const [results, setResults] = useState<PullResult[] | null>(null);
 	const [shopOpen, setShopOpen] = useState(false);
+	const { characterMap } = useMergedCharacters();
 
 	const owned = new Set(progress.gacha.ownedCharacters);
 	const pity = progress.gacha.pityCount;
@@ -67,12 +69,12 @@ export function GachaPage() {
 				</div>
 				<div className="pool-grid">
 					{CURRENT_POOL.characters.map((pc) => {
-						const ch = getCharacter(pc.characterId);
+						const ch = characterMap.get(pc.characterId) ?? getCharacter(pc.characterId);
 						if (!ch) return null;
 						const has = owned.has(pc.characterId);
 						return (
 							<div key={pc.characterId} className={`pool-card${has ? " owned" : ""}`}>
-								<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={72} locked={!has} />
+								<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={72} locked={!has} avatarUrl={has ? ch.avatarUrl : null} />
 								<div className="nm">{has ? ch.name : "？？？"}</div>
 								<div className="tt">{has ? ch.title.split(" · ")[0] : "尚未解锁"}</div>
 								{has && <Badge tone="gold">已拥有</Badge>}
@@ -82,7 +84,7 @@ export function GachaPage() {
 				</div>
 			</section>
 
-			{results && <SummonOverlay results={results} onClose={() => setResults(null)} onAgain={doPull} tickets={progress.gachaTickets} />}
+			{results && <SummonOverlay results={results} onClose={() => setResults(null)} onAgain={doPull} tickets={progress.gachaTickets} characterMap={characterMap} />}
 
 			<Modal open={shopOpen} onClose={() => setShopOpen(false)}>
 				<div className="modal-pad">
@@ -99,10 +101,10 @@ export function GachaPage() {
 						{CURRENT_POOL.characters
 							.filter((pc) => !owned.has(pc.characterId))
 							.map((pc) => {
-								const ch = getCharacter(pc.characterId)!;
-								return (
-									<div className="shop-row" key={pc.characterId}>
-										<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={44} />
+							const ch = characterMap.get(pc.characterId) ?? getCharacter(pc.characterId)!;
+							return (
+								<div className="shop-row" key={pc.characterId}>
+									<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={44} avatarUrl={ch.avatarUrl} />
 										<div className="info">
 											<div className="nm">{ch.name}</div>
 											<div className="tt">{ch.title}</div>
@@ -155,11 +157,13 @@ function SummonOverlay({
 	onClose,
 	onAgain,
 	tickets,
+	characterMap,
 }: {
 	results: PullResult[];
 	onClose: () => void;
 	onAgain: (count: 1 | 10) => void;
 	tickets: number;
+	characterMap: Map<string, import("../../types/character").Character>;
 }) {
 	const reduce = prefersReducedMotion();
 	const [phase, setPhase] = useState<SummonPhase>(reduce ? "reveal" : "rift");
@@ -228,14 +232,14 @@ function SummonOverlay({
 					</div>
 					<div className="reveal-grid" onClick={(e) => e.stopPropagation()}>
 						{results.map((r, i) => {
-							const ch = getCharacter(r.characterId)!;
+							const ch = characterMap.get(r.characterId) ?? getCharacter(r.characterId)!;
 							return (
 								<div
 									key={i}
 									className={`reveal-card${r.isNew ? " is-new" : ""}`}
 									style={{ animationDelay: `${i * 90}ms` }}
 								>
-									<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={64} ring />
+									<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={64} ring avatarUrl={ch.avatarUrl} />
 									<div className="nm">{ch.name}</div>
 									{r.isNew ? (
 										<span className="reveal-tag new">NEW</span>

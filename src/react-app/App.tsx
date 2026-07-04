@@ -13,6 +13,7 @@ import { ClassicsPage } from "./pages/Classics/ClassicsPage";
 const PlayPage = lazy(() => import("./pages/Play/PlayPage"));
 const PanoramaPage = lazy(() => import("./pages/Panorama/PanoramaPage"));
 const ClassicReaderPage = lazy(() => import("./pages/Classics/ClassicReaderPage"));
+const ArchiveDetailPage = lazy(() => import("./pages/Archive/ArchiveDetailPage"));
 
 function lazyEl(node: React.ReactNode) {
 	return <Suspense fallback={<LoadingScreen />}>{node}</Suspense>;
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
 			{ index: true, element: <HomePage /> },
 			{ path: "gacha", element: <GachaPage /> },
 			{ path: "archive", element: <ArchivePage /> },
+			{ path: "archive/:id", element: lazyEl(<ArchiveDetailPage />) },
 			{ path: "achieve", element: <AchievementPage /> },
 			{ path: "classics", element: <ClassicsPage /> },
 			{ path: "classics/:juan", element: lazyEl(<ClassicReaderPage />) },

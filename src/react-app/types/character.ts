@@ -15,12 +15,19 @@ export const ERA_LABELS: Record<Era, string> = {
 	western_han: "西汉",
 };
 
-export type RelationType = "ally" | "enemy" | "neutral" | "grace" | "lord";
+// 与主项目 timslip-work 对齐的 6 种关系类型
+export type RelationType =
+	| "family" // 亲缘（血亲/配偶/姻亲）
+	| "sovereign" // 君臣
+	| "teacher" // 师承
+	| "friend" // 挚友/盟友
+	| "enemy" // 敌对
+	| "peer"; // 同侪/中立
 
 export interface CharacterRelation {
 	targetId: string;
 	type: RelationType;
-	label: string; // '主君' | '宿命之敌' | '一饭之恩'
+	label: string; // '主君' | '宿命之敌' | '月下追韩信'
 	description?: string;
 }
 
@@ -38,4 +45,8 @@ export interface Character {
 	historicalSource: string; // '《史记·淮阴侯列传》'
 	relatedStorylines: string[]; // 关联故事线 ID
 	relations: CharacterRelation[];
+	/** 主项目头像 URL（运行时从主项目合并，null 表示未取或无头像） */
+	avatarUrl?: string | null;
+	/** 主项目 bio_summary（运行时合并，若与 description 不同可作补充） */
+	bioSummary?: string | null;
 }
