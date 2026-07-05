@@ -74,36 +74,63 @@ highly detailed, 8k resolution
 ## 三、角色立绘生成规范
 
 ### 构图要求（极其重要）
-- **尺寸**：竖版，推荐 3:4 比例（如 912×1216）
-- **全身完整**：必须从头到脚完整呈现，**绝对不能截断**
-  - 头顶留≥5%空白
-  - 脚底留≥8%空白
-  - 左右两侧留≥5%空白
+- **尺寸**：竖版，推荐 3:4 比例（如 912×1216），长边≥1216；工具支持更高分辨率时优先用更高的
+- **镜头拉远**：贴边截断的根本原因是"full body"类词汇会驱使模型把人物撑满画面。
+  **必须在 prompt 里明确要求拉远镜头、角色只占画面高度的 70%~80%**，
+  且留白要求以**整体剪影**（含武器尖端、披风、飘带的最远端）计算，不是只看身体：
+  - 头顶（含武器上扬端）留 ≥5% 空白
+  - 脚底留 ≥8% 空白
+  - 左右两侧（含披风/飘带展开端）留 ≥5% 空白
 - **姿势要求**：
   - 角色站立或战斗姿态自然
-  - 武器/道具不要刺向角色自身
+  - 武器/道具不要刺向角色自身；长柄武器倾斜持握（垂直竖持极易顶到上边缘）
   - 多人场景要明确主次，不要拼凑感
-- **背景要求**：使用纯绿幕背景（#00b140 或纯绿 #00ff00）方便抠图
+- **幕布颜色选择（重要）**：根据角色配色选幕布，避免与角色本体撞色：
+  - 默认：绿幕 `#00B140`
+  - 角色含**绿色/青色/玉色**元素（玉饰、青铜器、翠色披风、青色铠甲等）→ 改用**品红幕 `#FF00FF`**
+  - 抠图脚本会自动从图片边框识别幕布颜色，无需额外配置
   - 不要在背景中画地面、石头、水面等环境元素
   - 不要在角色脚下画投影（后期叠加时会自动处理）
-- **风格**：二游风格（参考鸣潮/原神立绘），线条清晰，色彩鲜明
+
+### 风格锚点（所有角色统一使用，保证系列间风格一致）
+
+**生成时必须附带参考图**：参考图已放在 `.trae/skills/kv-image-gen/references/`
+（`anime-style-1.jpg` / `anime-style-2.jpg`），每次生成角色立绘时作为图像参考输入
+（image reference / style reference / img2img，视生成工具而定）。所有系列使用
+**同一组参考图**，这是风格一致性的最大保障；只靠文字 prompt 描述风格必然漂移。
+注意只取风格不抄构图（参考图是横版带背景 KV，立绘要纯幕布竖版单人）。
+
+文字风格锚点（固定块，逐字复用，不要每次改写）：
+```
+premium Chinese gacha game splash art, in the style of Wuthering Waves 
+and Genshin Impact character key visuals, crisp clean lineart with 
+painterly cel-shaded rendering, saturated jewel-tone palette, 
+ornate costume with layered fabric and engraved metal armor details, 
+gold filigree accents, iridescent glow effects, dramatic rim lighting, 
+dynamic three-quarter camera angle, flowing hair and ribbons with 
+sense of motion, masterpiece quality, ultra detailed
+```
 
 ### 角色立绘Prompt模板
 ```
-Full body character illustration of [角色描述], [服饰细节], [武器/道具], 
-[姿态描述], standing pose, full body visible from head to toe, 
-complete figure, no cropping, pure green screen background (#00FF00), 
-no ground, no shadows, no environment, clean green background,
-anime style, guofeng, game character art, gacha game style,
-highly detailed, sharp focus, 3:4 aspect ratio
+[风格锚点块], full body character illustration of [角色描述], 
+[服饰细节], [武器/道具], [姿态描述], 
+wide shot with camera pulled back, character occupies only 75% of 
+frame height, generous empty margins on all sides, entire silhouette 
+including weapon tips and cape fully inside the frame, 
+complete figure from head to toe, 
+solid chroma key background ([#00B140 绿幕 或 #FF00FF 品红幕]), 
+no ground, no shadows, no environment, 3:4 aspect ratio
 ```
 
 ### 关键负向Prompt
 ```
 cropped, cut off, truncated, out of frame, partial body, 
-missing feet, missing head, ground, floor, water, stones,
-shadows on background, text, watermark, signature,
-deformed hands, extra limbs, unnatural pose
+touching frame edge, missing feet, missing head, 
+ground, floor, water, stones, shadows on background, 
+text, watermark, signature, deformed hands, extra limbs, 
+unnatural pose, flat dull colors, blurry, low detail, 
+western cartoon, 3d render, photorealistic
 ```
 
 ### 各系列角色配置
@@ -114,14 +141,21 @@ deformed hands, extra limbs, unnatural pose
 | 始皇本纪 | 秦始皇+荆轲 | 荆轲刺秦瞬间动态，嬴政持剑，不要阴森氛围 |
 | 楚汉争霸 | 项羽 | 单角色，霸王冲阵，持戟披风完整，不要截断披风 |
 
-### 出图检查清单
-1. ✅ 角色从头到脚完整可见？
-2. ✅ 头顶/脚底/左右都有留白？
-3. ✅ 姿势自然不别扭？
-4. ✅ 武器没有刺到角色自己？
-5. ✅ 背景是纯绿幕没有地面/水面/石头？
-6. ✅ 多人场景没有拼凑感？
-7. ✅ 披风/长袖/飘带等没有被截断？
+### 出图检查（自动化，必须执行）
+
+**每张图生成后立刻跑自动质检，不要靠肉眼判断贴边：**
+```bash
+python3 .trae/skills/kv-image-gen/scripts/matting-v4.py <图片路径> --check-only
+```
+脚本会计算角色整体剪影（含武器/披风最远端）到画面四边的留白比例，
+任何一边 ✗ 就**直接重新生成**（在 prompt 里进一步拉远镜头/调整武器角度），
+不要试图硬抠或事后修补截断的图。
+
+人工复核项（自动检查覆盖不了的）：
+1. ✅ 姿势自然不别扭？武器没有刺到角色自己？
+2. ✅ 多人场景没有拼凑感？
+3. ✅ 风格与 references/ 参考图一致（线条、上色、饱和度）？
+4. ✅ 幕布颜色没有与角色本体大面积撞色？撞色则换幕布色重新生成
 
 ---
 
@@ -161,56 +195,59 @@ deformed hands, extra limbs, unnatural pose
 
 ## 五、抠图（背景去除）处理流程
 
-角色立绘生成后需要去除绿幕背景转为透明PNG。
+角色立绘生成后需要去除幕布背景转为透明PNG。
+
+### 核心原则（v4，与v3的根本区别）
+
+**幕布图抠图的主力是色度键（chroma key），不是 AI 分割模型。**
+v3 用 u2net 直接抠绿幕图是结构性错误：u2net 不知道"幕布色=背景"这个先验，
+自己猜前景 —— 猜错就把本体（深色衣物、武器）抠掉，同时它认为是前景的绿色又留下来。
+这正是"绿色残留"和"本体被误抠"两个问题的共同根源。
+
+v4（`scripts/matting-v4.py`）的流程：
+1. **自动识别幕布色**：从图片四边边框采样（支持绿幕/品红幕，无需配置）
+2. **色度键 + 边界连通洪水填充**：只有与画面边界**连通**的幕布色区域才算背景
+   —— 角色身上的玉佩、青铜器等绿色元素因为不与边界连通，**不会被误抠**
+3. **封闭区域仲裁**：被角色包围的幕布色区域（如手臂与身体间的空隙），
+   用颜色相似度 + AI模型（rembg，装了则用）仲裁是空隙还是角色元素；
+   AI 只做仲裁，**永远不会单独决定删除本体像素**
+4. **despill 去溢色**：清除边缘绿边和铠甲反光上的内部溢色，保护角色自带的绿色元素
+5. **边缘平滑**：alpha 1px收缩 + 0.8px高斯模糊，消除幕布色光晕
+6. **自动质检报告**：留白检查 + 前景内部幕布色残留提醒
 
 ### 环境准备
 ```bash
-pip install rembg[cpu] pillow numpy scipy --break-system-packages
+pip install pillow numpy scipy --break-system-packages   # 必需
+pip install rembg[cpu] --break-system-packages           # 可选但推荐（封闭区域仲裁更准）
 ```
-
 模型缓存在项目目录：`.u2net/`
 
-### 处理流程（推荐方案）
+### 使用方式
+```bash
+# 自动扫描 public/images/kv/ 下的 char-*-v*.jpg（每个系列取最新版本号）
+python3 .trae/skills/kv-image-gen/scripts/matting-v4.py
 
-使用 `scripts/` 目录下的处理脚本，**直接使用u2net模型**（不用alpha matting，避免侵蚀深色衣物）：
+# 指定文件
+python3 .trae/skills/kv-image-gen/scripts/matting-v4.py public/images/kv/char-chuhan-v3.jpg
 
-```python
-from rembg import remove, new_session
-from PIL import Image, ImageFilter
-import numpy as np
-
-# 1. 初始化模型（u2net对人像效果最好）
-session = new_session("u2net")
-
-# 2. 读取图片
-img = Image.open("char-xxx-v4.jpg").convert("RGB")
-
-# 3. AI抠图（关闭alpha_matting保护深色区域）
-result = remove(
-    img,
-    session=session,
-    alpha_matting=False,      # 关键：关闭以保护黑色龙袍等深色衣物
-    post_process_mask=True,
-)
-
-# 4. 边缘去绿 + alpha平滑
-# （详见scripts/batch-matting.py中的clean_edges_final函数）
+# 只做出图质检（留白/贴边检查），不输出PNG
+python3 .trae/skills/kv-image-gen/scripts/matting-v4.py <文件> --check-only
 ```
 
 ### 抠图质量检查
-1. ✅ 绿幕完全去除，无绿色残留边缘？
+1. ✅ 幕布完全去除，无残留边缘/光晕？
 2. ✅ 深色衣物（如黑龙袍）没有被误抠成透明？
-3. ✅ 发丝/飘带等细节保留？
-4. ✅ 边缘平滑没有锯齿？
-5. ✅ 没有黑色斑块/黑洞？
+3. ✅ 角色身上与幕布同色系的元素（玉佩/青铜器）保留了？
+4. ✅ 发丝/飘带等细节保留？
+5. ✅ 边缘平滑没有锯齿？
 
 ### 常见问题处理
 | 问题 | 原因 | 解决方案 |
 |------|------|---------|
-| 绿色边缘/光晕 | 绿幕溢出 | 边缘像素将g通道值设为(r+b)/2 |
-| 黑色衣服变透明 | alpha matting侵蚀 | 关闭alpha_matting，使用u2net而非isnet |
-| 边缘锯齿 | mask太硬 | 对alpha通道做0.6px高斯模糊 |
-| 人物有黑洞 | 暗部被误判为背景 | post_process_mask=True，或手动修补 |
+| 绿色边缘/光晕 | 幕布溢色 | v4已内置despill+边缘收缩，仍有残留则检查脚本输出的提醒 |
+| 本体被误抠 | v3用u2net猜前景 | 用v4（色度键+连通性），本体只要不是幕布色就不会被抠 |
+| 角色绿色元素被抠掉 | 元素颜色太接近幕布色 | 换品红幕重新生成（见第三节幕布颜色选择） |
+| 大片幕布色残留在前景内 | 角色大面积撞幕布色 | 换幕布颜色重新生成，脚本会打印"前景内部仍有幕布色"提醒 |
 
 ---
 
@@ -284,12 +321,12 @@ public/images/kv/
 
 ---
 
-## 八、相关脚本
+## 八、相关脚本与资源
 
-- `scripts/batch-matting.py` - 批量抠图脚本（rembg + 色度键混合方案）
-- `.trae/skills/kv-image-gen/scripts/matting-v3.py` - 推荐的u2net简化抠图脚本
+- `.trae/skills/kv-image-gen/scripts/matting-v4.py` - 抠图脚本：色度键+连通性抠图 + 出图质检（--check-only）
+- `.trae/skills/kv-image-gen/references/` - 风格参考图目录（生成角色立绘时必须作为图像参考输入）
 
 ### 快速批量抠图命令
 ```bash
-python3 .trae/skills/kv-image-gen/scripts/matting-v3.py
+python3 .trae/skills/kv-image-gen/scripts/matting-v4.py
 ```
