@@ -17,75 +17,8 @@ import "./StorySelect.css";
 import { STORYLINES } from "../../data/storylines";
 import { useUserStore } from "../../store/userStore";
 import { CHARACTERS } from "../../data/characters";
-
-/* ───────────── 四个本纪系列定义 ───────────── */
-interface SeriesDef {
-	id: string;
-	name: string;
-	tagline: string;
-	accent: string;
-	accent2: string;
-	bgFrom: string;
-	bgTo: string;
-	era: string; // 对应 Era 类型或自定义
-	order: number;
-	glyph: string;
-	comingSoon?: boolean;
-}
-
-const SERIES: SeriesDef[] = [
-	{
-		id: "wudi",
-		name: "五帝本纪",
-		tagline: "涿鹿风云 · 华夏肇始",
-		accent: "#c9a84c",
-		accent2: "#3a8c6e",
-		bgFrom: "#1a1510",
-		bgTo: "#0f1a15",
-		era: "legendary",
-		order: 1,
-		glyph: "帝",
-		comingSoon: true,
-	},
-	{
-		id: "yinzhou",
-		name: "殷周本纪",
-		tagline: "渭水求贤 · 凤鸣岐山",
-		accent: "#7ec8c8",
-		accent2: "#c0c0c0",
-		bgFrom: "#0f1518",
-		bgTo: "#0a1012",
-		era: "shang_zhou",
-		order: 2,
-		glyph: "周",
-		comingSoon: true,
-	},
-	{
-		id: "shihuang",
-		name: "始皇本纪",
-		tagline: "六合一统 · 千古一帝",
-		accent: "#d4a847",
-		accent2: "#8b4513",
-		bgFrom: "#1a1208",
-		bgTo: "#120e08",
-		era: "qin",
-		order: 3,
-		glyph: "秦",
-		comingSoon: true,
-	},
-	{
-		id: "chuhan",
-		name: "楚汉争霸",
-		tagline: "垓下悲歌 · 霸王绝唱",
-		accent: "#d4503c",
-		accent2: "#b8973a",
-		bgFrom: "#1a0d0a",
-		bgTo: "#120808",
-		era: "chu_han",
-		order: 4,
-		glyph: "楚",
-	},
-];
+import { getSprite } from "../../data/sceneAssets";
+import { SERIES } from "../../data/series";
 
 /* ───────────── 工具函数 ───────────── */
 function getDifficultyStars(d: number) {
@@ -93,13 +26,14 @@ function getDifficultyStars(d: number) {
 }
 
 function getCharacterName(id: string) {
-	return CHARACTERS.find((c) => c.id === id)?.name || id;
+	// 卡池角色优先；非卡池主角（如五帝/夏人物）用立绘表兜底名
+	return CHARACTERS.find((c) => c.id === id)?.name || getSprite(id).name;
 }
 
 /* ───────────── 主组件 ───────────── */
 export function StorySelectPage() {
 	const navigate = useNavigate();
-	const [expanded, setExpanded] = useState<string | null>("chuhan");
+	const [expanded, setExpanded] = useState<string | null>("wudi");
 	const [mounted, setMounted] = useState(false);
 	const hasCharacter = useUserStore((s) => s.hasCharacter);
 	const getPerspective = useUserStore((s) => s.getPerspective);
@@ -110,14 +44,10 @@ export function StorySelectPage() {
 
 	// 按系列分组故事线
 	const storiesBySeries = SERIES.map((series) => {
+		// 按 series id 归组：一个系列显示 series 相符的全部故事线
 		const storylines = series.comingSoon
 			? []
-			: STORYLINES.filter((sl) => {
-					// era 映射
-					if (series.era === "chu_han") return sl.era === "chu_han";
-					if (series.era === "qin") return sl.era === "qin";
-					return false;
-				});
+			: STORYLINES.filter((sl) => sl.series === series.id);
 		return { ...series, storylines };
 	});
 
@@ -283,7 +213,7 @@ export function StorySelectPage() {
 															{/* 右侧：视角选择 + 开始按钮 */}
 															<div className="ss-chapter-actions">
 																{sl.perspectives.map((p) => {
-																	const unlocked = hasCharacter(p.unlockedBy);
+																	const unlocked = sl.id.endsWith("_ink") || hasCharacter(p.unlockedBy);
 																	const charName = getCharacterName(p.characterId);
 																	const prog = getPerspective(sl.id, p.characterId);
 

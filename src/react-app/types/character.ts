@@ -1,18 +1,26 @@
 // 角色与人物关系类型
 
 export type Era =
+	| "wudi" // 五帝与夏（上古）
+	| "shang" // 商
+	| "western_zhou" // 西周
 	| "spring_autumn" // 春秋
 	| "warring_states" // 战国
 	| "qin" // 秦朝
 	| "chu_han" // 楚汉
-	| "western_han"; // 西汉
+	| "western_han" // 西汉
+	| "mixed"; // 跨时代（群像番外）
 
 export const ERA_LABELS: Record<Era, string> = {
+	wudi: "五帝夏",
+	shang: "商",
+	western_zhou: "西周",
 	spring_autumn: "春秋",
 	warring_states: "战国",
 	qin: "秦",
 	chu_han: "楚汉",
 	western_han: "西汉",
+	mixed: "列传",
 };
 
 // 与主项目 timslip-work 对齐的 6 种关系类型

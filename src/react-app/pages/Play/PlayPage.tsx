@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import "./Play.css";
 import { getStoryline } from "../../data/storylines";
 import { getCharacter } from "../../data/characters";
+import { getSprite } from "../../data/sceneAssets";
 import { useUserStore } from "../../store/userStore";
 import { VNEngine } from "./VNEngine";
 
@@ -12,10 +13,13 @@ export default function PlayPage() {
 
 	const story = getStoryline(storyId);
 	const perspective = story?.perspectives.find((p) => p.characterId === charId);
-	const character = getCharacter(charId);
+	// 卡池角色优先；非卡池主角（如五帝本纪人物）用立绘表兜底名与徽记
+	const gachaChar = getCharacter(charId);
+	const sprite = getSprite(charId);
+	const character = gachaChar ?? { name: sprite.name, glyph: sprite.glyph };
 
-	// 无效路由
-	if (!story || !perspective || !character) {
+	// 无效路由（视角存在即为合法路由）
+	if (!story || !perspective) {
 		return (
 			<div className="vn-screen">
 				<div className="empty-state" style={{ paddingTop: 160 }}>

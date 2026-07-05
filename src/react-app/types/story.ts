@@ -10,6 +10,8 @@ export interface Perspective {
 
 export interface Storyline {
 	id: string; // 'hanxin'
+	/** 所属系列 id（对应 data/series.ts 的 SeriesDef.id）；选择页按此分组 */
+	series: string;
 	title: string; // '兵仙韩信'
 	subtitle: string; // '从胯下之辱到钟室之祸'
 	era: Era;

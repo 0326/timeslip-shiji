@@ -12,7 +12,6 @@ import type {
 	RunnerChoice,
 	RunnerOutput,
 	StageCallbacks as InkStageCallbacks,
-	TagMeta,
 } from "ink-vn-core";
 import type { IStoryRunner } from "./IStoryRunner";
 import type {
@@ -58,7 +57,6 @@ export interface InkStoryConfig {
  *   - #correct                                            → marks a choice as historically correct
  *   - #death:ID                                           → triggers death state (ID looks up in deaths registry)
  *   - #achieve:ID                                         → fires onAchievement callback
- *   - #analysis:TEXT, #reason:TEXT, #classical:TEXT       → optional inline death meta (overrides registry)
  *   - Choice tags go BEFORE the choice text:  * #correct [Choice text] -> target
  */
 export class ShijiInkAdapter implements IStoryRunner {
@@ -144,14 +142,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 		let death: StoryState["death"] = null;
 		if (output.state === "death" && output.deathId) {
 			this.vars._deaths = (this.vars._deaths as number) + 1;
-
-			// Find death info: check inline meta first, then registry
-			const deathEntry = this.config.deaths[output.deathId];
-			const reason = this.findMetaText(output.segments, "reason") ?? deathEntry?.reason ?? output.deathId;
-			const classical = this.findMetaText(output.segments, "classical") ?? deathEntry?.classical ?? "";
-			const analysis = this.findMetaText(output.segments, "analysis") ?? deathEntry?.analysis ?? "";
-
-			death = { reason, classical, analysis };
+			death = this.buildDeath(output.deathId);
 		}
 
 		return this.buildState(output, death, output.state === "ended");
@@ -178,13 +169,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 		let death: StoryState["death"] = null;
 		if (output.state === "death" && output.deathId) {
 			this.vars._deaths = (this.vars._deaths as number) + 1;
-
-			const deathEntry = this.config.deaths[output.deathId];
-			const reason = this.findMetaText(output.segments, "reason") ?? deathEntry?.reason ?? output.deathId;
-			const classical = this.findMetaText(output.segments, "classical") ?? deathEntry?.classical ?? "";
-			const analysis = this.findMetaText(output.segments, "analysis") ?? deathEntry?.analysis ?? "";
-
-			death = { reason, classical, analysis };
+			death = this.buildDeath(output.deathId);
 		}
 
 		return this.buildState(output, death, output.state === "ended");
@@ -284,17 +269,16 @@ export class ShijiInkAdapter implements IStoryRunner {
 	}
 
 	/**
-	 * Search segments (in reverse order) for a meta key and return its string value.
-	 * Used to find inline #reason:, #classical:, #analysis: on death lines.
+	 * Build death info from the registry (single source of truth).
+	 * Ink authors write only #death:ID; reason/classical/analysis live in config.deaths.
 	 */
-	private findMetaText(segments: StorySegment[] | RunnerOutput["segments"], key: string): string | undefined {
-		for (let i = segments.length - 1; i >= 0; i--) {
-			const meta = (segments[i] as { meta?: TagMeta }).meta;
-			if (meta && typeof meta[key] === "string") {
-				return meta[key] as string;
-			}
-		}
-		return undefined;
+	private buildDeath(deathId: string): StoryState["death"] {
+		const entry = this.config.deaths[deathId];
+		return {
+			reason: entry?.reason ?? deathId,
+			classical: entry?.classical ?? "",
+			analysis: entry?.analysis ?? "",
+		};
 	}
 
 	/** Convert ink RunnerOutput to app StoryState. */
