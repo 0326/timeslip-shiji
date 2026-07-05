@@ -2,6 +2,29 @@ import type { Storyline } from "../types/story";
 
 export const STORYLINES: Storyline[] = [
 	{
+		id: "hanxin_c1_ink",
+		title: "[Ink引擎] 胯下之辱",
+		subtitle: "第一章 · Ink引擎测试版",
+		era: "chu_han",
+		year: "公元前 230 — 196 年",
+		cover: "#2d7a4f",
+		glyph: "ink",
+		description:
+			"Ink引擎技术验证章节——胯下之辱。使用ink叙事语言编写，用于测试新引擎的对白、选项、死亡、成就、舞台效果等功能。",
+		estimatedMinutes: 3,
+		difficulty: 1,
+		focusCharacter: "hanxin",
+		relatedCharacters: ["hanxin"],
+		perspectives: [
+			{
+				characterId: "hanxin",
+				storyKey: "hanxin:c1",
+				unlockedBy: "hanxin",
+				nodeCount: 1,
+			},
+		],
+	},
+	{
 		id: "hanxin",
 		title: "兵仙韩信",
 		subtitle: "从胯下之辱到钟室之祸",

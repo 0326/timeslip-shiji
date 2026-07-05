@@ -1,232 +1,421 @@
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Sparkles, Play, CalendarCheck, Map } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+	Sparkles,
+	Play,
+	Swords,
+	BookOpen,
+	Compass,
+	Lock,
+	Menu,
+	X,
+	ChevronRight,
+} from "lucide-react";
 import "./Home.css";
-import { STORYLINES } from "../../data/storylines";
-import { ERA_LABELS } from "../../types/character";
-import { getCharacter } from "../../data/characters";
-import type { Storyline } from "../../types/story";
 import { useUserStore } from "../../store/userStore";
-import { globalProgress, storylineProgress } from "../../store/selectors";
-import { Badge, Button, Drawer, ProgressBar } from "../../components/ui";
-import { CharacterAvatar } from "../../components/CharacterAvatar";
+
+/* ───────────── KV 图片基础路径 ───────────── */
+const KV_BASE = import.meta.env.VITE_KV_BASE_URL || "/images/kv";
+
+/* ───────────── 四个本纪系列 ───────────── */
+const SERIES = [
+	{
+		id: "wudi",
+		name: "五帝本纪",
+		tagline: "涿鹿风云 · 龙战玄黄",
+		accent: "#c9a84c",
+		accent2: "#3a8c6e",
+		// 角色偏左，为右侧按钮留出空间
+		charStyle: { bottom: "50px", left: "22%", transform: "translateX(-50%)", width: "45%" } as React.CSSProperties,
+		charOffsetX: 80,
+		charScale: 1,
+	},
+	{
+		id: "yinzhou",
+		name: "殷周本纪",
+		tagline: "渭水求贤 · 凤鸣岐山",
+		accent: "#7ec8c8",
+		accent2: "#c0c0c0",
+		charStyle: { bottom: "50px", left: "22%", transform: "translateX(-50%)", width: "45%" } as React.CSSProperties,
+		charOffsetX: 80,
+		charScale: 1,
+	},
+	{
+		id: "shihuang",
+		name: "始皇本纪",
+		tagline: "六合一统 · 千古一帝",
+		accent: "#d4a847",
+		accent2: "#1a1a2e",
+		charStyle: { bottom: "50px", left: "22%", transform: "translateX(-50%)", width: "45%" } as React.CSSProperties,
+		charOffsetX: 80,
+		charScale: 1,
+	},
+	{
+		id: "chuhan",
+		name: "楚汉争霸",
+		tagline: "垓下悲歌 · 霸王绝唱",
+		accent: "#d4503c",
+		accent2: "#b8973a",
+		charStyle: { bottom: "50px", left: "22%", transform: "translateX(-50%)", width: "45%" } as React.CSSProperties,
+		charOffsetX: 80,
+		charScale: 1,
+	},
+];
+
+/* ───────────── 游戏模式 ───────────── */
+const GAME_MODES = [
+	{
+		id: "canon",
+		title: "正史模式",
+		desc: "循史记，亲历历史",
+		icon: BookOpen,
+		color: "#d4a847",
+	},
+	{
+		id: "free",
+		title: "自由模式",
+		desc: "改写历史，多结局",
+		icon: Compass,
+		color: "#5a9fb5",
+	},
+	{
+		id: "duel",
+		title: "对决模式",
+		desc: "即将上线",
+		icon: Swords,
+		color: "#d4503c",
+		locked: true,
+	},
+];
 
 export function HomePage() {
 	const navigate = useNavigate();
 	const progress = useUserStore((s) => s.progress);
-	const dailyCheckIn = useUserStore((s) => s.dailyCheckIn);
-	const [active, setActive] = useState<Storyline | null>(null);
+	const [current, setCurrent] = useState(0);
+	const [showMobileMenu, setShowMobileMenu] = useState(false);
+	const [mounted, setMounted] = useState(false);
 
-	const gp = useMemo(() => globalProgress(progress), [progress]);
-	const totalCompleted = useMemo(() => {
-		let done = 0;
-		let total = 0;
-		for (const s of STORYLINES) {
-			const r = storylineProgress(progress, s.id);
-			done += r.done;
-			total += r.total;
-		}
-		return { done, total };
-	}, [progress]);
+	useEffect(() => {
+		setMounted(true);
+		const timer = setInterval(() => {
+			setCurrent((i) => (i + 1) % SERIES.length);
+		}, 6000);
+		return () => clearInterval(timer);
+	}, []);
 
-	const todayNum = (() => {
-		const d = new Date();
-		return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
-	})();
-	const checkedToday = progress.lastCheckIn === todayNum;
+	const series = SERIES[current];
+
+	const handleModeClick = (modeId: string) => {
+		if (modeId === "duel") return;
+		navigate("/story");
+	};
 
 	return (
-		<div>
-			{/* Hero */}
-			<section className="hero">
-				<div className="hero-ink" />
-				<div className="hero-inner">
-					<div className="hero-seal">史</div>
-					<h1>穿越·史记</h1>
-					<div className="slogan">选一个角色，亲历一段历史</div>
-					<p className="lead">
-						《史记》躺在书架上「读不进、记不住、串不起」。在这里，文言不是门槛，而是通关的提示——
-						抽卡解锁角色，穿越成史记中人，在每一次抉择里，读懂一段活的历史。
-					</p>
-					<div className="hero-cta">
-						<Button size="lg" onClick={() => navigate("/gacha")}>
-							<Sparkles size={18} /> 前往史册抽卡
-						</Button>
-						<Button
-							size="lg"
-							variant="ghost"
-							onClick={() =>
-								document.getElementById("stories")?.scrollIntoView({ behavior: "smooth" })
-							}
+		<div className="kv-lobby">
+			{/* ══════════ 第1层：全屏背景图 ══════════ */}
+			<div className="kv-bg-layer">
+				{SERIES.map((s, i) => (
+					<motion.div
+						key={s.id}
+						className="kv-bg-img"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: i === current ? 1 : 0 }}
+						transition={{ duration: 1.2, ease: "easeInOut" }}
+					>
+						<img src={`${KV_BASE}/bg-${s.id}.jpg`} alt="" />
+					</motion.div>
+				))}
+				{/* 暗化遮罩 */}
+				<div className="kv-bg-overlay" />
+			</div>
+
+			{/* ══════════ 第2层：四角装饰（CSS三角形结构） ══════════ */}
+			<div className="kv-corner-layer">
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={`corner-${series.id}`}
+						className="kv-corners"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.6 }}
+						style={{ "--c-accent": series.accent, "--c-accent2": series.accent2 } as React.CSSProperties}
+					>
+						{/* 左上角 */}
+						<motion.div
+							className="kv-c kv-c-tl"
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.6, delay: 0.2 }}
 						>
-							<Play size={18} /> 选择故事线
-						</Button>
-					</div>
+							<svg width="180" height="180" viewBox="0 0 180 180" fill="none">
+								{/* 对角主线 */}
+								<line x1="0" y1="0" x2="180" y2="180" stroke="var(--c-accent)" strokeWidth="1.5" opacity="0.3" />
+								{/* 外框双线 */}
+								<path d="M0 60 Q0 0 60 0" stroke="var(--c-accent)" strokeWidth="2" fill="none" opacity="0.6" />
+								<path d="M0 80 Q0 10 80 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M0 40 Q0 0 40 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								{/* 祥云纹样 */}
+								<circle cx="20" cy="25" r="8" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="35" cy="15" r="5" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M15 40 Q25 30 40 35 Q50 38 55 30" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								{/* 角点装饰 */}
+								<circle cx="8" cy="8" r="3" fill="var(--c-accent)" opacity="0.7" />
+								<line x1="0" y1="20" x2="25" y2="0" stroke="var(--c-accent)" strokeWidth="0.8" opacity="0.3" />
+							</svg>
+						</motion.div>
+						{/* 右上角 */}
+						<motion.div
+							className="kv-c kv-c-tr"
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.6, delay: 0.25 }}
+						>
+							<svg width="180" height="180" viewBox="0 0 180 180" fill="none" style={{ transform: "scaleX(-1)" }}>
+								<line x1="0" y1="0" x2="180" y2="180" stroke="var(--c-accent)" strokeWidth="1.5" opacity="0.3" />
+								<path d="M0 60 Q0 0 60 0" stroke="var(--c-accent)" strokeWidth="2" fill="none" opacity="0.6" />
+								<path d="M0 80 Q0 10 80 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M0 40 Q0 0 40 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="20" cy="25" r="8" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="35" cy="15" r="5" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M15 40 Q25 30 40 35 Q50 38 55 30" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<circle cx="8" cy="8" r="3" fill="var(--c-accent)" opacity="0.7" />
+								<line x1="0" y1="20" x2="25" y2="0" stroke="var(--c-accent)" strokeWidth="0.8" opacity="0.3" />
+							</svg>
+						</motion.div>
+						{/* 左下角 */}
+						<motion.div
+							className="kv-c kv-c-bl"
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.6, delay: 0.35 }}
+						>
+							<svg width="180" height="180" viewBox="0 0 180 180" fill="none" style={{ transform: "scaleY(-1)" }}>
+								<line x1="0" y1="0" x2="180" y2="180" stroke="var(--c-accent)" strokeWidth="1.5" opacity="0.3" />
+								<path d="M0 60 Q0 0 60 0" stroke="var(--c-accent)" strokeWidth="2" fill="none" opacity="0.6" />
+								<path d="M0 80 Q0 10 80 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M0 40 Q0 0 40 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="20" cy="25" r="8" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<path d="M10 50 Q20 45 30 50 Q40 52 50 45" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<circle cx="8" cy="8" r="3" fill="var(--c-accent)" opacity="0.7" />
+							</svg>
+						</motion.div>
+						{/* 右下角 */}
+						<motion.div
+							className="kv-c kv-c-br"
+							initial={{ opacity: 0, scale: 0.8 }}
+							animate={{ opacity: 1, scale: 1 }}
+							transition={{ duration: 0.6, delay: 0.4 }}
+						>
+							<svg width="180" height="180" viewBox="0 0 180 180" fill="none" style={{ transform: "scale(-1)" }}>
+								<line x1="0" y1="0" x2="180" y2="180" stroke="var(--c-accent)" strokeWidth="1.5" opacity="0.3" />
+								<path d="M0 60 Q0 0 60 0" stroke="var(--c-accent)" strokeWidth="2" fill="none" opacity="0.6" />
+								<path d="M0 80 Q0 10 80 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.3" />
+								<path d="M0 40 Q0 0 40 0" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="20" cy="25" r="8" stroke="var(--c-accent)" strokeWidth="1" fill="none" opacity="0.4" />
+								<circle cx="8" cy="8" r="3" fill="var(--c-accent)" opacity="0.7" />
+							</svg>
+						</motion.div>
+					</motion.div>
+				</AnimatePresence>
+			</div>
 
-					{/* 全局进度 */}
-					<div className="global-progress">
-						<div className="gp-head">
-							<span className="label">史记全景 · 解锁进度</span>
-							<span className="pct">{gp}%</span>
-						</div>
-						<ProgressBar value={gp} />
-						<div className="gp-foot">
-							<span>
-								已通关视角 {totalCompleted.done} / {totalCompleted.total}
-							</span>
-							<button
-								className="btn btn-ghost btn-sm"
-								disabled={checkedToday}
-								onClick={() => dailyCheckIn()}
-							>
-								<CalendarCheck size={14} />
-								{checkedToday ? `已签到 · 连续${progress.checkInStreak}天` : "每日签到 +1"}
-							</button>
+			{/* ══════════ 顶部导航 ══════════ */}
+			<header className="kv-nav">
+				<div className="kv-nav-left">
+					<button className="kv-menu-btn" onClick={() => setShowMobileMenu(true)}>
+						<Menu size={22} />
+					</button>
+					<div className="kv-brand">
+						<span className="kv-brand-seal">史</span>
+						<div className="kv-brand-text">
+							<span className="kv-brand-title">穿越·史记</span>
+							<span className="kv-brand-sub">SHIJI · TIMESLIP</span>
 						</div>
 					</div>
 				</div>
-			</section>
 
-			{/* 故事线 */}
-			<section className="stories-section" id="stories">
-				<div className="section-head">
-					<h2 className="serif">故事线</h2>
-					<span className="sub">每条故事线，是一个人物的一生，或一夜的天下</span>
+				<nav className="kv-nav-links">
+					<button className="kv-nav-link active">
+						<Play size={14} /> 大厅
+					</button>
+					<button className="kv-nav-link" onClick={() => navigate("/gacha")}>
+						<Sparkles size={14} /> 史册
+					</button>
+					<button className="kv-nav-link" onClick={() => navigate("/classics")}>
+						<BookOpen size={14} /> 典籍
+					</button>
+					<button className="kv-nav-link" onClick={() => navigate("/archive")}>
+						图鉴
+					</button>
+					<button className="kv-nav-link" onClick={() => navigate("/achieve")}>
+						成就
+					</button>
+				</nav>
+
+				<div className="kv-nav-right">
+					<div className="kv-resources">
+						<span className="kv-res">
+							<span className="kv-res-ico">🎟️</span>
+							<span>{progress.gachaTickets}</span>
+						</span>
+						<span className="kv-res">
+							<span className="kv-res-ico">🔹</span>
+							<span>{progress.fragments}</span>
+						</span>
+					</div>
 				</div>
-				<div className="story-grid">
-					{STORYLINES.map((s) => (
-						<StoryCard key={s.id} story={s} onOpen={() => setActive(s)} />
+			</header>
+
+			{/* ══════════ 第3层：角色立绘 ══════════ */}
+			<div className="kv-char-layer">
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={series.id}
+						className="kv-char-wrapper"
+						style={series.charStyle as React.CSSProperties}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 0.5, ease: "easeInOut" }}
+					>
+						<motion.img
+							src={`${KV_BASE}/char-${series.id}.png`}
+							alt={series.name}
+							className="kv-char-img"
+							initial={{ x: series.charOffsetX, scale: series.charScale! * 0.95 }}
+							animate={{ x: 0, scale: series.charScale }}
+							exit={{ x: -series.charOffsetX, scale: series.charScale! * 0.95 }}
+							transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+						/>
+					</motion.div>
+				</AnimatePresence>
+				{/* 角色光晕 */}
+				<AnimatePresence mode="wait">
+					<motion.div
+						key={`glow-${series.id}`}
+						className="kv-char-glow"
+						style={{ background: `radial-gradient(ellipse at 70% 80%, ${series.accent}40, transparent 60%)` }}
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						transition={{ duration: 1.5 }}
+					/>
+				</AnimatePresence>
+			</div>
+
+			{/* ══════════ 主内容 ══════════ */}
+			<main className="kv-main">
+				{/* 左下角：系列名称 */}
+				<motion.div
+					className="kv-series-info"
+					key={`info-${series.id}`}
+					initial={{ opacity: 0, y: 30 }}
+					animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 30 }}
+					transition={{ duration: 0.8, delay: 0.5 }}
+				>
+					<h2 className="kv-series-name" style={{ textShadow: `0 0 30px ${series.accent}80` }}>
+						{series.name}
+					</h2>
+					<p className="kv-series-tagline">{series.tagline}</p>
+				</motion.div>
+
+				{/* 右侧：模式按钮 */}
+				<div className="kv-modes">
+					{GAME_MODES.map((mode, i) => (
+						<motion.button
+							key={mode.id}
+							className={`kv-mode-btn ${mode.locked ? "locked" : ""}`}
+							initial={{ opacity: 0, x: 40 }}
+							animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 40 }}
+							transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
+							onClick={() => handleModeClick(mode.id)}
+							style={{
+								"--mode-color": mode.color,
+							} as React.CSSProperties}
+						>
+							<div className="kv-mode-inner">
+								<mode.icon size={20} className="kv-mode-ico" />
+								<div className="kv-mode-text">
+									<span className="kv-mode-title">{mode.title}</span>
+									<span className="kv-mode-desc">{mode.desc}</span>
+								</div>
+								{mode.locked ? (
+									<Lock size={14} className="kv-mode-lock" />
+								) : (
+									<ChevronRight size={14} className="kv-mode-arrow" />
+								)}
+							</div>
+							<div className="kv-mode-bar" />
+						</motion.button>
 					))}
 				</div>
-			</section>
 
-			<Drawer open={!!active} onClose={() => setActive(null)}>
-				{active && <StoryDetail story={active} onClose={() => setActive(null)} />}
-			</Drawer>
-		</div>
-	);
-}
-
-function StoryCard({ story, onOpen }: { story: Storyline; onOpen: () => void }) {
-	const progress = useUserStore((s) => s.progress);
-	const { done, total } = storylineProgress(progress, story.id);
-	const pct = total ? (done / total) * 100 : 0;
-
-	return (
-		<article
-			className="story-card anim-fade-up"
-			onClick={onOpen}
-			role="button"
-			tabIndex={0}
-			onKeyDown={(e) => e.key === "Enter" && onOpen()}
-		>
-			<div
-				className="story-cover"
-				style={{ background: `linear-gradient(135deg, ${story.cover}22, #14110d 70%)` }}
-			>
-				<span className="cover-glyph">{story.glyph}</span>
-				<span className="era-tag">
-					<Badge tone="gold">{ERA_LABELS[story.era]}</Badge>
-				</span>
-				<span className="year-tag">{story.year}</span>
-			</div>
-			<div className="story-body">
-				<h3>{story.title}</h3>
-				<div className="subtitle">{story.subtitle}</div>
-				<p className="desc">{story.description}</p>
-				<div className="story-meta">
-					<Badge>约 {story.estimatedMinutes} 分钟</Badge>
-					<Badge tone="vermilion">难度 {"★".repeat(story.difficulty)}</Badge>
-					<Badge tone="cyan">{story.perspectives.length} 个视角</Badge>
+				{/* 底部：轮播指示器 */}
+				<div className="kv-indicators">
+					{SERIES.map((s, i) => (
+						<button
+							key={s.id}
+							className={`kv-dot ${i === current ? "active" : ""}`}
+							onClick={() => setCurrent(i)}
+							style={i === current ? { background: s.accent, boxShadow: `0 0 12px ${s.accent}` } : {}}
+						>
+							<span className="kv-dot-label">{s.name}</span>
+						</button>
+					))}
 				</div>
-				<div className="story-progress-line">
-					<ProgressBar value={pct} />
-					<span className="frac">
-						{done}/{total}
-					</span>
-				</div>
-			</div>
-		</article>
-	);
-}
+			</main>
 
-function StoryDetail({ story, onClose }: { story: Storyline; onClose: () => void }) {
-	const navigate = useNavigate();
-	const progress = useUserStore((s) => s.progress);
-	const hasChar = useUserStore((s) => s.hasCharacter);
-	const { done } = storylineProgress(progress, story.id);
-
-	return (
-		<div className="story-detail">
-			<div
-				className="story-detail-cover"
-				style={{ background: `linear-gradient(135deg, ${story.cover}33, #14110d 70%)` }}
-			>
-				<span className="cover-glyph">{story.glyph}</span>
-			</div>
-			<h2 className="serif" style={{ fontSize: 26 }}>
-				{story.title}
-			</h2>
-			<div style={{ color: "var(--color-gold-light)", fontFamily: "var(--font-serif)", marginTop: 4 }}>
-				{story.subtitle} · {story.year}
-			</div>
-			<p className="dim" style={{ fontSize: 14, marginTop: 14, lineHeight: 1.9 }}>
-				{story.description}
-			</p>
-
-			<div className="persp-list">
-				{story.perspectives.map((p) => {
-					const ch = getCharacter(p.characterId);
-					if (!ch) return null;
-					const owned = hasChar(p.characterId);
-					const pr = progress.storylines[story.id]?.[p.characterId];
-					const status = !owned
-						? "未解锁角色"
-						: pr?.isCompleted
-							? "已通关"
-							: pr?.isStarted
-								? "进行中"
-								: "未开始";
-					return (
-						<div className="persp-row" key={p.characterId}>
-							<CharacterAvatar glyph={ch.glyph} accent={ch.accent} size={48} locked={!owned} />
-							<div className="info">
-								<div className="nm">{ch.name}</div>
-								<div className="st">
-									{status} · {p.nodeCount} 个抉择点
-								</div>
+			{/* ══════════ 移动端菜单 ══════════ */}
+			<AnimatePresence>
+				{showMobileMenu && (
+					<>
+						<motion.div
+							className="kv-overlay"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							onClick={() => setShowMobileMenu(false)}
+						/>
+						<motion.div
+							className="kv-mobile-menu"
+							initial={{ x: "-100%" }}
+							animate={{ x: 0 }}
+							exit={{ x: "-100%" }}
+							transition={{ type: "spring", damping: 25, stiffness: 200 }}
+						>
+							<div className="kv-mm-head">
+								<span className="kv-brand-seal">史</span>
+								<span>穿越·史记</span>
+								<button onClick={() => setShowMobileMenu(false)}>
+									<X size={20} />
+								</button>
 							</div>
-							{owned ? (
-								<Button
-									size="sm"
-									variant={pr?.isCompleted ? "ghost" : "primary"}
-									onClick={() => navigate(`/play/${story.id}/${p.characterId}`)}
-								>
-									{pr?.isCompleted ? "重玩" : pr?.isStarted ? "继续" : "穿越"}
-								</Button>
-							) : (
-								<Button size="sm" variant="cyan" onClick={() => navigate("/gacha")}>
-									去解锁
-								</Button>
-							)}
-						</div>
-					);
-				})}
-			</div>
-
-			<div style={{ display: "flex", gap: 12, marginTop: 24 }}>
-				<Button
-					variant="ghost"
-					block
-					disabled={done === 0}
-					onClick={() => {
-						onClose();
-						navigate(`/panorama/${story.id}`);
-					}}
-				>
-					<Map size={16} /> {done === 0 ? "通关后解锁全景" : "史记全景"}
-				</Button>
-			</div>
+							<nav className="kv-mm-links">
+								{[
+									{ to: "/", label: "大厅", icon: Play },
+									{ to: "/gacha", label: "史册", icon: Sparkles },
+									{ to: "/classics", label: "典籍", icon: BookOpen },
+									{ to: "/archive", label: "图鉴", icon: BookOpen },
+									{ to: "/achieve", label: "成就", icon: Swords },
+								].map((item) => (
+									<button
+										key={item.to}
+										onClick={() => {
+											setShowMobileMenu(false);
+											navigate(item.to);
+										}}
+									>
+										<item.icon size={18} />
+										<span>{item.label}</span>
+									</button>
+								))}
+							</nav>
+						</motion.div>
+					</>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }

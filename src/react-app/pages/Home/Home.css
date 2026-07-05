@@ -1,265 +1,546 @@
-/* ============ 首页 ============ */
-.hero {
+/* ══════════════════════════════════════════════
+   穿越·史记 - KV大厅（二游风格）
+   三层架构：背景层 → 角装饰层 → 角色层
+   ══════════════════════════════════════════════ */
+
+.kv-lobby {
 	position: relative;
+	width: 100%;
+	height: 100vh;
+	min-height: 700px;
 	overflow: hidden;
-	border-bottom: 1px solid var(--color-ink-mid);
+	background: #0a0806;
+	color: #f2ecd8;
+	font-family: var(--font-sans);
 }
-.hero-inner {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: var(--space-20) var(--space-6) var(--space-16);
-	text-align: center;
-	position: relative;
+
+/* ──── 第1层：全屏背景 ──── */
+.kv-bg-layer {
+	position: absolute;
+	inset: 0;
 	z-index: 1;
 }
-.hero-ink {
+
+.kv-bg-img {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	transition: opacity 1.2s ease-in-out;
+}
+
+.kv-bg-img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
+.kv-bg-overlay {
 	position: absolute;
 	inset: 0;
 	background:
-		radial-gradient(circle at 18% 30%, rgba(192, 57, 43, 0.12), transparent 35%),
-		radial-gradient(circle at 82% 60%, rgba(26, 107, 138, 0.12), transparent 38%),
-		radial-gradient(circle at 50% 120%, rgba(184, 151, 58, 0.1), transparent 45%);
+		linear-gradient(to right, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 35%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.7) 100%),
+		linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.4) 100%);
+	z-index: 2;
+}
+
+/* ──── 第2层：四角装饰（SVG三角形对角线结构） ──── */
+.kv-corner-layer {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
 	pointer-events: none;
 }
-.hero-seal {
+
+.kv-corners {
+	position: absolute;
+	inset: 0;
+}
+
+.kv-c {
+	position: absolute;
+	width: 160px;
+	height: 160px;
+	pointer-events: none;
+}
+
+.kv-c svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+}
+
+/* 四角定位：三角形只占角落实区域 */
+.kv-c-tl { top: 0; left: 0; }
+.kv-c-tr { top: 0; right: 0; }
+.kv-c-bl { bottom: 0; left: 0; }
+.kv-c-br { bottom: 0; right: 0; }
+
+/* ──── 顶部导航 ──── */
+.kv-nav {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 30;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 40px;
+	background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 70%, transparent 100%);
+	backdrop-filter: blur(8px);
+	-webkit-backdrop-filter: blur(8px);
+}
+
+.kv-nav-left {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.kv-menu-btn {
+	display: none;
+	background: none;
+	border: none;
+	color: #f2ecd8;
+	cursor: pointer;
+	padding: 6px;
+	border-radius: 6px;
+	transition: background 0.2s;
+}
+.kv-menu-btn:hover { background: rgba(255,255,255,0.1); }
+
+.kv-brand {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.kv-brand-seal {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	width: 64px;
-	height: 64px;
-	border-radius: var(--radius);
-	background: var(--color-vermilion);
-	color: var(--color-rice);
+	width: 40px;
+	height: 40px;
+	background: var(--color-vermilion, #c0392b);
+	color: #f2ecd8;
 	font-family: var(--font-serif);
-	font-weight: 900;
-	font-size: 40px;
-	margin-bottom: var(--space-5);
-	box-shadow: var(--shadow);
-}
-.hero h1 {
-	font-size: clamp(38px, 7vw, 68px);
-	letter-spacing: 0.12em;
-	background: linear-gradient(180deg, #f2ecd8, #c9bd9a);
-	-webkit-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-.hero .slogan {
-	font-family: var(--font-serif);
-	font-size: clamp(16px, 2.4vw, 22px);
-	color: var(--color-gold-light);
-	margin-top: var(--space-4);
-	letter-spacing: 0.1em;
-}
-.hero .lead {
-	max-width: 560px;
-	margin: var(--space-5) auto 0;
-	color: var(--color-rice-dim);
-	font-size: 15px;
-	line-height: 1.9;
-}
-.hero-cta {
-	display: flex;
-	gap: var(--space-4);
-	justify-content: center;
-	margin-top: var(--space-8);
-	flex-wrap: wrap;
-}
-
-.global-progress {
-	max-width: 640px;
-	margin: var(--space-10) auto 0;
-	background: rgba(0, 0, 0, 0.25);
-	border: 1px solid var(--color-ink-mid);
-	border-radius: var(--radius-lg);
-	padding: var(--space-5) var(--space-6);
-}
-.global-progress .gp-head {
-	display: flex;
-	justify-content: space-between;
-	align-items: baseline;
-	margin-bottom: var(--space-3);
-}
-.gp-head .label {
-	font-family: var(--font-serif);
-	color: var(--color-rice);
-	font-size: 15px;
-}
-.gp-head .pct {
 	font-size: 22px;
 	font-weight: 700;
-	color: var(--color-gold-light);
-	font-variant-numeric: tabular-nums;
-}
-.gp-foot {
-	display: flex;
-	justify-content: space-between;
-	margin-top: var(--space-3);
-	font-size: 13px;
-	color: var(--color-rice-dim);
+	border-radius: 4px;
+	box-shadow: 0 2px 12px rgba(192, 57, 43, 0.5);
+	transform: rotate(-3deg);
+	flex-shrink: 0;
 }
 
-/* 故事线网格 */
-.stories-section {
-	max-width: 1200px;
-	margin: 0 auto;
-	padding: var(--space-12) var(--space-6) var(--space-16);
-}
-.story-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	gap: var(--space-6);
-}
-.story-card {
-	position: relative;
-	overflow: hidden;
-	border-radius: var(--radius-lg);
-	border: 1px solid var(--color-ink-mid);
-	background: var(--color-ink-light);
-	cursor: pointer;
-	transition: transform var(--duration-normal) var(--ease-out), border-color var(--duration-normal), box-shadow var(--duration-normal);
-	min-height: 220px;
+.kv-brand-text {
 	display: flex;
 	flex-direction: column;
+	line-height: 1.2;
 }
-.story-card:hover {
-	transform: translateY(-4px);
-	border-color: var(--color-gold-dim);
-	box-shadow: var(--shadow);
+
+.kv-brand-title {
+	font-family: var(--font-serif);
+	font-size: 18px;
+	font-weight: 700;
+	letter-spacing: 2px;
 }
-.story-cover {
-	height: 132px;
-	position: relative;
+
+.kv-brand-sub {
+	font-size: 10px;
+	letter-spacing: 3px;
+	opacity: 0.5;
+	text-transform: uppercase;
+}
+
+.kv-nav-links {
 	display: flex;
 	align-items: center;
-	justify-content: center;
-	overflow: hidden;
+	gap: 4px;
 }
-.story-cover .cover-glyph {
-	font-family: var(--font-serif);
-	font-weight: 900;
-	font-size: 96px;
-	opacity: 0.22;
-	color: var(--color-rice);
+
+.kv-nav-link {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	background: none;
+	border: none;
+	color: rgba(242, 236, 216, 0.7);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	padding: 8px 16px;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.25s;
+	letter-spacing: 1px;
+	white-space: nowrap;
+}
+
+.kv-nav-link:hover {
+	color: #f2ecd8;
+	background: rgba(255,255,255,0.08);
+}
+
+.kv-nav-link.active {
+	color: var(--color-gold, #b8973a);
+	background: rgba(184, 151, 58, 0.1);
+	box-shadow: inset 0 -2px 0 var(--color-gold, #b8973a);
+}
+
+.kv-nav-right {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.kv-resources {
+	display: flex;
+	gap: 8px;
+}
+
+.kv-res {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 12px;
+	background: rgba(0,0,0,0.4);
+	border: 1px solid rgba(184, 151, 58, 0.3);
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 600;
+	backdrop-filter: blur(4px);
+}
+
+.kv-res-ico { font-size: 14px; }
+
+/* ──── 第3层：角色立绘 ──── */
+.kv-char-layer {
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	pointer-events: none;
+}
+
+.kv-char-wrapper {
+	position: absolute;
+	pointer-events: none;
+	max-height: 78vh;
+}
+
+.kv-char-img {
+	display: block;
+	width: 100%;
+	height: auto;
+	max-height: 78vh;
+	object-fit: contain;
+	filter: drop-shadow(0 10px 60px rgba(0,0,0,0.6));
+	pointer-events: none;
 	user-select: none;
 }
-.story-cover .era-tag {
+
+.kv-char-glow {
 	position: absolute;
-	top: var(--space-3);
-	left: var(--space-3);
-}
-.story-cover .year-tag {
-	position: absolute;
-	bottom: var(--space-3);
-	right: var(--space-4);
-	font-family: var(--font-serif);
-	font-size: 13px;
-	color: var(--color-rice-dim);
-}
-.story-body {
-	padding: var(--space-5);
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-}
-.story-body h3 {
-	font-size: 22px;
-	color: var(--color-rice);
-}
-.story-body .subtitle {
-	color: var(--color-gold-light);
-	font-family: var(--font-serif);
-	font-size: 14px;
-	margin-top: 4px;
-}
-.story-body .desc {
-	color: var(--color-rice-dim);
-	font-size: 13.5px;
-	line-height: 1.75;
-	margin-top: var(--space-3);
-	flex: 1;
-	display: -webkit-box;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-}
-.story-meta {
-	display: flex;
-	align-items: center;
-	gap: var(--space-2);
-	margin-top: var(--space-4);
-	flex-wrap: wrap;
-}
-.story-progress-line {
-	margin-top: var(--space-4);
-	display: flex;
-	align-items: center;
-	gap: var(--space-3);
-}
-.story-progress-line .progress {
-	flex: 1;
-}
-.story-progress-line .frac {
-	font-size: 12px;
-	color: var(--color-rice-dim);
-	font-variant-numeric: tabular-nums;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 60%;
+	pointer-events: none;
+	opacity: 0.6;
 }
 
-/* 故事线详情抽屉 */
-.story-detail {
-	padding: var(--space-6);
-}
-.story-detail-cover {
-	height: 120px;
-	border-radius: var(--radius);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-bottom: var(--space-5);
-	overflow: hidden;
-}
-.story-detail-cover .cover-glyph {
-	font-family: var(--font-serif);
-	font-weight: 900;
-	font-size: 80px;
-	opacity: 0.25;
-	color: var(--color-rice);
-}
-.persp-list {
+/* ──── 主内容区 ──── */
+.kv-main {
+	position: absolute;
+	inset: 0;
+	z-index: 20;
 	display: flex;
 	flex-direction: column;
-	gap: var(--space-3);
-	margin-top: var(--space-5);
+	justify-content: flex-end;
+	pointer-events: none;
+	padding: 40px;
+	padding-bottom: 60px;
 }
-.persp-row {
+
+.kv-main > * { pointer-events: auto; }
+
+/* 左下角系列信息 */
+.kv-series-info {
+	position: absolute;
+	left: 80px;
+	bottom: 100px;
+	max-width: 420px;
+	z-index: 22;
+}
+
+.kv-series-name {
+	font-family: var(--font-serif);
+	font-size: 52px;
+	font-weight: 900;
+	margin: 0;
+	letter-spacing: 6px;
+	line-height: 1.1;
+	background: linear-gradient(135deg, #f2ecd8 0%, var(--color-gold, #b8973a) 50%, #f2ecd8 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-shadow: none !important;
+	filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+
+.kv-series-tagline {
+	font-family: var(--font-serif);
+	font-size: 18px;
+	color: rgba(242, 236, 216, 0.85);
+	margin: 12px 0 0;
+	letter-spacing: 4px;
+	text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+/* 右侧模式按钮 */
+.kv-modes {
+	position: absolute;
+	right: 40px;
+	bottom: 120px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 220px;
+	z-index: 22;
+}
+
+.kv-mode-btn {
+	position: relative;
+	display: block;
+	width: 100%;
+	background: rgba(10, 8, 6, 0.7);
+	border: 1px solid rgba(255,255,255,0.1);
+	border-radius: 8px;
+	padding: 0;
+	cursor: pointer;
+	text-align: left;
+	color: #f2ecd8;
+	overflow: hidden;
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	transition: all 0.3s var(--ease-out, cubic-bezier(0.16,1,0.3,1));
+}
+
+.kv-mode-btn:hover:not(.locked) {
+	transform: translateX(-6px);
+	border-color: var(--mode-color);
+	background: rgba(10, 8, 6, 0.85);
+	box-shadow: 0 0 20px var(--mode-color), inset 0 0 20px rgba(255,255,255,0.03);
+}
+
+.kv-mode-btn.locked {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.kv-mode-btn.locked .kv-mode-title { color: rgba(242,236,216,0.5); }
+
+.kv-mode-inner {
 	display: flex;
 	align-items: center;
-	gap: var(--space-3);
-	padding: var(--space-3);
-	border-radius: var(--radius);
-	border: 1px solid var(--color-ink-mid);
-	background: rgba(0, 0, 0, 0.2);
+	gap: 12px;
+	padding: 14px 16px;
+	position: relative;
+	z-index: 2;
 }
-.persp-row .info {
+
+.kv-mode-ico {
+	color: var(--mode-color);
+	flex-shrink: 0;
+	filter: drop-shadow(0 0 6px var(--mode-color));
+}
+
+.kv-mode-text {
 	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
 	min-width: 0;
 }
-.persp-row .info .nm {
+
+.kv-mode-title {
+	font-size: 15px;
+	font-weight: 700;
+	letter-spacing: 2px;
 	font-family: var(--font-serif);
-	font-size: 16px;
-	color: var(--color-rice);
-}
-.persp-row .info .st {
-	font-size: 12px;
-	color: var(--color-rice-dim);
-	margin-top: 2px;
 }
 
-@media (max-width: 720px) {
-	.hero-inner {
-		padding: var(--space-12) var(--space-4) var(--space-10);
-	}
-	.story-grid {
-		grid-template-columns: 1fr;
-	}
+.kv-mode-desc {
+	font-size: 11px;
+	color: rgba(242,236,216,0.5);
+	letter-spacing: 1px;
 }
+
+.kv-mode-arrow {
+	color: var(--mode-color);
+	opacity: 0;
+	transform: translateX(-4px);
+	transition: all 0.3s;
+}
+.kv-mode-btn:hover:not(.locked) .kv-mode-arrow {
+	opacity: 1;
+	transform: translateX(0);
+}
+
+.kv-mode-lock {
+	color: rgba(242,236,216,0.3);
+}
+
+.kv-mode-bar {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background: var(--mode-color);
+	transform: scaleY(0);
+	transform-origin: bottom;
+	transition: transform 0.3s;
+	box-shadow: 0 0 10px var(--mode-color);
+}
+.kv-mode-btn:hover:not(.locked) .kv-mode-bar { transform: scaleY(1); }
+
+/* 底部轮播指示器 */
+.kv-indicators {
+	position: absolute;
+	left: 50%;
+	bottom: 36px;
+	transform: translateX(-50%);
+	display: flex;
+	align-items: center;
+	gap: 24px;
+	z-index: 25;
+}
+
+.kv-dot {
+	position: relative;
+	background: none;
+	border: none;
+	cursor: pointer;
+	padding: 8px 4px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 6px;
+}
+
+.kv-dot::before {
+	content: "";
+	display: block;
+	width: 32px;
+	height: 3px;
+	background: rgba(242,236,216,0.2);
+	border-radius: 2px;
+	transition: all 0.4s;
+}
+
+.kv-dot.active::before {
+	width: 56px;
+	background: var(--color-gold, #b8973a);
+	box-shadow: 0 0 10px var(--color-gold, #b8973a);
+}
+
+.kv-dot-label {
+	font-size: 11px;
+	color: rgba(242,236,216,0.4);
+	letter-spacing: 2px;
+	transition: color 0.3s;
+	font-family: var(--font-serif);
+}
+
+.kv-dot.active .kv-dot-label {
+	color: #f2ecd8;
+	text-shadow: 0 0 8px rgba(255,255,255,0.3);
+}
+
+/* ──── 覆盖层/移动端菜单 ──── */
+.kv-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0,0,0,0.7);
+	z-index: 100;
+	backdrop-filter: blur(4px);
+}
+
+.kv-mobile-menu {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 280px;
+	background: linear-gradient(180deg, #14100a, #0a0806);
+	border-right: 1px solid rgba(184,151,58,0.3);
+	z-index: 101;
+	padding: 24px;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.kv-mm-head {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-family: var(--font-serif);
+	font-size: 20px;
+	font-weight: 700;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(184,151,58,0.2);
+}
+
+.kv-mm-head button {
+	margin-left: auto;
+	background: none;
+	border: none;
+	color: #f2ecd8;
+	cursor: pointer;
+}
+
+.kv-mm-links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.kv-mm-links button {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: none;
+	border: none;
+	color: rgba(242,236,216,0.7);
+	font-size: 15px;
+	padding: 12px 16px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: all 0.2s;
+	text-align: left;
+	width: 100%;
+}
+
+.kv-mm-links button:hover {
+	background: rgba(184,151,58,0.1);
+	color: #f2ecd8;
+}
+
+/* ──── 响应式/最小宽度 ──── */
+@media (max-width: 1100px) {
+	.kv-nav { padding: 14px 24px; }
+	.kv-nav-links { display: none; }
+	.kv-menu-btn { display: flex; }
+	.kv-main { padding: 24px; }
+	.kv-series-info { left: 30px; bottom: 90px; }
+	.kv-series-name { font-size: 36px; letter-spacing: 4px; }
+	.kv-series-tagline { font-size: 14px; }
+	.kv-modes { right: 24px; bottom: 90px; width: 200px; }
+	.kv-mode-inner { padding: 10px 12px; }
+	.kv-mode-title { font-size: 13px; }
+	.kv-mode-desc { font-size: 10px; }
+	.kv-c { width: 120px; height: 120px; }
+}
+
+/* 页面最小宽度由全局CSS控制 */

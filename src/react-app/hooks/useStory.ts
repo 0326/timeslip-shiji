@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { StoryRunner } from "../engine/storyRunner";
 import type { Position, StoryState } from "../engine/types";
-import { getStory } from "../data/stories";
+import { createRunner } from "../engine/createRunner";
+import type { IStoryRunner } from "../engine/IStoryRunner";
 import { useUserStore } from "../store/userStore";
 
 export interface SceneState {
@@ -31,36 +31,40 @@ export function useStory(storyId: string, charId: string, storyKey: string): Use
 	const [scene, setScene] = useState<SceneState>({ background: "default", characters: {} });
 	const [loading, setLoading] = useState(true);
 	const [notFound, setNotFound] = useState(false);
-	const runnerRef = useRef<StoryRunner | null>(null);
+	const runnerRef = useRef<IStoryRunner | null>(null);
 
 	const store = useUserStore;
 
 	const buildRunner = useCallback(
 		(fresh: boolean) => {
-			const story = getStory(storyKey);
-			if (!story) {
+			const defaultScene: SceneState = { background: "default", characters: {} };
+			setScene(defaultScene);
+			let runner: IStoryRunner;
+			try {
+				runner = createRunner(storyKey, {
+					onAchievement: (id) => store.getState().unlockAchievement(id),
+					// 切换背景 = 进入新场景：清空上一幕的立绘，由本幕的 show 重新登场
+					onBackground: (bg) => setScene((p) => ({ ...p, background: bg, characters: {} })),
+					onShowCharacter: (id, expression, position) =>
+						setScene((p) => ({
+							...p,
+							characters: {
+								...p.characters,
+								[id]: { expression: expression ?? "default", position: position ?? "center" },
+							},
+						})),
+					onHideCharacter: (id) =>
+						setScene((p) => {
+							const next = { ...p.characters };
+							delete next[id];
+							return { ...p, characters: next };
+						}),
+				});
+			} catch {
 				setNotFound(true);
 				setLoading(false);
 				return null;
 			}
-			setScene({ background: "default", characters: {} });
-			const runner = new StoryRunner(story, {
-				onAchievement: (id) => store.getState().unlockAchievement(id),
-				// 切换背景 = 进入新场景：清空上一幕的立绘，由本幕的 show 重新登场，
-				// 避免前一章角色（如屠中少年）滞留到后续章节。
-				onBackground: (bg) => setScene((p) => ({ ...p, background: bg, characters: {} })),
-				onShowCharacter: (id, expression, position) =>
-					setScene((p) => ({
-						...p,
-						characters: { ...p.characters, [id]: { expression, position } },
-					})),
-				onHideCharacter: (id) =>
-					setScene((p) => {
-						const next = { ...p.characters };
-						delete next[id];
-						return { ...p, characters: next };
-					}),
-			});
 			if (!fresh) {
 				const saved = store.getState().loadState(storyId, charId);
 				if (saved) runner.loadSaveState(saved);
@@ -76,7 +80,7 @@ export function useStory(storyId: string, charId: string, storyKey: string): Use
 	}, [storyId, charId, store]);
 
 	const handleEnded = useCallback(
-		(r: StoryRunner) => {
+		(r: IStoryRunner) => {
 			store
 				.getState()
 				.completePerspective(storyId, charId, r.getChoiceRate(), r.getCompletedNodes());
@@ -136,14 +140,13 @@ export function useStory(storyId: string, charId: string, storyKey: string): Use
 	}, [persist]);
 
 	const restart = useCallback(() => {
-		const runner = buildRunner(true);
-		runnerRef.current = runner;
-		if (runner) {
-			const next = runner.advance();
-			setState(next);
-			persist();
-		}
-	}, [buildRunner, persist]);
+		const r = runnerRef.current;
+		if (!r) return;
+		r.restart();
+		const next = r.advance();
+		setState(next);
+		persist();
+	}, [persist]);
 
 	return { state, scene, loading, notFound, makeChoice, advance, retry, restart };
 }

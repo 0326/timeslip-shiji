@@ -29,8 +29,9 @@ export default function PlayPage() {
 		);
 	}
 
-	// 未解锁角色
-	if (!hasChar(charId)) {
+	// 未解锁角色（ink测试故事以_ink结尾，跳过解锁检查方便调试）
+	const isInkTest = storyId.endsWith("_ink");
+	if (!hasChar(charId) && !isInkTest) {
 		return (
 			<div className="vn-screen">
 				<div className="empty-state" style={{ paddingTop: 150 }}>

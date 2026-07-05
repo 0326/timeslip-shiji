@@ -1,4 +1,4 @@
-# VN 叙事引擎升级技术方案（修订版 v2）
+# VN 叙事引擎升级技术方案（修订版 v3）
 
 > **目标**：将自研 `StoryRunner` 渐进迁移至 **inkjs** 作为叙事内核，保留全部现有 React UI 和业务逻辑，解锁工业级分支叙事能力。
 >
@@ -14,6 +14,7 @@
 |------|------|
 | v1 | 初版 |
 | v2 | ① 修正 5.3 节 ink 语法错误（`{var+=1}` → `~ var += 1`）；② 死亡节点改为 ID 间接引用 + 必含文本行（修复纯标签 knot 的 tags 丢失风险）；③ retry 由 `ChoosePathString` 改为**快照栈**方案（消除 visit count 污染，顺带获得 rollback）；④ 统计变量移出 ink，单一数据源；⑤ 新增独立包架构（`packages/ink-vn-core`）与 meta 透传标签设计；⑥ 新增 TS→ink codegen 脚本；⑦ 修正 backlog 实现思路；⑧ 新增 golden-run 测试与内容 lint |
+| v3 | ① 场景状态归属修正：core snapshot 不含 scene，scene 是 app 层单一真相源；② RunnerOutput 增加显式 `state` 字段（`'text'|'choice'|'death'|'ended'`）替代 `ended:boolean`；③ 明确快照栈语义为"抉择点栈"（choose 前 push）；④ 新增多行文本标签归属陷阱说明（Phase 1 必覆盖）；⑤ 新增 Vite workspace HMR alias 配置；⑥ golden-run 测试需固定随机种子；⑦ inkjs 版本用 `~` 锁定；⑧ lint-ink 基于编译产物分析而非正则；⑨ 核心包独立 tsconfig + exports 字段；⑩ NarrativeRunner 接口保持同步（不返回 Promise）；⑪ 时间估算微调 |
 
 ---
 
@@ -149,10 +150,13 @@ export interface RunnerChoice {
   meta: TagMeta;         // #correct / #hint 等由 app 解释
 }
 
+export type RunnerState = "text" | "choice" | "death" | "ended";
+
 export interface RunnerOutput {
+  state: RunnerState;       // 显式状态：text=等待点击下一句 / choice=等待选择 / death=死亡 / ended=通关
   segments: Segment[];
   choices: RunnerChoice[];
-  ended: boolean;
+  deathId?: string;         // state==='death' 时存在，指向 deathRegistry ID
 }
 
 /** 舞台指令回调——核心解析 bg/show/hide/bgm 后触发，app 负责渲染 */
@@ -165,11 +169,11 @@ export interface StageCallbacks {
   onChoice?(choice: RunnerChoice, index: number): void;
 }
 
-/** 核心运行时接口：纯叙事原语，无游戏规则 */
+/** 核心运行时接口：纯叙事原语，无游戏规则。全部同步（不返回 Promise）。 */
 export interface NarrativeRunner {
   advance(): RunnerOutput;
   choose(index: number): RunnerOutput;
-  snapshot(): string;            // ink state + 场景状态 的完整快照
+  snapshot(): string;            // 仅 ink state，不含视觉状态（scene 由 app 层维护）
   restore(snapshot: string): void;
   restart(): void;
   getVar(name: string): unknown;
@@ -178,6 +182,8 @@ export interface NarrativeRunner {
 ```
 
 **注意接口里没有的东西**：`retry()`、`getChoiceRate()`、`getDeathCount()`、`getCompletedNodes()`——这些是**游戏规则/元统计**，不是叙事原语。核心只提供 `snapshot/restore` 原语和 `onChoice` 事件，"死亡重试"、"正确率"由 app 适配层组装（见 3.4）。
+
+**关于视觉状态**：核心通过 `StageCallbacks` 通知 app 场景变化，但**不维护 scene 状态**。scene（当前 bg/立绘）是 app 层的单一真相源——`useStory` 中已有的 `useState<SceneState>` 继续承担此责。核心 `snapshot()` 只序列化 ink 叙事状态，app 存档时自行组合 inkSnapshot + scene + stack + stats + backlog。
 
 ### 3.3 目标架构
 
@@ -220,19 +226,23 @@ export interface NarrativeRunner {
 
 1. **meta 还原**：`meta.hint` → `segment.hint`；`meta.correct` → `choice.correct`；`meta.narration` → 旁白标记
 2. **死亡语义**：`meta.death` 是一个 **ID**，查 `deathRegistry.ts` 得到 `{reason, classical, analysis}`，构造 `DeathInfo`
-3. **快照栈**：每次 `choose()` 前 `push(core.snapshot())`；`retry()` = `core.restore(stack.pop())`；未来 rollback = 同一个栈的 UI 化
+3. **快照栈（抉择点栈）**：每次 `choose()` 前 `push(core.snapshot())`；`retry()` = `core.restore(stack.pop())` + scene 状态回滚。Phase 1-4 仅在 choose 前 push（语义 = 回到上一个抉择点），Phase 5 做 rollback UI 时可扩展为逐句快照。栈深度上限 50 层滚动丢弃
 4. **统计（单一数据源，不进 ink）**：`_choices/_correct/_deaths/_nodes` 全部在 adapter 内维护，由 `onChoice` 回调驱动——ink 剧本中**不声明**这些 VAR
-5. **成就**：`meta.achieve` → 触发现有 `onAchievement` 回调
-6. **backlog 日志**：每次 `advance()` 把产出 segments 追加到内部 log 数组（inkjs **不保存**已输出文本历史，必须自己记）
-7. **存档**：`{ coreSnapshot, snapshotStack, stats, backlog }` 序列化为 JSON（场景状态包含在 coreSnapshot 内，见 7.3）
+5. **场景状态**：adapter 持有 scene（bg/characters），通过 StageCallbacks 更新，存档时一并序列化；restore 时先 restore ink，再 setState 恢复 scene
+6. **成就**：`meta.achieve` → 触发现有 `onAchievement` 回调
+7. **backlog 日志**：每次 `advance()` 把产出 segments 追加到内部 log 数组（inkjs **不保存**已输出文本历史，必须自己记）
+8. **存档**：`{ version, inkSnapshot, scene, snapshotStack, stats, backlog }` 序列化为 JSON
 
 ### 3.5 文件变更清单
 
 | 操作 | 文件 | 说明 |
 |------|------|------|
-| **新增** | `packages/ink-vn-core/src/types.ts` | 核心通用类型（NarrativeRunner/Segment/TagMeta） |
+| **新增** | `packages/ink-vn-core/package.json` | 核心包配置（main 指向 src/index.ts，peerDep inkjs，MIT） |
+| **新增** | `packages/ink-vn-core/tsconfig.json` | 核心包独立 tsconfig（composite:true，不引入 React 类型） |
+| **新增** | `packages/ink-vn-core/src/types.ts` | 核心通用类型（NarrativeRunner/Segment/TagMeta/RunnerState） |
 | **新增** | `packages/ink-vn-core/src/inkRunner.ts` | inkjs 适配核心（~250行） |
 | **新增** | `packages/ink-vn-core/src/tagParser.ts` | 舞台标签解析 + meta 透传（~120行） |
+| **新增** | `packages/ink-vn-core/src/index.ts` | 包入口导出 |
 | **新增** | `packages/ink-vn-core/test/` | 标签解析单测 + golden-run 剧本测试 |
 | **新增** | `src/react-app/engine/IStoryRunner.ts` | app 侧统一接口定义 |
 | **新增** | `src/react-app/engine/shijiAdapter.ts` | 领域适配层（~120行） |
@@ -241,13 +251,14 @@ export interface NarrativeRunner {
 | **新增** | `src/react-app/data/stories/deathRegistry.ts` | 死亡元数据表 |
 | **新增** | `scripts/story-to-ink.mjs` | TS 剧本 → ink 的 codegen（一次性迁移工具） |
 | **新增** | `scripts/precompile-ink.mjs` | 构建期 ink → JSON 预编译 |
-| **新增** | `scripts/lint-ink.mjs` | 内容校验（sprite/achieve/death ID、knot 可达性） |
-| **修改** | `package.json` | workspaces 配置；build 接入预编译 |
+| **新增** | `scripts/lint-ink.mjs` | 内容校验（基于 inkjs 编译产物分析，非正则） |
+| **修改** | `package.json` | workspaces 配置；inkjs `~2.4.0` 锁定版本；build 接入预编译 |
+| **修改** | `vite.config.ts` | 添加 workspace alias 保证 HMR（`ink-vn-core` → `packages/ink-vn-core/src/index.ts`） |
 | **修改** | `src/react-app/engine/storyRunner.ts` | 实现 IStoryRunner 接口（加 implements，不改逻辑） |
 | **修改** | `src/react-app/hooks/useStory.ts` | 改用 createRunner 工厂 |
 | **修改** | `src/react-app/data/stories/index.ts` | 注册 ink 剧本 |
 | **修改** | `src/react-app/vite-env.d.ts` | `*.ink?raw` 类型声明 |
-| **修改** | `eslint` 配置 | no-restricted-imports 强制包边界 |
+| **修改** | `eslint.config.js` | no-restricted-imports 强制包边界（core 禁 import `src/react-app/`） |
 | **不动** | `VNEngine.tsx` 等全部 UI 组件、CSS、store、页面路由 | 零改动 |
 
 ---
@@ -286,6 +297,7 @@ export interface NarrativeRunner {
 2. ink 语义：**行上方的独立标签附着到下一条文本行**——因此 `#bg:` `#show:` 写在对白行上方即可，效果在该行显示前生效
 3. **约束：任何 knot 不得只有标签而无文本行**（悬空 tag 会被 inkjs 丢弃）——死亡 knot 必须有至少一行可见文本，`#death:ID` 附着其上。此约束由 `lint-ink.mjs` 强制检查
 4. 选项行的 tag **必须写在 divert 之前**；推荐格式为 tag 跟在选项文本后、divert 另起一行缩进（见 5.2 示例）。Phase 1 最小剧本需覆盖此边界用例
+5. **多行文本陷阱（v3 补充）**：`Continue()` 可能一次返回多行（连续文本行用 `\n` 拼接），此时 `currentTags` 仅包含**最后一行**的标签。tagParser 必须按 `\n` split 后逐行处理：最后一行拿到 tags，前面的行 meta 为空（旁白）。此为 Phase 1 必覆盖边界用例
 
 ---
 
@@ -535,26 +547,33 @@ retry(): StoryState {
 - 同一个栈天然支持 Phase 5 的 rollback（retry 只是 rollback 的特例）
 - 栈随存档持久化；可设上限（如 50 层）滚动丢弃最旧快照
 
-### 7.3 场景状态与存档
+### 7.3 场景状态与存档（v3 修正）
 
-inkjs 的 `state.ToJson()` 只含叙事状态。核心包的 `snapshot()` 统一合并：
+inkjs 的 `state.ToJson()` 只含叙事状态。核心包的 `snapshot()` **只返回 ink state**，不维护视觉状态：
 
 ```typescript
-// packages/ink-vn-core —— snapshot() 的内容
-interface CoreSnapshot {
-  ink: string;          // story.state.ToJson()
-  scene: SceneState;    // 当前 bg + 立绘（核心维护，因其解析舞台标签）
+// packages/ink-vn-core —— snapshot() 只序列化 ink
+snapshot(): string {
+  return this.story.state.ToJson();
 }
+```
 
-// app 层存档（shijiAdapter.getSaveState()）
+scene（bg/characters）是 **app 层单一真相源**——`useStory` 中已有的 `useState<SceneState>` 继续维护，由 StageCallbacks 驱动更新。
+
+app 层存档（shijiAdapter.getSaveState()）组合所有状态：
+
+```typescript
 interface ShijiSaveData {
   version: 2;                 // engine 版本标识
-  coreSnapshot: string;
-  snapshotStack: string[];    // retry/rollback 栈
+  inkSnapshot: string;        // core.snapshot()
+  scene: SceneState;          // app 层维护的视觉状态
+  snapshotStack: string[];    // 抉择点快照栈（纯 ink state，不含 scene）
   stats: { _choices: number; _correct: number; _deaths: number; _nodes: number };
   backlog: Segment[];         // 对话历史
 }
 ```
+
+restore 流程：先 `core.restore(inkSnapshot)` → 再 `setState(scene)` 恢复视觉 → 继续 advance。
 
 ### 7.4 统计与正确选项（v2 简化）
 
@@ -564,15 +583,39 @@ interface ShijiSaveData {
 
 ink 支持 `EXTERNAL` 绑定 JS 函数。Phase 1-4 不使用，保持标签驱动（与现有架构一致、剧本更干净）；Phase 5 若需要运行时求值的效果（如根据变量选表情）再引入。
 
+### 7.6 Vite workspace HMR 配置（v3 补充）
+
+npm workspaces 下 Vite 默认不会处理跨包源码热更新——它会去 `packages/ink-vn-core/dist` 找构建产物。需在 `vite.config.ts` 添加 alias 指向源码：
+
+```typescript
+import path from "path";
+
+export default defineConfig({
+  plugins: [react(), cloudflare()],
+  resolve: {
+    alias: {
+      "ink-vn-core": path.resolve(__dirname, "packages/ink-vn-core/src/index.ts"),
+    },
+  },
+});
+```
+
+`packages/ink-vn-core/package.json` 的 `main`/`types` 也指向 `src/index.ts`（开发模式），发布前才用 tsup 构建 dist 并切换入口。
+
+### 7.7 版本锁定与编译错误（v3 补充）
+
+- inkjs 版本使用 `~2.4.0`（只接受 patch），避免小版本 tag 行为变化导致 golden 测试失效；升级前跑全量 golden 测试
+- Compiler 错误需要包装后带文件名+行号透出。inkjs Compiler 的错误对象包含 `lineNumber` 属性，catch 时格式化为 `[hanxin.ink:42] error message`，Vite error overlay 可直接显示
+
 ---
 
 ## 八、测试与内容校验（v2 新增）
 
 | 层 | 工具 | 内容 |
 |----|------|------|
-| 单元 | vitest（core 包内） | tagParser 全标签类型 + 边界（选项 tag 位置、悬空 tag、中文含冒号文本） |
-| golden-run | vitest（core 包内） | headless 跑剧本 + 脚本化选择序列 → 快照断言输出序列；每条主线一条通关路径 + 每个死亡分支一条 |
-| 内容 lint | `scripts/lint-ink.mjs` | sprite/achieve/death ID 存在性、knot 可达性、死亡 knot 含文本行；**接入 CI/check 脚本** |
+| 单元 | vitest（core 包内） | tagParser 全标签类型 + 边界（选项 tag 位置、悬空 tag、中文含冒号文本、多行文本标签归属） |
+| golden-run | vitest（core 包内） | headless 跑剧本 + 脚本化选择序列 → 快照断言输出序列；每条主线一条通关路径 + 每个死亡分支一条；**固定随机种子**（inkjs `new Story(json)` 时设置或 monkey-patch Math.random）保证快照稳定 |
+| 内容 lint | `scripts/lint-ink.mjs` | **基于 inkjs 编译产物**分析（非正则）：sprite/achieve/death ID 存在性、knot 可达性、死亡 knot 含文本行；**接入 CI/check 脚本** |
 | 回归 | 手动 + golden | Phase 2/4 验收 |
 
 golden-run 测试同时是**开源后的核心测试资产**；lint 脚本是后续基于史记 130 卷批量产剧本时的**内容质检闸门**。

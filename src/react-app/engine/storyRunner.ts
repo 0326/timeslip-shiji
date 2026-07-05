@@ -7,9 +7,11 @@ import type {
 	VarMutation,
 	Vars,
 } from "./types";
+import type { IStoryRunner } from "./IStoryRunner";
 
 /**
- * StoryRunner — 自研叙事引擎，接口与文档 InkRunner 一致。
+ * StoryRunner — 自研叙事引擎（Legacy）。
+ * 实现 IStoryRunner 接口，与未来的 InkAdapter 可互换。
  *
  * 内置变量（下划线前缀，供成就/结算使用）：
  *   _choices  累计抉择数
@@ -17,7 +19,7 @@ import type {
  *   _deaths   累计死亡数
  *   _nodes    已通过的抉择点数（进度）
  */
-export class StoryRunner {
+export class StoryRunner implements IStoryRunner {
 	private story: Story;
 	private vars: Vars;
 	private currentNode: string;
@@ -113,6 +115,20 @@ export class StoryRunner {
 			this.pendingDeathReturn = undefined;
 		}
 		return this.advance();
+	}
+
+	/** 从头开始 */
+	restart(): void {
+		this.vars = {
+			...structuredCloneSafe(this.story.variables),
+			_choices: 0,
+			_correct: 0,
+			_deaths: 0,
+			_nodes: 0,
+		};
+		this.currentNode = this.story.start;
+		this.lastChoices = [];
+		this.pendingDeathReturn = undefined;
 	}
 
 	getVars(): Vars {

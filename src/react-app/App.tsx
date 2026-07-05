@@ -4,6 +4,7 @@ import { Layout } from "./components/Layout/Layout";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { HomePage } from "./pages/Home/HomePage";
+import { StorySelectPage } from "./pages/Story/StorySelectPage";
 import { GachaPage } from "./pages/Gacha/GachaPage";
 import { ArchivePage } from "./pages/Archive/ArchivePage";
 import { AchievementPage } from "./pages/Achievement/AchievementPage";
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
 		element: <Layout />,
 		children: [
 			{ index: true, element: <HomePage /> },
+			{ path: "story", element: <StorySelectPage /> },
 			{ path: "gacha", element: <GachaPage /> },
 			{ path: "archive", element: <ArchivePage /> },
 			{ path: "archive/:id", element: lazyEl(<ArchiveDetailPage />) },

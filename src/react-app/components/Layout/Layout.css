@@ -129,6 +129,13 @@
 .page-pad {
 	padding: var(--space-10) 0 var(--space-20);
 }
+.page-full {
+	flex: 1;
+	min-height: 100vh;
+}
+.app-shell.is-home {
+	min-height: 100vh;
+}
 
 .footer {
 	border-top: 1px solid var(--color-ink-mid);

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head><title>InkRunner Integration Test - Han Xin</title></head>
+<body>
+<h1>InkRunner Test - 胯下之辱</h1>
+<div id="out"></div>
+<script type="module">
+const out = document.getElementById('out');
+function log(msg) { out.innerHTML += '<p>' + msg + '</p>'; console.log(msg); }
+
+try {
+  log('Importing ink-vn-core...');
+  const core = await import('/packages/ink-vn-core/src/index.ts');
+  log('Imported! Keys: ' + Object.keys(core).join(', '));
+  
+  const { InkRunner } = core;
+  
+  // Actual Han Xin Chapter 1 ink source
+  const inkSource = `-> c1_intro
+
+=== c1_intro ===
+#bg:huaiyin_street
+#bgm:lonely
+淮阴。你是韩信，家贫无行，不得推择为吏，又不能治生商贾，常从人寄食，人多厌之。 #speaker:旁白
+你腰间始终佩着一柄长剑——那是你唯一的体面。 #speaker:旁白
+#show:tuzhong:mocking:right
+市井屠中，一名少年拦住你，当众羞辱：『你虽长大，好带刀剑，其实胆怯耳！』 #speaker:少年
+『信能死，刺我；不能死，出我袴下！』 #speaker:少年 #hint:于是信孰视之，俛出袴下，蒲伏。一市人皆笑信，以为怯。
+
+* [拔剑而起，一剑刺死辱我之人] -> c1_death_kill
+* #correct #hint:孰视之——这不是怯懦，是掂量过生死之后的隐忍。 [孰视良久，俯身从他胯下钻过] -> c1_pass
+
+=== c1_death_kill ===
+#death:kill
+#reason:因一时之忿杀人，亡命天涯，兵仙就此夭折
+#classical:于是信孰视之，俛出袴下，蒲伏。
+#analysis:史上的韩信选择了钻胯下。杀掉那个无赖，他便要亡命逃匿，再无登坛拜将之日。大丈夫能屈能伸——所谓『孰视之』，是看清了忍辱与前程孰轻孰重。
+你一剑刺出，少年当场毙命。 #speaker:旁白
+你因杀人亡命天涯，兵仙就此夭折。 #speaker:旁白
+-> END
+
+=== c1_pass ===
+#hide:tuzhong
+#achieve:xiakua
+你定定地看了他许久，俯身，伏地，从那少年的胯下缓缓爬过。满市的人都笑你怯懦。 #speaker:旁白
+可你心里清楚：杀一个无赖，换来的是一条逃亡的命；忍下这口气，留住的是一身将来。 #speaker:韩信
+-> c1_ending
+
+=== c1_ending ===
+#bg:palace
+#achieve:bingxian_born
+多年之后，你登坛拜将，成为大汉兵仙。
+一柄长剑，半世飘零。从胯下到坛上——这，就是兵仙传奇的开端。 #speaker:旁白
+-> END
+`;
+
+  log('Creating InkRunner with actual story...');
+  let effects = [];
+  const runner = new InkRunner({
+    source: inkSource,
+    callbacks: {
+      onBackground: (bg) => { effects.push('BG: ' + bg); log('  🎬 BG: ' + bg); },
+      onBGM: (bgm) => { effects.push('BGM: ' + bgm); log('  🎵 BGM: ' + bgm); },
+      onShowCharacter: (id, expr, pos) => { effects.push('SHOW: ' + id + ' ' + expr + ' ' + pos); log('  👤 SHOW: ' + id + ' (' + expr + ') @ ' + pos); },
+      onHideCharacter: (id) => { effects.push('HIDE: ' + id); log('  👤 HIDE: ' + id); },
+      onChoice: (c, i) => log('  ✅ Choice selected: ' + i + ' - ' + c.text),
+    },
+    onError: (msg) => log('  ❌ ERROR: ' + msg),
+  });
+  log('InkRunner created!');
+  
+  log('');
+  log('=== Calling advance() (initial) ===');
+  const result = runner.advance();
+  log('State: ' + result.state);
+  log('Segments: ' + result.segments.length);
+  for (const s of result.segments) {
+    log('  📝 [' + (s.speaker||'') + '] ' + s.text);
+    if (s.meta && s.meta.hint) log('     💡 Hint: ' + s.meta.hint);
+  }
+  log('Choices: ' + result.choices.length);
+  for (const c of result.choices) {
+    const correct = c.meta.correct ? ' ✅' : '';
+    const hint = c.meta.hint ? ' 💡' : '';
+    log('  🔘 [' + c._index + '] ' + c.text + correct + hint);
+    if (c.meta.hint) log('     Hint: ' + c.meta.hint);
+  }
+  log('Effects fired: ' + effects.length);
+  effects.forEach(e => log('  → ' + e));
+  
+  log('');
+  log('=== Testing choice 1 (correct choice: 胯下之辱) ===');
+  effects = [];
+  const result2 = runner.choose(1);
+  log('State: ' + result2.state);
+  log('Segments: ' + result2.segments.length);
+  for (const s of result2.segments) {
+    log('  📝 [' + (s.speaker||'') + '] ' + s.text);
+    if (s.meta && s.meta.achieve) log('     🏆 Achieve: ' + s.meta.achieve);
+  }
+  log('Choices: ' + result2.choices.length);
+  log('Death: ' + (result2.deathId || 'none'));
+  log('Ended: ' + (result2.state === 'ended'));
+  
+  log('');
+  log('=== SUCCESS! Ink engine works correctly! ===');
+  
+} catch(e) {
+  log('❌ ERROR: ' + e.message);
+  log('Stack: ' + e.stack);
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 {
 	"name": "timeslip-shiji",
 	"description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
+	"workspaces": ["packages/*"],
 	"cloudflare": {
 		"label": "Vite React Template",
 		"products": [
@@ -15,6 +16,7 @@
 		"d3": "^7.9.0",
 		"framer-motion": "^12.42.2",
 		"hono": "4.11.1",
+		"inkjs": "~2.4.0",
 		"lucide-react": "^1.21.0",
 		"react": "19.2.1",
 		"react-dom": "19.2.1",
