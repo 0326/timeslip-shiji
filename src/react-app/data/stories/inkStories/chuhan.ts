@@ -4,6 +4,8 @@ import hanxinC1Source from "../ink/hanxin-c1.ink?raw";
 import hanxinChuhanSource from "../ink/hanxin-chuhan.ink?raw";
 import xiangyuChuhanSource from "../ink/xiangyu-chuhan.ink?raw";
 import liubangChuhanSource from "../ink/liubang-chuhan.ink?raw";
+import zhangliangChuhanSource from "../ink/zhangliang-chuhan.ink?raw";
+import chenshengChuhanSource from "../ink/chensheng-chuhan.ink?raw";
 
 export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"hanxin:c1": {
@@ -155,6 +157,142 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 				classical: "将军纪信乃乘王驾，诈为汉王，诳楚，汉王得与数十骑出西门遁。",
 				analysis:
 					"帝王的冷酷，是弃一人以全大局。纪信扮你诳楚、代你赴死，你才得以西遁，才有后来的垓下。你若不忍受这条命、执意共守孤城，这一次项羽不会再放你——天下也就此别过。",
+			},
+		},
+	},
+	"zhangliang:chuhan": {
+		key: "zhangliang:chuhan",
+		title: "谋圣张良",
+		source: zhangliangChuhanSource,
+		precompiled: false,
+		deaths: {
+			sizang: {
+				reason: "厚葬弟弟耽于私情，复仇之志泯灭",
+				classical: "弟死不葬，悉以家财求客刺秦王，为韩报仇。",
+				analysis:
+					"史上张良弟死不葬、散尽家财求刺客——一心只在国仇。你若把家财耗在丧仪上，便泯然众人，那个『天下振动』的张良，就葬在了弟弟坟前。",
+			},
+			zhengchong: {
+				reason: "带力士正面冲杀仪仗，当场被诛",
+				classical: "良与客狙击秦皇帝博浪沙中，误中副车。",
+				analysis:
+					"狙击是伏而待之的暗算，不是正面死拼。硬冲如林甲士，还没近到车驾，就湮灭在尘土里了。",
+			},
+			zaidu: {
+				reason: "博浪失手后不知收敛，再图行刺被擒",
+				classical: "良乃更名姓，亡匿下邳。",
+				analysis:
+					"史上张良一椎不成便隐姓埋名保命。搜捕正急，你一动就被循迹擒获——莽夫的复仇，死于不知收敛。",
+			},
+			ouzhi: {
+				reason: "圯上老人使唤，怒而挥拳",
+				classical: "良鄂然，欲殴之。为其老，强忍。",
+				analysis:
+					"那个想揍人的血气刺客，史上强忍了下来。一拳出去，天大的机缘连同《太公兵法》一起打没了。",
+			},
+			banfei: {
+				reason: "捡鞋后不肯长跪穿鞋，半途翻脸",
+				classical: "良业为取履，因长跪履之。",
+				analysis:
+					"老人要试的是能不能忍到底。半途而废的隐忍等于没忍，与『孺子可教』就差这最后一跪。",
+			},
+			shiqi: {
+				reason: "第三次赴约仍按天亮而至，迟到",
+				classical: "五日，良夜未半往。有顷，父亦来，喜曰：当如是。",
+				analysis:
+					"求道之心输给了怕吃苦的惰性——差之毫厘的这一个『忍』字，让你没接住那卷改命的书。",
+			},
+			jingju: {
+				reason: "舍能用之主而投名分大的景驹",
+				classical: "沛公殆天授。故遂从之，不去见景驹。",
+				analysis:
+					"你要找的不是听你的人，是懂你的人。景驹徒有王号，你满腹兵法对他如对牛弹琴——遇主天授，天授的是那个『省』你言的沛公。",
+			},
+			qiangguan: {
+				reason: "峣关以两万兵正面强攻",
+				classical: "秦将贾竖，易动以利。愿沛公且留壁，使人先行，为五万人具食，益张旗帜诸山上，为疑兵。",
+				analysis:
+					"史上张良张疑兵、诱贪将，不战而使敌先乱。硬攻折损大半，把『先入关中』的天大先机也一起丢了。",
+			},
+			zhaxiang: {
+				reason: "轻信降秦将合兵，反遭哗变",
+				classical: "此独其将欲叛耳，恐士卒不从。不如因其解击之。",
+				analysis:
+					"叛的只是将领，士卒未必肯从。识不破这层合作背后的脆弱，联合便成了取祸之道。",
+			},
+			juqin: {
+				reason: "附和刘邦留居秦宫，军心涣散",
+				classical: "忠言逆耳利于行，毒药苦口利于病。愿沛公听樊哙言。",
+				analysis:
+					"帝王师的第一课，是劝主克欲。你不谏反和，陪他把江山根基坐塌了半边。",
+			},
+			taoming: {
+				reason: "随项伯逃命弃主，失义无前程",
+				classical: "臣为韩王送沛公，今事有急，亡去不义。",
+				analysis:
+					"谋士的第一义是『不义不为』。你逃掉了义，也逃掉了整个前程——留下报信的那份担当，才换来鸿门的转圜。",
+			},
+			yingpeng: {
+				reason: "劝刘邦与项羽正面硬战",
+				classical: "沛公自度能却项羽乎？沛公默然良久，曰：固不能也。",
+				analysis:
+					"谋士的本事，是在打不过时找到不必打的活路。硬碰，是把主君往死路上推。",
+			},
+			yicheng: {
+				reason: "下邑只争一城一地，拖入正面消耗",
+				classical: "捐之此三人，则楚可破也。",
+				analysis:
+					"论野战无人是项羽对手。运筹者一旦失了全局之眼，就把最见战略的下邑一谋，答成了匹夫之勇。",
+			},
+			liuguo: {
+				reason: "附和复立六国，游士散去",
+				classical: "天下游士离其亲戚，去坟墓，从陛下者，徒欲日夜望咫尺之地。今复六国，游士各归事其主，陛下与谁取天下乎？",
+				analysis:
+					"争天下的本质是以利聚人。复封六国，等于自散其党——一步之差，散尽了刘邦的天下。",
+			},
+			juefeng: {
+				reason: "怒而拒封韩信、发兵问罪",
+				classical: "汉方不利，宁能禁信之王乎？不如因而立，善遇之，使自为守。",
+				analysis:
+					"此刻断不可失韩信之心。一封王印换一个天下，你却因意气把这笔账算反了。",
+			},
+			zhenya: {
+				reason: "以杀止争功之乱，逼反诸将",
+				classical: "今急先封雍齿以示群臣，群臣见雍齿封，则人人自坚矣。",
+				analysis:
+					"治乱不在刀兵，而在揣透众人之惧。你若也抡起屠刀，早晚被自己开动的猜忌机器绞成齑粉。",
+			},
+			kougan: {
+				reason: "正面苦谏废立，僵成死结",
+				classical: "此难以口舌争也。顾上有不能致者，天下有四人。",
+				analysis:
+					"硬碰只会两败，唯有布局让皇帝自己看清。这一次，你忘了自己最擅长的『借势』。",
+			},
+		},
+	},
+	"chensheng:chuhan": {
+		key: "chensheng:chuhan",
+		title: "首义陈胜",
+		source: chenshengChuhanSource,
+		precompiled: false,
+		deaths: {
+			renming: {
+				reason: "认命佣耕，埋葬鸿鹄之志",
+				classical: "陈涉太息曰：嗟乎，燕雀安知鸿鹄之志哉！",
+				analysis:
+					"史上的陈胜偏不认命——那声『鸿鹄之志』，正是日后大泽乡揭竿的种子。咽下这口不甘、随众苟活，天下便少了那第一声呐喊，也少了一个敢说『死国可乎』的人。",
+			},
+			zuosi: {
+				reason: "束手待毙、盼秦法开恩",
+				classical: "失期，法皆斩。今亡亦死，举大计亦死，等死，死国可乎！",
+				analysis:
+					"秦法从不开恩。史上的陈胜算准了『横竖是死』，才逼出『死国可乎』的觉醒。坐等法外施恩，等来的只有边塞风雪里九百颗人头——绝境里，不搏命，就只剩死路。",
+			},
+			wuming: {
+				reason: "不肯借名、师出无名",
+				classical: "今诚以吾众诈自称公子扶苏、项燕，为天下唱，宜多应者。",
+				analysis:
+					"一个雇农凭空振臂，谁认得？史上的陈胜借扶苏之贤收秦地不平、借项燕之名聚楚人旧情——起兵先讲师出有名，可见绝非莽夫。无名而举，燎原之火起不来。",
 			},
 		},
 	},

@@ -1,24 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
 	ArrowLeft,
 	Play,
 	Lock,
-	ChevronDown,
-	ChevronRight,
 	Star,
 	Clock,
 	Sparkles,
 	BookOpen,
 	CheckCircle2,
+	X,
 } from "lucide-react";
 import "./StorySelect.css";
 import { STORYLINES } from "../../data/storylines";
 import { useUserStore } from "../../store/userStore";
 import { CHARACTERS } from "../../data/characters";
 import { getSprite } from "../../data/sceneAssets";
-import { SERIES } from "../../data/series";
+import { SERIES, type SeriesDef } from "../../data/series";
+import type { Storyline } from "../../types/story";
+import { Modal } from "../../components/ui";
 
 /* ───────────── 工具函数 ───────────── */
 function getDifficultyStars(d: number) {
@@ -30,26 +31,57 @@ function getCharacterName(id: string) {
 	return CHARACTERS.find((c) => c.id === id)?.name || getSprite(id).name;
 }
 
+/** 计算一条故事线的可玩状态 */
+function getStoryStatus(sl: Storyline, hasCharacter: (id: string) => boolean) {
+	// ink 引擎章节视为已解锁
+	const perspective = sl.perspectives[0];
+	if (!perspective) {
+		return { kind: "locked" as const, charName: "" };
+	}
+	const unlocked =
+		sl.id.endsWith("_ink") || hasCharacter(perspective.unlockedBy);
+	const charName = getCharacterName(perspective.characterId);
+	if (!unlocked) {
+		return { kind: "locked" as const, charName };
+	}
+	return { kind: "unlocked" as const, charName, perspective };
+}
+
+/** 计算系列进度：已通关视角数 / 总视角数 */
+function getSeriesProgress(
+	storylines: Storyline[],
+	getPerspective: (storyId: string, charId: string) => { isCompleted: boolean },
+) {
+	let total = 0;
+	let completed = 0;
+	for (const sl of storylines) {
+		for (const p of sl.perspectives) {
+			total += 1;
+			if (getPerspective(sl.id, p.characterId).isCompleted) completed += 1;
+		}
+	}
+	return { total, completed };
+}
+
 /* ───────────── 主组件 ───────────── */
 export function StorySelectPage() {
 	const navigate = useNavigate();
-	const [expanded, setExpanded] = useState<string | null>("wudi");
-	const [mounted, setMounted] = useState(false);
+	const [activeSeries, setActiveSeries] = useState<SeriesDef | null>(null);
 	const hasCharacter = useUserStore((s) => s.hasCharacter);
 	const getPerspective = useUserStore((s) => s.getPerspective);
 
-	useEffect(() => {
-		setMounted(true);
-	}, []);
-
 	// 按系列分组故事线
-	const storiesBySeries = SERIES.map((series) => {
-		// 按 series id 归组：一个系列显示 series 相符的全部故事线
-		const storylines = series.comingSoon
-			? []
-			: STORYLINES.filter((sl) => sl.series === series.id);
-		return { ...series, storylines };
-	});
+	const storiesBySeries = useMemo(
+		() =>
+			SERIES.map((series) => {
+				const storylines = series.comingSoon
+					? []
+					: STORYLINES.filter((sl) => sl.series === series.id);
+				const progress = getSeriesProgress(storylines, getPerspective);
+				return { ...series, storylines, progress };
+			}),
+		[getPerspective],
+	);
 
 	const handlePlay = (storyId: string, charId: string) => {
 		navigate(`/play/${storyId}/${charId}`);
@@ -79,27 +111,39 @@ export function StorySelectPage() {
 			{/* 主内容 */}
 			<main className="ss-main">
 				<motion.div
-					className="ss-header"
-					initial={{ opacity: 0, y: -20 }}
-					animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : -20 }}
-					transition={{ duration: 0.6, delay: 0.1 }}
-				>
+				className="ss-header"
+				initial={{ opacity: 0, y: -20 }}
+				animate={{ opacity: 1, y: 0 }}
+				transition={{ duration: 0.6, delay: 0.1 }}
+			>
 					<h1 className="ss-title">选择篇章</h1>
 					<p className="ss-subtitle">循史记之脉络，亲历千年风云</p>
 				</motion.div>
 
-				<div className="ss-series-list">
+				{/* 系列卡片网格 */}
+				<div className="ss-series-grid">
 					{storiesBySeries.map((series, idx) => {
-						const isOpen = expanded === series.id;
 						const hasStories = series.storylines.length > 0;
+						const progressPct =
+							series.progress.total > 0
+								? Math.round(
+										(series.progress.completed / series.progress.total) * 100,
+									)
+								: 0;
 
 						return (
-							<motion.div
+							<motion.button
 								key={series.id}
-								className={`ss-series ${isOpen ? "open" : ""} ${series.comingSoon ? "coming-soon" : ""}`}
+								className={`ss-series-card ${series.comingSoon ? "coming-soon" : ""}`}
 								initial={{ opacity: 0, y: 30 }}
-								animate={{ opacity: mounted ? 1 : 0, y: mounted ? 0 : 30 }}
-								transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.5, delay: 0.2 + idx * 0.08 }}
+								onClick={() => {
+									if (!series.comingSoon && hasStories) {
+										setActiveSeries(series);
+									}
+								}}
+								disabled={series.comingSoon || !hasStories}
 								style={
 									{
 										"--series-accent": series.accent,
@@ -109,161 +153,180 @@ export function StorySelectPage() {
 									} as React.CSSProperties
 								}
 							>
-								{/* 系列头 */}
-								<button
-									className="ss-series-head"
-									onClick={() => {
-										if (!series.comingSoon) {
-											setExpanded(isOpen ? null : series.id);
-										}
-									}}
-									disabled={series.comingSoon}
-								>
-									<div className="ss-series-glyph">{series.glyph}</div>
-									<div className="ss-series-info">
-										<div className="ss-series-name-row">
-											<h2 className="ss-series-name">{series.name}</h2>
-											{series.comingSoon && (
-												<span className="ss-badge soon">敬请期待</span>
-											)}
-										</div>
-										<p className="ss-series-tagline">{series.tagline}</p>
-									</div>
-									<div className="ss-series-stats">
-										{hasStories && (
-											<span className="ss-count">
-												{series.storylines.length} 篇章
+								<div className="ss-series-card-glow" />
+								<div className="ss-series-card-inner">
+									<div className="ss-series-card-header">
+										<div className="ss-series-card-glyph">{series.glyph}</div>
+										{series.comingSoon ? (
+											<span className="ss-badge soon">敬请期待</span>
+										) : (
+											<span className="ss-series-count">
+												{series.progress.completed}/{series.progress.total} 篇章
 											</span>
 										)}
 									</div>
-									{!series.comingSoon && (
-										<div className={`ss-chevron ${isOpen ? "up" : ""}`}>
-											{isOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+									<div className="ss-series-card-body">
+										<h2 className="ss-series-card-name">{series.name}</h2>
+										<p className="ss-series-card-tagline">{series.tagline}</p>
+									</div>
+									{!series.comingSoon && hasStories && (
+										<div className="ss-series-card-footer">
+											<div className="ss-progress">
+												<div
+													className="ss-progress-fill"
+													style={{ width: `${progressPct}%` }}
+												/>
+											</div>
+											<div className="ss-series-card-cta">
+												<span>进入篇章</span>
+												<Play size={14} />
+											</div>
 										</div>
 									)}
-								</button>
-
-								{/* 篇章列表 */}
-								<AnimatePresence>
-									{isOpen && hasStories && (
-										<motion.div
-											className="ss-chapters"
-											initial={{ height: 0, opacity: 0 }}
-											animate={{ height: "auto", opacity: 1 }}
-											exit={{ height: 0, opacity: 0 }}
-											transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-										>
-											<div className="ss-chapters-inner">
-												{series.storylines.map((sl, sIdx) => (
-													<motion.div
-														key={sl.id}
-														className="ss-chapter-card"
-														initial={{ opacity: 0, x: -20 }}
-														animate={{ opacity: 1, x: 0 }}
-														transition={{ duration: 0.4, delay: 0.1 + sIdx * 0.1 }}
-													>
-														<div className="ss-chapter-glow" />
-														<div className="ss-chapter-inner">
-															{/* 左侧徽记 */}
-															<div
-																className="ss-chapter-glyph"
-																style={{ background: `linear-gradient(135deg, ${sl.cover}, ${sl.cover}99)` }}
-															>
-																{sl.glyph}
-															</div>
-
-															{/* 中间信息 */}
-															<div className="ss-chapter-info">
-																<div className="ss-chapter-title-row">
-																	<h3 className="ss-chapter-title">{sl.title}</h3>
-																	{sl.perspectives.map((p) => {
-																		const prog = getPerspective(sl.id, p.characterId);
-																		return prog.isCompleted ? (
-																			<span key={p.characterId} className="ss-badge complete">
-																				<CheckCircle2 size={12} /> 已通关
-																			</span>
-																		) : prog.isStarted ? (
-																			<span key={p.characterId} className="ss-badge progress">
-																				进行中
-																			</span>
-																		) : null;
-																	})}
-																</div>
-																<p className="ss-chapter-sub">{sl.subtitle}</p>
-																<p className="ss-chapter-desc">{sl.description}</p>
-																<div className="ss-chapter-meta">
-																	<span className="ss-meta-item">
-																		<Clock size={12} /> {sl.estimatedMinutes}分钟
-																	</span>
-																	<span className="ss-meta-item">
-																		<Star size={12} />
-																		{getDifficultyStars(sl.difficulty).map((filled, i) => (
-																			<span
-																				key={i}
-																				className={`ss-star ${filled ? "filled" : ""}`}
-																			>
-																				★
-																			</span>
-																		))}
-																	</span>
-																	<span className="ss-meta-year">{sl.year}</span>
-																</div>
-															</div>
-
-															{/* 右侧：视角选择 + 开始按钮 */}
-															<div className="ss-chapter-actions">
-																{sl.perspectives.map((p) => {
-																	const unlocked = sl.id.endsWith("_ink") || hasCharacter(p.unlockedBy);
-																	const charName = getCharacterName(p.characterId);
-																	const prog = getPerspective(sl.id, p.characterId);
-
-																	return (
-																		<button
-																			key={p.characterId}
-																			className={`ss-play-btn ${!unlocked ? "locked" : ""} ${prog.isCompleted ? "completed" : ""}`}
-																			onClick={() => unlocked && handlePlay(sl.id, p.characterId)}
-																			disabled={!unlocked}
-																		>
-																			{unlocked ? (
-																				<>
-																					<Play size={16} />
-																					<span>
-																						{prog.isCompleted ? "再历一次" : prog.isStarted ? "继续" : `以${charName}视角`}
-																					</span>
-																				</>
-																			) : (
-																				<>
-																					<Lock size={14} />
-																					<span>需解锁 {charName}</span>
-																				</>
-																			)}
-																		</button>
-																	);
-																})}
-															</div>
-														</div>
-													</motion.div>
-												))}
-											</div>
-										</motion.div>
-									)}
-								</AnimatePresence>
-							</motion.div>
+								</div>
+							</motion.button>
 						);
 					})}
 				</div>
 
 				{/* 底部提示 */}
 				<motion.div
-					className="ss-footer-hint"
-					initial={{ opacity: 0 }}
-					animate={{ opacity: mounted ? 1 : 0 }}
-					transition={{ duration: 0.6, delay: 1 }}
-				>
+				className="ss-footer-hint"
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ duration: 0.6, delay: 1 }}
+			>
 					<Sparkles size={14} />
 					<span>更多本纪篇章正在制作中，敬请期待</span>
 				</motion.div>
 			</main>
+
+			{/* 篇章选择弹窗 */}
+			<Modal
+				open={activeSeries !== null}
+				onClose={() => setActiveSeries(null)}
+				className="ss-modal-wide"
+				showClose={false}
+			>
+				{activeSeries && (
+					<div
+						className="ss-modal-shell"
+						style={
+							{
+								"--series-accent": activeSeries.accent,
+								"--series-accent2": activeSeries.accent2,
+								"--series-bg-from": activeSeries.bgFrom,
+								"--series-bg-to": activeSeries.bgTo,
+							} as React.CSSProperties
+						}
+					>
+						{/* 弹窗头部 */}
+						<div className="ss-modal-head">
+							<div className="ss-modal-head-glyph">{activeSeries.glyph}</div>
+							<div className="ss-modal-head-info">
+								<h2 className="ss-modal-title">{activeSeries.name}</h2>
+								<p className="ss-modal-tagline">{activeSeries.tagline}</p>
+							</div>
+							<button
+								className="ss-modal-close"
+								onClick={() => setActiveSeries(null)}
+								aria-label="关闭"
+							>
+								<X size={18} />
+							</button>
+						</div>
+
+						{/* 篇章子卡片网格 */}
+						<div className="ss-modal-body">
+							<div className="ss-story-grid">
+								{STORYLINES.filter(
+									(sl) => sl.series === activeSeries.id,
+								).map((sl, sIdx) => {
+									const status = getStoryStatus(sl, hasCharacter);
+									const perspective = sl.perspectives[0];
+									const prog = perspective
+										? getPerspective(sl.id, perspective.characterId)
+										: null;
+									const isCompleted = prog?.isCompleted;
+									const isStarted = prog?.isStarted && !isCompleted;
+									const locked = status.kind === "locked";
+
+									return (
+										<motion.button
+											key={sl.id}
+											className={`ss-story-card ${locked ? "locked" : ""} ${isCompleted ? "completed" : ""}`}
+											initial={{ opacity: 0, y: 16 }}
+											animate={{ opacity: 1, y: 0 }}
+											transition={{ duration: 0.35, delay: 0.05 + sIdx * 0.05 }}
+											onClick={() => {
+												if (locked || !perspective) return;
+												handlePlay(sl.id, perspective.characterId);
+											}}
+											disabled={locked}
+										>
+											<div
+												className="ss-story-cover"
+												style={{
+													background: `linear-gradient(135deg, ${sl.cover}, ${sl.cover}88)`,
+												}}
+											>
+												<span className="ss-story-glyph">{sl.glyph}</span>
+												{isCompleted && (
+													<span className="ss-story-status complete">
+														<CheckCircle2 size={12} /> 已通关
+													</span>
+												)}
+												{isStarted && (
+													<span className="ss-story-status progress">进行中</span>
+												)}
+												{locked && (
+													<span className="ss-story-status lock">
+														<Lock size={12} /> 需解锁 {status.charName}
+													</span>
+												)}
+											</div>
+											<div className="ss-story-info">
+												<h3 className="ss-story-title">{sl.title}</h3>
+												<p className="ss-story-sub">{sl.subtitle}</p>
+												<p className="ss-story-desc">{sl.description}</p>
+												<div className="ss-story-meta">
+													<span className="ss-meta-item">
+														<Clock size={12} /> {sl.estimatedMinutes}分钟
+													</span>
+													<span className="ss-meta-item">
+														<Star size={12} />
+														{getDifficultyStars(sl.difficulty).map((filled, i) => (
+															<span
+																key={i}
+																className={`ss-star ${filled ? "filled" : ""}`}
+															>
+																★
+															</span>
+														))}
+													</span>
+													<span className="ss-meta-year">{sl.year}</span>
+												</div>
+												{!locked && status.kind === "unlocked" && (
+												<div className="ss-story-cta">
+													<Play size={14} />
+													<span>
+														{isCompleted
+															? "再历一次"
+															: isStarted
+																? "继续"
+																: `以${status.charName}视角`}
+													</span>
+												</div>
+											)}
+											</div>
+										</motion.button>
+									);
+								})}
+							</div>
+						</div>
+					</div>
+				)}
+			</Modal>
 		</div>
 	);
 }

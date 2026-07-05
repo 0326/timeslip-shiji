@@ -58,6 +58,42 @@ export const chuhanStorylines = withSeries("chuhan", [
 		],
 	},
 	{
+		id: "chuhan_zhangliang_ink",
+		title: "谋圣张良",
+		subtitle: "楚汉相争 · 张良",
+		era: "chu_han",
+		year: "公元前 250 — 186 年",
+		cover: "#b8973a",
+		glyph: "良",
+		description:
+			"国破家亡，血仇入骨。你将穿越成张良，从博浪沙椎击秦皇的莽勇，到圯上受书的隐忍开悟，运筹帷幄佐汉定天下，终于功成身退——亲历一个「复仇→悟道→帝王师→身退」的谋圣一生。九幕成长弧线，与韩信「不知止足」互文。",
+		estimatedMinutes: 20,
+		difficulty: 4,
+		focusCharacter: "zhangliang",
+		relatedCharacters: ["zhangliang", "liubang", "xiangyu", "huangshigong", "hancheng", "fankuai"],
+		perspectives: [
+			{ characterId: "zhangliang", storyKey: "zhangliang:chuhan", unlockedBy: "zhangliang", nodeCount: 9 },
+		],
+	},
+	{
+		id: "chuhan_chensheng_ink",
+		title: "首义陈胜",
+		subtitle: "楚汉相争 · 陈胜",
+		era: "chu_han",
+		year: "公元前 209 — 208 年",
+		cover: "#c8503c",
+		glyph: "涉",
+		description:
+			"燕雀安知鸿鹄之志。你将穿越成陈胜，从田垄佣耕的不甘，到大泽乡揭竿「王侯将相宁有种乎」，点燃反秦燎原之火，却在骤贵而骄中速亡——亲历一个「鸿鹄之志→首义燎原→骤贵而亡」的首义悲剧。六幕成长弧线，多结局。",
+		estimatedMinutes: 14,
+		difficulty: 3,
+		focusCharacter: "chensheng",
+		relatedCharacters: ["chensheng", "wuguang", "zhanger", "chenyu", "zhuangjia"],
+		perspectives: [
+			{ characterId: "chensheng", storyKey: "chensheng:chuhan", unlockedBy: "chensheng", nodeCount: 6 },
+		],
+	},
+	{
 		id: "hanxin_c1_ink",
 		title: "[Ink引擎] 胯下之辱",
 		subtitle: "第一章 · Ink引擎测试版",

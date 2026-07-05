@@ -38,4 +38,22 @@ export const chuhanAchievements: Record<string, Achievement> = {
 		points: 250,
 		icon: "🌪️",
 	},
+	zhangliang_moulu: {
+		id: "zhangliang_moulu",
+		name: "谋圣 · 帷幄",
+		description: "走完谋圣张良的一生——运筹策帷帐之中，决胜千里之外，功成而身退",
+		classicalQuote: "运筹策帷帐之中，决胜千里外，吾不如子房。",
+		type: "story",
+		points: 250,
+		icon: "🎋",
+	},
+	ningyou_zhong: {
+		id: "ningyou_zhong",
+		name: "宁有种乎",
+		description: "走完首义陈胜的一生——大泽乡揭竿的第一声呐喊，天下再不视秦法为铁律",
+		classicalQuote: "王侯将相宁有种乎！",
+		type: "story",
+		points: 200,
+		icon: "🔥",
+	},
 };

@@ -28,9 +28,18 @@ description: "Generates complete, emotionally moving ink visual-novel chapters f
 ## 0. 技能定位与输入契约
 
 ### 输入形式（用户会这样调用）
-- **整卷/整系列**：「做五帝本纪」「把《项羽本纪》做成故事线」→ 拆成多章，逐章生成
-- **指定篇章**：「做五帝本纪里舜的焚廪穿井」「淮阴侯列传的井陉背水」→ 生成单章
-- **续作**：「五帝本纪继续做尧禅让那一章」→ 复用同一 storyKey 前缀
+- **整系列**：「做楚汉相争」「做商·殷本纪」→ 拆成多条主角线，每条一个多幕成长弧线
+- **单条主角线**：「做楚汉的项羽线」→ 生成一条多幕 ink
+- **单章/单幕**：「做五帝本纪里舜的焚廪穿井」→ 生成单章（上古卷是 episodic 单章制）
+
+### 领取一个系列 / 主角线（dispatch 快速上手）
+另一个对话拿到"做 X 系列 / 某主角线"时，按此走完即可交付：
+1. **读规划**：`docs/story-series-roadmap.md` 找该系列（源卷 + 可选主角线）；若已有细化工作包（如 `docs/series-chuhan-plan.md`）直接用其「主角线 × 幕」表。
+2. **核素材**：确认源卷 `chapters/NNN.ts` 已是完整原文（无 `⋯` 节略）；不全先补典籍阁。
+3. **设计弧线**（§3.2）：每条主角线定「人物母题 + 致命弱点」→ 排 6–10 幕成长节拍。
+4. **生成 ink**：一条主角线 = 一个多幕 ink（`stories/ink/<主角>-<series>.ink`）；多条线可并行（每条一个 subagent，各写自己文件、回传元数据）。
+5. **注册**（§5）：只碰 `<series>.ts` 四件套（storylines/inkStories/sceneAssets/achievements）+ 各 index 加一行；去掉 `series.ts` 中该系列的 `comingSoon`。
+6. **验收**：`npx tsc -b` + `node scripts/verify-ink.mjs`（编译+全分支+id 核对）+ `npm run build`。
 
 ### 素材来源（唯一事实源）
 - `src/react-app/data/classics/chapters/<三位卷号>.ts`（如五帝本纪=`001.ts`，淮阴侯列传=`092.ts`）
@@ -129,17 +138,17 @@ description: "Generates complete, emotionally moving ink visual-novel chapters f
 - **`notes` 是金矿**：素材注释里常直接点出抉择（092 韩信："这正是……第一个抉择：拔剑，还是俯身？"）——直接采用
 - 每个抉择 = 一个**历史反事实**：史实是 A，若选 B（真实的人性冲动/历史假设）会怎样
 - 例（舜·焚廪）：史实=带斗笠跳下逃生；反事实=空手上仓顶→烧死。抉择即"是否察觉杀机并预作准备"
-- 每章设 **3–6 个抉择点**，其中 **1–2 个致命**（选错即死亡分支）
+- **每幕 2–4 个有分量抉择**（见 §3.2 幕内深度），其中 1–2 个致命；部分抉择 `~` 改跨幕状态、影响后续与结局（非即时重合）
 
-### 3.4 立骨（每章节拍）
+### 3.4 立骨（每一幕内部的节拍）
 ```
-① 青月入场·卷入      —— tease，把玩家变成主角，一句话点破这一世的处境
-② 感官铺垫           —— #bg/#bgm + 主角第一人称，给温度/声/味，交代关系与压力
+① 青月入场·卷入      —— tease；首幕把玩家变成主角、后续幕承接上一幕
+② 感官铺垫           —— #bg/#bgm + 主角第一人称，给温度/声/味，交代此幕处境与母题挣扎
 ③ 制造赌注           —— 青月 worry，点破"选错的代价"，制造两难
-④ 抉择               —— * 正确(史实,#correct) / * 错误(有诱惑力,通死亡)
-⑤a 史实正解 → 前进    —— 青月 smile，(可触发 #achieve)，接下一节拍或下一章
+④ 抉择               —— * 正确(史实,#correct，部分 ~改跨幕VAR) / * 错误(有诱惑力,通死亡)
+⑤a 史实正解 → 前进    —— 青月 smile，(可触发 #achieve)，幕末 #actclear → 下一幕
 ⑤b 反事实死亡 → 死亡屏 —— 青月 sad，registry 死亡文案(引原文+哀矜分析)，可 retry
-⑥ 章末回味           —— 青月收束，点出这个人物此刻选择的分量
+⑥ 弧线收束           —— 末幕按累积状态分多结局，青月点出这个人物一生的分量
 ```
 
 ### 3.5 写作 · 动人 rubric（生成时自评，每条都要中）
@@ -155,7 +164,7 @@ description: "Generates complete, emotionally moving ink visual-novel chapters f
 - **正解 = 史实路径**，标 `#correct`，通往前进
 - **错误 = 有诱惑力的真实冲动**（拔剑一时爽、空手图省事、报复解气），不要弱智送命题
 - **每个死亡都要有据**：`classical` 引真原文，`analysis` 讲真史理——"史上此人为何不这么选"，由青月心软口吻道出
-- 死亡文案**全部写进 registry**（`inkStories.ts` 的 `deaths`），ink 里死亡行只留 `#death:<id>`
+- 死亡文案**全部写进 registry**（`inkStories/<series>.ts` 的 `deaths`），ink 里死亡行只留 `#death:<id>`
 - 玩家应"死得有收获"：每次死亡都学到一点史识
 - **抉择扣人物**：好抉择不只是"史实对/错"，更要**塑造或暴露"他是谁"**——项羽鸿门的"杀/纵"考的是妇人之仁、韩信下齐的"忠/叛"考的是知遇与野心。让玩家在选择里理解这个人的性格与命运。
 
@@ -167,34 +176,55 @@ description: "Generates complete, emotionally moving ink visual-novel chapters f
 
 ## 4. 标签与语法速查
 
-### 文件骨架
+### 文件骨架（多幕成长弧线）
 ```ink
 // ═══════════════════════════════════════════════
-// <人物> · 第<N>章 · <章节名>
+// <主角> · <系列> · 成长弧线（多幕）
 // 史源：《史记·<篇名>》
 // ═══════════════════════════════════════════════
 
--> <entry_knot>          // ⚠️ 入口必须显式 divert，否则忽略开场
+VAR ren = 0            // 跨幕状态：量化人物母题/弱点（关键抉择 ~ 改，驱动多结局）
+VAR flaw = 0
 
-=== <entry_knot> ===
+-> act1_<slug>         // ⚠️ 入口必须显式 divert
+
+=== act1_<slug> ===
 #bg:<bg_id>
 #bgm:<music_id>
 #show:qingyue:tease:float
 「欸嘿……」 #speaker:青月
-<主角第一人称正文>          // 无 #speaker = 需显式给主角名，青月的话带 #speaker:青月
+<主角第一人称正文：此幕处境与母题挣扎>    // 旁白/叙述用 #speaker:青月；主角内心独白可用 #speaker:<主角>
 
-* #correct #hint:<原文> [正确选项文本]
-    -> <good_knot>
-* [错误选项文本]
-    -> <death_knot>
+* #correct #hint:<原文> [史实正解]
+    ~ ren = ren + 1
+    -> act1_good
+* [有诱惑力的反事实]
+    -> death_<id>
 
-=== <good_knot> ===
-#achieve:<id>
-<后续正文>
--> <next>
+=== act1_good ===
+<正解后续>
+本幕通关。 #actclear:<主角>_act1 #speaker:青月     // 幕界过场（预留标签，现 no-op）
+-> act2_<slug>
 
-=== <death_knot> ===
-<死亡描写正文>。 #death:<death_id> #speaker:青月
+// … act2 … actN 同构，逐幕推进母题 …
+
+=== death_<id> ===
+<死亡描写正文>。 #death:<death_id> #speaker:青月    // 文案只在 registry
+-> END
+
+// 末幕多结局：按累积状态分叉
+=== act_final ===
+{ flaw >= 2:
+    -> ending_reflect     // 反事实反思结局
+- else:
+    -> ending_shishi      // 史实结局
+}
+=== ending_shishi ===
+#achieve:<通关成就id>
+<史实结局：青月收束，点出这个人一生的母题>
+-> END
+=== ending_reflect ===
+<反事实结局：青月照见"史书里的他没走这条路">
 -> END
 ```
 
@@ -226,12 +256,12 @@ description: "Generates complete, emotionally moving ink visual-novel chapters f
 ### 死亡标签
 | 标签 | 说明 |
 |------|------|
-| `#death:<id>` | **写在死亡描写文本行的行尾**；文案去 `inkStories.ts` 的 `deaths[id]` 查 |
+| `#death:<id>` | **写在死亡描写文本行的行尾**；文案去 `inkStories/<series>.ts` 的 `deaths[id]` 查 |
 
 > ⚠️ 死亡文案（reason/classical/analysis）**只写在 registry**，不再用内联 `#reason/#classical/#analysis`（已废弃，单一数据源）。
 
 ### 成就标签
-| `#achieve:<id>` | 触发成就；id 须在 `achievements.ts` 定义；通常放正确分支段首 |
+| `#achieve:<id>` | 触发成就；id 须在 `achievements/<series>.ts` 定义；通常放正确分支段首 |
 
 ### ink 逻辑能力（善用）
 ```ink
@@ -322,18 +352,19 @@ export const shangBackgrounds: Record<string, BgStyle> = { mingtiao: { label: "�
 - **`relatedCharacters` 只放已注册角色**：未注册角色会导致立绘/API 异常
 - **每个结局 `-> END`**：死亡/通关节点必须收口
 - **id 用英文小写下划线**；标签值不含空格；中文标点正常可用
-- **死亡分支若改 bg/立绘**：依赖引擎"retry 场景复位"修复后才安全；未修复前，死亡节点尽量少动视觉
+- **死亡分支可放心改 bg/立绘**：引擎已实现"retry 场景复位"（死亡后重试自动还原到抉择点画面），死亡场景尽管上视觉
+- **多幕命名**：入口 `-> act1_<slug>`；每幕 knot 前缀 `actN_`；死亡 knot 各自独立、`#death` 只在其文本行；跨幕 VAR 顶部 `VAR` 声明
 
 ---
 
 ## 7. 质检与验收
 
-### 内容 lint（生成后自查）
-- [ ] 所有 `#show` 的角色 id 已在 `sceneAssets.ts` 的 `SPRITES` 注册
-- [ ] 所有 `#bg` 的 id 已在 `BACKGROUNDS` 注册
-- [ ] 所有 `#achieve` 的 id 已在 `achievements.ts` 定义
-- [ ] 每个 `#death:id` 在 `inkStories.ts` 的 `deaths` 有对应文案
-- [ ] 所有 knot 可达；每条路径最终 `-> END` 或 `-> <下一章>`
+### 内容 lint —— **`node scripts/verify-ink.mjs` 自动完成以下大部分**（编译 + 全分支遍历 + id 交叉核对）
+- [ ] 所有 `#show` 角色 id 已在 `sceneAssets/<series>.ts` 或 base 注册
+- [ ] 所有 `#bg` id 已在 `sceneAssets` 的 BACKGROUNDS 注册
+- [ ] 所有 `#achieve` id 已在 `achievements/<series>.ts` 或 base 定义
+- [ ] 每个 `#death:id` 在 `inkStories/<series>.ts` 的 `deaths` 有对应文案
+- [ ] 所有 knot 可达；每条路径 `-> END` 或 `-> <下一幕>`
 - [ ] 无 `#speaker:旁白`；旁白皆为青月
 
 ### 动人度自评（§3.5 每条打钩）
@@ -350,11 +381,15 @@ export const shangBackgrounds: Record<string, BgStyle> = { mingtiao: { label: "�
 - [ ] 死亡分支的 `classical` 是真原文、`analysis` 是真史理
 - [ ] 文学化补充未违背史实骨架
 
-### 运行验收
-- [ ] `npm run dev` 无编译报错
-- [ ] 访问故事线可加载，逐字显示、背景/立绘/说话人正常
+### 运行验收（命令行，必做）
+- [ ] `npx tsc -b` 通过
+- [ ] `node scripts/verify-ink.mjs` 全绿（编译 + 全分支 + 资源 id 核对）
+- [ ] `npm run build` 通过
+
+### 浏览器抽验（能起 preview 时）
+- [ ] 故事线可加载、逐字显示、背景/立绘/说话人正常
 - [ ] 正确选项有标记；错误触发死亡屏（reason/classical/analysis）
-- [ ] "重新抉择"回到选择点且画面正确复位；成就弹窗、通关屏正常
+- [ ] "重新抉择"回到抉择点且画面正确复位；成就弹窗、多结局通关屏正常
 
 ---
 
@@ -478,7 +513,7 @@ VAR alerted = false
 -> END
 ```
 
-对应 `inkStories.ts` 死亡 registry：
+对应 `inkStories/wudi.ts` 死亡 registry：
 ```typescript
 "shun:lijie": {
   key: "shun:lijie",
@@ -517,11 +552,12 @@ VAR alerted = false
 
 ## 9. 参考资源
 
-- 素材（唯一事实源）：`src/react-app/data/classics/chapters/<NNN>.ts`
-- 目录索引：`src/react-app/data/classics/catalog.ts`
-- 立绘/背景注册：`src/react-app/data/sceneAssets.ts`（青月=`qingyue`）
-- 成就定义：`src/react-app/data/achievements.ts`
-- 核心引擎：`packages/ink-vn-core/src/inkRunner.ts`、`tagParser.ts`
-- 适配层：`src/react-app/engine/shijiInkAdapter.ts`
-- 已实现范例：`src/react-app/data/stories/ink/hanxin-c1.ink`
+- **规划**：`docs/story-series-roadmap.md`（10 大系列总蓝图，含每系列源卷+可选主角线）；系列工作包如 `docs/series-chuhan-plan.md`（主角线×幕）
+- **玩法可扩展性**：`docs/gameplay-extensibility.md`（幕内深度、跨幕状态、`#minigame`/`#actclear` 预留）
+- 素材（唯一事实源）：`src/react-app/data/classics/chapters/<NNN>.ts`；目录索引 `catalog.ts`
+- 系列注册表：`src/react-app/data/series.ts`
+- 注册（按系列拆分，各含 `index.ts` 汇总）：`storylines/<series>.ts`、`stories/inkStories/<series>.ts`、`sceneAssets/<series>.ts`、`achievements/<series>.ts`（青月=base 的 `qingyue`）
+- 核心引擎：`packages/ink-vn-core/src/inkRunner.ts`、`tagParser.ts`；适配层 `src/react-app/engine/shijiInkAdapter.ts`
+- **多幕成长弧线范例**：`stories/ink/hanxin-chuhan.ink`、`xiangyu-chuhan.ink`、`zhangliang-chuhan.ink`；单章范例 `shun-lijie.ink`（见 §8）
+- 验证脚本：`scripts/verify-ink.mjs`
 - ink 官方文档：https://github.com/inkle/ink/blob/master/Documentation/WritingWithInk.md

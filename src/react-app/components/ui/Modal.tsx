@@ -7,6 +7,8 @@ interface ModalProps {
 	children: ReactNode;
 	closeOnOverlay?: boolean;
 	showClose?: boolean;
+	/** 附加在 .modal 容器上的自定义类名（用于尺寸/布局变体） */
+	className?: string;
 }
 
 export function Modal({
@@ -15,6 +17,7 @@ export function Modal({
 	children,
 	closeOnOverlay = true,
 	showClose = true,
+	className,
 }: ModalProps) {
 	useEffect(() => {
 		if (!open) return;
@@ -35,10 +38,10 @@ export function Modal({
 			aria-modal="true"
 		>
 			<div
-				className="modal"
-				style={{ position: "relative" }}
-				onClick={(e) => e.stopPropagation()}
-			>
+			className={`modal ${className ?? ""}`}
+			style={{ position: "relative" }}
+			onClick={(e) => e.stopPropagation()}
+		>
 				{showClose && (
 					<button className="modal-close" onClick={onClose} aria-label="关闭">
 						<X size={18} />
