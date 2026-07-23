@@ -1,0 +1,23 @@
+{
+	"name": "ink-vn-core",
+	"version": "0.1.0",
+	"description": "Domain-agnostic visual novel narrative engine core based on inkjs",
+	"license": "MIT",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"test": "vitest run",
+		"test:watch": "vitest"
+	},
+	"peerDependencies": {
+		"inkjs": "~2.4.0"
+	},
+	"devDependencies": {
+		"inkjs": "~2.4.0",
+		"vitest": "^3.0.0"
+	}
+}

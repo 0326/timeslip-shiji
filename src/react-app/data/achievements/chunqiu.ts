@@ -1,0 +1,68 @@
+// 系列 chunqiu · 春秋（越王勾践世家）成就。每条主角线一枚通关成就。
+import type { Achievement } from "../../types/achievement";
+
+export const chunqiuAchievements: Record<string, Achievement> = {
+	goujian_miewu: {
+		id: "goujian_miewu",
+		name: "卧薪尝胆",
+		description: "走完越王勾践的一生——从檇李诡谲、夫椒惨败，到会稽屈膝、卧薪尝胆二十二年，终灭强吴、北霸中国，却照见『可与共患难，不可与共乐』的凉薄",
+		classicalQuote: "越王为人长颈鸟喙，可与共患难，不可与共乐。",
+		type: "story",
+		points: 220,
+		icon: "🗡️",
+	},
+	chonger_chengpu: {
+		id: "chonger_chengpu",
+		name: "退避三舍",
+		description: "走完晋文公重耳的一生——从骊姬之乱亡命、流亡列国十九年备尝艰辛，到退避三舍、城濮一战而霸，成一代明君",
+		classicalQuote: "晋楚治兵，遇于中原，其辟君三舍。",
+		type: "story",
+		points: 240,
+		icon: "🏆",
+	},
+	wuzixu_fuchou: {
+		id: "wuzixu_fuchou",
+		name: "日暮途远",
+		description: "走完伍子胥的一生——父兄冤死、过昭关一夜白头、吴市吹箫，佐吴破楚掘墓鞭尸以雪血仇，终以属镂剑赐死、悬目东门",
+		classicalQuote: "吾日暮途远，吾故倒行而逆施之。",
+		type: "story",
+		points: 240,
+		icon: "⚔️",
+	},
+	qihuan_jiuhe: {
+		id: "qihuan_jiuhe",
+		name: "九合诸侯",
+		description: "走完齐桓公的一生——不计射钩之仇拜管仲、尊王攘夷九合诸侯一匡天下，却晚年信竖刁易牙、不听管仲遗言，饿死宫中虫流出户",
+		classicalQuote: "九合诸侯，一匡天下，管仲之谋也。",
+		type: "story",
+		points: 240,
+		icon: "🏵️",
+	},
+	qinmu_baxirong: {
+		id: "qinmu_baxirong",
+		name: "霸西戎",
+		description: "走完秦穆公的一生——五羖赎百里奚、纳流亡之贤，崤山覆师而素服罪己、不替孟明终雪耻，益国十二开地千里遂霸西戎，然以三良殉葬为黄鸟所刺",
+		classicalQuote: "益国十二，开地千里，遂霸西戎。",
+		type: "story",
+		points: 240,
+		icon: "🐎",
+	},
+	fuchai_wumian: {
+		id: "fuchai_wumian",
+		name: "无面见子胥",
+		description: "走完吴王夫差的一生——夫椒破越报父仇，却纵勾践归国、赐死伍子胥、黄池争霸而国空虚，终于姑苏亡国、遮面自刭无颜见子胥",
+		classicalQuote: "吾无面以见子胥也！",
+		type: "story",
+		points: 240,
+		icon: "🗡️",
+	},
+	sunwu_shenling: {
+		id: "sunwu_shenling",
+		name: "三令五申",
+		description: "走完孙武的一生——以兵法十三篇见吴王，吴宫教战斩宠姬立威、令行禁止，佐吴西破强楚北威齐晋，功成而知止身退",
+		classicalQuote: "约束不明，申令不熟，将之罪也。",
+		type: "story",
+		points: 220,
+		icon: "🎌",
+	},
+};

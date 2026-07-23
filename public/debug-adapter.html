@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head><title>Debug ShijiInkAdapter</title></head>
+<body>
+<h1>Debug: ShijiInkAdapter</h1>
+<div id="out"></div>
+<script type="module">
+const out = document.getElementById('out');
+function log(msg) { out.innerHTML += '<p>' + msg + '</p>'; console.log(msg); }
+
+try {
+  log('=== Step 1: Import inkStories ===');
+  const inkStoriesModule = await import('/src/react-app/data/stories/inkStories.ts');
+  log('Imported inkStories');
+  const { inkStories } = inkStoriesModule;
+  log('Available story keys: ' + Object.keys(inkStories).join(', '));
+  
+  const config = inkStories['hanxin:c1'];
+  log('Story title: ' + config.title);
+  log('Source length: ' + config.source.length + ' chars');
+  log('Source preview (first 200): ' + config.source.substring(0, 200));
+  log('Deaths: ' + Object.keys(config.deaths).join(', '));
+  
+  log('');
+  log('=== Step 2: Import ShijiInkAdapter ===');
+  const adapterModule = await import('/src/react-app/engine/shijiInkAdapter.ts');
+  const { ShijiInkAdapter } = adapterModule;
+  log('ShijiInkAdapter imported');
+  
+  log('');
+  log('=== Step 3: Create adapter instance ===');
+  let effects = [];
+  const adapter = new ShijiInkAdapter(config, {
+    onBackground: (bg) => { effects.push('BG: ' + bg); log('  🎬 BG: ' + bg); },
+    onBGM: (bgm) => { effects.push('BGM: ' + bgm); log('  🎵 BGM: ' + bgm); },
+    onShowCharacter: (id, expr, pos) => { effects.push('SHOW: ' + id + ' ' + expr + ' ' + pos); log('  👤 SHOW: ' + id + ' (' + expr + ') @ ' + pos); },
+    onHideCharacter: (id) => { effects.push('HIDE: ' + id); log('  👤 HIDE: ' + id); },
+    onAchievement: (id) => { effects.push('ACHIEVE: ' + id); log('  🏆 ACHIEVE: ' + id); },
+  });
+  log('Adapter created!');
+  
+  log('');
+  log('=== Step 4: Call advance() ===');
+  const state = adapter.advance();
+  log('State type: ' + (state.ended ? 'ENDED' : state.death ? 'DEATH' : state.choices.length > 0 ? 'CHOICE' : 'TEXT'));
+  log('nodeId: ' + state.nodeId);
+  log('Segments: ' + state.segments.length);
+  for (const s of state.segments) {
+    log('  📝 [' + s.speaker + '] ' + s.text);
+    if (s.hint) log('     💡 Hint: ' + s.hint);
+  }
+  log('Choices: ' + state.choices.length);
+  for (const c of state.choices) {
+    log('  🔘 [' + c.index + '] ' + c.text);
+    if (c.hint) log('     💡 ' + c.hint);
+  }
+  log('Effects fired: ' + effects.length);
+  effects.forEach(e => log('  → ' + e));
+  log('Vars: ' + JSON.stringify(state.vars));
+  
+  log('');
+  log('=== Step 5: Choose option 1 (correct) ===');
+  effects = [];
+  const state2 = adapter.choose(1);
+  log('State type: ' + (state2.ended ? 'ENDED' : state2.death ? 'DEATH' : state2.choices.length > 0 ? 'CHOICE' : 'TEXT'));
+  log('Segments: ' + state2.segments.length);
+  for (const s of state2.segments) {
+    log('  📝 [' + s.speaker + '] ' + s.text);
+  }
+  log('Choices: ' + state2.choices.length);
+  log('Death: ' + (state2.death ? state2.death.reason : 'none'));
+  log('Ended: ' + state2.ended);
+  log('Effects fired: ' + effects.length);
+  effects.forEach(e => log('  → ' + e));
+  
+  log('');
+  log('=== SUCCESS! Adapter works correctly! ===');
+  
+} catch(e) {
+  log('❌ ERROR: ' + e.message);
+  log('Stack: ' + e.stack);
+}
+</script>
+</body>
+</html>

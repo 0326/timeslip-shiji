@@ -1,0 +1,304 @@
+/* ============ 史鉴录（死亡图鉴） ============ */
+.codex-page {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: var(--space-6) var(--space-4);
+}
+
+/* 顶部统计（.panel-stat 胶囊行，题名由 HUD 提供） */
+.codex-stats {
+	display: flex;
+	gap: var(--space-2);
+	flex-wrap: wrap;
+	margin-bottom: var(--space-6);
+}
+
+/* ── 双栏：左侧系列目录 + 右侧内容 ── */
+.codex-layout {
+	display: grid;
+	grid-template-columns: 200px 1fr;
+	gap: var(--space-6);
+	align-items: start;
+}
+
+.codex-sidebar {
+	position: sticky;
+	top: 74px;
+	/* HUD(58px) 下方留白 */
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.codex-sidebar-title {
+	font-family: var(--font-serif);
+	font-size: var(--text-caption);
+	letter-spacing: 2px;
+	color: var(--color-rice-dim);
+	padding: 0 var(--space-2) var(--space-1);
+}
+
+.codex-sidebar-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.codex-sidebar-link {
+	display: flex;
+	align-items: center;
+	gap: var(--space-2);
+	padding: 8px 10px;
+	border-radius: var(--radius-ctl);
+	border: 1px solid transparent;
+	color: var(--color-rice-dim);
+	text-align: left;
+	transition: background var(--duration-fast), color var(--duration-fast),
+		border-color var(--duration-fast);
+}
+
+.codex-sidebar-link:hover {
+	background: rgba(184, 151, 58, 0.08);
+	color: var(--color-rice);
+}
+
+.codex-sidebar-link.active {
+	background: rgba(184, 151, 58, 0.12);
+	border-color: var(--color-gold-dim);
+	color: var(--color-gold-light);
+}
+
+.codex-sidebar-glyph {
+	width: 24px;
+	height: 24px;
+	font-size: 14px;
+	flex-shrink: 0;
+}
+
+.codex-sidebar-name {
+	flex: 1;
+	font-family: var(--font-serif);
+	font-size: 14px;
+	letter-spacing: 1px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.codex-sidebar-count {
+	font-size: 11px;
+	color: var(--color-rice-faint);
+	font-variant-numeric: tabular-nums;
+	flex-shrink: 0;
+}
+
+.codex-content {
+	min-width: 0;
+}
+
+/* ── 系列分组头：统一 serif + 金线语言 ── */
+.codex-series {
+	margin-bottom: var(--space-8);
+	scroll-margin-top: 74px;
+}
+.codex-series-head {
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: var(--space-4);
+	padding: var(--space-3) var(--space-4);
+	border-left: 3px solid var(--color-gold-dim);
+	background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), transparent);
+	margin-bottom: var(--space-4);
+	border-radius: 0 var(--radius-card) var(--radius-card) 0;
+}
+/* 金线收尾（卷轴分割线语言） */
+.codex-series-head::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: -1px;
+	height: 1px;
+	background: linear-gradient(90deg, var(--color-gold-dim), transparent 70%);
+}
+.codex-series-glyph {
+	font-family: var(--font-serif);
+	font-weight: 900;
+	font-size: 36px;
+	line-height: 1;
+	color: var(--color-gold-light);
+	opacity: 0.85;
+	text-shadow: 0 0 20px currentColor;
+}
+.codex-series-titles {
+	flex: 1;
+}
+.codex-series-titles h3 {
+	font-size: var(--text-h2);
+	letter-spacing: 0.15em;
+	color: var(--color-gold-light);
+	margin: 0;
+}
+.codex-series-titles .tagline {
+	font-size: var(--text-caption);
+	color: var(--color-muted);
+	letter-spacing: 0.2em;
+	margin: 2px 0 0 0;
+}
+.codex-series-count {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+	padding: 4px 12px;
+	border: 1px solid var(--color-ink-mid);
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: var(--radius-pill);
+}
+
+/* ── 人物分组 ── */
+.codex-char {
+	margin-bottom: var(--space-5);
+}
+.codex-char-head {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-2) var(--space-3);
+	border-bottom: 1px dashed var(--color-ink-mid);
+	margin-bottom: var(--space-3);
+}
+.codex-char-name {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-family: var(--font-serif);
+	font-size: 17px;
+	color: var(--color-rice);
+	font-weight: 700;
+	letter-spacing: 0.08em;
+}
+.codex-char-meta {
+	flex: 1;
+	font-size: 12px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+}
+.codex-char-count {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 12px;
+	color: var(--color-vermilion-light);
+}
+
+/* ── 死亡条目：.game-card 基座，--accent 为身份色 var(--identity-*) ── */
+.codex-death-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: var(--space-3);
+}
+.death-entry {
+	padding: var(--space-4);
+	animation: fadeUp var(--duration-normal) var(--ease-out) both;
+}
+.death-entry.unlocked {
+	border-color: color-mix(in srgb, var(--accent) 40%, var(--color-ink-mid));
+	background:
+		linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+		linear-gradient(180deg, var(--color-ink-light), var(--color-ink-soft));
+}
+.death-entry.locked {
+	border-style: dashed;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 140px;
+	gap: var(--space-2);
+	color: var(--color-muted);
+}
+.death-entry-lbl {
+	font-family: var(--font-serif);
+	font-size: var(--text-body);
+	letter-spacing: 0.3em;
+}
+.death-entry-sub {
+	font-size: 11px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+}
+.death-entry-reason {
+	font-family: var(--font-serif);
+	font-size: var(--text-body);
+	color: color-mix(in srgb, var(--accent) 55%, var(--color-rice));
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	line-height: 1.6;
+	margin-bottom: var(--space-2);
+}
+.death-entry-classical {
+	font-family: var(--font-serif);
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	line-height: 1.9;
+	border-left: 2px solid color-mix(in srgb, var(--accent) 45%, var(--color-ink-mid));
+	padding-left: var(--space-3);
+	margin: var(--space-2) 0;
+}
+.death-entry-analysis {
+	font-size: var(--text-caption);
+	color: var(--color-rice);
+	line-height: 1.8;
+	margin-top: var(--space-2);
+}
+
+/* ── 空态 ── */
+.codex-empty {
+	text-align: center;
+	padding: var(--space-10) var(--space-4);
+	color: var(--color-muted);
+}
+.codex-empty svg {
+	opacity: 0.4;
+	margin-bottom: var(--space-4);
+}
+.codex-empty p {
+	font-size: 14px;
+	letter-spacing: 0.15em;
+}
+
+@media (max-width: 860px) {
+	.codex-layout {
+		grid-template-columns: 1fr;
+	}
+	.codex-sidebar {
+		position: static;
+		margin-bottom: var(--space-4);
+	}
+	.codex-sidebar-nav {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+	.codex-sidebar-link {
+		flex: none;
+	}
+}
+
+@media (max-width: 640px) {
+	.codex-death-grid {
+		grid-template-columns: 1fr;
+	}
+	.codex-series-glyph {
+		font-size: 28px;
+	}
+	.codex-series-titles h3 {
+		font-size: var(--text-h3);
+	}
+	.codex-stats .panel-stat {
+		flex: 1;
+	}
+}

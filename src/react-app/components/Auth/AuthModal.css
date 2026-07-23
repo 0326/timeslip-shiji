@@ -1,0 +1,308 @@
+/* ── AuthModal：登录/注册弹窗 ── */
+/* 使用项目全局变量 --color-* 系列 */
+
+.auth-modal {
+  max-width: 400px;
+  width: 92vw;
+  padding: var(--space-8, 32px) var(--space-7, 28px);
+}
+
+/* ── 顶部装饰线（古风） ── */
+.auth-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: var(--space-5, 20px);
+}
+
+.auth-ornament-line {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold, #b8973a), transparent);
+}
+
+.auth-ornament-dot {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-vermilion, #c0392b);
+  box-shadow: 0 0 6px rgba(192, 57, 43, 0.5);
+}
+
+/* ── 标题区域 ── */
+.auth-header {
+  text-align: center;
+  margin-bottom: var(--space-5, 20px);
+}
+
+.auth-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--color-rice, #f2ecd8);
+  margin: 0 0 8px;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", serif;
+  letter-spacing: 4px;
+}
+
+.auth-subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  font-size: 13px;
+  color: var(--color-muted, #7a6e5c);
+  margin: 0;
+}
+
+/* ── Tab 切换 ── */
+.auth-tabs {
+  display: flex;
+  gap: 2px;
+  margin-bottom: var(--space-6, 24px);
+  background: var(--color-ink, #0d0b08);
+  border: 1px solid var(--color-ink-mid, #2d2a24);
+  border-radius: var(--radius-md, 8px);
+  padding: 3px;
+}
+
+.auth-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--color-muted, #7a6e5c);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.auth-tab:hover {
+  color: var(--color-rice, #f2ecd8);
+}
+
+.auth-tab.active {
+  background: var(--color-vermilion, #c0392b);
+  color: var(--color-rice, #f2ecd8);
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(192, 57, 43, 0.35);
+}
+
+/* ── 表单 ── */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-rice-dim, rgba(242, 236, 216, 0.65));
+  letter-spacing: 0.5px;
+}
+
+.auth-label .optional {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--color-muted, #7a6e5c);
+}
+
+.auth-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input,
+.auth-input-wrap > input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid var(--color-ink-mid, #2d2a24);
+  border-radius: var(--radius-md, 8px);
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--color-ink, #0d0b08);
+  color: var(--color-rice, #f2ecd8);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.auth-input-wrap > input {
+  padding-right: 14px;
+}
+
+.auth-input::placeholder,
+.auth-input-wrap > input::placeholder {
+  color: var(--color-muted, #7a6e5c);
+  opacity: 0.6;
+}
+
+.auth-input:focus,
+.auth-input-wrap > input:focus {
+  outline: none;
+  border-color: var(--color-vermilion-light, #e05a4a);
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+}
+
+/* 输入框验证状态 */
+.auth-input-wrap > input.valid {
+  border-color: var(--color-jade, #5a8f6b);
+}
+
+.auth-input-wrap > input.invalid {
+  border-color: var(--color-vermilion-light, #e05a4a);
+}
+
+/* 验证勾选标记 */
+.auth-input-check {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.auth-input-check.ok {
+  color: var(--color-jade, #5a8f6b);
+}
+
+/* 密码显隐按钮 */
+.auth-input-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px;
+  border: none;
+  background: transparent;
+  color: var(--color-muted, #7a6e5c);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-toggle:hover {
+  color: var(--color-rice, #f2ecd8);
+}
+
+/* 有密码切换按钮时输入框右padding */
+.auth-input-wrap:has(.auth-input-toggle) > input {
+  padding-right: 38px;
+}
+
+/* 用户名提示文字 */
+.auth-hint {
+  font-size: 12px;
+  padding: 2px 0;
+  min-height: 16px;
+}
+
+.auth-hint.checking {
+  color: var(--color-muted, #7a6e5c);
+}
+
+.auth-hint.available {
+  color: var(--color-jade, #5a8f6b);
+}
+
+.auth-hint.taken,
+.auth-hint.invalid {
+  color: var(--color-vermilion-light, #e05a4a);
+}
+
+/* ── 错误提示 ── */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: rgba(192, 57, 43, 0.1);
+  border: 1px solid rgba(192, 57, 43, 0.25);
+  border-radius: var(--radius-md, 8px);
+  color: var(--color-vermilion-light, #e05a4a);
+  font-size: 13px;
+}
+
+/* ── 提交按钮 loading ── */
+.auth-loading-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.auth-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: auth-spin 0.6s linear infinite;
+}
+
+@keyframes auth-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── 底部切换 ── */
+.auth-footer {
+  text-align: center;
+  margin-top: 4px;
+}
+
+.auth-switch {
+  font-size: 13px;
+  color: var(--color-muted, #7a6e5c);
+}
+
+.auth-switch button {
+  border: none;
+  background: none;
+  color: var(--color-gold-light, #d4af5a);
+  font-size: 13px;
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: color 0.15s;
+}
+
+.auth-switch button:hover {
+  color: var(--color-gold, #b8973a);
+  text-decoration: underline;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 480px) {
+  .auth-modal {
+    padding: var(--space-6, 24px) var(--space-5, 20px);
+  }
+
+  .auth-header h2 {
+    font-size: 22px;
+    letter-spacing: 3px;
+  }
+
+  .auth-ornament-line {
+    width: 32px;
+  }
+}

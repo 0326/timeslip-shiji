@@ -1,0 +1,424 @@
+/* ============ UI Kit v2 ============ */
+
+/* ── Button ── */
+.btn {
+	position: relative;
+	overflow: hidden;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	font-family: var(--font-sans);
+	font-size: 15px;
+	font-weight: 500;
+	padding: 10px 22px;
+	border-radius: var(--radius-ctl);
+	border: 1px solid transparent;
+	transition:
+		background var(--duration-fast),
+		border-color var(--duration-fast),
+		transform var(--duration-fast),
+		box-shadow var(--duration-fast);
+	white-space: nowrap;
+	user-select: none;
+}
+
+/* 悬停流光扫过（实底按钮） */
+.btn::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: -60%;
+	width: 40%;
+	background: linear-gradient(105deg,
+			transparent,
+			rgba(255, 255, 255, 0.25),
+			transparent);
+	transform: skewX(-20deg);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.btn-primary:not(:disabled):hover::before,
+.btn-cyan:not(:disabled):hover::before,
+.btn-vermilion:not(:disabled):hover::before {
+	animation: btnSheen 0.55s ease;
+}
+
+@keyframes btnSheen {
+	from {
+		left: -60%;
+		opacity: 1;
+	}
+
+	to {
+		left: 130%;
+		opacity: 1;
+	}
+}
+
+/* 斜切角（PC 游戏按钮形态）：主 CTA 统一使用 */
+.btn-cut {
+	border-radius: 0;
+	clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+.btn:active {
+	transform: translateY(1px) scale(0.99);
+}
+.btn:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, var(--color-gold), #9a7d2e);
+	color: #1a140a;
+	font-weight: 700;
+	box-shadow: var(--shadow-sm);
+}
+.btn-primary:not(:disabled):hover {
+	box-shadow: var(--shadow-gold);
+	transform: translateY(-1px);
+}
+
+.btn-cyan {
+	background: linear-gradient(135deg, var(--color-cyan-light), var(--color-cyan));
+	color: var(--color-rice);
+	font-weight: 600;
+}
+.btn-cyan:not(:disabled):hover {
+	box-shadow: var(--shadow-cyan);
+	transform: translateY(-1px);
+}
+
+.btn-vermilion {
+	background: linear-gradient(135deg, var(--color-vermilion-light), var(--color-vermilion));
+	color: var(--color-rice);
+	font-weight: 600;
+}
+.btn-vermilion:not(:disabled):hover {
+	transform: translateY(-1px);
+	box-shadow: 0 0 22px rgba(192, 57, 43, 0.4);
+}
+
+.btn-ghost {
+	background: transparent;
+	border-color: var(--color-ink-mid);
+	color: var(--color-rice-dim);
+}
+.btn-ghost:not(:disabled):hover {
+	border-color: var(--color-gold-dim);
+	color: var(--color-rice);
+	background: rgba(184, 151, 58, 0.06);
+}
+
+.btn-sm {
+	font-size: 13px;
+	padding: 6px 14px;
+}
+.btn-lg {
+	font-size: 17px;
+	padding: 14px 32px;
+}
+.btn-block {
+	width: 100%;
+}
+
+/* ── Badge ── */
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 12px;
+	font-weight: 500;
+	padding: 3px 10px;
+	border-radius: 999px;
+	border: 1px solid var(--color-ink-mid);
+	color: var(--color-rice-dim);
+	background: rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+}
+.badge-gold {
+	border-color: var(--color-gold-dim);
+	color: var(--color-gold-light);
+}
+.badge-cyan {
+	border-color: rgba(26, 107, 138, 0.5);
+	color: var(--color-cyan-light);
+}
+.badge-vermilion {
+	border-color: rgba(192, 57, 43, 0.5);
+	color: var(--color-vermilion-light);
+}
+
+/* ── ProgressBar ── */
+.progress {
+	width: 100%;
+	height: 8px;
+	border-radius: 999px;
+	background: var(--color-ink-mid);
+	overflow: hidden;
+}
+.progress-fill {
+	height: 100%;
+	border-radius: 999px;
+	background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+	transition: width var(--duration-slow) var(--ease-out);
+}
+.progress-cyan .progress-fill {
+	background: linear-gradient(90deg, var(--color-cyan), var(--color-cyan-light));
+}
+
+/* ── Modal ── */
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-modal);
+	background: rgba(5, 4, 3, 0.78);
+	backdrop-filter: blur(6px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-4);
+	animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+.modal {
+	background: var(--color-ink-light);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow);
+	max-width: 480px;
+	width: 100%;
+	max-height: 86vh;
+	overflow-y: auto;
+	animation: scaleIn var(--duration-normal) var(--ease-out);
+}
+.modal-pad {
+	padding: var(--space-8);
+}
+/* 宽幅弹窗（篇章选择等） */
+.modal-wide {
+	max-width: 920px;
+}
+.modal-close {
+	position: absolute;
+	top: var(--space-4);
+	right: var(--space-4);
+	width: 34px;
+	height: 34px;
+	border-radius: 999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-rice-dim);
+	background: rgba(0, 0, 0, 0.3);
+}
+.modal-close:hover {
+	color: var(--color-rice);
+	background: rgba(0, 0, 0, 0.5);
+}
+
+/* ── Drawer ── */
+.drawer-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: var(--z-drawer);
+	background: rgba(5, 4, 3, 0.6);
+	animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+.drawer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: var(--z-drawer);
+	width: min(440px, 92vw);
+	background: var(--color-ink-light);
+	border-left: 1px solid var(--color-gold-dim);
+	box-shadow: var(--shadow);
+	overflow-y: auto;
+	animation: drawerIn var(--duration-normal) var(--ease-out);
+}
+@keyframes drawerIn {
+	from {
+		transform: translateX(100%);
+	}
+	to {
+		transform: translateX(0);
+	}
+}
+
+/* ── Card 通用 ── */
+.card-surface {
+	background: var(--color-ink-light);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius-lg);
+	transition:
+		border-color var(--duration-normal),
+		transform var(--duration-normal),
+		box-shadow var(--duration-normal);
+}
+.card-surface:hover {
+	border-color: var(--color-gold-dim);
+}
+
+/* ── GameCard：全站统一卡片基座 ──
+   通过 --accent 注入系列色/身份色做差异，
+   hover = 抬升 + 描边亮起 + 顶部灯带 */
+.game-card {
+	--accent: var(--color-gold);
+	position: relative;
+	background: linear-gradient(180deg, var(--color-ink-light), var(--color-ink-soft));
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius-card);
+	overflow: hidden;
+	transition:
+		transform var(--duration-normal) var(--ease-out),
+		border-color var(--duration-normal),
+		box-shadow var(--duration-normal);
+}
+.game-card::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 8%;
+	right: 8%;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, var(--accent), transparent);
+	opacity: 0;
+	transition: opacity var(--duration-normal);
+	pointer-events: none;
+	z-index: 1;
+}
+.game-card:hover,
+.game-card:focus-visible {
+	transform: translateY(var(--hover-lift));
+	border-color: color-mix(in srgb, var(--accent) 55%, var(--color-ink-mid));
+	box-shadow:
+		0 12px 30px rgba(0, 0, 0, 0.5),
+		0 0 24px -6px color-mix(in srgb, var(--accent) 40%, transparent);
+}
+.game-card:hover::before,
+.game-card:focus-visible::before {
+	opacity: 1;
+}
+/* 不可交互/锁定态：剪影化 */
+.game-card.is-locked {
+	filter: grayscale(0.7) brightness(0.75);
+}
+.game-card.is-locked:hover {
+	transform: none;
+	box-shadow: none;
+	border-color: var(--color-ink-mid);
+}
+
+/* ── Pill：筛选/标签药丸钮 ── */
+.pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	padding: 5px 14px;
+	border-radius: var(--radius-pill);
+	border: 1px solid var(--color-ink-mid);
+	background: rgba(0, 0, 0, 0.25);
+	color: var(--color-rice-dim);
+	font-size: 13px;
+	white-space: nowrap;
+	transition:
+		color var(--duration-fast),
+		border-color var(--duration-fast),
+		background var(--duration-fast);
+}
+.pill:hover {
+	color: var(--color-rice);
+	border-color: var(--color-gold-dim);
+}
+.pill.active {
+	color: var(--color-gold-light);
+	border-color: var(--color-gold-dim);
+	background: rgba(184, 151, 58, 0.14);
+}
+
+/* ── 空状态 ── */
+.empty-state {
+	text-align: center;
+	padding: var(--space-16) var(--space-4);
+	color: var(--color-rice-dim);
+}
+.empty-state .glyph {
+	font-size: 48px;
+	opacity: 0.5;
+	margin-bottom: var(--space-4);
+	font-family: var(--font-serif);
+}
+
+/* ── 区段标题 ── */
+.section-head {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-3);
+	margin-bottom: var(--space-6);
+}
+.section-head h2 {
+	font-size: var(--text-h2);
+	color: var(--color-rice);
+}
+.section-head .sub {
+	color: var(--color-rice-dim);
+	font-size: 14px;
+}
+
+/* ── PanelHeader：内页面板统一页头 ──
+   印章 + serif 题名 + 副题 + 右侧统计胶囊 */
+.panel-head {
+	display: flex;
+	align-items: center;
+	gap: var(--space-3);
+	margin-bottom: var(--space-6);
+}
+.panel-head-seal {
+	width: 42px;
+	height: 42px;
+	font-size: 24px;
+	flex-shrink: 0;
+	box-shadow: var(--shadow-sm);
+}
+.panel-head-text h1 {
+	font-size: var(--text-h2);
+	letter-spacing: 3px;
+	color: var(--color-rice);
+}
+.panel-head-sub {
+	margin-top: 3px;
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	letter-spacing: 1px;
+}
+.panel-head-stats {
+	margin-left: auto;
+	display: flex;
+	gap: var(--space-2);
+}
+.panel-stat {
+	min-width: 86px;
+	padding: 8px 16px;
+	text-align: center;
+	border: 1px solid var(--color-gold-dim);
+	border-radius: var(--radius-card);
+	background: rgba(0, 0, 0, 0.3);
+}
+.panel-stat b {
+	display: block;
+	font-family: var(--font-serif);
+	font-size: 20px;
+	color: var(--color-gold-light);
+	font-variant-numeric: tabular-nums;
+}
+.panel-stat span {
+	display: block;
+	margin-top: 2px;
+	font-size: 11px;
+	letter-spacing: 1px;
+	color: var(--color-rice-dim);
+}

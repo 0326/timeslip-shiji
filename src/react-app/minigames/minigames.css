@@ -1,0 +1,136 @@
+.mg-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.82);
+	backdrop-filter: blur(8px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 200;
+	animation: mgFadeIn 0.3s ease-out;
+	padding: var(--space-4);
+}
+@keyframes mgFadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+.mg-panel {
+	position: relative;
+	background: linear-gradient(160deg, #1a1008 0%, #2a1810 50%, #1a0f08 100%);
+	border: 1px solid var(--color-ink-light);
+	border-radius: var(--radius-lg, 12px);
+	box-shadow: 0 20px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.05);
+	max-width: 720px;
+	width: 100%;
+	max-height: 90vh;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	animation: mgScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes mgScaleIn {
+	from { transform: scale(0.9); opacity: 0; }
+	to { transform: scale(1); opacity: 1; }
+}
+.mg-close {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	z-index: 10;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	background: rgba(0,0,0,0.4);
+	border: 1px solid var(--color-ink-mid);
+	color: var(--color-rice-dim);
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all var(--duration, 200ms);
+}
+.mg-close:hover {
+	background: var(--color-vermilion);
+	color: #fff;
+	border-color: var(--color-vermilion);
+}
+
+/* ── 开场介绍卡 ── */
+.mg-intro {
+	padding: var(--space-8) var(--space-6) var(--space-6);
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+}
+.mg-intro-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 5px 14px;
+	background: rgba(192, 57, 43, 0.2);
+	border: 1px solid var(--color-vermilion, #c0392b);
+	border-radius: 999px;
+	font-size: 12px;
+	letter-spacing: 0.2em;
+	color: var(--color-vermilion-light, #e74c3c);
+}
+.mg-diff {
+	margin-left: 8px;
+	color: var(--color-gold, #c9a84c);
+	letter-spacing: 0;
+}
+.mg-title {
+	font-size: 32px;
+	letter-spacing: 0.2em;
+	color: var(--color-rice);
+	margin: 0;
+	text-shadow: 0 2px 16px rgba(201,168,76,0.3);
+}
+.mg-note {
+	max-width: 500px;
+	font-size: 14px;
+	line-height: 1.9;
+	color: var(--color-rice-dim);
+	margin: 0;
+	letter-spacing: 0.05em;
+}
+.mg-strict-hint {
+	margin: 0;
+	padding: 8px 16px;
+	background: rgba(192, 57, 43, 0.15);
+	border: 1px dashed var(--color-vermilion);
+	border-radius: var(--radius);
+	font-size: 12px;
+	color: var(--color-vermilion-light);
+	letter-spacing: 0.1em;
+}
+.mg-actions {
+	display: flex;
+	gap: var(--space-3);
+	margin-top: var(--space-3);
+}
+.mg-tip {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+	margin-top: var(--space-2);
+}
+
+/* ── 游戏舞台 ── */
+.mg-stage {
+	padding: var(--space-4);
+	flex: 1;
+	overflow: auto;
+	min-height: 400px;
+}
+
+@media (max-width: 640px) {
+	.mg-title { font-size: 24px; letter-spacing: 0.1em; }
+	.mg-intro { padding: var(--space-6) var(--space-4) var(--space-4); }
+	.mg-stage { min-height: 320px; padding: var(--space-3); }
+}

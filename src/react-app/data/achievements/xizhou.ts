@@ -1,0 +1,58 @@
+import type { Achievement } from "../../types/achievement";
+
+export const xizhouAchievements: Record<string, Achievement> = {
+	jiangshang_taigong: {
+		id: "jiangshang_taigong",
+		name: "太公望 · 待时",
+		description: "走完姜尚一生——七十年不遇、遇则王天下的待时之渔者",
+		classicalQuote: "宁向直中取，不向曲中求。不为锦鳞设，只钓王与侯。",
+		type: "story",
+		points: 250,
+		icon: "🎣",
+	},
+	wenwang_shou_ming: {
+		id: "wenwang_shou_ming",
+		name: "文王 · 演易",
+		description: "走完周文王一生——羑里演《周易》，献地除炮烙，三分天下有其二以服事殷",
+		classicalQuote: "其囚羑里，盖益《易》之八卦为六十四卦。西伯盖受命之君。",
+		type: "story",
+		points: 250,
+		icon: "📖",
+	},
+	wuwang_fa_zhou: {
+		id: "wuwang_fa_zhou",
+		name: "武王伐纣 · 一戎衣",
+		description: "走完周武王一生——孟津观兵知天命未到而退，牧野一战定天下，归马放牛示不复用",
+		classicalQuote: "称尔戈，比尔干，立尔矛，予其誓！今予发惟恭行天之罚。",
+		type: "historical",
+		points: 250,
+		icon: "⚔️",
+	},
+	zhougong_zhi_li: {
+		id: "zhougong_zhi_li",
+		name: "周公 · 制礼",
+		description: "走完周公旦一生——摄政七年、东征平三监、制礼作乐、还政成王北面为臣",
+		classicalQuote: "一沐三捉发，一饭三吐哺，起以待士，犹恐失天下之贤人。",
+		type: "historical",
+		points: 300,
+		icon: "🏛️",
+	},
+	xuanwang_zhongxing: {
+		id: "xuanwang_zhongxing",
+		name: "宣王 · 中兴",
+		description: "走完周宣王一生——北伐南征复宗周，却在晚年不籍千亩、料民太原，中兴只一世",
+		classicalQuote: "宣王即位，二相辅之，修政，法文、武、成、康之遗风，诸侯复宗周。",
+		type: "story",
+		points: 200,
+		icon: "🌅",
+	},
+	youwang_fenghuo: {
+		id: "youwang_fenghuo",
+		name: "幽王 · 烽火",
+		description: "走完周幽王一生——宠褒姒、烽火戏诸侯、废长立幼，身死骊山西周亡",
+		classicalQuote: "幽王举烽火征兵，兵莫至。遂杀幽王骊山下，虏褒姒。",
+		type: "story",
+		points: 200,
+		icon: "🔥",
+	},
+};

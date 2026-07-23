@@ -1,0 +1,58 @@
+import type { Achievement } from "../../types/achievement";
+
+export const hanchuAchievements: Record<string, Achievement> = {
+	lvhou_linchao: {
+		id: "lvhou_linchao",
+		name: "女主称制",
+		description: "走完吕后一生——从下嫁亭长到临朝称制，中国第一位临朝女主的刚毅与残忍",
+		classicalQuote: "吕后为人刚毅，佐高祖定天下，所诛大臣多吕后力。",
+		type: "story",
+		points: 220,
+		icon: "👑",
+	},
+	hanwen_renjun: {
+		id: "hanwen_renjun",
+		name: "文景之治",
+		description: "走完汉文帝一生——露台惜百金之费、除肉刑、衣不曳地，千古仁君的模板",
+		classicalQuote: "专务以德化民，是以海内殷富，兴于礼义。",
+		type: "historical",
+		points: 250,
+		icon: "🌾",
+	},
+	hanwen_taixiao: {
+		id: "hanwen_taixiao",
+		name: "亲尝汤药",
+		description: "在位二十三年，守代邸即位时的谨慎克制——百金露台罢造，仁德自俭始",
+		classicalQuote: "尝欲作露台，召匠计之，直百金。上曰：百金，中民十家之产……吾何以台为！",
+		type: "historical",
+		points: 180,
+		icon: "💊",
+	},
+	zhoubo_anliu: {
+		id: "zhoubo_anliu",
+		name: "安刘必勃",
+		description: "走完周勃一生——厚重少文，安刘诛吕，入狱方知狱吏之贵",
+		classicalQuote: "周勃重厚少文，然安刘氏者必勃也。",
+		type: "story",
+		points: 200,
+		icon: "⚔️",
+	},
+	chaocuo_xiaofan: {
+		id: "chaocuo_xiaofan",
+		name: "衣朝衣东市",
+		description: "走完晁错一生——削藩之议激七国，忠臣谋国反为身祸，衣朝衣斩东市",
+		classicalQuote: "晁错为国远虑，祸反近身。",
+		type: "story",
+		points: 220,
+		icon: "📜",
+	},
+	zhouyafu_xiliu: {
+		id: "zhouyafu_xiliu",
+		name: "细柳治军",
+		description: "走完周亚夫一生——细柳营军门阻驾、坚壁绝粮平七国，刚则易折的将星",
+		classicalQuote: "介胄之士不拜，请以军礼见。嗟乎，此真将军矣！",
+		type: "story",
+		points: 230,
+		icon: "🛡️",
+	},
+};

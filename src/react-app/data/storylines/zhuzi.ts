@@ -1,0 +1,130 @@
+import { withSeries } from "./_series";
+
+export const zhuziStorylines = withSeries("zhuzi", [
+	{
+		id: "zhuzi_mengzi_ink",
+		title: "亚圣 · 孟轲",
+		subtitle: "孟子荀卿列传 · 孟轲",
+		era: "warring_states",
+		year: "约公元前 372 — 289 年",
+		cover: "#5a8ac9",
+		glyph: "孟",
+		description:
+			"游梁说齐，义利之辨。你将穿越成孟轲——一个被同时代人认为『迂远而阔于事情』的儒者，在杀人盈野的战国讲仁义、说性善、道王道。亲历他周游列国终不见用，却留下『舍生取义』四个字的一生。",
+		estimatedMinutes: 12,
+		difficulty: 3,
+		focusCharacter: "mengzi",
+		relatedCharacters: ["mengzi", "lihui"],
+		perspectives: [
+			{ characterId: "mengzi", storyKey: "mengzi:zhuzi", unlockedBy: "mengzi", nodeCount: 4 },
+		],
+	},
+	{
+		id: "zhuzi_xunzi_ink",
+		title: "稷下祭酒 · 荀况",
+		subtitle: "孟子荀卿列传 · 荀卿",
+		era: "warring_states",
+		year: "约公元前 313 — 238 年",
+		cover: "#7a6a5a",
+		glyph: "荀",
+		description:
+			"性恶劝学，礼法并重。你将穿越成荀况——五十游学稷下、三为祭酒、最为老师的清醒大儒。教出韩非李斯两个法家弟子，自己却坚持隆礼重法。亲历他在霸道时代为王霸兼容立论的孤独。",
+		estimatedMinutes: 13,
+		difficulty: 3,
+		focusCharacter: "xunzi",
+		relatedCharacters: ["xunzi", "hanfei", "lisi"],
+		perspectives: [
+			{ characterId: "xunzi", storyKey: "xunzi:zhuzi", unlockedBy: "xunzi", nodeCount: 5 },
+		],
+	},
+	{
+		id: "zhuzi_zhuangzi_ink",
+		title: "逍遥 · 庄周",
+		subtitle: "老子韩非列传 · 庄周",
+		era: "warring_states",
+		year: "约公元前 369 — 286 年",
+		cover: "#5a9c8a",
+		glyph: "庄",
+		description:
+			"梦蝶濠梁，曳尾涂中。你将穿越成庄周——一个只做过漆园小吏的楚人，拒绝楚威王千金卿相之聘，鼓盆而歌送妻子，讲无用之用。亲历他在乱世中寻逍遥、化蝶鱼乐的自在一生。",
+		estimatedMinutes: 12,
+		difficulty: 2,
+		focusCharacter: "zhuangzi",
+		relatedCharacters: ["zhuangzi", "chuxuanwang"],
+		perspectives: [
+			{ characterId: "zhuangzi", storyKey: "zhuangzi:zhuzi", unlockedBy: "zhuangzi", nodeCount: 7 },
+		],
+	},
+	{
+		id: "zhuzi_hanfei_ink",
+		title: "孤愤 · 韩非",
+		subtitle: "老子韩非列传 · 韩非",
+		era: "warring_states",
+		year: "约公元前 280 — 233 年",
+		cover: "#8a3a3a",
+		glyph: "韩",
+		description:
+			"说难孤愤，法术势合。你将穿越成韩非——韩国公子、口吃而善著书、荀子门下最出色的弟子。集商鞅之法、申不害之术、慎到之势于一身，却被同学李斯毒死于云阳狱。亲历他深知说难而终死于说的悲剧。",
+		estimatedMinutes: 12,
+		difficulty: 4,
+		focusCharacter: "hanfei",
+		relatedCharacters: ["hanfei", "lisi", "qinwang"],
+		perspectives: [
+			{ characterId: "hanfei", storyKey: "hanfei:zhuzi", unlockedBy: "hanfei", nodeCount: 4 },
+		],
+	},
+	{
+		id: "zhuzi_zouyan_ink",
+		title: "谈天衍 · 邹衍",
+		subtitle: "孟子荀卿列传 · 驺衍",
+		era: "warring_states",
+		year: "约公元前 305 — 240 年",
+		cover: "#b8873a",
+		glyph: "邹",
+		description:
+			"五德终始，大九州说。你将穿越成邹衍——稷下谈天衍，阴阳家代表。当所有人盯着眼前攻伐，你仰望星空推五德转移、想象赤县神州之外的世界。亲历他受诸侯郊迎、拥彗先驱，却终究『其后不能行之』的一生。",
+		estimatedMinutes: 11,
+		difficulty: 2,
+		focusCharacter: "zouyan",
+		relatedCharacters: ["zouyan"],
+		perspectives: [
+			{ characterId: "zouyan", storyKey: "zouyan:zhuzi", unlockedBy: "zouyan", nodeCount: 4 },
+		],
+	},
+	{
+		id: "zhuzi_mozhai_ink",
+		title: "钜子 · 墨翟",
+		subtitle: "孟子荀卿列传 · 墨翟",
+		era: "warring_states",
+		year: "约公元前 468 — 376 年",
+		cover: "#3a3a3a",
+		glyph: "墨",
+		description:
+			"兼爱非攻，赴火蹈刃。你将穿越成墨翟——墨家创始人，行十日十夜止楚攻宋，解带为城九距公输般。穿粗衣、着草鞋，摩顶放踵利天下。亲历这个侠者之祖苦行救世、死不旋踵的一生。",
+		estimatedMinutes: 12,
+		difficulty: 3,
+		focusCharacter: "mozhai",
+		relatedCharacters: ["mozhai", "gongshuban", "songwang"],
+		perspectives: [
+			{ characterId: "mozhai", storyKey: "mozhai:zhuzi", unlockedBy: "mozhai", nodeCount: 5 },
+		],
+	},
+	{
+		id: "zhuzi_kongzi_ink",
+		title: "至圣先师 · 孔子",
+		subtitle: "孔子世家 · 仲尼",
+		era: "spring_autumn",
+		year: "公元前 551 — 479 年",
+		cover: "#c9a227",
+		glyph: "孔",
+		description:
+			"贫且贱，好礼弘道。你将穿越成孔子，从问礼老子、夹谷之会以礼折齐，到堕三都受阻、齐馈女乐而去鲁，周游列国匡人围之『天之未丧斯文』、陈蔡绝粮弦歌不衰『君子固穷』，晚年删述六艺、西狩获麟而绝笔——亲历一个『知其不可而为之』的万世师表，道不行于当世、却传于千秋。诸子百家之源，七幕求道弧线，多结局。",
+		estimatedMinutes: 18,
+		difficulty: 4,
+		focusCharacter: "kongzi",
+		relatedCharacters: ["kongzi", "laozi", "zilu", "yanhui", "jihuanzi"],
+		perspectives: [
+			{ characterId: "kongzi", storyKey: "kongzi:zhuzi", unlockedBy: "kongzi", nodeCount: 9 },
+		],
+	},
+]);

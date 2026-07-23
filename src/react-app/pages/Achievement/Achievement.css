@@ -1,0 +1,123 @@
+/* ============ 成就页 ============ */
+.achieve-page {
+	max-width: 1100px;
+	margin: 0 auto;
+	padding: var(--space-10) var(--space-6) var(--space-16);
+}
+
+/* 顶部统计（.panel-stat 胶囊行，题名由 HUD 提供） */
+.achieve-stats {
+	display: flex;
+	gap: var(--space-2);
+	flex-wrap: wrap;
+	margin-bottom: var(--space-8);
+}
+
+.achieve-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: var(--space-4);
+}
+
+/* 成就卡：.game-card 基座 + 页内布局；已解锁注金，未解锁 .is-locked 剪影 */
+/* 统一高度：解锁/未解锁卡片等高（min-height 容纳含题诗的解锁态） */
+.achieve-card {
+	display: flex;
+	align-items: stretch;
+	gap: var(--space-4);
+	padding: var(--space-5);
+	min-height: 176px;
+	animation: fadeUp var(--duration-normal) var(--ease-out) both;
+}
+.achieve-card.unlocked {
+	--accent: var(--color-gold);
+	border-color: var(--color-gold-dim);
+	background:
+		linear-gradient(135deg, color-mix(in srgb, var(--color-gold) 8%, transparent), transparent 60%),
+		linear-gradient(180deg, var(--color-ink-light), var(--color-ink-soft));
+}
+
+.achieve-ico {
+	width: 54px;
+	height: 54px;
+	border-radius: var(--radius-card);
+	background: rgba(0, 0, 0, 0.3);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 28px;
+	flex-shrink: 0;
+}
+.achieve-card.unlocked .achieve-ico {
+	background: color-mix(in srgb, var(--color-gold) 12%, transparent);
+	box-shadow: inset 0 0 16px color-mix(in srgb, var(--color-gold) 20%, transparent);
+}
+.achieve-info {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+.achieve-info .nm {
+	font-family: var(--font-serif);
+	font-weight: 700;
+	font-size: 17px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+.achieve-info .desc {
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	margin-top: 4px;
+	line-height: 1.6;
+	/* 描述限 2 行，保证卡片高度一致 */
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.achieve-info .quote {
+	font-family: var(--font-serif);
+	font-size: 12.5px;
+	color: var(--color-muted);
+	margin-top: 8px;
+	font-style: italic;
+	/* 题诗限 1 行 */
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.achieve-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	/* 脚部沉底，解锁/未解锁卡片徽标行对齐一致 */
+	margin-top: auto;
+	padding-top: 10px;
+}
+
+.share-preview {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-4);
+	padding: var(--space-6);
+}
+.share-preview img {
+	width: 280px;
+	border-radius: var(--radius-card);
+	box-shadow: var(--shadow);
+}
+
+@media (max-width: 720px) {
+	.achieve-page {
+		padding: var(--space-6) var(--space-4) 84px;
+	}
+	.achieve-grid {
+		grid-template-columns: 1fr;
+	}
+	.achieve-stats .panel-stat {
+		flex: 1;
+	}
+}

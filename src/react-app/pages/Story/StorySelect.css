@@ -1,0 +1,834 @@
+/* ══════════════════════════════════════════════
+   穿越·史记 - 篇章选择页（正史模式）
+   系列卡片网格 + 篇章弹窗
+   设计系统 v2：卡片基于 .game-card、CTA 用 .btn、弹窗用 <Modal>
+   ══════════════════════════════════════════════ */
+
+.ss-page {
+	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background: var(--color-ink);
+	color: var(--color-rice);
+	font-family: var(--font-sans);
+	overflow-x: hidden;
+}
+
+/* ──── 背景层（全屏 KV 氛围） ──── */
+.ss-bg {
+	position: fixed;
+	inset: 0;
+	z-index: 0;
+	pointer-events: none;
+}
+
+.ss-bg-pattern {
+	position: absolute;
+	inset: 0;
+	background:
+		radial-gradient(ellipse 80% 60% at 20% 0%, rgba(184, 151, 58, 0.06), transparent 60%),
+		radial-gradient(ellipse 60% 50% at 80% 100%, rgba(192, 57, 43, 0.05), transparent 60%),
+		linear-gradient(180deg, #0f0c08 0%, #0a0806 50%, #0d0a07 100%);
+}
+
+.ss-bg-vignette {
+	position: absolute;
+	inset: 0;
+	background:
+		repeating-linear-gradient(
+			0deg,
+			transparent,
+			transparent 2px,
+			rgba(0, 0, 0, 0.015) 2px,
+			rgba(0, 0, 0, 0.015) 4px
+		);
+	opacity: 0.5;
+}
+
+/* ──── 顶部导航 ──── */
+.ss-nav {
+	position: sticky;
+	top: 0;
+	z-index: 30;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 16px 40px;
+	background: linear-gradient(to bottom, rgba(10, 8, 6, 0.95), rgba(10, 8, 6, 0.7));
+	backdrop-filter: blur(16px);
+	-webkit-backdrop-filter: blur(16px);
+	border-bottom: 1px solid rgba(184, 151, 58, 0.15);
+}
+
+/* 返回钮：与全局 HUD .appnav-back 同形态（serif + 斜切角） */
+.ss-back {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 7px 14px 7px 10px;
+	font-family: var(--font-serif);
+	font-size: 14px;
+	letter-spacing: 2px;
+	color: var(--color-rice-dim);
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--color-ink-mid);
+	clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+	cursor: pointer;
+	transition:
+		color var(--duration-fast),
+		border-color var(--duration-fast),
+		background var(--duration-fast);
+}
+
+.ss-back:hover {
+	color: var(--color-gold-light);
+	border-color: var(--color-gold-dim);
+	background: rgba(184, 151, 58, 0.08);
+}
+
+.ss-nav-title {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-family: var(--font-serif);
+	font-size: var(--text-h3);
+	font-weight: 700;
+	letter-spacing: 4px;
+	color: var(--color-gold-light);
+}
+
+.ss-nav-right {
+	width: 120px;
+}
+
+/* ──── 主内容区 ──── */
+.ss-main {
+	position: relative;
+	z-index: 1;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 40px 40px 80px;
+}
+
+.ss-header {
+	text-align: center;
+	margin-bottom: 48px;
+}
+
+.ss-title {
+	font-family: var(--font-serif);
+	font-size: var(--text-h1);
+	font-weight: 900;
+	letter-spacing: 4px;
+	margin: 0;
+	background: linear-gradient(
+		135deg,
+		var(--color-rice) 0%,
+		var(--color-gold-light) 40%,
+		var(--color-rice) 60%,
+		var(--color-gold-light) 100%
+	);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	filter: drop-shadow(0 2px 12px rgba(184, 151, 58, 0.3));
+}
+
+.ss-subtitle {
+	font-family: var(--font-serif);
+	font-size: 16px;
+	color: var(--color-rice-dim);
+	margin: 12px 0 0;
+	letter-spacing: 4px;
+}
+
+/* ──── 网格卡片进场（轻量 stagger，替代整页 fade） ──── */
+@keyframes ssCardIn {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* ══════════════════════════════════════════════
+   系列卡片网格（基于 .game-card 基座）
+   ══════════════════════════════════════════════ */
+.ss-series-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	gap: 20px;
+}
+
+.game-card.ss-series-card {
+	--accent: var(--series-accent, var(--color-gold));
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 0;
+	color: inherit;
+	font-family: inherit;
+	cursor: pointer;
+	/* 系列渐变作为内部装饰底（叠在 game-card 基座之上） */
+	background: linear-gradient(135deg, var(--series-bg-from), var(--series-bg-to));
+	animation: ssCardIn var(--duration-normal) var(--ease-out) backwards;
+	animation-delay: calc(var(--stagger) * var(--i, 0));
+}
+
+.game-card.ss-series-card:disabled {
+	cursor: default;
+}
+
+/* 顺序未解锁：仍可点击（弹提示），保留指针但压暗＋锁标 */
+.game-card.ss-series-card.seq-locked {
+	cursor: pointer;
+}
+
+.ss-lock-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	color: var(--color-rice-dim);
+	border-color: var(--color-ink-mid);
+}
+
+.ss-series-card-glow {
+	position: absolute;
+	top: -40px;
+	right: -40px;
+	width: 160px;
+	height: 160px;
+	background: radial-gradient(circle, var(--series-accent) 0%, transparent 70%);
+	opacity: 0.18;
+	pointer-events: none;
+}
+
+.ss-series-card-inner {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 20px 22px 18px;
+	min-height: 180px;
+}
+
+.ss-series-card-header {
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
+	margin-bottom: 14px;
+}
+
+.ss-series-card-glyph {
+	width: 52px;
+	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-serif);
+	font-size: 26px;
+	font-weight: 900;
+	border-radius: var(--radius-card);
+	background: linear-gradient(135deg, var(--series-accent), var(--series-accent2));
+	color: var(--color-ink);
+	box-shadow: var(--shadow-sm);
+}
+
+.ss-series-count {
+	font-size: 12px;
+	color: var(--series-accent);
+	font-weight: 600;
+	padding: 4px 10px;
+	border: 1px solid var(--color-gold-dim);
+	border-radius: var(--radius-pill);
+	letter-spacing: 1px;
+	white-space: nowrap;
+}
+
+.ss-series-card-body {
+	flex: 1;
+}
+
+.ss-series-card-name {
+	font-family: var(--font-serif);
+	font-size: 20px;
+	font-weight: 700;
+	letter-spacing: 4px;
+	margin: 0 0 6px;
+	color: var(--color-rice);
+}
+
+.ss-series-card-tagline {
+	font-family: var(--font-serif);
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	margin: 0;
+	letter-spacing: 2px;
+}
+
+.ss-series-card-footer {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 16px;
+}
+
+.ss-progress {
+	width: 100%;
+	height: 4px;
+	border-radius: var(--radius-pill);
+	background: var(--color-ink-mid);
+	overflow: hidden;
+}
+
+.ss-progress-fill {
+	height: 100%;
+	border-radius: var(--radius-pill);
+	background: linear-gradient(90deg, var(--series-accent), var(--series-accent2));
+	transition: width var(--duration-slow) var(--ease-out);
+}
+
+/* CTA 用统一 .btn（span 形态，整卡即按钮） */
+.ss-series-card-cta {
+	width: 100%;
+}
+
+/* ══════════════════════════════════════════════
+   篇章选择弹窗（<Modal className="modal-wide">）
+   ══════════════════════════════════════════════ */
+.ss-modal-shell {
+	--accent: var(--series-accent, var(--color-gold));
+	display: flex;
+	flex-direction: column;
+	max-height: 86vh;
+	background: linear-gradient(135deg, var(--series-bg-from), var(--series-bg-to));
+}
+
+.ss-modal-head {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	/* 右侧留出 Modal 自带关闭钮的位置 */
+	padding: 22px 64px 22px 28px;
+	border-bottom: 1px solid var(--color-gold-dim);
+	background: rgba(0, 0, 0, 0.25);
+}
+
+.ss-modal-head-glyph {
+	width: 52px;
+	height: 52px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: var(--font-serif);
+	font-size: 26px;
+	font-weight: 900;
+	border-radius: var(--radius-card);
+	background: linear-gradient(135deg, var(--series-accent), var(--series-accent2));
+	color: var(--color-ink);
+	box-shadow: var(--shadow-sm);
+	flex-shrink: 0;
+}
+
+.ss-modal-head-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.ss-modal-title {
+	font-family: var(--font-serif);
+	font-size: 22px;
+	font-weight: 700;
+	letter-spacing: 4px;
+	margin: 0;
+	color: var(--color-rice);
+}
+
+.ss-modal-tagline {
+	font-family: var(--font-serif);
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	margin: 4px 0 0;
+	letter-spacing: 2px;
+}
+
+.ss-modal-body {
+	padding: 22px 28px 28px;
+	overflow-y: auto;
+	flex: 1;
+}
+
+/* ──── 篇章子卡片网格（基于 .game-card 基座） ──── */
+.ss-story-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+	gap: 16px;
+}
+
+.game-card.ss-story-card {
+	--accent: var(--series-accent, var(--color-gold));
+	display: flex;
+	flex-direction: column;
+	text-align: left;
+	padding: 0;
+	color: inherit;
+	font-family: inherit;
+	cursor: pointer;
+	animation: ssCardIn var(--duration-normal) var(--ease-out) backwards;
+	animation-delay: calc(var(--stagger) * var(--i, 0));
+}
+
+/* 已通关：accent 切玉色，描边/灯带随之变化 */
+.game-card.ss-story-card.completed {
+	--accent: var(--color-jade);
+}
+
+.ss-story-cover {
+	position: relative;
+	height: 84px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+}
+
+.ss-story-cover::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+	pointer-events: none;
+}
+
+.ss-story-glyph {
+	position: relative;
+	z-index: 1;
+	font-family: var(--font-serif);
+	font-size: 36px;
+	font-weight: 900;
+	color: var(--color-rice);
+	text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+	letter-spacing: 2px;
+}
+
+.ss-story-status {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	z-index: 2;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	padding: 3px 8px;
+	border-radius: var(--radius-sm);
+	font-weight: 600;
+	letter-spacing: 1px;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+}
+
+.ss-story-status.complete {
+	background: color-mix(in srgb, var(--color-jade) 25%, transparent);
+	color: color-mix(in srgb, var(--color-jade) 65%, var(--color-rice));
+	border: 1px solid color-mix(in srgb, var(--color-jade) 40%, transparent);
+}
+
+.ss-story-status.progress {
+	background: color-mix(in srgb, var(--color-cyan) 25%, transparent);
+	color: var(--color-cyan-light);
+	border: 1px solid color-mix(in srgb, var(--color-cyan) 40%, transparent);
+}
+
+.ss-story-status.locked {
+	background: rgba(0, 0, 0, 0.4);
+	color: var(--color-rice-dim);
+	border: 1px solid var(--color-ink-mid);
+}
+
+/* ── 独立篇章页专属 ── */
+.ss-chapter-seal {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 24px;
+	height: 24px;
+	border-radius: var(--radius-sm);
+	background: color-mix(in srgb, var(--series-accent, var(--color-gold)) 24%, transparent);
+	border: 1px solid color-mix(in srgb, var(--series-accent, var(--color-gold)) 45%, transparent);
+	font-family: var(--font-serif);
+	font-weight: 700;
+	font-size: 14px;
+	color: var(--color-rice);
+}
+
+/* 篇章序号（封面左上角） */
+.ss-story-idx {
+	position: absolute;
+	top: 8px;
+	left: 10px;
+	z-index: 2;
+	font-family: var(--font-serif);
+	font-size: 13px;
+	font-weight: 700;
+	color: var(--color-rice);
+	opacity: 0.75;
+	letter-spacing: 1px;
+}
+
+/* 顺序未解锁的故事线：可点击给提示，指针保留 */
+.game-card.ss-story-card.ss-story-locked {
+	cursor: pointer;
+}
+
+/* ════════ 关卡式章节列表（一排一行：左题图 + 右信息） ════════ */
+.ss-chapter-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3);
+	max-width: 860px;
+	margin: 0 auto;
+}
+
+.game-card.ss-chapter-row {
+	--accent: var(--series-accent, var(--color-gold));
+	display: flex;
+	align-items: stretch;
+	width: 100%;
+	min-height: 132px;
+	padding: 0;
+	overflow: hidden;
+	text-align: left;
+	color: inherit;
+	font-family: inherit;
+	cursor: pointer;
+	animation: ssCardIn var(--duration-normal) var(--ease-out) backwards;
+	animation-delay: calc(var(--stagger) * var(--i, 0));
+}
+
+.game-card.ss-chapter-row.completed {
+	--accent: var(--color-jade);
+}
+
+.game-card.ss-chapter-row.ss-story-locked {
+	cursor: pointer;
+}
+
+/* 左：题图 */
+.ss-chapter-hero {
+	position: relative;
+	flex: none;
+	width: 220px;
+	background-size: cover;
+	background-position: center;
+	overflow: hidden;
+}
+
+.ss-chapter-hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	/* 右侧向内容区渐隐，衔接右栏 */
+	background: linear-gradient(90deg,
+			rgba(13, 11, 8, 0.15) 0%,
+			rgba(13, 11, 8, 0.35) 55%,
+			var(--color-ink-light) 100%);
+}
+
+.ss-chapter-row.is-locked .ss-chapter-hero {
+	filter: grayscale(0.9) brightness(0.55);
+}
+
+.ss-chapter-no {
+	position: absolute;
+	top: 6px;
+	left: 12px;
+	z-index: 2;
+	font-family: var(--font-serif);
+	font-size: 30px;
+	font-weight: 900;
+	line-height: 1;
+	color: var(--color-rice);
+	opacity: 0.85;
+	text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+	letter-spacing: 1px;
+}
+
+.ss-chapter-glyph {
+	position: absolute;
+	right: 14px;
+	bottom: 8px;
+	z-index: 2;
+	font-family: var(--font-serif);
+	font-size: 40px;
+	font-weight: 900;
+	color: var(--color-rice);
+	opacity: 0.92;
+	text-shadow: 0 2px 14px rgba(0, 0, 0, 0.65);
+}
+
+.ss-chapter-flag {
+	position: absolute;
+	top: 8px;
+	right: 10px;
+	z-index: 3;
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 1px;
+	padding: 3px 8px;
+	border-radius: var(--radius-sm);
+	backdrop-filter: blur(4px);
+}
+
+.ss-chapter-flag.complete {
+	background: color-mix(in srgb, var(--color-jade) 30%, rgba(0, 0, 0, 0.4));
+	color: color-mix(in srgb, var(--color-jade) 70%, var(--color-rice));
+	border: 1px solid color-mix(in srgb, var(--color-jade) 45%, transparent);
+}
+
+.ss-chapter-flag.progress {
+	background: color-mix(in srgb, var(--color-cyan) 30%, rgba(0, 0, 0, 0.4));
+	color: var(--color-cyan-light);
+	border: 1px solid color-mix(in srgb, var(--color-cyan) 45%, transparent);
+}
+
+.ss-chapter-lockmask {
+	position: absolute;
+	inset: 0;
+	z-index: 3;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--color-rice-dim);
+}
+
+/* 右：信息 */
+.ss-chapter-body {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: var(--space-4) var(--space-5);
+}
+
+.ss-chapter-head {
+	display: flex;
+	align-items: baseline;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+
+.ss-chapter-order {
+	font-family: var(--font-serif);
+	font-size: var(--text-caption);
+	letter-spacing: 2px;
+	color: color-mix(in srgb, var(--accent) 70%, var(--color-rice-dim));
+}
+
+.ss-chapter-title {
+	font-family: var(--font-serif);
+	font-size: var(--text-h3);
+	font-weight: 700;
+	color: var(--color-rice);
+	letter-spacing: 1px;
+}
+
+.ss-chapter-sub {
+	font-size: var(--text-caption);
+	color: var(--color-rice-faint);
+}
+
+.ss-chapter-desc {
+	font-size: var(--text-caption);
+	line-height: 1.65;
+	color: var(--color-rice-dim);
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.ss-chapter-foot {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-3);
+	margin-top: auto;
+	padding-top: 4px;
+}
+
+.ss-chapter-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: var(--space-3);
+	font-size: 12px;
+	color: var(--color-rice-faint);
+}
+
+.ss-chapter-cta {
+	flex: none;
+}
+
+@media (max-width: 720px) {
+	.ss-chapter-hero {
+		width: 120px;
+	}
+	.ss-chapter-glyph {
+		font-size: 30px;
+	}
+	.ss-chapter-body {
+		padding: var(--space-3) var(--space-4);
+	}
+	.ss-chapter-foot {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: var(--space-2);
+	}
+}
+
+.ss-story-info {
+	display: flex;
+	flex-direction: column;
+	padding: 14px 16px 16px;
+	flex: 1;
+}
+
+.ss-story-title {
+	font-family: var(--font-serif);
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: 2px;
+	margin: 0;
+	color: var(--color-rice);
+}
+
+.ss-story-sub {
+	font-size: 12px;
+	color: var(--series-accent);
+	margin: 4px 0 8px;
+	letter-spacing: 1px;
+}
+
+.ss-story-desc {
+	font-size: 12px;
+	color: var(--color-rice-faint);
+	margin: 0 0 12px;
+	line-height: 1.6;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	flex: 1;
+}
+
+.ss-story-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+	font-size: 11px;
+	color: var(--color-rice-faint);
+	margin-bottom: 10px;
+}
+
+.ss-meta-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.ss-meta-endings {
+	color: var(--color-cyan-light);
+}
+
+.ss-star {
+	color: var(--color-rice-faint);
+	font-size: 11px;
+}
+
+.ss-star.filled {
+	color: var(--color-gold);
+	text-shadow: 0 0 4px rgba(184, 151, 58, 0.5);
+}
+
+.ss-meta-year {
+	color: var(--color-rice-faint);
+	letter-spacing: 1px;
+}
+
+/* CTA 用统一 .btn（span 形态，整卡即按钮） */
+.ss-story-cta {
+	width: 100%;
+	margin-top: auto;
+}
+
+/* 完成态：ghost + 玉色文字 */
+.ss-story-cta.ss-cta-done {
+	color: var(--color-jade);
+	border-color: color-mix(in srgb, var(--color-jade) 40%, transparent);
+}
+
+.game-card.ss-story-card:hover .ss-story-cta.ss-cta-done {
+	color: var(--color-jade);
+	border-color: var(--color-jade);
+	background: color-mix(in srgb, var(--color-jade) 10%, transparent);
+}
+
+/* ──── 底部提示 ──── */
+.ss-footer-hint {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	margin-top: 48px;
+	font-size: var(--text-caption);
+	color: var(--color-rice-faint);
+	letter-spacing: 2px;
+}
+
+/* ──── 响应式 ──── */
+@media (max-width: 1100px) {
+	.ss-nav {
+		padding: 14px 24px;
+	}
+	.ss-main {
+		padding: 32px 24px 60px;
+	}
+	.ss-series-grid {
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 16px;
+	}
+}
+
+@media (max-width: 720px) {
+	.ss-nav-title span {
+		display: none;
+	}
+	.ss-series-grid {
+		grid-template-columns: 1fr;
+	}
+	.ss-series-card-inner {
+		min-height: 160px;
+	}
+	.ss-modal-head {
+		padding: 18px 56px 18px 20px;
+	}
+	.ss-modal-body {
+		padding: 18px 20px 22px;
+	}
+	.ss-story-grid {
+		grid-template-columns: 1fr;
+		gap: 14px;
+	}
+	.ss-modal-title {
+		font-size: var(--text-h3);
+		letter-spacing: 2px;
+	}
+}

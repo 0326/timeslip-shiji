@@ -1,0 +1,43 @@
+import type { SpriteInfo, BgStyle } from "./base";
+
+export const hanchuSprites: Record<string, SpriteInfo> = {
+	lvhou: { name: "吕雉", glyph: "雉", accent: "#8a3a5c" },
+	wangling: { name: "王陵", glyph: "陵", accent: "#8a6f4a" },
+	hanwen_di: { name: "汉文帝", glyph: "恒", accent: "#3a7a5c" },
+	zhoubo: { name: "周勃", glyph: "勃", accent: "#8a6f3a" },
+	chaocuo: { name: "晁错", glyph: "错", accent: "#5a4a8a" },
+	zhouyafu: { name: "周亚夫", glyph: "亚", accent: "#3a5a8a" },
+	qiji: { name: "戚夫人", glyph: "戚", accent: "#c96f8a" },
+	hui_di: { name: "汉惠帝", glyph: "盈", accent: "#6b7a8c" },
+	zhoulu: { name: "吕禄", glyph: "禄", accent: "#7a5c5c" },
+	chenping: { name: "陈平", glyph: "平", accent: "#8a8a6b" },
+	tiying: { name: "缇萦", glyph: "缇", accent: "#b87a5a" },
+	zhouping: { name: "周勃（廷尉狱）", glyph: "勃", accent: "#6b5a48" },
+	songchang: { name: "宋昌", glyph: "昌", accent: "#5a7a5c" },
+	yuli: { name: "狱吏", glyph: "吏", accent: "#6b5a48" },
+	hanjing_di: { name: "汉景帝", glyph: "启", accent: "#7a5a3a" },
+	yuanang: { name: "袁盎", glyph: "盎", accent: "#5a6b7a" },
+	liubi: { name: "刘濞", glyph: "濞", accent: "#2a5a6b" },
+	wudi_taizi: { name: "太子（景帝）", glyph: "启", accent: "#7a5a3a" },
+	liangwang: { name: "梁王", glyph: "武", accent: "#5a7a8a" },
+	xiliu_junshi: { name: "细柳军士", glyph: "士", accent: "#4a6a7a" },
+	gonggaohou: { name: "弓高侯", glyph: "当", accent: "#5a6b4a" },
+	tingwei: { name: "廷尉", glyph: "尉", accent: "#6b5a5a" },
+	nei_shiguan: { name: "内侍", glyph: "侍", accent: "#7a6a5c" },
+};
+
+export const hanchuBackgrounds: Record<string, BgStyle> = {
+	changle_palace: { label: "长乐宫 · 朝堂", css: "linear-gradient(180deg, #1e1418 0%, #170e12 60%, #0c0809 100%), radial-gradient(ellipse at 50% 30%, rgba(138,58,92,0.18), transparent 55%)" },
+	yongxiang: { label: "永巷 · 幽禁", css: "linear-gradient(180deg, #120d10 0%, #0e0a0c 60%, #080607 100%), radial-gradient(ellipse at 50% 70%, rgba(80,40,60,0.24), transparent 55%)" },
+	dai_di: { label: "代地 · 边塞", css: "linear-gradient(180deg, #121815 0%, #0e1210 60%, #080a09 100%), radial-gradient(ellipse at 50% 80%, rgba(58,122,92,0.20), transparent 60%)" },
+	dai_wangfu: { label: "代王府 · 议位", css: "linear-gradient(180deg, #161a14 0%, #111510 60%, #0a0d08 100%), radial-gradient(ellipse at 50% 32%, rgba(90,122,92,0.16), transparent 55%)" },
+	weiyang_palace: { label: "未央宫 · 宣室", css: "linear-gradient(180deg, #1a1812 0%, #14120e 60%, #0c0a08 100%), radial-gradient(ellipse at 50% 28%, rgba(184,151,58,0.14), transparent 55%)" },
+	lutai: { label: "露台 · 惜费", css: "linear-gradient(180deg, #101820 0%, #0d131a 55%, #070a0d 100%), radial-gradient(ellipse at 50% 20%, rgba(150,180,210,0.16), transparent 55%)" },
+	xiliu_camp: { label: "细柳营 · 军门", css: "linear-gradient(180deg, #101418 0%, #0c1013 60%, #07090b 100%), radial-gradient(ellipse at 50% 75%, rgba(58,90,138,0.24), transparent 55%)" },
+	junji_daying: { label: "昌邑 · 坚壁", css: "linear-gradient(180deg, #0f1216 0%, #0b0e11 60%, #06080a 100%), radial-gradient(ellipse at 50% 70%, rgba(40,70,110,0.22), transparent 55%)" },
+	dongshi: { label: "东市 · 刑场", css: "linear-gradient(180deg, #1c100c 0%, #150c09 58%, #0c0705 100%), radial-gradient(ellipse at 50% 75%, rgba(120,50,40,0.28), transparent 55%)" },
+	tingyu_prison: { label: "廷尉 · 牢狱", css: "linear-gradient(180deg, #0c0d0e 0%, #090a0b 60%, #050506 100%), radial-gradient(ellipse at 50% 25%, rgba(100,90,80,0.14), transparent 50%)" },
+	qiguo_route: { label: "淮泗 · 粮道", css: "linear-gradient(180deg, #0f1410 0%, #0b100d 58%, #070a08 100%), radial-gradient(ellipse at 50% 60%, rgba(40,80,60,0.18), transparent 55%)" },
+	changan_street: { label: "长安 · 街巷", css: "linear-gradient(180deg, #151210 0%, #110f0c 60%, #0a0907 100%), radial-gradient(ellipse at 50% 80%, rgba(138,111,58,0.14), transparent 55%)" },
+	zhulv_blood: { label: "诸吕 · 族灭", css: "linear-gradient(180deg, #1c0c0e 0%, #15090a 58%, #0c0506 100%), radial-gradient(ellipse at 50% 70%, rgba(120,40,50,0.26), transparent 55%)" },
+};
