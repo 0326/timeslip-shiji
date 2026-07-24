@@ -1,90 +1,90 @@
-# React + Vite + Hono + Cloudflare Workers
+# 穿越·史记（shiji.timeslip.work）
 
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/templates/tree/main/vite-react-template)
+> 「穿越兰台」产品线 PC 子站 — 基于 Ink 引擎的史记互动阅读体验。
 
-This template provides a minimal setup for building a React application with TypeScript and Vite, designed to run on Cloudflare Workers. It features hot module replacement, ESLint integration, and the flexibility of Workers deployments.
+## 项目简介
 
-![React + TypeScript + Vite + Cloudflare Workers](https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/fc7b4b62-442b-4769-641b-ad4422d74300/public)
+**穿越·史记** 是「穿越兰台」历史文化产品线的 PC 子站，通过 Ink 视觉小说引擎将《史记》等典籍转化为沉浸式互动阅读体验。
 
-<!-- dash-content-start -->
+### 产品线矩阵
 
-🚀 Supercharge your web development with this powerful stack:
+| 项目 | 域名 / 标识 | 技术栈 | 定位 |
+|------|------------|--------|------|
+| **穿越兰台 主站** | `timeslip.work` | （待确认） | PC 主站，品牌入口与核心内容 |
+| **穿越·史记** | `shiji.timeslip.work` | React 19 + Vite + Hono + Cloudflare Workers | PC 子站，Ink 视觉小说 + 史记互动阅读 |
+| **穿越圈** | 微信小程序 `wx515b70782ea1aaf3` | 原生小程序 + 云开发 | 移动端社区 / 轻互动 / 用户体系 |
 
-- [**React**](https://react.dev/) - A modern UI library for building interactive interfaces
-- [**Vite**](https://vite.dev/) - Lightning-fast build tooling and development server
-- [**Hono**](https://hono.dev/) - Ultralight, modern backend framework
-- [**Cloudflare Workers**](https://developers.cloudflare.com/workers/) - Edge computing platform for global deployment
+## 技术栈
 
-### ✨ Key Features
+- **前端**：React 19 + TypeScript + Vite
+- **后端**：Hono（运行在 Cloudflare Workers 上）
+- **边缘计算**：Cloudflare Workers
+- **视觉小说引擎**：Ink（inkle）
+- **AI 能力**：Cloudflare Workers AI（图像生成等）
+- **KV 存储**：Cloudflare KV（图片缓存）
 
-- 🔥 Hot Module Replacement (HMR) for rapid development
-- 📦 TypeScript support out of the box
-- 🛠️ ESLint configuration included
-- ⚡ Zero-config deployment to Cloudflare's global network
-- 🎯 API routes with Hono's elegant routing
-- 🔄 Full-stack development setup
-- 🔎 Built-in Observability to monitor your Worker
+## 目录结构
 
-Get started in minutes with local development or deploy directly via the Cloudflare dashboard. Perfect for building modern, performant web applications at the edge.
-
-<!-- dash-content-end -->
-
-## Getting Started
-
-To start a new project with this template, run:
-
-```bash
-npm create cloudflare@latest -- --template=cloudflare/templates/vite-react-template
+```
+timeslip-shiji/
+├── src/                       # 前端源码（React）
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── ...
+├── server/                    # 后端（Hono + Workers）
+│   └── index.ts
+├── public/                    # 静态资源
+├── .trae/                     # AI agent 配置
+│   └── skills/
+│       ├── ink-story-writing/    # Ink 剧本写作
+│       ├── kv-image-gen/         # KV 图片生成与缓存
+│       └── vn-story-image/       # 视觉小说配图生成
+├── wrangler.jsonc            # Cloudflare Workers 配置
+├── vite.config.ts            # Vite 配置
+├── package.json
+└── README.md                 # 本文件
 ```
 
-A live deployment of this template is available at:
-[https://react-vite-template.templates.workers.dev](https://react-vite-template.templates.workers.dev)
+## 开发
 
-## Development
-
-Install dependencies:
+安装依赖：
 
 ```bash
 npm install
 ```
 
-Start the development server with:
+启动开发服务器：
 
 ```bash
 npm run dev
 ```
 
-Your application will be available at [http://localhost:5173](http://localhost:5173).
+应用运行在 [http://localhost:5173](http://localhost:5173)。
 
-## Production
+## 构建与部署
 
-Build your project for production:
+生产构建：
 
 ```bash
 npm run build
 ```
 
-Preview your build locally:
-
-```bash
-npm run preview
-```
-
-Deploy your project to Cloudflare Workers:
+部署到 Cloudflare Workers：
 
 ```bash
 npm run build && npm run deploy
 ```
 
-Monitor your workers:
+实时日志：
 
 ```bash
 npx wrangler tail
 ```
 
-## Additional Resources
+## 相关资源
 
-- [Cloudflare Workers Documentation](https://developers.cloudflare.com/workers/)
-- [Vite Documentation](https://vitejs.dev/guide/)
-- [React Documentation](https://reactjs.org/)
-- [Hono Documentation](https://hono.dev/)
+- [React 文档](https://react.dev/)
+- [Vite 文档](https://vitejs.dev/guide/)
+- [Hono 文档](https://hono.dev/)
+- [Cloudflare Workers 文档](https://developers.cloudflare.com/workers/)
+- [Ink 官方文档](https://www.inklestudios.com/ink/)

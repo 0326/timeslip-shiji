@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
 import type { Bindings } from "../env";
-import { extractToken, verifyJwt, type JwtPayload } from "../lib/crypto";
+import { extractToken, extractTokenFromCookie, verifyJwt, type JwtPayload } from "../lib/crypto";
 
 export interface AuthEnv {
 	Variables: {
@@ -9,12 +9,18 @@ export interface AuthEnv {
 	Bindings: Bindings;
 }
 
+function getToken(c: Context): string | null {
+	const cookieToken = extractTokenFromCookie(c.req.header("Cookie"));
+	if (cookieToken) return cookieToken;
+	return extractToken(c.req.header("Authorization"));
+}
+
 /** 需要认证的路由中间件：验证 JWT，将 payload 注入 c.var.user */
 export async function requireAuth(c: Context<AuthEnv>, next: Next) {
 	if (!c.env.JWT_SECRET || !c.env.USER_DB) {
 		return c.json({ error: "auth_not_configured" }, 503);
 	}
-	const token = extractToken(c.req.header("Authorization"));
+	const token = getToken(c);
 	if (!token) {
 		return c.json({ error: "unauthorized", message: "请先登录" }, 401);
 	}
@@ -32,7 +38,7 @@ export async function optionalAuth(c: Context<AuthEnv>, next: Next) {
 		await next();
 		return;
 	}
-	const token = extractToken(c.req.header("Authorization"));
+	const token = getToken(c);
 	if (token) {
 		const payload = await verifyJwt(token, c.env.JWT_SECRET);
 		if (payload) c.set("user", payload);

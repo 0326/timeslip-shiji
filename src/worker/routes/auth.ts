@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import type { Bindings } from "../env";
-import { hashPassword, verifyPassword, signJwt } from "../lib/crypto";
+import { hashPassword, verifyPassword, signJwt, setAuthCookie, clearAuthCookie } from "../lib/crypto";
 
 interface RegisterBody {
 	username: string;
@@ -67,10 +67,13 @@ auth.post("/register", async (c) => {
 		.run();
 
 	const token = await signJwt({ sub: id, username }, c.env.JWT_SECRET!);
+	const hostname = new URL(c.req.url).hostname;
 
 	return c.json({
 		token,
 		user: { id, username, nickname, createdAt: now },
+	}, {
+		headers: { "Set-Cookie": setAuthCookie(token, hostname) },
 	});
 });
 
@@ -100,10 +103,21 @@ auth.post("/login", async (c) => {
 	await c.env.USER_DB!.prepare("UPDATE users SET last_login_at = ? WHERE id = ?").bind(Date.now(), user.id).run();
 
 	const token = await signJwt({ sub: user.id, username: user.username }, c.env.JWT_SECRET!);
+	const hostname = new URL(c.req.url).hostname;
 
 	return c.json({
 		token,
 		user: { id: user.id, username: user.username, nickname: user.nickname, createdAt: user.created_at },
+	}, {
+		headers: { "Set-Cookie": setAuthCookie(token, hostname) },
+	});
+});
+
+// ── 登出 ──
+auth.post("/logout", async (c) => {
+	const hostname = new URL(c.req.url).hostname;
+	return c.json({ ok: true }, {
+		headers: { "Set-Cookie": clearAuthCookie(hostname) },
 	});
 });
 

@@ -99,3 +99,44 @@ export function extractToken(auth: string | undefined): string | null {
 	const m = auth.match(/^Bearer\s+(.+)$/i);
 	return m ? m[1] : null;
 }
+
+export function extractTokenFromCookie(cookieHeader: string | undefined): string | null {
+	if (!cookieHeader) return null;
+	const match = cookieHeader.match(/(?:^|;\s*)auth_token=([^;]+)/);
+	return match ? decodeURIComponent(match[1]) : null;
+}
+
+export function isLocalDev(hostname: string): boolean {
+	return hostname === "localhost" || hostname === "127.0.0.1" || hostname.endsWith(".workers.dev");
+}
+
+export function setAuthCookie(token: string, hostname: string): string {
+	const maxAge = 30 * 24 * 3600;
+	const parts = [
+		`auth_token=${encodeURIComponent(token)}`,
+		`Max-Age=${maxAge}`,
+		"Path=/",
+		"HttpOnly",
+		"SameSite=Lax",
+	];
+	if (!isLocalDev(hostname)) {
+		parts.push("Secure");
+		parts.push("Domain=.timeslip.work");
+	}
+	return parts.join("; ");
+}
+
+export function clearAuthCookie(hostname: string): string {
+	const parts = [
+		"auth_token=",
+		"Max-Age=0",
+		"Path=/",
+		"HttpOnly",
+		"SameSite=Lax",
+	];
+	if (!isLocalDev(hostname)) {
+		parts.push("Secure");
+		parts.push("Domain=.timeslip.work");
+	}
+	return parts.join("; ");
+}

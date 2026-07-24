@@ -100,19 +100,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 	cloudSaveVersion: null,
 
 	init: async () => {
-		const token = authApi.getStoredToken();
-		if (!token) {
-			set({ isLoading: false });
-			return;
-		}
 		try {
 			const user = await authApi.fetchMe();
-			set({ token, user, isAuthenticated: true, isLoading: false });
-			// 登录后尝试自动拉取云端存档
+			set({ token: null, user, isAuthenticated: true, isLoading: false });
 			await get().pullCloudSave();
 		} catch {
-			// token 无效，清除
-			authApi.logout();
 			set({ token: null, user: null, isAuthenticated: false, isLoading: false });
 		}
 	},
@@ -120,8 +112,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 	register: async (username, password, nickname) => {
 		try {
 			const res = await authApi.register(username, password, nickname);
-			set({ token: res.token, user: res.user, isAuthenticated: true });
-			// 注册后将本地存档上传到云端
+			set({ token: null, user: res.user, isAuthenticated: true });
 			await get().pushCloudSave();
 			return { ok: true };
 		} catch (err) {
@@ -133,8 +124,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 	login: async (username, password) => {
 		try {
 			const res = await authApi.login(username, password);
-			set({ token: res.token, user: res.user, isAuthenticated: true });
-			// 登录后自动拉取云端存档
+			set({ token: null, user: res.user, isAuthenticated: true });
 			await get().pullCloudSave();
 			return { ok: true };
 		} catch (err) {
