@@ -1,12 +1,30 @@
 import { create } from "zustand";
 import { sfx } from "../lib/sfx";
 
+const BGM_STORAGE_KEY = "cysj-bgm";
+
 export interface ToastItem {
 	id: number;
 	kind: "achievement" | "info" | "reward";
 	title: string;
 	subtitle?: string;
 	icon?: string;
+}
+
+function readBgmEnabled(): boolean {
+	try {
+		return localStorage.getItem(BGM_STORAGE_KEY) === "on";
+	} catch {
+		return false;
+	}
+}
+
+function writeBgmEnabled(on: boolean) {
+	try {
+		localStorage.setItem(BGM_STORAGE_KEY, on ? "on" : "off");
+	} catch {
+		/* ignore */
+	}
 }
 
 interface UiStore {
@@ -21,6 +39,11 @@ interface UiStore {
 	// 全局音效开关（HUD 控制，持久化到 localStorage）
 	sfxEnabled: boolean;
 	toggleSfx: () => void;
+	setSfxEnabled: (on: boolean) => void;
+	// 全局 BGM 开关（HUD 控制，持久化到 localStorage）
+	bgmEnabled: boolean;
+	toggleBgm: () => void;
+	setBgmEnabled: (on: boolean) => void;
 }
 
 let seq = 1;
@@ -43,5 +66,22 @@ export const useUiStore = create<UiStore>((set) => ({
 			sfx.setEnabled(next);
 			if (next) sfx.play("click");
 			return { sfxEnabled: next };
+		}),
+	setSfxEnabled: (on) =>
+		set(() => {
+			sfx.setEnabled(on);
+			return { sfxEnabled: on };
+		}),
+	bgmEnabled: readBgmEnabled(),
+	toggleBgm: () =>
+		set((s) => {
+			const next = !s.bgmEnabled;
+			writeBgmEnabled(next);
+			return { bgmEnabled: next };
+		}),
+	setBgmEnabled: (on) =>
+		set(() => {
+			writeBgmEnabled(on);
+			return { bgmEnabled: on };
 		}),
 }));
