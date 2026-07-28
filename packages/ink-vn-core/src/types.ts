@@ -6,7 +6,7 @@
 export type TagMeta = Record<string, string | true>;
 
 /** Horizontal position for character sprites */
-export type Position = "left" | "center" | "right";
+export type Position = "left" | "center" | "right" | "float";
 
 /** A single dialogue / narration line produced by the engine */
 export interface Segment {

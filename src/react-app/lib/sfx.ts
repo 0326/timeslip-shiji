@@ -14,9 +14,11 @@ let enabled = readEnabled();
 
 function readEnabled(): boolean {
 	try {
-		return localStorage.getItem(STORAGE_KEY) !== "off";
+		const val = localStorage.getItem(STORAGE_KEY);
+		// 默认关闭，只有显式设为 "on" 才开启
+		return val === "on";
 	} catch {
-		return true;
+		return false;
 	}
 }
 

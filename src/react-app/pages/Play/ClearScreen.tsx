@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Map, RotateCcw, ArrowLeft, ChevronRight } from "lucide-react";
+import { Map, RotateCcw, ArrowLeft, ChevronRight, Compass } from "lucide-react";
 import { getStoryline, getNextStoryline } from "../../data/storylines";
 
 interface Props {
@@ -73,6 +73,12 @@ export function ClearScreen({ storyId, storyTitle, deaths, choiceRate, isCanon, 
 						{endingsUnlocked < endingsTotal && (
 							<span className="dim">　还有 {endingsTotal - Math.min(endingsUnlocked, endingsTotal)} 种命运待照见</span>
 						)}
+						<button
+							className="clear-ending-goto"
+							onClick={() => navigate("/codex/endings")}
+						>
+							<Compass size={13} /> 查看结局图鉴
+						</button>
 					</div>
 				)}
 

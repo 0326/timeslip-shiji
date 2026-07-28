@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	ArrowLeft,
@@ -8,9 +8,12 @@ import {
 	ScrollText,
 	Volume2,
 	VolumeX,
+	Music,
+	Music2,
 } from "lucide-react";
 import { useUiStore } from "../../store/uiStore";
 import { useStory } from "../../hooks/useStory";
+import { useBgmPlayer } from "../../hooks/useBgmPlayer";
 import { inkStories } from "../../data/stories/inkStories";
 import { usePlayStore, type TextSpeed } from "../../store/playStore";
 import { useUserStore } from "../../store/userStore";
@@ -25,11 +28,19 @@ import { ClearScreen } from "./ClearScreen";
 import { ClassicalHint } from "./ClassicalHint";
 import { AiHintModal } from "./AiHintModal";
 import { ActClearCard } from "./ActClearCard";
+import { SceneBackground } from "./SceneBackground";
 import { GameHost } from "../../minigames/GameHost";
 import "../../minigames/minigames.css";
 
 const SPEED_CYCLE: TextSpeed[] = ["slow", "normal", "fast"];
 const SPEED_LABEL: Record<TextSpeed, string> = { slow: "慢", normal: "中", fast: "快" };
+
+interface SfxGuideRect {
+	top: number;
+	left: number;
+	width: number;
+	height: number;
+}
 
 interface Props {
 	storyId: string;
@@ -44,6 +55,9 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const navigate = useNavigate();
 	const sfxEnabled = useUiStore((s) => s.sfxEnabled);
 	const toggleSfx = useUiStore((s) => s.toggleSfx);
+	const setSfxEnabled = useUiStore((s) => s.setSfxEnabled);
+	const bgmEnabled = useUiStore((s) => s.bgmEnabled);
+	const setBgmEnabled = useUiStore((s) => s.setBgmEnabled);
 	const isCanon = mode !== "free";
 	const { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame } = useStory(
 		storyId,
@@ -51,6 +65,89 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 		storyKey,
 		isCanon,
 	);
+	const { playTrack, stop: stopBgm, pause: pauseBgm, resume: resumeBgm } = useBgmPlayer({ enabled: bgmEnabled });
+	const sfxBtnRef = useRef<HTMLButtonElement>(null);
+	const sfxClickCountRef = useRef(0);
+	const sfxClickTimerRef = useRef<number | null>(null);
+	const [sfxGuideRect, setSfxGuideRect] = useState<SfxGuideRect | null>(null);
+	const [showSfxGuide, setShowSfxGuide] = useState(false);
+	// 只在起源开头显示音效选择弹窗
+	const isQiyuan = storyId === "huangdi:qiyuan";
+	// 已选择过音效的标记（存储在 localStorage）
+	const [hasChosenSfx, setHasChosenSfx] = useState(() => {
+		try {
+			return localStorage.getItem("cysj-sfx-chosen") === "true";
+		} catch {
+			return false;
+		}
+	});
+	const sfxChosen = !isQiyuan || hasChosenSfx;
+
+	// BGM 播放：选择后才播放
+	useEffect(() => {
+		if (!sfxChosen) return;
+		if (scene.bgm && bgmEnabled) playTrack(scene.bgm);
+	}, [scene.bgm, playTrack, sfxChosen, bgmEnabled]);
+
+	useEffect(() => {
+		return () => stopBgm();
+	}, [stopBgm]);
+
+	// 新手指引自动关闭
+	useEffect(() => {
+		if (!showSfxGuide) return;
+		const id = window.setTimeout(() => setShowSfxGuide(false), 6500);
+		return () => window.clearTimeout(id);
+	}, [showSfxGuide]);
+
+	// 新手指引：计算音效开关按钮位置（带 DOM fallback 与重试）
+	useLayoutEffect(() => {
+		if (!showSfxGuide) return;
+		let raf = 0;
+		function measure() {
+			const btn =
+				sfxBtnRef.current ??
+				(document.querySelector('[aria-label="音效开关"]') as HTMLButtonElement | null);
+			if (!btn) {
+				raf = requestAnimationFrame(measure);
+				return;
+			}
+			const rect = btn.getBoundingClientRect();
+			if (rect.width === 0 || rect.height === 0) {
+				raf = requestAnimationFrame(measure);
+				return;
+			}
+			setSfxGuideRect({
+				top: rect.top,
+				left: rect.left,
+				width: rect.width,
+				height: rect.height,
+			});
+		}
+		measure();
+		window.addEventListener("resize", measure);
+		const id = window.setInterval(measure, 300);
+		return () => {
+			cancelAnimationFrame(raf);
+			window.removeEventListener("resize", measure);
+			window.clearInterval(id);
+		};
+	}, [showSfxGuide]);
+
+	// 按钮 ref callback：只要按钮存在就立即记录位置，避免首次测量失败
+	const sfxBtnRefCallback = useCallback((node: HTMLButtonElement | null) => {
+		sfxBtnRef.current = node;
+		if (!node) return;
+		const rect = node.getBoundingClientRect();
+		setSfxGuideRect((prev) =>
+			prev ?? {
+				top: rect.top,
+				left: rect.left,
+				width: rect.width,
+				height: rect.height,
+			},
+		);
+	}, []);
 	const { textSpeed, setTextSpeed, autoPlay, toggleAutoPlay, isClassicalHintOpen, setClassicalHint } =
 		usePlayStore();
 	const markSourceRead = useUserStore((s) => s.markSourceRead);
@@ -133,6 +230,13 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	}
 
 	const bg = getBackground(scene.background);
+	const guideRect =
+		sfxGuideRect ?? {
+			top: 70,
+			left: typeof window !== "undefined" ? window.innerWidth - 70 : 0,
+			width: 38,
+			height: 38,
+		};
 	const atChoicePoint = dialogueDone && !state.death && !state.ended && state.choices.length > 0;
 	const showHintButton = !state.death && !state.ended && (!isCanon || !atChoicePoint);
 	const hintText = state.death?.classical ?? state.hint ?? "";
@@ -140,6 +244,15 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const showClear = state.ended && clearShown;
 	const persp = getPerspective(storyId, charId);
 	const visibleSegments = state.segments.filter((s) => s.text.length > 0);
+
+	const systemCharacters = Object.entries(scene.characters).filter(
+		([, c]) => c.position === "float",
+	);
+	const stageCharacters = Object.entries(scene.characters).filter(
+		([, c]) => c.position !== "float",
+	);
+	const showSystemChar = systemCharacters.length > 0 && visibleSegments.length > 0 && !state.death && !state.ended;
+	const systemSpeaking = systemCharacters.some(([id]) => getSprite(id).name === activeSpeaker);
 
 	async function askAi() {
 		setAiOpen(true);
@@ -161,7 +274,8 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	}
 
 	function handleWrapClick() {
-		if (aiOpen || isClassicalHintOpen || actClearVisible || state!.minigame) return;
+		if (!sfxChosen) return;
+		if (aiOpen || isClassicalHintOpen || actClearVisible || showSfxGuide || state!.minigame) return;
 		if (state!.ended || state!.death) return;
 		if (state!.choices.length > 0 && dialogueDone) return;
 		if (!dialogueDone) return;
@@ -175,19 +289,55 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 		setDialogueDone(false);
 	}
 
+	function handleSfxChoice(enable: boolean) {
+		setSfxEnabled(enable);
+		setHasChosenSfx(true);
+		try {
+			localStorage.setItem("cysj-sfx-chosen", "true");
+		} catch {
+			/* ignore */
+		}
+		if (enable) {
+			setBgmEnabled(true);
+			setShowSfxGuide(true);
+		} else {
+			setBgmEnabled(false);
+		}
+	}
+
+	function closeSfxGuide() {
+		setShowSfxGuide(false);
+	}
+
+	function handleSfxBtnClick(e: React.MouseEvent) {
+		e.stopPropagation();
+		toggleSfx();
+		if (!isQiyuan) return;
+		sfxClickCountRef.current += 1;
+		if (sfxClickTimerRef.current) window.clearTimeout(sfxClickTimerRef.current);
+		sfxClickTimerRef.current = window.setTimeout(() => {
+			sfxClickCountRef.current = 0;
+		}, 1200);
+		if (sfxClickCountRef.current >= 5) {
+			sfxClickCountRef.current = 0;
+			if (sfxClickTimerRef.current) window.clearTimeout(sfxClickTimerRef.current);
+			try {
+				localStorage.removeItem("cysj-sfx-chosen");
+			} catch {
+				/* ignore */
+			}
+			setHasChosenSfx(false);
+			stopBgm();
+		}
+	}
+
 	return (
 		<div className="vn-screen" onClick={handleWrapClick}>
-			{bg.image ? (
-				<div key={scene.background} className="vn-bg vn-bg-image">
-					<img src={bg.image} alt={bg.label || ""} />
-				</div>
-			) : (
-				<div key={scene.background} className="vn-bg" style={{ background: bg.css }} />
-			)}
+			<SceneBackground bg={bg} bgKey={scene.background} />
 			{bg.label && <div className="vn-bg-label">{bg.label}</div>}
 
 			<div className="vn-sprites">
-				{Object.entries(scene.characters).map(([id, c]) => (
+				{stageCharacters.map(([id, c]) => (
 					<CharacterSprite
 						key={id}
 						id={id}
@@ -199,7 +349,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 			</div>
 
 			<div className="vn-topbar">
-				<button className="vn-icon-btn" onClick={(e) => { e.stopPropagation(); navigate("/story"); }} aria-label="返回">
+				<button className="vn-icon-btn" data-tip="返回故事选择" onClick={(e) => { e.stopPropagation(); navigate("/story"); }} aria-label="返回故事选择">
 					<ArrowLeft size={18} />
 				</button>
 				<div className="title">
@@ -210,45 +360,105 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 				{showHintButton && hintText && (
 					<button
 						className={`vn-icon-btn${isClassicalHintOpen ? " active" : ""}`}
+						data-tip="原文提示"
 						onClick={(e) => { e.stopPropagation(); setClassicalHint(!isClassicalHintOpen); }}
 						aria-label="原文提示"
-						title="原文提示"
 					>
 						<ScrollText size={18} />
 					</button>
 				)}
 				<button
 					className={`vn-icon-btn${autoPlay ? " active" : ""}`}
+					data-tip={autoPlay ? "停止自动播放" : "自动播放"}
 					onClick={(e) => { e.stopPropagation(); toggleAutoPlay(); }}
 					aria-label="自动播放"
-					title="自动播放"
 				>
 					{autoPlay ? <Pause size={18} /> : <PlayIcon size={18} />}
 				</button>
-				<button className="vn-icon-btn" onClick={(e) => { e.stopPropagation(); cycleSpeed(); }} title="文字速度" aria-label="文字速度">
+				<button className="vn-icon-btn" data-tip="文字速度" onClick={(e) => { e.stopPropagation(); cycleSpeed(); }} aria-label="文字速度">
 					<Gauge size={18} />
 					<span style={{ fontSize: 11, marginLeft: 2 }}>{SPEED_LABEL[textSpeed]}</span>
 				</button>
 				<button
-					className="vn-icon-btn"
+					ref={sfxBtnRefCallback}
+					className={`vn-icon-btn${sfxEnabled ? "" : " muted"}`}
+					data-tip={sfxEnabled ? "关闭音效" : "开启音效"}
 					data-no-sfx
-					onClick={(e) => { e.stopPropagation(); toggleSfx(); }}
-					title={sfxEnabled ? "关闭音效" : "开启音效"}
+					onClick={handleSfxBtnClick}
 					aria-label="音效开关"
 				>
 					{sfxEnabled ? <Volume2 size={18} /> : <VolumeX size={18} />}
 				</button>
+				<button
+					className={`vn-icon-btn${bgmEnabled ? "" : " muted"}`}
+					data-tip={bgmEnabled ? "关闭音乐" : "开启音乐"}
+					data-no-sfx
+					onClick={(e) => {
+						e.stopPropagation();
+						const next = !bgmEnabled;
+						setBgmEnabled(next);
+						if (next) resumeBgm(); else pauseBgm();
+					}}
+					aria-label="音乐开关"
+				>
+					{bgmEnabled ? <Music2 size={18} /> : <Music size={18} />}
+				</button>
 			</div>
 
 			{visibleSegments.length > 0 && !state.death && !state.ended && (
-				<DialogueBox
-					key={state.nodeId + "-" + visibleSegments.length}
-					segments={visibleSegments}
-					onComplete={() => setDialogueDone(true)}
-					onActiveSpeaker={setActiveSpeaker}
-					onOpenHint={() => setClassicalHint(true)}
-					hideHint={isCanon && state.choices.length > 0}
-				/>
+				<div className="vn-dialogue-wrap">
+					<DialogueBox
+						key={state.nodeId + "-" + visibleSegments.length}
+						segments={visibleSegments}
+						onComplete={() => setDialogueDone(true)}
+						onActiveSpeaker={setActiveSpeaker}
+						onOpenHint={() => setClassicalHint(true)}
+						hideHint={isCanon && state.choices.length > 0}
+					/>
+				</div>
+			)}
+
+			{/* 青月问语：是否开启音效 */}
+			{!sfxChosen && (
+				<div
+					className="sfx-intro-overlay"
+					onClick={(e) => e.stopPropagation()}
+					onMouseDown={(e) => e.stopPropagation()}
+				>
+					<div className="vn-choices sfx-intro-choices">
+						<div className="prompt">— 青月问语 —</div>
+						<button
+							className="choice-btn"
+							style={{ animationDelay: "0ms" }}
+							onClick={(e) => { e.stopPropagation(); handleSfxChoice(false); }}
+							onMouseDown={(e) => e.stopPropagation()}
+						>
+							默认关闭音效
+						</button>
+						<button
+							className="choice-btn primary"
+							style={{ animationDelay: "var(--stagger)" }}
+							onClick={(e) => { e.stopPropagation(); handleSfxChoice(true); }}
+							onMouseDown={(e) => e.stopPropagation()}
+						>
+							开启音效（沉浸感更强哦）
+						</button>
+					</div>
+				</div>
+			)}
+
+			{showSystemChar && (
+				<div className={`vn-system-char${systemSpeaking ? " speaking" : ""}`}>
+					{systemCharacters.map(([id, c]) => (
+						<CharacterSprite
+							key={id}
+							id={id}
+							position="float"
+							speaking={getSprite(id).name === activeSpeaker}
+							expression={c.expression}
+						/>
+					))}
+				</div>
 			)}
 
 			{showChoices && (
@@ -325,6 +535,49 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 				text={hintText || "（此处暂无原文提示）"}
 			/>
 			<AiHintModal open={aiOpen} onClose={() => setAiOpen(false)} loading={aiLoading} hint={aiHint} />
+
+			{/* 青月式新手指引：高亮音效开关 */}
+			{showSfxGuide && (
+				<div className="sfx-guide-overlay" onClick={closeSfxGuide}>
+					<div
+						className="sfx-guide-spotlight"
+						style={{
+							top: guideRect.top + guideRect.height / 2,
+							left: guideRect.left + guideRect.width / 2,
+						}}
+					>
+						<div className="sfx-guide-pulse" />
+						<div className="sfx-guide-ring" />
+					</div>
+					{(() => {
+						const cx = guideRect.left + guideRect.width / 2;
+						const cy = guideRect.top + guideRect.height / 2;
+						const bubbleW = Math.min(280, window.innerWidth * 0.72);
+						const bubbleLeft = Math.max(24, cx - bubbleW + 32);
+						const bubbleTop = cy + 96;
+						const endX = bubbleLeft + bubbleW - 48;
+						const endY = bubbleTop + 6;
+						return (
+							<>
+								<svg className="sfx-guide-svg">
+									<line x1={cx} y1={cy + 28} x2={endX} y2={endY} />
+									<circle cx={endX} cy={endY} r={3} />
+								</svg>
+								<div
+									className="sfx-guide-bubble"
+									style={{ top: bubbleTop, left: bubbleLeft, width: bubbleW }}
+								>
+									<div className="sfx-guide-bubble-title">青月的小提示</div>
+									<div className="sfx-guide-bubble-text">
+										游戏中可自行打开或关闭音效，点击右上角这个开关即可。
+									</div>
+									<div className="sfx-guide-bubble-foot">点击任意处继续</div>
+								</div>
+							</>
+						);
+					})()}
+				</div>
+			)}
 		</div>
 	);
 }

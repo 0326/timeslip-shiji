@@ -113,7 +113,7 @@
 #bg:yao_court
 #show:shun:calm:center
 「授舜。」你只说了两个字，像放下了一副挑了七十年的担子。 #speaker:尧
-「终不以天下之病，而利一人。」 #speaker:尧 #hint:尧曰：终不以天下之病而利一人。
+「终不以天下之病，而利一人。」 #speaker:尧 #hint:尧曰：终不以天下之病而利一人。 #impact:impact_shanrang_tianxiaweigong
 你越过了为父的私心。你举舜于上天，令他摄行天子之政，二十八载而后你崩。 #speaker:青月 #hint:尧辟位凡二十八年而崩。
 #show:qingyue:sad:float
 你去世那日，百姓悲哀，如丧父母。三年之中，四方莫举乐，人人思念着你这位放勋。 #speaker:青月 #hint:百姓悲哀，如丧父母。三年，四方莫举乐，以思尧。

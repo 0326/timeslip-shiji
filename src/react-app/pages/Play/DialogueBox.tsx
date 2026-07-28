@@ -30,17 +30,18 @@ export function DialogueBox({ segments, onComplete, onActiveSpeaker, onOpenHint,
 		setDone(false);
 		let i = 0;
 		const speed = SPEED[textSpeed] ?? 28;
+		const text = seg.text;
 		const timer = window.setInterval(() => {
 			i++;
-			setShown(seg.text.slice(0, i));
-			if (i >= seg.text.length) {
+			setShown(text.slice(0, i));
+			if (i >= text.length) {
 				window.clearInterval(timer);
 				setDone(true);
 			}
 		}, speed);
 		return () => window.clearInterval(timer);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [idx, textSpeed, segments]);
+	}, [idx, textSpeed, seg?.text]);
 
 	// 自动播放
 	useEffect(() => {

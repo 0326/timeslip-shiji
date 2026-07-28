@@ -1,10 +1,9 @@
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Play, Sparkles, BookOpen, Lock } from "lucide-react";
+import { ArrowLeft, Play, Sparkles, BookOpen } from "lucide-react";
 import "./StorySelect.css";
 import { STORYLINES } from "../../data/storylines";
 import { useUserStore } from "../../store/userStore";
-import { useUiStore } from "../../store/uiStore";
 import { SERIES } from "../../data/series";
 import type { Storyline } from "../../types/story";
 
@@ -32,7 +31,6 @@ export function StorySelectPage() {
 	// 游戏模式（canon=正史 默认 / free=自由），随入口透传给 PlayPage
 	const mode = searchParams.get("mode") === "free" ? "free" : "canon";
 	const getPerspective = useUserStore((s) => s.getPerspective);
-	const pushToast = useUiStore((s) => s.pushToast);
 
 	// 按系列分组故事线（按 order 顺序解锁：需前一个有内容的系列全通关才开启下一个）
 	const storiesBySeries = useMemo(() => {
@@ -96,7 +94,7 @@ export function StorySelectPage() {
 				<div className="ss-series-grid">
 					{storiesBySeries.map((series, idx) => {
 						// 展示为锁定：无内容 或 顺序未解锁
-						const locked = series.contentLocked || series.seqLocked;
+						const locked = series.contentLocked; // 全章节解锁：仅保留无内容禁用
 						const progressPct =
 							series.progress.total > 0
 								? Math.round(
@@ -107,21 +105,12 @@ export function StorySelectPage() {
 						return (
 							<button
 								key={series.id}
-								className={`game-card ss-series-card ${locked ? "is-locked" : ""} ${series.seqLocked ? "seq-locked" : ""}`}
+								className={`game-card ss-series-card ${locked ? "is-locked" : ""}`}
 								onClick={() => {
 									if (series.contentLocked) return;
-									if (series.seqLocked) {
-										pushToast({
-											kind: "info",
-											title: "尚未解锁",
-											subtitle: "通关前一篇章后开启本篇",
-											icon: "🔒",
-										});
-										return;
-									}
 									openSeries(series.id);
 								}}
-								// 顺序未解锁需可点击给提示，仅"敬请期待"真正禁用
+								// 仅"敬请期待"真正禁用
 								disabled={series.contentLocked}
 								style={
 									{
@@ -137,25 +126,21 @@ export function StorySelectPage() {
 								<div className="ss-series-card-glow" />
 								<div className="ss-series-card-inner">
 									<div className="ss-series-card-header">
-										<div className="ss-series-card-glyph">{series.glyph}</div>
-										{series.comingSoon ? (
-											<span className="badge">敬请期待</span>
-										) : series.seqLocked ? (
-											<span className="badge ss-lock-badge">
-												<Lock size={11} /> 未解锁
-											</span>
-										) : (
-											<span className="ss-series-count">
-												{series.progress.completed}/{series.progress.total} 篇章
-											</span>
-										)}
-									</div>
-									<div className="ss-series-card-body">
-										<h2 className="ss-series-card-name">{series.name}</h2>
-										<p className="ss-series-card-tagline">
-											{series.seqLocked ? "通关前一篇章后解锁" : series.tagline}
-										</p>
-									</div>
+									<div className="ss-series-card-glyph">{series.glyph}</div>
+									{series.comingSoon ? (
+										<span className="badge">敬请期待</span>
+									) : (
+										<span className="ss-series-count">
+											{series.progress.completed}/{series.progress.total} 篇章
+										</span>
+									)}
+								</div>
+								<div className="ss-series-card-body">
+									<h2 className="ss-series-card-name">{series.name}</h2>
+									<p className="ss-series-card-tagline">
+										{series.tagline}
+									</p>
+								</div>
 									{!locked && (
 										<div className="ss-series-card-footer">
 											<div className="ss-progress">

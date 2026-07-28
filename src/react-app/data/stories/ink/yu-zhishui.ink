@@ -161,7 +161,7 @@
 「你走完了他这十三年。」 #speaker:青月
 「你知道最疼的是哪一处吗？不是风雨，不是泥水。是三过家门，听见孩子哭、看见孩子长大，却一次都没能进去。」 #speaker:青月
 #show:qingyue:calm:float
-「他不是不想家。是把一个『家』，换成了天下万家的安宁。」 #speaker:青月
+「他不是不想家。是把一个『家』，换成了天下万家的安宁。」 #speaker:青月 #impact:impact_zhishui_sanguo
 #show:qingyue:smile:float
 「呼——玄圭在手，你就是禹了。看懂了吗？改堵为疏，是智；三过不入，是仁。少一样，这滔天的水，都到不了尽头呀。」 #speaker:青月 #ending:canon
 #hide:siyue

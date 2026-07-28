@@ -24,6 +24,19 @@ import yuShouchanSource from "../ink/yu-shouchan.ink?raw";
 import qiGanzhizhanSource from "../ink/qi-ganzhizhan.ink?raw";
 import jieWangguoSource from "../ink/jie-wangguo.ink?raw";
 
+// 番外 · NPC视角
+import extraLeizuSource from "../ink/extras/extra-leizu.ink?raw";
+import extraCangjieSource from "../ink/extras/extra-cangjie.ink?raw";
+import extraXuyouSource from "../ink/extras/extra-xuyou.ink?raw";
+import extraGaoyaoSource from "../ink/extras/extra-gaoyao.ink?raw";
+import extraTushanSource from "../ink/extras/extra-tushan.ink?raw";
+
+// 番外 · 侧面叙述（NPC/百姓视角）
+import extraBanquanFarmerSource from "../ink/extras/extra-banquan-farmer.ink?raw";
+import extraZhuoluJiuliSource from "../ink/extras/extra-zhuolu-jiuli.ink?raw";
+import extraZhitianxiaBorderSource from "../ink/extras/extra-zhitianxia-border.ink?raw";
+import extraZhitianxiaPeasantSource from "../ink/extras/extra-zhitianxia-peasant.ink?raw";
+
 /**
  * Ink story registry.
  * Key convention: "<storyKey>:<chapter>" for individual chapters,
@@ -119,12 +132,18 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你活得干净，天下却少了一个源头——没有共主，也就没有『黄帝』。",
 			},
 			if_zhuyan: {
-				title: "以杀合天下",
-				kind: "if",
-				epigraph: "以杀合来的天下，握得越紧，凉得越快。",
-			},
+			title: "以杀合天下",
+			kind: "if",
+			epigraph: "以杀合来的天下，握得越紧，凉得越快。",
 		},
 	},
+	impacts: {
+		impact_banquan_yanhuang: {
+			title: "炎黄子孙",
+			content: "你让炎帝归入旗下，两族血脉合流。从此，后世每一个人都自称炎黄子孙——这个选择，定义了一个民族的名字。",
+		},
+	},
+},
 	"huangdi:zhuolu": {
 		key: "huangdi:zhuolu",
 		title: "黄帝 · 涿鹿擒蚩尤",
@@ -162,12 +181,18 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "仁厚用错了地方，比暴虐更误天下——天下记住的，是一个坐失天时的轩辕。",
 			},
 			if_tuli: {
-				title: "屠尽九黎",
-				kind: "if",
-				epigraph: "你能『定乱』，也会『杀绝』——九黎绝了后，你的德也绝了根。",
-			},
+			title: "屠尽九黎",
+			kind: "if",
+			epigraph: "你能『定乱』，也会『杀绝』——九黎绝了后，你的德也绝了根。",
 		},
 	},
+	impacts: {
+		impact_zhuolu_zhengshi: {
+			title: "天下共主",
+			content: "你不是靠一人之力，是把天下的力气合到了一处。从此，「天子」二字有了模样——合诸侯之力以定乱，是华夏共主的第一义。",
+		},
+	},
+},
 	"huangdi:zhitianxia": {
 		key: "huangdi:zhitianxia",
 		title: "黄帝 · 垂衣治天下",
@@ -199,12 +224,18 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你少走的那些路，就是史书上少掉的那些疆土。",
 			},
 			if_lichu: {
-				title: "预行家天下",
-				kind: "if",
-				epigraph: "你护住了一姓，误了一段本该更长的圣王之世——传贤的血脉，从你这里断了苗头。",
-			},
+			title: "预行家天下",
+			kind: "if",
+			epigraph: "你护住了一姓，误了一段本该更长的圣王之世——传贤的血脉，从你这里断了苗头。",
 		},
 	},
+	impacts: {
+		impact_zhitianxia_xunfang: {
+			title: "巡方之德",
+			content: "坐等人拜的天子，德就凉了。你用足迹丈量天下，把德走出深宫、送进万国——华夏的共主，从此不是坐在城里的王，而是走在路上的圣。",
+		},
+	},
+},
 	"zhuanxu:diku": {
 		key: "zhuanxu:diku",
 		title: "颛顼帝喾 · 承天执中",
@@ -408,12 +439,18 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你两全了父子，却没能两全天下——禅让这杆秤，被你悄悄压偏了一分。",
 			},
 			if_siqing: {
-				title: "私盼骨血",
-				kind: "if",
-				epigraph: "你动过那个念，也没让它做数——正因它没被应许，你才成全了『终不以天下之病而利一人』。",
-			},
+			title: "私盼骨血",
+			kind: "if",
+			epigraph: "你动过那个念，也没让它做数——正因它没被应许，你才成全了『终不以天下之病而利一人』。",
 		},
 	},
+	impacts: {
+		impact_shanrang_tianxiaweigong: {
+			title: "天下为公",
+			content: "你把父爱让给了更大的一份。华夏的禅让，从你开始——「终不以天下之病而利一人」，这句话被后世记了三千年。",
+		},
+	},
+},
 	"shun:liuxiong": {
 		key: "shun:liuxiong",
 		title: "舜 · 流放四凶",
@@ -616,12 +653,18 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "那个『随山浚川』的法子只在你心里，你不去，它就永远只是个念头——洪水没等来它的禹。",
 			},
 			if_yangshen: {
-				title: "养身缓治",
-				kind: "if",
-				epigraph: "你留了些给自己，天下就多等了几年——这份自苦，别人学不来，才叫大禹。",
-			},
+			title: "养身缓治",
+			kind: "if",
+			epigraph: "你留了些给自己，天下就多等了几年——这份自苦，别人学不来，才叫大禹。",
 		},
 	},
+	impacts: {
+		impact_zhishui_sanguo: {
+			title: "九州攸同",
+			content: "你把一个「家」，换成了天下万家的安宁。三过家门而不入——这份自苦，后人学不来，才叫大禹。",
+		},
+	},
+},
 	"yu:shouchan": {
 		key: "yu:shouchan",
 		title: "禹会涂山 · 受禅即位",
@@ -737,6 +780,98 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				kind: "if",
 				epigraph: "你把一个必亡的残局，重新走成了一个悬而未决的开局——禹的江山没有断在你手里，这一次。",
 			},
+		},
+	},
+	// ═══ 番外 · NPC视角 ═══
+	"extra:leizu": {
+		key: "extra:leizu",
+		title: "番外 · 嫘祖养蚕",
+		source: extraLeizuSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "丝暖天下", kind: "canon", epigraph: "轩辕打天下，嫘祖暖天下。" },
+		},
+	},
+	"extra:cangjie": {
+		key: "extra:cangjie",
+		title: "番外 · 仓颉造字",
+		source: extraCangjieSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "天雨粟，鬼夜哭", kind: "canon", epigraph: "有了字，人就能记事——记下善，也记下恶。" },
+		},
+	},
+	"extra:xuyou": {
+		key: "extra:xuyou",
+		title: "番外 · 许由洗耳",
+		source: extraXuyouSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "出尘高士", kind: "canon", epigraph: "有人求天下不得，有人避天下如避祸。" },
+		},
+	},
+	"extra:gaoyao": {
+		key: "extra:gaoyao",
+		title: "番外 · 皋陶断狱",
+		source: extraGaoyaoSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "平如水", kind: "canon", epigraph: "法字旁边是水——平如水。" },
+		},
+	},
+	"extra:tushan": {
+		key: "extra:tushan",
+		title: "番外 · 涂山氏望夫",
+		source: extraTushanSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "十三年等", kind: "canon", epigraph: "她嫁的，就是那个肯把命填进水里的人。" },
+		},
+	},
+	// ═══ 番外 · 侧面叙述（NPC/百姓视角）═══
+	"extra:banquan-farmer": {
+		key: "extra:banquan-farmer",
+		title: "侧面 · 阪泉之后的农夫",
+		source: extraBanquanFarmerSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "修德落在田埂上", kind: "canon", epigraph: "政策的每一个字，底下都压着一个人的日子。" },
+		},
+	},
+	"extra:zhuolu-jiuli": {
+		key: "extra:zhuolu-jiuli",
+		title: "侧面 · 涿鹿之后的九黎人",
+		source: extraZhuoluJiuliSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "铸刀变铸锄", kind: "canon", epigraph: "杀一个首领只要一刀，安一族的百姓却要一辈子的功夫。" },
+		},
+	},
+	"extra:zhitianxia-border": {
+		key: "extra:zhitianxia-border",
+		title: "侧面 · 东海边的渔翁",
+		source: extraZhitianxiaBorderSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "德落到海边", kind: "canon", epigraph: "德这东西，不走出去，就只在竹简上。" },
+		},
+	},
+	"extra:zhitianxia-peasant": {
+		key: "extra:zhitianxia-peasant",
+		title: "侧面 · 顺天时的农人",
+		source: extraZhitianxiaPeasantSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "碗里多了一口粮", kind: "canon", epigraph: "治国治到百姓碗里多了一口粮，这才算落了地。" },
 		},
 	},
 };

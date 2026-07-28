@@ -6,7 +6,7 @@ export type VarValue = number | boolean | string;
 /** 变量变更：直接赋值，或 { inc } 自增 */
 export type VarMutation = Record<string, VarValue | { inc: number }>;
 
-export type Position = "left" | "center" | "right";
+export type Position = "left" | "center" | "right" | "float";
 
 /** 节点内按序执行的内容项 */
 export type ContentItem =
@@ -82,6 +82,8 @@ export interface StoryState {
 	actClear?: { actName: string; actIndex: number };
 	/** 小游戏触发：段中遇到 #minigame:id[:param] 时暂停叙事，由 GameHost 托管 */
 	minigame?: { id: string; param?: string };
+	/** 历史影响标注卡片：段中遇到 #impact:ID 时弹出，展示该选择的历史意义 */
+	impact?: { title: string; content: string };
 }
 
 export interface SceneCharacter {

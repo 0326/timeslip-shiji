@@ -21,6 +21,7 @@ import type {
 	StoryState,
 	Vars,
 } from "./types";
+import { bgmMatcher } from "../lib/bgmMatcher";
 
 /** Death registry entry: maps a deathId (from #death:ID tag) to full death info */
 export interface DeathEntry {
@@ -37,6 +38,14 @@ export interface EndingEntry {
 	kind: "canon" | "if";
 	/** 判词/结语：一句余味收束（通关屏引用展示） */
 	epigraph?: string;
+}
+
+/** Impact registry entry: maps an impactId (from #impact:ID tag) to display info */
+export interface ImpactEntry {
+	/** 卡片标题（如「炎黄子孙」） */
+	title: string;
+	/** 卡片内容：该选择的历史意义解读 */
+	content: string;
 }
 
 /**
@@ -57,6 +66,8 @@ export interface InkStoryConfig {
 	deaths: Record<string, DeathEntry>;
 	/** Ending registry: maps endingId → EndingEntry（#ending:ID 的文案单一数据源） */
 	endings?: Record<string, EndingEntry>;
+	/** Impact registry: maps impactId → ImpactEntry（#impact:ID 的文案单一数据源） */
+	impacts?: Record<string, ImpactEntry>;
 }
 
 /** Adapter behaviour options (mode-dependent game rules). */
@@ -93,6 +104,7 @@ const STRICT_DEATH_ANALYSIS =
  *   - #correct                                            → marks a choice as historically correct
  *   - #death:ID                                           → triggers death state (ID looks up in deaths registry)
  *   - #achieve:ID                                         → fires onAchievement callback
+ *   - #impact:ID                                          → displays historical impact card (looks up in impacts registry)
  *   - Choice tags go BEFORE the choice text:  * #correct [Choice text] -> target
  */
 export class ShijiInkAdapter implements IStoryRunner {
@@ -123,6 +135,8 @@ export class ShijiInkAdapter implements IStoryRunner {
 	private endingId?: string;
 	// 最近一次触发的小游戏（buildState 消费后即清）
 	private pendingMinigame: { id: string; param?: string } | null = null;
+	// 最近一次触发的历史影响卡片（buildState 消费后即清）
+	private pendingImpact: { title: string; content: string } | null = null;
 
 	constructor(config: InkStoryConfig, cb: EngineCallbacks = {}, opts: AdapterOptions = {}) {
 		this.config = config;
@@ -150,9 +164,14 @@ export class ShijiInkAdapter implements IStoryRunner {
 		// probing 期间（严格模式前瞻探测）全部静默，防止探测分支污染舞台与统计。
 		const inkCallbacks: InkStageCallbacks = {
 			onBackground: (bg) => {
-				if (this.probing) return;
-				this.cb.onBackground?.(bg);
-			},
+			if (this.probing) return;
+			this.cb.onBackground?.(bg);
+			// 场景切换时立即播放该场景的BGM
+			const sceneTrackId = bgmMatcher.setScene(bg);
+			if (sceneTrackId) {
+				this.cb.onBGM?.(sceneTrackId);
+			}
+		},
 			onShowCharacter: (id, expr, pos) => {
 				if (this.probing) return;
 				this.cb.onShowCharacter?.(id, expr ?? "default", pos);
@@ -162,12 +181,11 @@ export class ShijiInkAdapter implements IStoryRunner {
 				this.cb.onHideCharacter?.(id);
 			},
 			onBGM: (track) => {
-				if (this.probing) return;
-				this.cb.onBGM?.(track);
-			},
+			if (this.probing) return;
+			this.cb.onBGM?.(track);
+		},
 			onChoice: (choice, _index) => {
 				if (this.probing) return;
-				// Choice selected → increment stats
 				this.vars._choices = (this.vars._choices as number) + 1;
 				if (choice.meta.correct) {
 					this.vars._correct = (this.vars._correct as number) + 1;
@@ -339,6 +357,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.actIndex = 0;
 		this.pendingActClear = null;
 		this.pendingMinigame = null;
+		this.pendingImpact = null;
 		this.endingAchievement = undefined;
 		this.endingId = undefined;
 		this.syncInkVarsToStats();
@@ -404,6 +423,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.endingId = undefined;
 		this.pendingActClear = null;
 		this.pendingMinigame = null;
+		this.pendingImpact = null;
 	}
 
 	/**
@@ -441,6 +461,12 @@ export class ShijiInkAdapter implements IStoryRunner {
 					this.pendingMinigame = { id: raw };
 				} else {
 					this.pendingMinigame = { id: raw.slice(0, colon), param: raw.slice(colon + 1) };
+				}
+			}
+			if (seg.meta.impact && typeof seg.meta.impact === "string" && !this.probing) {
+				const entry = this.config.impacts?.[seg.meta.impact];
+				if (entry) {
+					this.pendingImpact = { title: entry.title, content: entry.content };
 				}
 			}
 		}
@@ -509,10 +535,8 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.pendingActClear = null;
 
 		const minigame = this.pendingMinigame ?? undefined;
-		// 注意：pendingMinigame 不在这里清空——UI 还需要读取它来挂载 GameHost。
-		// 清空时机：UI 调用 completeMinigame() 后，advance 开头 resetPerTurnState 清空。
+		const impact = this.pendingImpact ?? undefined;
 
-		// 结局信息：#ending:ID 查注册表；未注册/未标注时按 #achieve 回退推断类型
 		let ending: StoryState["ending"];
 		if (ended) {
 			const id = this.endingId;
@@ -529,6 +553,18 @@ export class ShijiInkAdapter implements IStoryRunner {
 			}
 		}
 
+		for (const seg of output.segments) {
+			if (seg.text && !this.probing) {
+				const match = bgmMatcher.match(seg.text, seg.speaker);
+				if (match) {
+					const trackId = bgmMatcher.switchTo(match.mood, match.strong);
+					if (trackId) {
+						this.cb.onBGM?.(trackId);
+					}
+				}
+			}
+		}
+
 		return {
 			nodeId: this.currentNodeId(output),
 			segments,
@@ -541,6 +577,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 			ending,
 			actClear,
 			minigame,
+			impact,
 		};
 	}
 
