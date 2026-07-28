@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { sfx } from "../lib/sfx";
 
 const BGM_STORAGE_KEY = "cysj-bgm";
-const SFX_CHOSEN_KEY = "cysj-sfx-chosen";
 
 export interface ToastItem {
 	id: number;
@@ -28,22 +27,6 @@ function writeBgmEnabled(on: boolean) {
 	}
 }
 
-function readSfxChosen(): boolean {
-	try {
-		return sessionStorage.getItem(SFX_CHOSEN_KEY) === "true";
-	} catch {
-		return false;
-	}
-}
-
-function writeSfxChosen(chosen: boolean) {
-	try {
-		sessionStorage.setItem(SFX_CHOSEN_KEY, chosen ? "true" : "false");
-	} catch {
-		/* ignore */
-	}
-}
-
 interface UiStore {
 	toasts: ToastItem[];
 	pushToast: (t: Omit<ToastItem, "id">) => void;
@@ -61,9 +44,6 @@ interface UiStore {
 	bgmEnabled: boolean;
 	toggleBgm: () => void;
 	setBgmEnabled: (on: boolean) => void;
-	// 音效引导：是否已做过首次选择
-	hasChosenSfx: boolean;
-	markSfxChosen: () => void;
 }
 
 let seq = 1;
@@ -103,11 +83,5 @@ export const useUiStore = create<UiStore>((set) => ({
 		set(() => {
 			writeBgmEnabled(on);
 			return { bgmEnabled: on };
-		}),
-	hasChosenSfx: readSfxChosen(),
-	markSfxChosen: () =>
-		set(() => {
-			writeSfxChosen(true);
-			return { hasChosenSfx: true };
 		}),
 }));
