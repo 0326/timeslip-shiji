@@ -75,7 +75,7 @@ export function ClearScreen({ storyId, storyTitle, deaths, choiceRate, isCanon, 
 						)}
 						<button
 							className="clear-ending-goto"
-							onClick={() => navigate("/codex/endings")}
+							onClick={() => navigate("/codex")}
 						>
 							<Compass size={13} /> 查看结局图鉴
 						</button>

@@ -26,6 +26,8 @@ interface Props {
 	cleared?: boolean;
 	/** 触发震动（每次变化即震一次） */
 	shakeKey?: string | number;
+	/** 禁用粒子与雾（用于静态图片/视频场景，避免效果堆叠） */
+	disableParticles?: boolean;
 }
 
 interface Particle {
@@ -78,7 +80,7 @@ function lerpColor(a: [number, number, number], b: [number, number, number], t: 
 	return [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
 }
 
-export function DynamicScene({ backgroundKey, backgroundImage, backgroundCss: _backgroundCss, death, cleared, shakeKey }: Props) {
+export function DynamicScene({ backgroundKey, backgroundImage, backgroundCss: _backgroundCss, death, cleared, shakeKey, disableParticles }: Props) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const bgImgRef = useRef<HTMLImageElement | null>(null);
 	const rafRef = useRef(0);
@@ -236,85 +238,89 @@ export function DynamicScene({ backgroundKey, backgroundImage, backgroundCss: _b
 			}
 			ctx.restore();
 
-			// ========== 2. 体积雾层 ==========
-			const fogAlpha = Math.min(0.6, sm.fogDensity * 12);
-			if (fogAlpha > 0.02) {
-				const fg = ctx.createRadialGradient(W / 2, H * 0.5, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
-				fg.addColorStop(0, "transparent");
-				fg.addColorStop(0.6, `rgba(${Math.round(sm.fogColor[0] * 255)},${Math.round(sm.fogColor[1] * 255)},${Math.round(sm.fogColor[2] * 255)},${fogAlpha * 0.5})`);
-				fg.addColorStop(1, `rgba(${Math.round(sm.fogColor[0] * 255)},${Math.round(sm.fogColor[1] * 255)},${Math.round(sm.fogColor[2] * 255)},${fogAlpha})`);
-				ctx.fillStyle = fg;
-				ctx.fillRect(0, 0, W, H);
+			// ========== 2. 体积雾层（仅未禁用粒子时） ==========
+			if (!disableParticles) {
+				const fogAlpha = Math.min(0.6, sm.fogDensity * 12);
+				if (fogAlpha > 0.02) {
+					const fg = ctx.createRadialGradient(W / 2, H * 0.5, 0, W / 2, H / 2, Math.max(W, H) * 0.7);
+					fg.addColorStop(0, "transparent");
+					fg.addColorStop(0.6, `rgba(${Math.round(sm.fogColor[0] * 255)},${Math.round(sm.fogColor[1] * 255)},${Math.round(sm.fogColor[2] * 255)},${fogAlpha * 0.5})`);
+					fg.addColorStop(1, `rgba(${Math.round(sm.fogColor[0] * 255)},${Math.round(sm.fogColor[1] * 255)},${Math.round(sm.fogColor[2] * 255)},${fogAlpha})`);
+					ctx.fillStyle = fg;
+					ctx.fillRect(0, 0, W, H);
+				}
 			}
 
-			// ========== 3. 天气粒子 ==========
-			const preset = WEATHER_PRESETS[currentWeather];
-			const particles = particlesRef.current;
-			if (preset.count > 0) {
-				for (let i = 0; i < particles.length; i++) {
-					const p = particles[i];
-					// 更新位置
-					const speedY = preset.fall * p.z;
-					p.y += speedY * delta;
-					// 水平漂移：正弦 + 随机
-					p.x += Math.sin(t * 0.6 + p.seed * 6.28) * preset.drift * delta;
-					// 边界回收
-					if (preset.rise) {
-						if (p.y < -20) { p.y = H + 20; p.x = Math.random() * W; }
-						if (p.y > H + 20) { p.y = H + 20; }
-					} else {
-						if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
-						if (p.y < -40) { p.y = H + 20; p.x = Math.random() * W; }
-					}
-					if (p.x < -40) p.x = W + 40;
-					if (p.x > W + 40) p.x = -40;
+			// ========== 3. 天气粒子（仅未禁用粒子时） ==========
+			if (!disableParticles) {
+				const preset = WEATHER_PRESETS[currentWeather];
+				const particles = particlesRef.current;
+				if (preset.count > 0) {
+					for (let i = 0; i < particles.length; i++) {
+						const p = particles[i];
+						// 更新位置
+						const speedY = preset.fall * p.z;
+						p.y += speedY * delta;
+						// 水平漂移：正弦 + 随机
+						p.x += Math.sin(t * 0.6 + p.seed * 6.28) * preset.drift * delta;
+						// 边界回收
+						if (preset.rise) {
+							if (p.y < -20) { p.y = H + 20; p.x = Math.random() * W; }
+							if (p.y > H + 20) { p.y = H + 20; }
+						} else {
+							if (p.y > H + 20) { p.y = -20; p.x = Math.random() * W; }
+							if (p.y < -40) { p.y = H + 20; p.x = Math.random() * W; }
+						}
+						if (p.x < -40) p.x = W + 40;
+						if (p.x > W + 40) p.x = -40;
 
-					// 闪烁
-					let flick = 1;
-					if (preset.flicker > 0) {
-						flick = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * 3 + p.phase));
-					}
-					const alpha = preset.opacity * flick * p.z;
+						// 闪烁
+						let flick = 1;
+						if (preset.flicker > 0) {
+							flick = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * 3 + p.phase));
+						}
+						const alpha = preset.opacity * flick * p.z;
 
-					if (preset.shape === "line") {
-						// rain / storm：细长线
-						ctx.strokeStyle = preset.color;
-						ctx.globalAlpha = alpha;
-						ctx.lineWidth = preset.size * p.z;
-						ctx.beginPath();
-						const len = preset.fall > 400 ? 14 : 8;
-						const ang = Math.atan2(speedY, preset.drift);
-						ctx.moveTo(p.x, p.y);
-						ctx.lineTo(p.x - Math.sin(ang) * len, p.y - Math.cos(ang) * len);
-						ctx.stroke();
-					} else if (preset.shape === "soft") {
-						// mist：大模糊圆
-						const r = preset.size * p.z;
-						const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-						g.addColorStop(0, preset.color);
-						g.addColorStop(1, "transparent");
-						ctx.fillStyle = g;
-						ctx.globalAlpha = alpha * 0.5;
-						ctx.beginPath();
-						ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-						ctx.fill();
-					} else {
-						// circle：snow / petals / firefly / embers
-						ctx.fillStyle = preset.color;
-						ctx.globalAlpha = alpha;
-						ctx.beginPath();
-						ctx.arc(p.x, p.y, preset.size * p.z, 0, Math.PI * 2);
-						ctx.fill();
-						// 发光粒子（firefly / embers）：加光晕
-						if (preset.flicker > 0.5) {
-							ctx.globalAlpha = alpha * 0.4;
+						if (preset.shape === "line") {
+							// rain / storm：细长线
+							ctx.strokeStyle = preset.color;
+							ctx.globalAlpha = alpha;
+							ctx.lineWidth = preset.size * p.z;
 							ctx.beginPath();
-							ctx.arc(p.x, p.y, preset.size * p.z * 2.5, 0, Math.PI * 2);
+							const len = preset.fall > 400 ? 14 : 8;
+							const ang = Math.atan2(speedY, preset.drift);
+							ctx.moveTo(p.x, p.y);
+							ctx.lineTo(p.x - Math.sin(ang) * len, p.y - Math.cos(ang) * len);
+							ctx.stroke();
+						} else if (preset.shape === "soft") {
+							// mist：大模糊圆
+							const r = preset.size * p.z;
+							const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
+							g.addColorStop(0, preset.color);
+							g.addColorStop(1, "transparent");
+							ctx.fillStyle = g;
+							ctx.globalAlpha = alpha * 0.5;
+							ctx.beginPath();
+							ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
 							ctx.fill();
+						} else {
+							// circle：snow / petals / firefly / embers
+							ctx.fillStyle = preset.color;
+							ctx.globalAlpha = alpha;
+							ctx.beginPath();
+							ctx.arc(p.x, p.y, preset.size * p.z, 0, Math.PI * 2);
+							ctx.fill();
+							// 发光粒子（firefly / embers）：加光晕
+							if (preset.flicker > 0.5) {
+								ctx.globalAlpha = alpha * 0.4;
+								ctx.beginPath();
+								ctx.arc(p.x, p.y, preset.size * p.z * 2.5, 0, Math.PI * 2);
+								ctx.fill();
+							}
 						}
 					}
+					ctx.globalAlpha = 1;
 				}
-				ctx.globalAlpha = 1;
 			}
 
 			// ========== 4. 暗角与色调强化 ==========

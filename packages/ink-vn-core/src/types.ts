@@ -74,4 +74,10 @@ export interface NarrativeRunner {
 	getVar(name: string): unknown;
 	/** Set an ink variable (number | boolean | string). */
 	setVar(name: string, value: number | boolean | string): void;
+	/**
+	 * 收集当前暂停点的选项（不推进剧情）。
+	 * 用于恢复到抉择点快照后重新获取选项列表。
+	 * 返回空数组表示当前无选项（可能已结束或在文本中途）。
+	 */
+	getCurrentChoices(): RunnerChoice[];
 }

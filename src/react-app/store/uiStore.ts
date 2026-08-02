@@ -44,6 +44,9 @@ interface UiStore {
 	bgmEnabled: boolean;
 	toggleBgm: () => void;
 	setBgmEnabled: (on: boolean) => void;
+	// BGM 压低状态（小游戏期间 true → BGM 平滑降至背景，给音效让出空间）
+	bgmDucked: boolean;
+	setBgmDucked: (on: boolean) => void;
 }
 
 let seq = 1;
@@ -84,4 +87,6 @@ export const useUiStore = create<UiStore>((set) => ({
 			writeBgmEnabled(on);
 			return { bgmEnabled: on };
 		}),
+	bgmDucked: false,
+	setBgmDucked: (on) => set({ bgmDucked: on }),
 }));

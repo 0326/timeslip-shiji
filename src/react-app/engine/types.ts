@@ -82,8 +82,8 @@ export interface StoryState {
 	actClear?: { actName: string; actIndex: number };
 	/** 小游戏触发：段中遇到 #minigame:id[:param] 时暂停叙事，由 GameHost 托管 */
 	minigame?: { id: string; param?: string };
-	/** 历史影响标注卡片：段中遇到 #impact:ID 时弹出，展示该选择的历史意义 */
-	impact?: { title: string; content: string };
+	/** 历史影响标注卡片：段中遇到 #impact:ID 时弹出，三区块（此刻抉择 / 史记原文 / 历史影响） */
+	impact?: { choice: string; source: string; impact: string };
 }
 
 export interface SceneCharacter {
@@ -97,4 +97,6 @@ export interface EngineCallbacks {
 	onShowCharacter?: (id: string, expr: string, pos: Position) => void;
 	onHideCharacter?: (id: string) => void;
 	onBGM?: (track: string) => void;
+	/** 解锁史识碎片（#impact:ID / #correct 触发时回调），参数为碎片 id */
+	onUnlockKnowledge?: (id: string) => void;
 }

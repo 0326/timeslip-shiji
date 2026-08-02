@@ -206,9 +206,11 @@ docs/
 ### 临时备份文件（立绘/背景处理过程中的中间产物） ###
 *.bak
 *.pre-alpha-repair-bak
+*.pre-alpha-fill-bak
 *.pre-border-clean-bak
 *.pre-seedream-bak
 *.pre-zhuke-seedream-bak
+*.pre-*-bak
 
 ### 临时脚本与数据（顶层一次性脚本，不进仓库） ###
 /*.py

@@ -7,6 +7,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MinigameProps } from "../types";
 import { CheckCircle2, RotateCcw, ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { sfx } from "../../lib/sfx";
 import "./klotski.css";
 type PieceKind = "boss" | "v" | "h" | "1x1";
 
@@ -169,16 +170,21 @@ export function KlotskiGame({ param, storyKey, onComplete, onSkip }: MinigamePro
 		setSelected(null);
 		setMoves(0);
 		setWon(false);
+		sfx.resetCombo();
 	}
 
 	function tryMove(id: string, dx: number, dy: number): boolean {
 		if (!canMove(pieces, id, dx, dy)) return false;
 		setPieces((prev) => {
 			const next = prev.map((p) => (p.id === id ? { ...p, x: p.x + dx, y: p.y + dy } : p));
-			if (isWon(next)) setWon(true);
+			if (isWon(next)) {
+				setWon(true);
+				sfx.play("win");
+			}
 			return next;
 		});
 		setMoves((m) => m + 1);
+		sfx.play("slide");
 		return true;
 	}
 

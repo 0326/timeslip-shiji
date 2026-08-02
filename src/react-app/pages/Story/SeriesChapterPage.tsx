@@ -364,7 +364,7 @@ export function SeriesChapterPage() {
 							</div>
 							<button
 								className="btn btn-ghost ss-endings-goto"
-								onClick={() => navigate("/codex/endings")}
+								onClick={() => navigate("/codex")}
 							>
 								前往结局图鉴 <Compass size={14} />
 							</button>

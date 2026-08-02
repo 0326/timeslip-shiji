@@ -10,9 +10,12 @@ import {
 	VolumeX,
 	Music,
 	Music2,
+	BookOpen,
+	Undo2,
 } from "lucide-react";
 import { useUiStore } from "../../store/uiStore";
 import { useStory } from "../../hooks/useStory";
+import type { StoryState } from "../../engine/types";
 import { useBgmPlayer } from "../../hooks/useBgmPlayer";
 import { inkStories } from "../../data/stories/inkStories";
 import { usePlayStore, type TextSpeed } from "../../store/playStore";
@@ -28,8 +31,13 @@ import { ClearScreen } from "./ClearScreen";
 import { ClassicalHint } from "./ClassicalHint";
 import { AiHintModal } from "./AiHintModal";
 import { ActClearCard } from "./ActClearCard";
+import { ImpactCard } from "./ImpactCard";
 import { SceneBackground } from "./SceneBackground";
+import { DynamicScene } from "./dynamic/DynamicScene";
+import { SceneTransition } from "./dynamic/SceneTransition";
 import { GameHost } from "../../minigames/GameHost";
+import { LearnPanel } from "./LearnPanel";
+import { WUDI_KNOWLEDGE } from "../../data/knowledge/wudi-knowledge";
 import "../../minigames/minigames.css";
 
 const SPEED_CYCLE: TextSpeed[] = ["slow", "normal", "fast"];
@@ -58,14 +66,15 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const setSfxEnabled = useUiStore((s) => s.setSfxEnabled);
 	const bgmEnabled = useUiStore((s) => s.bgmEnabled);
 	const setBgmEnabled = useUiStore((s) => s.setBgmEnabled);
+	const bgmDucked = useUiStore((s) => s.bgmDucked);
 	const isCanon = mode !== "free";
-	const { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame } = useStory(
+	const { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, revertToChoice } = useStory(
 		storyId,
 		charId,
 		storyKey,
 		isCanon,
 	);
-	const { playTrack, stop: stopBgm, pause: pauseBgm, resume: resumeBgm } = useBgmPlayer({ enabled: bgmEnabled });
+	const { playTrack, stop: stopBgm, pause: pauseBgm, resume: resumeBgm } = useBgmPlayer({ enabled: bgmEnabled, ducked: bgmDucked });
 	const sfxBtnRef = useRef<HTMLButtonElement>(null);
 	const sfxClickCountRef = useRef(0);
 	const sfxClickTimerRef = useRef<number | null>(null);
@@ -164,23 +173,57 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const [aiHint, setAiHint] = useState("");
 	const [actClearVisible, setActClearVisible] = useState<{ actName: string; actIndex: number } | null>(null);
 	const [clearShown, setClearShown] = useState(false);
+	const [turnSeq, setTurnSeq] = useState(0);
+	const [impactVisible, setImpactVisible] = useState<{ choice: string; source: string; impact: string } | null>(null);
+	const impactVisibleRef = useRef(impactVisible);
+	impactVisibleRef.current = impactVisible;
+	const impactDismissedRef = useRef<unknown>(null);
+	const [showLearnPanel, setShowLearnPanel] = useState(false);
+
+	// 水墨转场：背景切换时触发，带冷却避免连续触发
+	const [transitionKey, setTransitionKey] = useState<string>(scene.background);
+	const lastTransitionRef = useRef(0);
+	const TRANSITION_COOLDOWN = 1400; // ms
+	useEffect(() => {
+	  const now = performance.now();
+	  if (scene.background !== transitionKey && now - lastTransitionRef.current > TRANSITION_COOLDOWN) {
+	    lastTransitionRef.current = now;
+	    setTransitionKey(scene.background);
+	  }
+	  // eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [scene.background]);
 
 	// 新状态到达即重置 dialogueDone + 检测幕间
-	const [prevNodeId, setPrevNodeId] = useState<string | null>(null);
+	const prevStateRef = useRef<StoryState | null>(null);
+	const dialogueDoneRef = useRef(false);
 	useEffect(() => {
 		if (!state) return;
-		if (state.nodeId === prevNodeId) return;
-		setPrevNodeId(state.nodeId);
-		setDialogueDone(state.segments.length === 0);
+		if (state === prevStateRef.current) return;
+		prevStateRef.current = state;
+		impactDismissedRef.current = null;
+		setTurnSeq(s => s + 1);
+		const done = state.segments.length === 0;
+		dialogueDoneRef.current = done;
+		setDialogueDone(done);
 		if (state.actClear) {
 			setActClearVisible(state.actClear);
+			dialogueDoneRef.current = false;
 			setDialogueDone(false);
 		}
-	}, [state, prevNodeId]);
+	}, [state]);
+
+	// 影响卡片：对话完成后显示（dialogueDoneRef 同步追踪，避免 setState 闭包旧值）
+	useEffect(() => {
+		if (state?.impact && !impactVisibleRef.current && dialogueDoneRef.current && impactDismissedRef.current !== state.impact) {
+			impactVisibleRef.current = state.impact;
+			setImpactVisible(state.impact);
+		}
+	}, [state, impactVisible, dialogueDone]);
 
 	// A2+A3: 结局触发：结局收集 + 照见者成就 + 补登 canon
 	useEffect(() => {
 		if (!state?.ended || clearShown) return;
+		if (!dialogueDoneRef.current || impactVisibleRef.current) return;
 		const persp = getPerspective(storyId, charId);
 		const ending = state.ending;
 		const isCanonEnding = ending ? ending.kind === "canon" : isCanon || !!state.endingAchievement;
@@ -202,7 +245,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 			completePerspective(storyId, charId, persp.bestChoiceRate, 0, { isCanon: true });
 		}
 		setClearShown(true);
-	}, [state?.ended, state?.ending, state?.endingAchievement, clearShown, storyId, charId, storyKey, isCanon, getPerspective, unlockAchievement, unlockEnding, completePerspective]);
+	}, [state?.ended, state?.ending, state?.endingAchievement, clearShown, dialogueDone, impactVisible, storyId, charId, storyKey, isCanon, getPerspective, unlockAchievement, unlockEnding, completePerspective]);
 
 	// 重启时重置 clearShown
 	useEffect(() => {
@@ -237,13 +280,22 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 			width: 38,
 			height: 38,
 		};
+	const visibleSegments = state.segments.filter((s) => s.text.length > 0);
 	const atChoicePoint = dialogueDone && !state.death && !state.ended && state.choices.length > 0;
-	const showHintButton = !state.death && !state.ended && (!isCanon || !atChoicePoint);
+	const showHintButton = !state.death && (!state.ended || visibleSegments.length > 0) && (!isCanon || !atChoicePoint);
 	const hintText = state.death?.classical ?? state.hint ?? "";
 	const showChoices = atChoicePoint;
-	const showClear = state.ended && clearShown;
+	const showClear = state.ended && clearShown && dialogueDone && !impactVisibleRef.current;
+	// "返回重选"：对话已完成、不在抉择点、无死亡/结局/小游戏/影响卡片/幕间卡片时显示
+	const canRevertChoice = dialogueDone
+		&& !atChoicePoint
+		&& !state.death
+		&& !state.ended
+		&& !state.minigame
+		&& !impactVisible
+		&& !actClearVisible
+		&& visibleSegments.length > 0;
 	const persp = getPerspective(storyId, charId);
-	const visibleSegments = state.segments.filter((s) => s.text.length > 0);
 
 	const systemCharacters = Object.entries(scene.characters).filter(
 		([, c]) => c.position === "float",
@@ -251,7 +303,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const stageCharacters = Object.entries(scene.characters).filter(
 		([, c]) => c.position !== "float",
 	);
-	const showSystemChar = systemCharacters.length > 0 && visibleSegments.length > 0 && !state.death && !state.ended;
+	const showSystemChar = systemCharacters.length > 0 && visibleSegments.length > 0 && !state.death;
 	const systemSpeaking = systemCharacters.some(([id]) => getSprite(id).name === activeSpeaker);
 
 	async function askAi() {
@@ -275,7 +327,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 
 	function handleWrapClick() {
 		if (!sfxChosen) return;
-		if (aiOpen || isClassicalHintOpen || actClearVisible || showSfxGuide || state!.minigame) return;
+		if (aiOpen || isClassicalHintOpen || actClearVisible || showSfxGuide || state!.minigame || impactVisibleRef.current) return;
 		if (state!.ended || state!.death) return;
 		if (state!.choices.length > 0 && dialogueDone) return;
 		if (!dialogueDone) return;
@@ -287,6 +339,12 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 		setActClearVisible(null);
 		advance();
 		setDialogueDone(false);
+	}
+
+	function handleImpactClose() {
+		impactDismissedRef.current = impactVisibleRef.current;
+		impactVisibleRef.current = null;
+		setImpactVisible(null);
 	}
 
 	function handleSfxChoice(enable: boolean) {
@@ -333,7 +391,21 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 
 	return (
 		<div className="vn-screen" onClick={handleWrapClick}>
-			<SceneBackground bg={bg} bgKey={scene.background} />
+			{/* 背景层：视频优先用 SceneBackground，其余用 DynamicScene（镜头微动+色调+粒子） */}
+			{bg.video ? (
+				<SceneBackground bg={bg} bgKey={scene.background} />
+			) : (
+				<DynamicScene
+					backgroundKey={scene.background}
+					backgroundImage={bg.image}
+					backgroundCss={bg.css}
+					death={!!state.death}
+					cleared={showClear}
+					shakeKey={scene.background}
+					disableParticles={!!bg.image}
+				/>
+			)}
+			<SceneTransition transitionKey={transitionKey} duration={900} />
 			{bg.label && <div className="vn-bg-label">{bg.label}</div>}
 
 			<div className="vn-sprites">
@@ -403,20 +475,42 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 				>
 					{bgmEnabled ? <Music2 size={18} /> : <Music size={18} />}
 				</button>
+				<button
+					className={`vn-icon-btn${showLearnPanel ? " active" : ""}`}
+					data-tip="学练测收"
+					data-no-sfx
+					onClick={(e) => { e.stopPropagation(); setShowLearnPanel((v) => !v); }}
+					aria-label="学练测收"
+				>
+					<BookOpen size={18} />
+				</button>
 			</div>
 
-			{visibleSegments.length > 0 && !state.death && !state.ended && (
-				<div className="vn-dialogue-wrap">
-					<DialogueBox
-						key={state.nodeId + "-" + visibleSegments.length}
-						segments={visibleSegments}
-						onComplete={() => setDialogueDone(true)}
-						onActiveSpeaker={setActiveSpeaker}
-						onOpenHint={() => setClassicalHint(true)}
-						hideHint={isCanon && state.choices.length > 0}
-					/>
-				</div>
-			)}
+			{visibleSegments.length > 0 && !state.death && (
+			<div className="vn-dialogue-wrap">
+				<DialogueBox
+					key={turnSeq + "-" + visibleSegments.length}
+					segments={visibleSegments}
+					onComplete={() => { dialogueDoneRef.current = true; setDialogueDone(true); }}
+					onActiveSpeaker={setActiveSpeaker}
+					onOpenHint={() => setClassicalHint(true)}
+					hideHint={isCanon && state.choices.length > 0}
+				/>
+				{canRevertChoice && (
+					<button
+						className="vn-revert-btn"
+						data-tip="回到上一个选项，尝试不同选择"
+						onClick={(e) => {
+							e.stopPropagation();
+							if (revertToChoice()) setDialogueDone(false);
+						}}
+						onMouseDown={(e) => e.stopPropagation()}
+					>
+						<Undo2 size={14} /> 返回重选
+					</button>
+				)}
+			</div>
+		)}
 
 			{/* 青月问语：是否开启音效 */}
 			{!sfxChosen && (
@@ -515,9 +609,18 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 				/>
 			)}
 
+			{impactVisible && (
+				<ImpactCard
+					choice={impactVisible.choice}
+					source={impactVisible.source}
+					impact={impactVisible.impact}
+					onClose={handleImpactClose}
+				/>
+			)}
+
 			{state.minigame && (
 				<GameHost
-					key={`${state.minigame.id}:${state.minigame.param ?? ""}`}
+					key={`${state.nodeId}:${state.minigame.id}:${state.minigame.param ?? ""}`}
 					gameId={state.minigame.id}
 					param={state.minigame.param}
 					storyKey={storyKey}
@@ -577,6 +680,38 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 						);
 					})()}
 				</div>
+			)}
+
+			{showLearnPanel && !state.death && !state.ended && !state.minigame && (
+				<LearnPanel
+					storyKey={storyKey}
+					hints={visibleSegments
+						.filter((s) => s.hint)
+						.map((s) => ({ text: s.hint!, source: s.speaker || "原文" }))}
+					knowledge={WUDI_KNOWLEDGE
+						.filter((k) => k.storyKey === storyKey)
+						.map((k) => ({
+							id: k.id,
+							title: k.title,
+							content: k.content,
+							unlocked: persp.unlockedKnowledge?.includes(k.id) ?? false,
+						}))}
+					unlockedCount={persp.unlockedKnowledge?.length ?? 0}
+					totalCount={WUDI_KNOWLEDGE.filter((k) => k.storyKey === storyKey).length}
+					onPlayBamboo={() => {
+						// 触发竹简缀合练习（复用 minigame 机制）
+						// 暂时用 GameHost 内部触发
+					}}
+					onPlayMinigame={(gameId: string) => {
+						// 手动触发小游戏（从学练测收面板）
+						// 通过 StoryAdapter 的手动小游戏触发方法
+						// eslint-disable-next-line @typescript-eslint/no-explicit-any
+						(adapter as any).triggerMinigame?.(gameId);
+					}}
+					onOpenKnowledgeGraph={() => {
+						navigate(`/codex/knowledge/${encodeURIComponent(storyKey)}`);
+					}}
+				/>
 			)}
 		</div>
 	);

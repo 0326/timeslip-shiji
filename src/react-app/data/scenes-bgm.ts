@@ -39,6 +39,13 @@ export const SCENE_BGM: SceneBgmHint[] = [
 	{ sceneId: "well_dark", defaultMood: "tragic", keywords: ["井", "埋"] },
 	{ sceneId: "shun_house", defaultMood: "court", keywords: ["舜宫", "归来"] },
 	{ sceneId: "shun_hall", defaultMood: "court", trackId: "court_03", keywords: ["舜堂", "皋陶"] },
+	{ sceneId: "luoyang_street", defaultMood: "peaceful", trackId: "peaceful_07", keywords: ["洛阳", "街道"] },
+	{ sceneId: "market_street", defaultMood: "tension", trackId: "tension_05", keywords: ["市井", "巷弄"] },
+	{ sceneId: "qin_palace_feast", defaultMood: "court", trackId: "court_05", keywords: ["秦宫", "宴"] },
+	{ sceneId: "remote_village", defaultMood: "sad", trackId: "sad_04", keywords: ["村庄", "荒野", "隐姓"] },
+	{ sceneId: "weiqing_mansion", defaultMood: "solemn", trackId: "solemn_07", keywords: ["卫青", "府", "举荐"] },
+	{ sceneId: "wu_house", defaultMood: "melancholy", trackId: "melancholy_06", keywords: ["专诸", "家", "母"] },
+	{ sceneId: "wu_palace", defaultMood: "tension", trackId: "tension_02", keywords: ["吴宫", "殿"], altMoods: [{ mood: "sad", trigger: "母" }, { mood: "triumph", trigger: "成" }] },
 	{ sceneId: "simen_court", defaultMood: "court", keywords: ["四门", "辟贤"] },
 	{ sceneId: "siyi_liufang", defaultMood: "danger", keywords: ["四裔", "流放"] },
 	{ sceneId: "mingtang_xing", defaultMood: "epic", keywords: ["明堂", "巡"] },
@@ -261,6 +268,11 @@ export const SCENE_BGM: SceneBgmHint[] = [
 	{ sceneId: "temple", defaultMood: "solemn", keywords: ["庙", "祠"] },
 	{ sceneId: "funeral", defaultMood: "sorrow", keywords: ["丧", "葬"] },
 	{ sceneId: "celebration", defaultMood: "triumph", keywords: ["庆", "贺"] },
+	{ sceneId: "qi_market", defaultMood: "tension", trackId: "tension_05", keywords: ["齐市", "市集"] },
+	{ sceneId: "han_xiangfu", defaultMood: "court", keywords: ["汉相府", "相府"] },
+	{ sceneId: "luoyang_mansion", defaultMood: "court", keywords: ["洛阳", "府邸"] },
+	{ sceneId: "han_street", defaultMood: "peaceful", keywords: ["汉街", "街市"] },
+	{ sceneId: "puyang_house", defaultMood: "peaceful", keywords: ["濮阳", "居所"] },
 ];
 
 export function getSceneBgmHint(sceneId: string): SceneBgmHint | undefined {

@@ -274,6 +274,8 @@ const buildTracks = (): Record<string, BgmTrack> => {
 		idyllic: "peaceful",
 		emotional: "melancholy",
 		reminisce: "nostalgic",
+		joyful: "cheerful",
+		suspense: "tension",
 	};
 	
 	for (const [alias, target] of Object.entries(aliases)) {

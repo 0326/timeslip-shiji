@@ -151,7 +151,6 @@ export const SERIES: SeriesDef[] = [
 		era: "mixed",
 		order: 11,
 		glyph: "侠",
-		comingSoon: true,
 	},
 ];
 

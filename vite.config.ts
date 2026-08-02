@@ -6,10 +6,10 @@ import path from "path";
 export default defineConfig({
 	plugins: [
 		react(),
-		cloudflare({
-			configPath: "./wrangler.json",
-			remoteBindings: false,
-		}),
+		// cloudflare({
+		// 	configPath: "./wrangler.json",
+		// 	remoteBindings: false,
+		// }),
 	],
 	resolve: {
 		alias: {
