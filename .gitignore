@@ -202,3 +202,40 @@ dist
 
 # 文档（本地保留，不提交）
 docs/
+
+### 临时备份文件（立绘/背景处理过程中的中间产物） ###
+*.bak
+*.pre-alpha-repair-bak
+*.pre-border-clean-bak
+*.pre-seedream-bak
+*.pre-zhuke-seedream-bak
+
+### 临时脚本与数据（顶层一次性脚本，不进仓库） ###
+/*.py
+/*.cjs
+/*.mjs
+/*.ps1
+/*.js
+/*.json
+/*.txt
+/*.html
+
+### 临时目录 ###
+/_temp_fix/
+/ink_structs/
+/scripts/
+/scan_qunxiang.ps1
+
+### 原始 BGM 素材包（仅本地参考，不入库） ###
+/古风配乐p3广播剧背景音乐素材包古代后期配乐古曲/
+/古风配乐*/
+
+### 项目内预览/测试临时页面 ###
+/public/anti-overexposure-batch1-preview.html
+/public/archive-cg-preview.html
+/public/shun-vivid-candidates.html
+/src/react-app/data/stories/ink/extras/_test.txt
+/src/react-app/data/stories/ink/test.txt
+
+### 临时检查清单 ###
+/untracked_list.txt
