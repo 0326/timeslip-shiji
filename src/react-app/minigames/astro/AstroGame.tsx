@@ -64,10 +64,13 @@ export function AstroGame({ onComplete, onSkip }: MinigameProps) {
 	const [lost, setLost] = useState(false);
 	const [busy, setBusy] = useState(false);
 	const lockRef = useRef(false);
+	// 用户是否已实际交互。未交互前不启动倒计时，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
-	// ── 倒计时 ──
+	// ── 倒计时：仅在用户已交互后启动 ──
 	useEffect(() => {
 		if (won || lost) return;
+		if (!userInteractedRef.current) return;
 		if (timeLeft <= 0) {
 			setLost(true);
 			return;
@@ -109,6 +112,7 @@ export function AstroGame({ onComplete, onSkip }: MinigameProps) {
 	const onCardClick = useCallback(
 		(idx: number) => {
 			if (lockRef.current || won || lost) return;
+			userInteractedRef.current = true;
 			const card = deck[idx];
 			if (matchedPairIds.has(card.pairId)) return; // 已配对
 			if (flipped.includes(idx)) return; // 已翻开

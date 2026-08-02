@@ -103,10 +103,13 @@ export function UnifyTextGame({ onComplete, onSkip }: MinigameProps) {
 	const [timeLeft, setTimeLeft] = useState(TIME_LIMIT);
 	const [phase, setPhase] = useState<Phase>("playing");
 	const lockRef = useRef(false);
+	// 用户是否已实际交互。未交互前不启动倒计时，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
-	// ── 倒计时 ──
+	// ── 倒计时：仅在用户已交互后启动 ──
 	useEffect(() => {
 		if (phase !== "playing") return;
+		if (!userInteractedRef.current) return;
 		if (timeLeft <= 0) {
 			sfx.play("lose");
 			setPhase("lost");
@@ -142,6 +145,7 @@ export function UnifyTextGame({ onComplete, onSkip }: MinigameProps) {
 		if (phase !== "playing" || lockRef.current) return;
 		if (matched.includes(card.pairId)) return;
 		if (flipped.includes(card.uid)) return;
+		userInteractedRef.current = true;
 
 		const next = [...flipped, card.uid];
 		setFlipped(next);
@@ -181,6 +185,7 @@ export function UnifyTextGame({ onComplete, onSkip }: MinigameProps) {
 		setTimeLeft(TIME_LIMIT);
 		setPhase("playing");
 		lockRef.current = false;
+		userInteractedRef.current = false;
 		sfx.resetCombo();
 	}
 

@@ -63,7 +63,7 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 	const config = LEVEL_CONFIGS[safeLevel];
 
 	const [notes, setNotes] = useState<Note[]>(() => buildLevelNotes(safeLevel));
-	const [startTime] = useState<number>(() => performance.now());
+	const [startTime, setStartTime] = useState<number>(() => performance.now());
 	const [now, setNow] = useState<number>(() => performance.now());
 	const [score, setScore] = useState(0);
 	const [combo, setCombo] = useState(0);
@@ -86,11 +86,15 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 	const maxComboRef = useRef(0);
 	const notesRef = useRef<Note[]>(notes);
 	notesRef.current = notes;
+	// 用户是否已实际交互。未交互前不推进音符/不自动 miss，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
 	useEffect(() => {
 		if (gameEnded) return;
 		const interval = setInterval(() => {
 			const t = performance.now();
+			// 未交互前不更新 now 与音符判定，避免挂载即开始下落/miss
+			if (!userInteractedRef.current) return;
 			setNow(t);
 			setNotes((prev) => {
 				let changed = false;
@@ -229,6 +233,13 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 	const onTrackPress = useCallback(
 		(track: number) => {
 			if (gameEnded) return;
+			// 首次交互：重置 startTime，让音符从此刻重新开始下落
+			if (!userInteractedRef.current) {
+				userInteractedRef.current = true;
+				const t0 = performance.now();
+				setStartTime(t0);
+				setNow(t0);
+			}
 			setPressedTracks((prev) => {
 				const next = [...prev];
 				next[track] = true;

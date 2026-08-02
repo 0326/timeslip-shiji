@@ -189,6 +189,8 @@ export function ForgeGame({ param, onComplete, onSkip }: MinigameProps) {
 	const [won, setWon] = useState(false);
 	const [lost, setLost] = useState(false);
 	const busyRef = useRef(false);
+	// 用户是否已实际交互。未交互前不启动倒计时，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
 	const reset = useCallback(() => {
 		sfx.resetCombo();
@@ -208,9 +210,10 @@ export function ForgeGame({ param, onComplete, onSkip }: MinigameProps) {
 		reset();
 	}, [levelNum, reset]);
 
-	// 倒计时
+	// 倒计时：仅在用户已交互后启动，防止挂载即倒计时导致自动判负
 	useEffect(() => {
 		if (won || lost) return;
+		if (!userInteractedRef.current) return;
 		if (timeLeft <= 0) {
 			setLost(true);
 			return;
@@ -253,6 +256,7 @@ export function ForgeGame({ param, onComplete, onSkip }: MinigameProps) {
 	const placeAt = useCallback(
 		async (r: number, c: number, ore: OreType) => {
 			if (busyRef.current) return;
+			userInteractedRef.current = true;
 			busyRef.current = true;
 			setBusy(true);
 			const start = cloneGrid(grid);

@@ -258,6 +258,8 @@ export function ChannelGame({ param, storyKey, onComplete, onSkip }: MinigamePro
 	const [moves, setMoves] = useState(0);
 	const [timeLeft, setTimeLeft] = useState(level.maxTime);
 	const [phase, setPhase] = useState<Phase>("playing");
+	// 用户是否已实际交互。未交互前不启动倒计时，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
 	// BFS 计算水流充盈的格子
 	const waterCells = useMemo(() => bfsWater(cells, level.size), [cells, level.size]);
@@ -273,10 +275,11 @@ export function ChannelGame({ param, storyKey, onComplete, onSkip }: MinigamePro
 		}
 	}, [reached, phase]);
 
-	// 倒计时
+	// 倒计时：仅在用户已交互后启动
 	useEffect(() => {
 		if (phase !== "playing") return;
 		if (reached) return;
+		if (!userInteractedRef.current) return;
 		if (timeLeft <= 0) {
 			setPhase("lost");
 			return;
@@ -304,6 +307,7 @@ export function ChannelGame({ param, storyKey, onComplete, onSkip }: MinigamePro
 		if (phase !== "playing") return;
 		const cell = cells[r][c];
 		if (cell.type !== "I" && cell.type !== "L" && cell.type !== "X") return;
+		userInteractedRef.current = true;
 		sfx.play("flip");
 		setCells((prev) => {
 			const cur = prev[r][c];

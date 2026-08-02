@@ -99,6 +99,8 @@ export function ArrowGame({ param, onComplete, onSkip }: MinigameProps) {
 	queueRef.current = queue;
 	offsetRef.current = offsetPx;
 	phaseRef.current = phase;
+	// 用户是否已实际交互。未交互前不推进队列，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
 	useEffect(() => {
 		const initQueue = makeInitialQueue(level);
@@ -117,6 +119,8 @@ export function ArrowGame({ param, onComplete, onSkip }: MinigameProps) {
 		if (phase !== "playing") return;
 		const timer = setInterval(() => {
 			if (animating) return;
+			// 未交互前不推进队列，避免挂载即判负
+			if (!userInteractedRef.current) return;
 			setOffsetPx((prev) => {
 				const q = queueRef.current;
 				const newOffset = prev + 4;
@@ -180,6 +184,7 @@ export function ArrowGame({ param, onComplete, onSkip }: MinigameProps) {
 
 	const handleShoot = useCallback((index: number) => {
 		if (phaseRef.current !== "playing" || animating) return;
+		userInteractedRef.current = true;
 
 		sfx.play("pop"); // 发射箭矢
 
@@ -207,6 +212,7 @@ export function ArrowGame({ param, onComplete, onSkip }: MinigameProps) {
 		setRemovedTotal(0);
 		setPhase("playing");
 		setAnimating(false);
+		userInteractedRef.current = false;
 	};
 
 	useEffect(() => {

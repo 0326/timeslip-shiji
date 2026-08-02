@@ -76,6 +76,8 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 	const [lost, setLost] = useState(false);
 	const [timeLeft, setTimeLeft] = useState(level.time);
 	const finishedRef = useRef(false);
+	// 用户是否已实际交互。未交互前不启动倒计时，防止挂载后自动判负
+	const userInteractedRef = useRef(false);
 
 	const initBoard = useCallback(() => {
 		sfx.resetCombo();
@@ -136,6 +138,7 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 
 	function handleClick(index: number) {
 		if (won || lost) return;
+		userInteractedRef.current = true;
 		if (selected === null) {
 			setSelected(index);
 			return;
