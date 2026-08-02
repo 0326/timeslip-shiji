@@ -43,10 +43,6 @@ const STORY_PRACTICE_MAP: Record<string, PracticeGame[]> = {
 	"huangdi:banquan": [
 		{ id: "bamboo", title: "竹简缀合·阪泉三战", desc: "缀合阪泉之战原文", onClick: undefined },
 	],
-	"huangdi:zhuolu": [
-		{ id: "match3", title: "涿鹿珠阵", desc: "破九黎玉珠阵,指南辨向", onClick: undefined },
-		{ id: "bamboo", title: "竹简缀合·涿鹿擒蚩尤", desc: "缀合涿鹿之战原文", onClick: undefined },
-	],
 	"huangdi:zhitianxia": [
 		{ id: "astro", title: "星象授时", desc: "观星宿配节气,定四时", onClick: undefined },
 		{ id: "bamboo", title: "竹简缀合·治天下", desc: "缀合黄帝崩葬桥山原文", onClick: undefined },
@@ -57,10 +53,6 @@ const STORY_PRACTICE_MAP: Record<string, PracticeGame[]> = {
 	"yao:shoushi": [
 		{ id: "astro", title: "星象授时", desc: "观星宿配节气,敬授民时", onClick: undefined },
 		{ id: "bamboo", title: "竹简缀合·敬授民时", desc: "缀合帝尧历法原文", onClick: undefined },
-	],
-	"yu:zhishui": [
-		{ id: "channel", title: "治水疏渠", desc: "旋转渠管,导水入海", onClick: undefined },
-		{ id: "bamboo", title: "竹简缀合·大禹治水", desc: "缀合九州疏导原文", onClick: undefined },
 	],
 	"liubang:chuhan": [
 		{ id: "klotski", title: "鸿门脱险", desc: "滑块脱困,鸿门宴逃生", onClick: undefined },
@@ -79,9 +71,6 @@ const STORY_PRACTICE_MAP: Record<string, PracticeGame[]> = {
 	],
 	"wenwang:xizhou": [
 		{ id: "bamboo", title: "竹简缀合·周本纪", desc: "缀合周本纪原文", onClick: undefined },
-	],
-	"sunwu:chunqiu": [
-		{ id: "formation", title: "排兵布阵", desc: "排布指令,令行禁止", onClick: undefined },
 	],
 	"qshihuang:qin": [
 		{ id: "unify", title: "统一文字", desc: "汉字匹配,书同文", onClick: undefined },
