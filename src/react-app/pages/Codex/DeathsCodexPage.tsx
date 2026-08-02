@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
-import { Skull, Lock, BookOpen, Compass } from "lucide-react";
+import { Skull, Lock, BookOpen, Compass, Map } from "lucide-react";
 import "./DeathsCodex.css";
 import "./EndingsCodex.css";
 import { inkStories } from "../../data/stories/inkStories";
@@ -234,12 +234,18 @@ export function DeathsCodexPage() {
 					<Skull size={14} /> 死法图鉴
 				</button>
 				<button
-					className="codex-tab"
-					onClick={() => navigate("/codex/endings")}
-				>
-					<Compass size={14} /> 结局图鉴
-				</button>
-			</div>
+				className="codex-tab"
+				onClick={() => navigate("/codex/endings")}
+			>
+				<Compass size={14} /> 结局图鉴
+			</button>
+			<button
+				className="codex-tab"
+				onClick={() => navigate(`/codex/knowledge/${encodeURIComponent("huangdi:banquan")}`)}
+			>
+				<Map size={14} /> 史识图谱
+			</button>
+		</div>
 			<div className="codex-stats">
 				<span className="panel-stat">
 					<b>
