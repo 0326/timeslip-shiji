@@ -3,6 +3,9 @@
 // 史源：《史记·夏本纪》
 // ═══════════════════════════════════════════════
 
+VAR mg_result = ""
+VAR mg_score = 0
+
 -> c_open
 
 === c_open ===
@@ -24,6 +27,7 @@
 
 === c_shouming ===
 #bg:nanhe
+#bgm:peaceful
 #show:siyue:calm:right
 帝舜临朝，问四岳：谁能成尧未竟之业？四岳齐声：伯禹为司空，可成美尧之功。 #speaker:青月 #hint:伯禹为司空，可成美尧之功。
 #show:qingyue:tease:float
@@ -42,6 +46,7 @@
 
 === if_rangxian_1 ===
 #bg:nanhe
+#bgm:peaceful
 #show:qingyue:worry:float
 「欸？这一步……史书上没有哦。我也是第一次看。」 #speaker:青月
 你叩首再三，是真让，不是虚礼：「父鲧治水无状而死，臣不敢再蹈其覆。契、后稷、皋陶皆贤，请择一人。」 #speaker:文命
@@ -78,6 +83,7 @@
 
 === c_body ===
 #bg:great_forest
+#bgm:mystery
 陆行乘车，水行乘船，泥行乘橇，山行乘檋。哪里有水，你就到哪里去。 #speaker:青月 #hint:陆行乘车，水行乘船，泥行乘橇，山行乘檋。
 #show:qingyue:worry:float
 风餐露宿久了，随行的人劝你：司空劳苦功高，该修一处像样的居所、备些好衣好食，将养身子，才好长久治水。 #speaker:青月
@@ -104,6 +110,7 @@
 
 === c_body_go ===
 #bg:great_forest
+#bgm:mystery
 这样风里雨里，一年，两年……十三年。 #speaker:青月 #hint:居外十三年。
 #show:qingyue:worry:float
 「呐，前面就是你的家门了。你已经很久没回去过了。」 #speaker:青月
@@ -111,6 +118,7 @@
 
 === c_home_first ===
 #bg:gui_river
+#bgm:peaceful
 #show:tushan:calm:right
 你远远望见自家的柴门。门里，涂山氏正抱着孩子。那是你的妻，你的启——你辛日成婚，甲日就离家治水，连儿子出生都没能守在旁边。 #speaker:青月 #hint:予娶涂山，辛壬癸甲，生启予不子，以故能成水土功。
 里面传来婴儿的啼哭。风把那声音一直送到你耳边。 #speaker:青月
@@ -161,8 +169,18 @@
 「你走完了他这十三年。」 #speaker:青月
 「你知道最疼的是哪一处吗？不是风雨，不是泥水。是三过家门，听见孩子哭、看见孩子长大，却一次都没能进去。」 #speaker:青月
 #show:qingyue:calm:float
-「他不是不想家。是把一个『家』，换成了天下万家的安宁。」 #speaker:青月 #impact:impact_zhishui_sanguo
+「他不是不想家。是把一个『家』，换成了天下万家的安宁。」 #speaker:青月 #impact:impact_zhishui_sanguo #quiz:quiz_zhishui_sanguo
+#actclear:yu_zhishui_act
 #show:qingyue:smile:float
+「呐，大禹治水的原文，你记全了吗？来，把这些竹简缀回去——九州的名，疏导的河，都在里头哦。」 #speaker:青月
+#minigame:bamboo:2:0:5
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，九州之名、疏导之河，你都记下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「简序暂乱也无妨，改堵为疏、三过不入的道理，你心里已经明白了。」 #speaker:青月
+}
 「呼——玄圭在手，你就是禹了。看懂了吗？改堵为疏，是智；三过不入，是仁。少一样，这滔天的水，都到不了尽头呀。」 #speaker:青月 #ending:canon
 #hide:siyue
 #hide:tushan

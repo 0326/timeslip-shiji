@@ -6,7 +6,7 @@
 -> c_open
 
 === c_open ===
-#bg:yao_court
+#bg:yao_court_alt4
 #bgm:gentle
 #show:qingyue:smile:float
 「尧要禅让，天下人都知道。可有一个人，听到这消息，吓得拔腿就跑。」 #speaker:青月

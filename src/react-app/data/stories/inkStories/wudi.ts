@@ -28,14 +28,22 @@ import jieWangguoSource from "../ink/jie-wangguo.ink?raw";
 import extraLeizuSource from "../ink/extras/extra-leizu.ink?raw";
 import extraCangjieSource from "../ink/extras/extra-cangjie.ink?raw";
 import extraXuyouSource from "../ink/extras/extra-xuyou.ink?raw";
+import extraChongliSource from "../ink/extras/extra-chongli.ink?raw";
+import extraKuoboShishenSource from "../ink/extras/extra-kuobo-shishen.ink?raw";
 import extraGaoyaoSource from "../ink/extras/extra-gaoyao.ink?raw";
 import extraTushanSource from "../ink/extras/extra-tushan.ink?raw";
 
-// 番外 · 侧面叙述（NPC/百姓视角）
+// 番外 · 上帝视角（NPC/百姓视角）
 import extraBanquanFarmerSource from "../ink/extras/extra-banquan-farmer.ink?raw";
 import extraZhuoluJiuliSource from "../ink/extras/extra-zhuolu-jiuli.ink?raw";
 import extraZhitianxiaBorderSource from "../ink/extras/extra-zhitianxia-border.ink?raw";
 import extraZhitianxiaPeasantSource from "../ink/extras/extra-zhitianxia-peasant.ink?raw";
+import extraZhuanxuShamanSource from "../ink/extras/extra-zhuanxu-shaman.ink?raw";
+import extraDikuWeaverSource from "../ink/extras/extra-diku-weaver.ink?raw";
+import extraYaoFarmerSource from "../ink/extras/extra-yao-farmer.ink?raw";
+import extraYaoFloodSource from "../ink/extras/extra-yao-flood.ink?raw";
+import extraYaoDanzhuServantSource from "../ink/extras/extra-yao-danzhu-servant.ink?raw";
+import extraYaoEhuangNvyingSource from "../ink/extras/extra-yao-ehuang-nvying.ink?raw";
 
 /**
  * Ink story registry.
@@ -86,6 +94,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "他活得干净安稳——只是天下，与他再无关系。",
 			},
 		},
+	impacts: {
+		impact_lijie_xiaozhi: {
+			choice: "以德报怨，孝智两全",
+			source: "舜复事瞽叟爱弟弥谨。于是尧乃试舜五典百官，皆治。",
+			impact: "烧过你的人，你以德报之；抢过你东西的人，你以礼待之。这不是软弱，是把『孝』字刻进了华夏的骨髓——从此，以德化人不再是一句空话。",
+		},
+	},
 	},
 	"huangdi:qiyuan": {
 		key: "huangdi:qiyuan",
@@ -98,6 +113,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				title: "穿越之始",
 				kind: "canon",
 				epigraph: "你落进史册的第一页，成了那个叫轩辕的婴孩——故事，从这里开始。",
+			},
+		},
+		impacts: {
+			impact_qiyuan_xuanyuan: {
+				choice: "降生轩辕，承华夏之源",
+				source: "黄帝者，少典之子，姓公孙，名曰轩辕。生而神灵，弱而能言，幼而徇齐，长而敦敏，成而聪明。",
+				impact: "你落进史册的第一页，成了那个叫轩辕的婴孩。后世千秋万代的人，都会从你这里开始讲起——华夏的故事，从你开始。",
 			},
 		},
 	},
@@ -139,8 +161,9 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	impacts: {
 		impact_banquan_yanhuang: {
-			title: "炎黄子孙",
-			content: "你让炎帝归入旗下，两族血脉合流。从此，后世每一个人都自称炎黄子孙——这个选择，定义了一个民族的名字。",
+			choice: "炎帝归附，炎黄合流",
+			source: "三战，然后得其志。",
+			impact: "你让炎帝归入旗下，两族血脉合流。从此，后世每一个人都自称炎黄子孙——这个选择，定义了一个民族的名字。",
 		},
 	},
 },
@@ -188,8 +211,9 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	impacts: {
 		impact_zhuolu_zhengshi: {
-			title: "天下共主",
-			content: "你不是靠一人之力，是把天下的力气合到了一处。从此，「天子」二字有了模样——合诸侯之力以定乱，是华夏共主的第一义。",
+			choice: "征师诸侯，合力擒杀蚩尤",
+			source: "而蚩尤最为暴，莫能伐。于是黄帝乃征师诸侯，与蚩尤战于涿鹿之野，遂禽杀蚩尤。",
+			impact: "你不是靠一人之力，是把天下的力气合到了一处。从此，「天子」二字有了模样——合诸侯之力以定乱，是华夏共主的第一义。",
 		},
 	},
 },
@@ -231,8 +255,9 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	impacts: {
 		impact_zhitianxia_xunfang: {
-			title: "巡方之德",
-			content: "坐等人拜的天子，德就凉了。你用足迹丈量天下，把德走出深宫、送进万国——华夏的共主，从此不是坐在城里的王，而是走在路上的圣。",
+			choice: "巡行四方，以德服万国",
+			source: "东至于海，登丸山，及岱宗。西至于空桐，登鸡头。南至于江，登熊、湘。北逐荤粥，合符釜山，而邑于涿鹿之阿。",
+			impact: "坐等人拜的天子，德就凉了。你用足迹丈量天下，把德走出深宫、送进万国——华夏的共主，从此不是坐在城里的王，而是走在路上的圣。",
 		},
 	},
 },
@@ -270,6 +295,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				title: "以私定制",
 				kind: "if",
 				epigraph: "执中之德传了两代，断在了你这一念的私心上。",
+			},
+		},
+		impacts: {
+			impact_diku_jingyuanzhizhong: {
+				choice: "静渊有谋，执中不偏",
+				source: "静渊以有谋，疏通而知事。……帝喾溉执中而遍天下，日月所照，风雨所至，莫不从服。",
+				impact: "高阳以『静渊』定四方，高辛以『执中』服天下。华夏君德的调子，从祖孙两代手里定了下来——不躁、不偏，此后三千年，圣王都绕着这两个字转。",
 			},
 		},
 	},
@@ -321,6 +353,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "授时是为了让人不必求你，你却让人从此离不开你——这份威，正是仁的反面。",
 			},
 		},
+	impacts: {
+		impact_shoushi_lifa: {
+			choice: "以闰月正四时，信饬百官",
+			source: "岁三百六十六日，以闰月正四时。信饬百官，众功皆兴。",
+			impact: "你替天下人把日子的秩序定了下来。什么时候种，什么时候收，什么时候归家取暖——此后三千年，中国人抬头看天、低头种地，都离不开这套历法。",
+		},
+	},
 	},
 	"yao:qiuxian": {
 		key: "yao:qiuxian",
@@ -364,6 +403,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "治水从不只是法子的事，是那个肯把命填进去的人——你省了一场大败，也误了一场大治。",
 			},
 		},
+	impacts: {
+		impact_qiuxian_sijuxian: {
+			choice: "悉举贵戚及疏远隐匿者，向天下求贤",
+			source: "悉举贵戚及疏远隐匿者。有矜在民间，曰虞舜……能和以孝，烝烝治，不至奸。",
+			impact: "你越过亲疏贵贱，把门向整个天下敞开。舜的名字，就是从这一声『悉举』里被听到的——华夏的选贤，从此不再看出身，只看德行。",
+		},
+	},
 	},
 	"yao:juxian": {
 		key: "yao:juxian",
@@ -401,6 +447,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你把最好的人，绑在了最扶不动的位子上——天下为公的尧，在你这里悄悄退了半步。",
 			},
 		},
+	impacts: {
+		impact_juxian_sanshikun: {
+			choice: "三重考验，择贤而授",
+			source: "尧乃以二女妻舜以观其内，使九男与处以观其外。尧使舜入山林川泽，暴风雷雨，舜行不迷。尧以为圣。",
+			impact: "你把最金贵的女儿放进去试他的德，把整套官制放进去试他的能——试到最后一分，才敢把天下交出去。禅让从不是一时兴起的慷慨，是一个老人用尽一生的审慎。",
+		},
+	},
 	},
 	"yao:shanrang": {
 		key: "yao:shanrang",
@@ -446,8 +499,9 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	impacts: {
 		impact_shanrang_tianxiaweigong: {
-			title: "天下为公",
-			content: "你把父爱让给了更大的一份。华夏的禅让，从你开始——「终不以天下之病而利一人」，这句话被后世记了三千年。",
+			choice: "终不以天下之病而利一人",
+			source: "授丹朱则天下病而丹朱得其利。尧曰：终不以天下之病而利一人。",
+			impact: "你把父爱让给了更大的一份。华夏的禅让，从你开始——「终不以天下之病而利一人」，这句话被后世记了三千年。",
 		},
 	},
 },
@@ -493,6 +547,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "少杀一人容易——难的是天下从此称量你每一次落罚，都拿这一次做秤。",
 			},
 		},
+	impacts: {
+		impact_liuxiong_sixiongzu: {
+			choice: "流放四凶，举贤任能",
+			source: "请流共工于幽陵，殛鲧于羽山，以变东夷：四辠而天下咸服。",
+			impact: "你举八元八恺于朝堂，流四凶四辠于四裔。善恶各得其分——天下服的不是刀，是那杆不偏的秤。",
+		},
+	},
 	},
 	"shun:xingfa": {
 		key: "shun:xingfa",
@@ -535,6 +596,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "法都立齐了，只少了四个字——少了『钦哉』的法，只剩森森的牙。",
 			},
 		},
+	impacts: {
+		impact_xingfa_qinzai: {
+			choice: "象以典刑，钦哉慎刑",
+			source: "象以典刑，流宥五刑。眚灾过赦；怙终贼刑。钦哉，钦哉，惟刑之静哉！",
+			impact: "你把『哀矜』二字刻进了华夏的律法里。以刑弼教，而非以杀立威——真正的法度，从来不是让人怕，是让人不必怕。",
+		},
+	},
 	},
 	"shun:jiuguan": {
 		key: "shun:jiuguan",
@@ -584,6 +652,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "秤太急，称不出十三年的功——最先被称走的，是那个治水的人。",
 			},
 		},
+	impacts: {
+		impact_jiuguan_liangcaishouzhi: {
+			choice: "量才授职，三考黜陟",
+			source: "三岁一考功，三考绌陟，远近众功咸兴。此二十二人咸成厥功。",
+			impact: "你让二十二个人各归其位、各尽其能。天下明德，皆自虞帝始——一个能把对的人放到对的位置上的人，才配叫做天子。",
+		},
+	},
 	},
 	"shun:chanyu": {
 		key: "shun:chanyu",
@@ -621,6 +696,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "没有永诀，也没有传说——只有两个人，把余生守成了九疑山下的青山。",
 			},
 		},
+	impacts: {
+		impact_chanyu_shanrangzhi: {
+			choice: "传贤不传子，功成身退",
+			source: "自黄帝至舜、禹……以章明德。",
+			impact: "尧传舜，舜传禹——三代人接力，把『天下为公』四个字写进了华夏文明的开篇。此后四千年，每一次帝位之争，都会有人想起这个最初的答案。",
+		},
+	},
 	},
 	"yu:zhishui": {
 		key: "yu:zhishui",
@@ -660,8 +742,9 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	impacts: {
 		impact_zhishui_sanguo: {
-			title: "九州攸同",
-			content: "你把一个「家」，换成了天下万家的安宁。三过家门而不入——这份自苦，后人学不来，才叫大禹。",
+			choice: "三过家门而不入",
+			source: "禹伤先人父鲧功之不成受诛，乃劳身焦思，居外十三年，过家门不敢入。",
+			impact: "你把一个「家」，换成了天下万家的安宁。三过家门而不入——这份自苦，后人学不来，才叫大禹。",
 		},
 	},
 },
@@ -707,6 +790,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你守住了自己的高洁，天下却没能等来那个本该做天子的禹——夏，也许就不会有了。",
 			},
 		},
+	impacts: {
+		impact_shouchan_namian: {
+			choice: "辞避商均，推让而后受",
+			source: "禹辞辟舜之子商均于阳城。天下诸侯皆去商均而朝禹。禹于是遂即天子位，南面朝天下。国号曰夏后，姓姒氏。",
+			impact: "你退居阳城，天下诸侯却不约而同越过商均、奔你而来。推让而后受——不是你不想要那个位子，是天命证明了它非你莫属。夏后氏的天下，从你开始。",
+		},
+	},
 	},
 	"qi:ganzhizhan": {
 		key: "qi:ganzhizhan",
@@ -744,6 +834,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你换来了太平，却没换来那个『咸朝』的定局——家天下的第一步软软地落了地。",
 			},
 		},
+	impacts: {
+		impact_ganzhan_jiatianxia: {
+			choice: "灭有扈氏，立家天下之统",
+			source: "遂灭有扈氏。天下咸朝。诸侯皆去益而朝启，曰『吾君帝禹之子也』。",
+			impact: "禅让的灯火，在你手里熄灭了。从此四千年，帝位随着一姓血脉代代相传——你是『家天下』的第一块基石，也是『公天下』的最后一道背影。",
+		},
+	},
 	},
 	"jie:wangguo": {
 		key: "jie:wangguo",
@@ -781,6 +878,13 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 				epigraph: "你把一个必亡的残局，重新走成了一个悬而未决的开局——禹的江山没有断在你手里，这一次。",
 			},
 		},
+		impacts: {
+			impact_wangguo_shangde: {
+				choice: "不务德而武伤百姓，终致亡国",
+				source: "桀不务德而武伤百姓，百姓弗堪。……桀走鸣条，遂放而死。",
+				impact: "你用一世，推倒了四百年夏后氏的墙。天下从此明白了一个道理：天命不是天生的，是每一天都要去挣的。失去人心的王，再高的台子也会塌。",
+			},
+		},
 	},
 	// ═══ 番外 · NPC视角 ═══
 	"extra:leizu": {
@@ -813,6 +917,26 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 			canon: { title: "出尘高士", kind: "canon", epigraph: "有人求天下不得，有人避天下如避祸。" },
 		},
 	},
+	"extra:chongli": {
+		key: "extra:chongli",
+		title: "番外 · 重黎观象",
+		source: extraChongliSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "四时有序", kind: "canon", epigraph: "南正观天，火正治地——从此四时有序，人神各归其位。" },
+		},
+	},
+	"extra:kuobo-shishen": {
+		key: "extra:kuobo-shishen",
+		title: "番外 · 阙伯实沈",
+		source: extraKuoboShishenSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "参商永隔", kind: "canon", epigraph: "人生不相见，动如参与商——帝喾的两个儿子，化作了天上永不相逢的两颗星。" },
+		},
+	},
 	"extra:gaoyao": {
 		key: "extra:gaoyao",
 		title: "番外 · 皋陶断狱",
@@ -833,10 +957,10 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 			canon: { title: "十三年等", kind: "canon", epigraph: "她嫁的，就是那个肯把命填进水里的人。" },
 		},
 	},
-	// ═══ 番外 · 侧面叙述（NPC/百姓视角）═══
+	// ═══ 番外 · 上帝视角（NPC/百姓视角）═══
 	"extra:banquan-farmer": {
 		key: "extra:banquan-farmer",
-		title: "侧面 · 阪泉之后的农夫",
+		title: "上帝视角 · 阪泉之后的农夫",
 		source: extraBanquanFarmerSource,
 		precompiled: false,
 		deaths: {},
@@ -846,7 +970,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	"extra:zhuolu-jiuli": {
 		key: "extra:zhuolu-jiuli",
-		title: "侧面 · 涿鹿之后的九黎人",
+		title: "上帝视角 · 涿鹿之后的九黎人",
 		source: extraZhuoluJiuliSource,
 		precompiled: false,
 		deaths: {},
@@ -856,7 +980,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	"extra:zhitianxia-border": {
 		key: "extra:zhitianxia-border",
-		title: "侧面 · 东海边的渔翁",
+		title: "上帝视角 · 东海边的渔翁",
 		source: extraZhitianxiaBorderSource,
 		precompiled: false,
 		deaths: {},
@@ -866,7 +990,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	},
 	"extra:zhitianxia-peasant": {
 		key: "extra:zhitianxia-peasant",
-		title: "侧面 · 顺天时的农人",
+		title: "上帝视角 · 顺天时的农人",
 		source: extraZhitianxiaPeasantSource,
 		precompiled: false,
 		deaths: {},
@@ -874,4 +998,65 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 			canon: { title: "碗里多了一口粮", kind: "canon", epigraph: "治国治到百姓碗里多了一口粮，这才算落了地。" },
 		},
 	},
+	// ═══ 番外 · 上帝视角（第二三章）═══
+	"extra:zhuanxu-shaman": {
+		key: "extra:zhuanxu-shaman",
+		title: "上帝视角 · 颛顼治下的祝祷人",
+		source: extraZhuanxuShamanSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "香火归了礼义", kind: "canon", epigraph: "依鬼神以制义——制的是鬼神，更是人心。" },
+		},
+	},
+	"extra:diku-weaver": {
+		key: "extra:diku-weaver",
+		title: "上帝视角 · 帝喾治下的织女",
+		source: extraDikuWeaverSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "布帛匀到了百姓身上", kind: "canon", epigraph: "执中二字，落到底，就是让每张嘴都有一口粮、每个人都有一件衣。" },
+		},
+	},
+	"extra:yao-farmer": {
+		key: "extra:yao-farmer",
+		title: "上帝视角 · 敬授民时的老农",
+		source: extraYaoFarmerSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "历法落到田里", kind: "canon", epigraph: "授民时三个字，落到底，就是让老农不必再猜天。" },
+		},
+	},
+	"extra:yao-flood": {
+		key: "extra:yao-flood",
+		title: "上帝视角 · 洪水边上的村民",
+		source: extraYaoFloodSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "堙水九年淹的是家", kind: "canon", epigraph: "功用不成四个字，落到底，是阿水被淹了三回的家。" },
+		},
+	},
+  "extra:yao-danzhu-servant": {
+    key: "extra:yao-danzhu-servant",
+    title: "上帝视角 · 丹朱的近侍阿禾",
+    source: extraYaoDanzhuServantSource,
+    precompiled: false,
+    deaths: {},
+    endings: {
+      canon: { title: "一声『吁』碎十年从龙梦", kind: "canon", epigraph: "不以天下之病而利一人——落在亲儿近侍身上，是十几年从龙梦碎的一声轻响。" },
+    },
+  },
+  "extra:yao-ehuang-nvying": {
+    key: "extra:yao-ehuang-nvying",
+    title: "上帝视角 · 妫汭二妃",
+    source: extraYaoEhuangNvyingSource,
+    precompiled: false,
+    deaths: {},
+    endings: {
+      canon: { title: "帝女下嫁看的是德", kind: "canon", epigraph: "连自己的女儿都舍得放进去赌的人，才真的把天下看得比自己重。" },
+    },
+  },
 };

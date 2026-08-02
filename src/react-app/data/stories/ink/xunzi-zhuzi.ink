@@ -37,6 +37,7 @@ VAR xing_e = 0
 
 === act2_jijiu ===
 #bg:qi_jixia
+#bgm:peaceful
 你在稷下学宫讲学，「三为祭酒」——三次做学宫之长。
 齐国人都说：「谈天衍，雕龙奭，炙毂过髡。」驺衍闳大、驺奭文采、淳于髡圆熟。
 #show:jinanguo:questioning:center
@@ -113,6 +114,7 @@ VAR xing_e = 0
 
 === act3_quangxue ===
 #bg:lanling
+#bgm:peaceful
 你到了兰陵，春申君任你为兰陵令。你开始著书——《劝学》《修身》《不苟》《荣辱》……
 你在兰陵讲学，弟子们围坐。你写下：「君子曰：学不可以已。青，取之于蓝，而青于蓝；冰，水为之，而寒于水。」
 #show:lisi:young:center
@@ -136,6 +138,7 @@ VAR xing_e = 0
 
 === act4_hanfei ===
 #bg:lanling
+#bgm:peaceful
 另一个弟子来了——韩非，韩国的公子。他口吃，不能道说，却善著书。
 他拿给你看他写的《孤愤》《五蠹》，全是刑名法术之学，却归本于黄老。
 #show:hanfei:serious:center
@@ -175,23 +178,27 @@ VAR xing_e = 0
 === act1_shan_death ===
 你附和孟子的性善论，说人性本善。可你本来是那个讲性恶的荀子呀！你这一附和，就没有了那个在稷下独树一帜的荀卿，也就没有了后来集法家大成的韩非、助秦统一的李斯——整个先秦思想史都缺了一块。你变成了一个平庸的儒生，再也不是那个清醒的荀子。
 #bg:qin_prison
+#bgm:dark
 #death:xingshan #speaker:青月
 -> END
 
 === act2_wang_death ===
 你说只有王道可行，霸道是乱世之术。可这是战国呀——哪个君主肯等你百年树人？孟子都因为这个困于齐梁，你再走这条路，也只能和孟子一样迂阔。你没看到礼和法可以结合，王和霸可以互补，你的学说就少了最关键的那份清醒。
 #bg:qin_prison
+#bgm:dark
 #death:danwang #speaker:青月
 -> END
 
 === act3_buxue_death ===
 你告诉李斯学不如权变，乱世就该搞纵横。李斯大悦，早早去了秦国；其他弟子也觉得读书无用，纷纷散去。你在兰陵成了个孤家寡人，没人再听你讲学，你的书也没人传——《劝学》《天论》那些名篇，再也不会有了。
 #bg:qin_prison
+#bgm:dark
 #death:buxue #speaker:青月
 -> END
 
 === act4_fajia_death ===
 你赞同韩非的法家之术，说儒者确实是五蠹之一。你这个大儒自己都否定了儒家，那还有什么好说的？你彻底倒向了法家，变成了韩非李斯的同路人——可你忘了，没有礼义支撑的法术，只会变成苛政暴秦的先声。你这个荀子，也就不是荀子了。
 #bg:qin_prison
+#bgm:dark
 #death:pianfa #speaker:青月
 -> END

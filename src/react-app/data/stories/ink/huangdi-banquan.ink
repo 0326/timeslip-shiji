@@ -3,10 +3,13 @@
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
 
+VAR mg_result = ""
+VAR mg_score = 0
+
 -> c_open
 
 === c_open ===
-#bg:xuanyuan_qiu
+#bg:xuanyuan_qiu_alt1
 #bgm:solemn
 #show:qingyue:smile:float
 「呼——又见面啦，轩辕。上一回青月才把你送进史册的头一页，你还是个刚睁眼的婴孩；这一眨眼，你已长成顶天立地的一方之主咯。」 #speaker:青月
@@ -17,6 +20,7 @@
 
 === c_shinong ===
 #bg:zhuhou_luan
+#bgm:danger
 你所处的时代，神农氏的统治早已衰微。诸侯彼此侵伐，残害百姓，而神农氏——无力征讨。 #speaker:青月 #hint:轩辕之时，神农氏世衰。诸侯相侵伐，暴虐百姓，而神农氏弗能征。
 远处火光冲天，哭声顺着风飘来。有诸侯掳掠邻邦，把老弱驱作牛马。天下人的目光，正一点点望向你。 #speaker:青月
 你望着那片火光，攥紧了拳：「诸侯相侵，苍生涂炭——总得有人，把这乱世担起来。」 #speaker:轩辕
@@ -32,6 +36,7 @@
 
 === c_binfu ===
 #bg:xuanyuan_qiu
+#bgm:peaceful
 #show:qingyue:smile:float
 「欸——漂亮！你没有先去抢，而是先去养。」 #speaker:青月
 你调理五行之气，按时令种植五谷，丈量四方，让流离的人重新有了田、有了家。 #speaker:青月 #hint:治五气，蓺五种，抚万民，度四方。
@@ -73,6 +78,7 @@
 
 === c_yandi ===
 #bg:banquan_ye
+#bgm:tension
 #show:yandi:proud:center
 炎帝。他也是一方共主，与你同源而立。如今他想侵凌诸侯，重整旧日的威权。 #speaker:青月 #hint:炎帝欲侵陵诸侯，诸侯咸归轩辕。
 可诸侯的心，早已归了你。天下容不下两个共主——这一战，避不开了。 #speaker:青月
@@ -95,19 +101,20 @@
 	-> c_win
 * #hint:炎帝营垒森严、粮草充足，同族之兵岂是一鼓可破？轻进者，多为敌所乘。 [趁锐气正盛，轻兵疾进，直捣炎帝中军——速胜之功，唾手可得]
 	-> c_death_rash
-* [召见风后，询问炎帝军中虚实]
+* #correct [召见风后，询问炎帝军中虚实]
 	-> c_explore_banquan_fenghou
-* [不战。遣使赴炎帝营，愿以河为界，与同源之君二分天下、各治其民]
+* #correct [不战。遣使赴炎帝营，愿以河为界，与同源之君二分天下、各治其民]
 	-> if_erfen_1
-* [战，且要斩草除根——三战胜后，不纳其降，趁势诛炎帝、并其部，永绝二主之患]
+* #correct [战，且要斩草除根——三战胜后，不纳其降，趁势诛炎帝、并其部，永绝二主之患]
 	-> if_zhuyan_1
 * [先断其粮道。派兵绕至炎帝后方，截其粮草——粮尽则不战自溃]
 	-> c_battle_cut_supply
-* [遣使入炎帝营，晓以利害：若肯归附，可仍居其地，共享天下]
+* #correct [遣使入炎帝营，晓以利害：若肯归附，可仍居其地，共享天下]
 	-> c_battle_negotiate
 
 === c_battle_cut_supply ===
 #bg:banquan_ye
+#bgm:tension
 #show:qingyue:worry:float
 「断粮道……这法子够狠的。不过呀——」 #speaker:青月
 你派兵绕至炎帝后方，果然截获了他的粮草。炎帝军中粮尽，士气低落。可你这一断，也断了两地百姓的活路——粮草被截，难民遍野。 #speaker:青月
@@ -122,6 +129,7 @@
 
 === c_battle_negotiate ===
 #bg:banquan_ye
+#bgm:tension
 #show:qingyue:calm:float
 「晓以利害……这倒是个办法。」 #speaker:青月
 你遣使入炎帝营，说：「你我同源，何必相残？若肯归附，你仍居其地，共享天下。」 #speaker:青月
@@ -231,9 +239,20 @@
 
 === c_win_next ===
 天下初定。可就在此时，一个名字如惊雷传来——蚩尤作乱，不听帝命，最为凶暴，莫能制伏。 #speaker:青月 #hint:而蚩尤最为暴，莫能伐。
+#actclear:huangdi_banquan_act
+#show:qingyue:tease:float
+「欸——阪泉三战，太史公只写了一句话。你看看这段原文，能把这几条竹简缀回去吗？」 #speaker:青月
+#minigame:bamboo:1:1:5
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，阪泉三战的原文，你缀回去了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「简序暂乱也无妨，三战而后得其志，你心里已经明白了。」 #speaker:青月
+}
 #show:qingyue:tease:float
 「欸嘿——别急着喘气呀。涿鹿那一场，才是真正的硬仗……不过那是下一世的事啦。」 #speaker:青月
-「这一劫，你走完了。看懂了吗？先修德、后振兵，三战而不贪功——天下，是这么一寸一寸挣来的。」 #speaker:青月 #ending:canon
+「这一劫，你走完了。看懂了吗？先修德、后振兵，三战而不贪功——天下，是这么一寸一寸挣来的。」 #speaker:青月 #ending:canon #quiz:quiz_banquan_minde
 #hide:yandi
 -> END
 

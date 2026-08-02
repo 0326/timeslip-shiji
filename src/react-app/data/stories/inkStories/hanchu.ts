@@ -4,6 +4,12 @@ import hanwenHanchuSource from "../ink/hanwen-hanchu.ink?raw";
 import zhouboHanchuSource from "../ink/zhoubo-hanchu.ink?raw";
 import chaocuoHanchuSource from "../ink/chaocuo-hanchu.ink?raw";
 import zhouyafuHanchuSource from "../ink/zhouyafu-hanchu.ink?raw";
+// 番外 · 上帝视角
+import extraLvhouGongrenSource from "../ink/extras/extra-lvhou-gongren.ink?raw";
+import extraHanwenDaichenSource from "../ink/extras/extra-hanwen-daichen.ink?raw";
+import extraZhouboBeijunSource from "../ink/extras/extra-zhoubo-beijun.ink?raw";
+import extraZhouyafuXiliuSource from "../ink/extras/extra-zhouyafu-xiliu.ink?raw";
+import extraChaocuoDonggongSource from "../ink/extras/extra-chaocuo-donggong.ink?raw";
 
 export const hanchuInkStories: Record<string, InkStoryConfig> = {
 	"lvhou:hanchu": {
@@ -254,6 +260,57 @@ export const hanchuInkStories: Record<string, InkStoryConfig> = {
 				kind: "if",
 				epigraph: "他终于活成了父亲那句『安知狱吏之贵』——用一世的刚，换了一个白头的平安。",
 			},
+		},
+	},
+	// ═══ 番外 · 上帝视角 ═══
+	"extra:lvhou-gongren": {
+		key: "extra:lvhou-gongren",
+		title: "上帝视角 · 永巷的宫人",
+		source: extraLvhouGongrenSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "永巷舂米歌的泪", kind: "canon", epigraph: "女主称制的狠辣底下，是永巷里那些连名字都留不下的宫人——人彘的血，溅了她们一辈子的衣裳。" },
+		},
+	},
+	"extra:hanwen-daichen": {
+		key: "extra:hanwen-daichen",
+		title: "上帝视角 · 代国的旧臣",
+		source: extraHanwenDaichenSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "从代地到长安的那一路", kind: "canon", epigraph: "从边地王爷到大汉天子，那一路的谨慎与不安，是代地老臣们陪着一步步踩实的。" },
+		},
+	},
+	"extra:zhoubo-beijun": {
+		key: "extra:zhoubo-beijun",
+		title: "上帝视角 · 北军的校尉",
+		source: extraZhouboBeijunSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "左袒的那一声万岁", kind: "canon", epigraph: "诸吕掌了军权八年，却没掌住人心——北军校尉的一声左袒，替刘氏把江山接了回来。" },
+		},
+	},
+	"extra:zhouyafu-xiliu": {
+		key: "extra:zhouyafu-xiliu",
+		title: "上帝视角 · 细柳营的军门都尉",
+		source: extraZhouyafuXiliuSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "军门都尉挡的那一下圣驾", kind: "canon", epigraph: "军中闻将军令，不闻天子之诏——不是周亚夫的狂，是军门都尉那一下，把军威两个字立住了。" },
+		},
+	},
+	"extra:chaocuo-donggong": {
+		key: "extra:chaocuo-donggong",
+		title: "上帝视角 · 东宫的舍人",
+		source: extraChaocuoDonggongSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "朝衣东市的那一刀", kind: "canon", epigraph: "七国反，清君侧——削藩的策，是晁错的命填出来的；东市的那道血痕，学生们记了一辈子。" },
 		},
 	},
 };

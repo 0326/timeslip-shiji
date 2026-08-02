@@ -62,6 +62,7 @@ VAR guojia = 0
 
 === act1_fengbi_bad ===
 #bg:zhao_handan
+#bgm:court
 #show:linxiangru:worried:float
 赵王又问：「那谁可以出使？」 #speaker:青月
 你硬着头皮站了出来——虽然你的判断出了差错，但满朝无人，你不能退缩。
@@ -74,6 +75,7 @@ VAR guojia = 0
 
 === act1_fengbi ===
 #bg:zhao_handan
+#bgm:court
 赵王又问：「那谁可以出使？」 #speaker:青月 #hint:王曰：「谁可使者？」相如曰：「王必无人，臣愿奉璧往使。城入赵而璧留秦；城不入，臣请完璧归赵。」
 #show:linxiangru:determined:float
 你看了看满朝文武——连廉颇这样身经百战的老将军都沉吟不语，其他人更是面面相觑。你上前一步，说出了那句掷地有声的话：
@@ -302,6 +304,7 @@ VAR guojia = 0
 
 === act5_sheren ===
 #bg:zhao_handan
+#bgm:court
 你的门客一起来见你，说——
 「我们离开亲人来侍奉您，只是仰慕您高尚的节义。如今您与廉颇官位相同，廉将军口出恶言，您却害怕躲避他，畏惧得太过分了！平庸的人尚且感到羞耻，何况是身为将相的人呢！我们这些人没出息，请允许我们辞别离去！」 #speaker:青月 #hint:于是舍人相与谏曰：「臣所以去亲戚而事君者，徒慕君之高义也。今君与廉颇同列，廉君宣恶言而君畏匿之，恐惧殊甚，且庸人尚羞之，况于将相乎！臣等不肖，请辞去。」
 #show:qingyue:sad:float
@@ -330,6 +333,7 @@ VAR guojia = 0
 
 === act5_yan ===
 #bg:zhao_handan
+#bgm:court
 #show:linxiangru:calm:float
 「公之视廉将军孰与秦王？」 #speaker:蔺相如 #hint:蔺相如固止之，曰：「公之视廉将军孰与秦王？」曰：「不若也。」
 门客们面面相觑：「廉将军……比不上秦王。」

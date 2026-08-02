@@ -5,6 +5,10 @@ import wuwangXizhouSource from "../ink/wuwang-xizhou.ink?raw";
 import zhougongXizhouSource from "../ink/zhougong-xizhou.ink?raw";
 import xuanwangXizhouSource from "../ink/xuanwang-xizhou.ink?raw";
 import youwangXizhouSource from "../ink/youwang-xizhou.ink?raw";
+import taiboXizhouSource from "../ink/taibo-xizhou.ink?raw";
+import extraTaiboJiliSource from "../ink/extras/extra-taibo-jili.ink?raw";
+import extraTaiboTaijiangSource from "../ink/extras/extra-taibo-taijiang.ink?raw";
+import extraTaiboFarmerSource from "../ink/extras/extra-taibo-farmer.ink?raw";
 
 export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"jiangshang:xizhou": {
@@ -303,6 +307,68 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 				kind: "if",
 				epigraph: "他既想守礼、又舍不得放手——拖到最后才废，和一开始就废，犬戎的马蹄一样快。",
 			},
+		},
+	},
+	"taibo:xizhou": {
+		key: "taibo:xizhou",
+		title: "古公亶父 · 岐山之仁",
+		source: taiboXizhouSource,
+		precompiled: false,
+		deaths: {
+			zhan: {
+				reason: "不忍土地为敌而让百姓为战而死，周人战败国亡",
+				classical: "有民立君，将以利之。君子不以其所以养人者害人。",
+				analysis:
+					"古公的选择看似怯懦——弃地而走。实则他明白：土地是养人的，不是让人死的。你若选择战，周人以耕农之兵敌戎狄铁骑，豳地必为废墟。历史上的古公选择了迁岐，才有了后来的周道之兴。",
+			},
+		},
+		endings: {
+			canon: {
+				title: "周道之兴",
+				kind: "canon",
+				epigraph: "迁岐、建制、传位——三个决定，铺就了八百年周室的根基。",
+			},
+			if_younu: {
+				title: "游牧不改",
+				kind: "if",
+				epigraph: "你保住了旧传统，却没能在岐下扎下深根——文王的功业，要推迟几百年。",
+			},
+			if_zhengwei: {
+				title: "兄弟争位",
+				kind: "if",
+				epigraph: "太伯虞仲不让位，周室便少了两位最贤的诸侯——内耗的种子，已经埋下。",
+			},
+		},
+	},
+	// ═══ 番外 · NPC视角 ═══
+	"extra:taibo-jili": {
+		key: "extra:taibo-jili",
+		title: "番外 · 季历承志",
+		source: extraTaiboJiliSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "困而死", kind: "canon", epigraph: "太伯让的，季历还了——拿命还的。" },
+		},
+	},
+	"extra:taibo-taijiang": {
+		key: "extra:taibo-taijiang",
+		title: "番外 · 太姜之贤",
+		source: extraTaiboTaijiangSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "三太之始", kind: "canon", epigraph: "古公打下的根基，有一半是太姜撑的。" },
+		},
+	},
+	"extra:taibo-farmer": {
+		key: "extra:taibo-farmer",
+		title: "番外 · 岐下老农",
+		source: extraTaiboFarmerSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "一袋黍种", kind: "canon", epigraph: "八百年天下，从一袋黍种子开始。" },
 		},
 	},
 };

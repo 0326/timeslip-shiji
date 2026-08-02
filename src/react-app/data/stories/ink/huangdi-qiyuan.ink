@@ -4,6 +4,9 @@
 // 说明：全体玩家的第一站。青月恭候 → 交代世界观与玩法 → 穿越黄帝 + 黄帝诞生
 // ═══════════════════════════════════════════════
 
+VAR mg_result = ""
+VAR mg_score = 0
+
 -> c_open
 
 === c_open ===
@@ -77,6 +80,15 @@
 「路上遇见的人、走过的死法、解开的成就，我都替你收进图鉴里；想读读原文了，典籍阁也随时为你开着。」 #speaker:青月
 #show:qingyue:smile:float
 「好啦，闲话搁下。你的第一站，就落在这条长河的源头——史册的头一页、头一个名字上。」 #speaker:青月
+「先考考你——这几条竹简，是太史公为你写的第一笔。能把它拼回原样吗？」 #speaker:青月
+#minigame:bamboo:1:0:5
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，太史公的第一笔，你接住了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「简序暂乱也无妨，往后读着读着，自然就通啦。」 #speaker:青月
+}
 「坐稳咯，青月要送你穿越啦——」 #speaker:青月
 -> c_chuanyue
 
@@ -188,5 +200,5 @@
 === c_chuanyue_end ===
 #show:qingyue:smile:float
 「呼——不管怎么选，你的路，都从这一刻开始了。」 #speaker:青月
-「记住：史书只给你一个名字，怎么走，全看你自己。」 #speaker:青月 #ending:canon
+「记住：史书只给你一个名字，怎么走，全看你自己。」 #speaker:青月 #ending:canon #impact:impact_qiyuan_xuanyuan #quiz:graph_huangdi_xianding
 -> END

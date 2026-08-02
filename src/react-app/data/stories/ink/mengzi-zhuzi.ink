@@ -41,6 +41,7 @@ VAR wangdao = 0
 
 === act2_xingshan ===
 #bg:qi_jixia
+#bgm:peaceful
 #show:jinanguo:questioning:center
 你离开了大梁，又到了齐国稷下。稷下先生们围着你，有人发难：「孟子先生，今人之性，生而好利焉，顺是故争夺生而辞让亡焉——你说『性善』，岂非欺人？」
 #show:qingyue:worry:float
@@ -64,6 +65,7 @@ VAR wangdao = 0
 
 === act3_wangdao ===
 #bg:daliang_court
+#bgm:court
 你又回到了大梁。梁惠王站在沼池之上，顾鸿雁麋鹿，问你：「贤者亦乐此乎？」
 你说：「贤者而后乐此，不贤者虽有此，不乐也。」
 后来齐宣王问你：「齐桓、晋文之事，可得闻乎？」
@@ -86,6 +88,7 @@ VAR wangdao = 0
 
 === act4_shesheng ===
 #bg:qi_jixia
+#bgm:peaceful
 宣王最终还是不能用你的主张。你离开齐国，路上有弟子问你：「先生，道既不行，何不枉尺而直寻？」
 「陈代说：『枉尺而直寻』，宜若可为也——可你知道孔子怎么说吗？」你停下脚步。「志士不忘在沟壑，勇士不忘丧其元。」
 #show:qingyue:worry:float
@@ -159,23 +162,27 @@ VAR wangdao = 0
 === act1_lideath ===
 你向梁惠王陈说富国强兵之术。惠王大悦，任你为大夫。可你讲了一辈子利，满朝文武皆言利，最后魏国在好利之士的包围下，日益削弱——你变成了自己最厌恶的那种策士，再也不是那个说「何必曰利」的孟子。
 #bg:qin_prison
+#bgm:dark
 #death:liyi #speaker:青月
 -> END
 
 === act2_shandeath ===
 你承认性恶可化、礼由外作——这是另一条大儒的路，是后来荀子走的路。可那不是你孟子，那个说「人皆可以为尧舜」的孟轲，从此不是你了。性善的种子灭了，仁政的根基也就没了。
 #bg:qin_prison
+#bgm:dark
 #death:xinge #speaker:青月
 -> END
 
 === act3_badeath ===
 你为齐宣王讲桓文霸业。宣王大喜，用你为客卿伐燕取地。可霸道就是霸道——取之易，守之难，诸侯群起而攻之，齐军大败。你这个说「保民而王」的人，最后成了帮他杀人的帮凶。
 #bg:qin_prison
+#bgm:dark
 #death:badao #speaker:青月
 -> END
 
 === act4_wangdeath ===
 你选择了枉尺直寻——先顺着世主，再慢慢引导。可一枉便是永远枉——你迁就了第一次，就有第二次、第三次。最后你变成了一个圆滑的老吏，孔子的道，在你手里弯了，再也直不回来。道不行，不是因为世界太坏，是因为守道的人先弯了腰。
 #bg:qin_prison
+#bgm:dark
 #death:wangchi #speaker:青月
 -> END

@@ -11,7 +11,7 @@ VAR mg_score = 0
 -> act1_ji_ye
 
 === act1_ji_ye ===
-#bg:xuanyuan_court
+#bg:xuanyuan_court_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「欸嘿——又来一个！这一回你是姬昌，西伯昌，也就是后来的周文王哦~」 #speaker:青月
@@ -59,6 +59,9 @@ VAR mg_score = 0
 #show:qingyue:solemn:float
 「……你在狱里开始推演易卦。」 #speaker:青月
 乾、坤、屯、蒙、需、讼、师……八卦两两重叠，六十四卦在你指尖一一展开。你把一生的困厄、天下的兴亡、人事的进退，都装进了这六爻的变化里。
+#actclear:wenwang_act2
+#show:qingyue:calm:float
+「推演易卦，六十四卦序次——你记住了吗？来，把散乱的卦辞缀回原序。」 #speaker:青月
 #minigame:bamboo
 { mg_result == "win":
 	#show:qingyue:smile:float
@@ -100,6 +103,7 @@ VAR mg_score = 0
 
 === act3_chu_pao_luo ===
 #bg:yao_court
+#bgm:court
 #show:qingyue:smile:float
 「你……你没有要打崇侯虎，你献地，是为了请他废除炮烙之刑？」 #speaker:青月
 纣王愣了一下，随即哈哈大笔一挥——准了。
@@ -138,6 +142,7 @@ VAR mg_score = 0
 
 === act5_yu_xian ===
 #bg:palace
+#bgm:court
 #show:qingyue:smile:float
 你称姜尚为「太公望」，载与同归，立为军师。你说你祖父太公在世时就说过，将来必有圣人来周，周因之以兴——你等到了。
 你站在丰邑的高台上，与太公望、周公旦、散宜生等人一起，望着东方的朝歌。
@@ -165,6 +170,7 @@ VAR mg_score = 0
 === act5_shou_ming ===
 { de >= 2:
     #bg:yushun_court
+#bgm:court
     #show:qingyue:solemn:float
     「你在临终前，把太子发叫到床前。」 #speaker:青月
     你对发说：「看到善事不要懈怠，时机到了不要犹豫，远离是非不要犹豫——这三条，能保国家。」

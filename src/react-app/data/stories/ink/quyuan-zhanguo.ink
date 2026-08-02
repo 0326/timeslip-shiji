@@ -107,6 +107,7 @@ VAR zhe = 0
 
 === act2_hou ===
 #bg:chu_gongting
+#bgm:court
 #show:huaiwang:default:right
 怀王抬起头，看着阶下这个他亲手疏远的臣子。半晌，他一拍案—— #speaker:青月
 「悔矣……寡人悔矣！来人，追张仪！」 #speaker:楚怀王 #hint:怀王悔，追张仪不及。
@@ -149,6 +150,7 @@ VAR zhe = 0
 
 === act3_jiangnan ===
 #bg:miluojiang
+#bgm:melancholy
 你被放逐了。再也回不了郢都了。 #speaker:青月
 「你游于江潭，行吟泽畔，颜色憔悴，形容枯槁。一个渔父看见你，摇着船靠了过来——」 #speaker:青月
 #show:yufu:default:left
@@ -250,6 +252,7 @@ VAR zhe = 0
 
 === if_quguo_2 ===
 #bg:chu_gongting
+#bgm:court
 #show:qingyue:sad:float
 「齐王果然待你为上宾。你在临淄谈治乱、论辞令，稷下的学士都来听你说楚国的旧事。你活得体面，活得安稳。」 #speaker:青月
 可每逢五月，江水涨的时节，你独坐东楼，望着南方，一个字也写不出来。 #speaker:青月
@@ -275,6 +278,7 @@ VAR zhe = 0
 
 === if_tuiyin_2 ===
 #bg:miluojiang
+#bgm:melancholy
 #show:qingyue:sad:float
 可有些夜里，你会在船头坐到天明。芦苇丛里的风一起，喉咙深处涌上来的，还是那半句——「亦余心之所善兮……」你把它咽了回去，从没有吟出后半句。 #speaker:青月
 「众人皆醉的世道里，你终于学会了哺其糟而啜其醨。你不再是那个独醒的人了——独醒太苦，你放下了。」 #speaker:青月

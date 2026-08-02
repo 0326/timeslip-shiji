@@ -3,10 +3,13 @@
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
 
+VAR mg_result = ""
+VAR mg_score = 0
+
 -> c_open
 
 === c_open ===
-#bg:xuanyuan_qiu
+#bg:xuanyuan_qiu_alt2
 #bgm:solemn
 #show:qingyue:worry:float
 「……听。东边的战鼓，隔着几千年，都敲得我耳朵疼。」 #speaker:青月
@@ -21,6 +24,7 @@
 
 === c_muster ===
 #bg:huangdi_court
+#bgm:court
 #show:chiyou:rage:right
 军情一日三报：蚩尤不奉帝命，兵锋已动，欲侵陵诸侯。帐中将佐分作两派——有人说你阪泉新胜、兵锋正锐，何不即刻挥师东进，一战踏平蚩尤。 #speaker:青月
 你按着案上的舆图，指节都发了白：「阪泉的血还没干，将士的甲还没卸……可蚩尤不除，天下永无宁日。」 #speaker:轩辕
@@ -31,11 +35,11 @@
 	-> c_march
 * #hint:阪泉压服的是炎帝，不是蚩尤；轻敌孤进，正中『莫能伐』之险。 [趁锐气正盛，率本部精锐星夜孤军东进]
 	-> c_lone_charge
-* [不动刀兵。遣使入九黎，愿封蚩尤为东方之伯，以德招之来朝]
+* #correct [不动刀兵。遣使入九黎，愿封蚩尤为东方之伯，以德招之来朝]
 	-> if_zhaofu_1
-* [先遣使联络炎帝，邀他一同出兵——两族合兵，方能压服蚩尤]
+* #correct [先遣使联络炎帝，邀他一同出兵——两族合兵，方能压服蚩尤]
 	-> c_muster_yandi
-* [派人深入九黎，打探蚩尤的虚实和弱点——知己知彼，方能百战不殆]
+* #correct [派人深入九黎，打探蚩尤的虚实和弱点——知己知彼，方能百战不殆]
 	-> c_muster_spy
 
 === c_muster_yandi ===
@@ -113,11 +117,11 @@
 	-> c_capture
 * #hint:雾中妄动、各自追击，正是『不合诸侯』之败，孤军复现于迷途。 [不顾雾浓，催动全军循声追杀，务求一举破敌]
 	-> c_fog_lost
-* [询问风后，指南车如何辨向]
+* #correct [询问风后，指南车如何辨向]
 	-> c_explore_zhuolu_zhinanche
 * [派精锐部队试探前进，探明敌情后再行进退]
 	-> c_fog_scout
-* [令诸军点火为号，以火光联络各营——火光不灭，军心不散]
+* #correct [令诸军点火为号，以火光联络各营——火光不灭，军心不散]
 	-> c_fog_fire
 
 === c_fog_scout ===
@@ -156,11 +160,11 @@
 	-> c_end
 * #hint:『不用帝命』者若得赦，帝命不立、诸侯不服，共主之统无从立起。 [念其勇烈，赦而收之——九黎铜兵尽归于你，何愁天下不定]
 	-> c_spare
-* [杀蚩尤犹不足——尽屠九黎之族，鸡犬不留，以绝东方再叛之根]
+* #correct [杀蚩尤犹不足——尽屠九黎之族，鸡犬不留，以绝东方再叛之根]
 	-> if_tuli_1
 * [不杀蚩尤，也不收他——将他流放至蛮荒之地，永不得归]
 	-> c_capture_exile
-* [杀蚩尤，但善待九黎之民——诛首恶而安从者，方为王者之道]
+* #correct [杀蚩尤，但善待九黎之民——诛首恶而安从者，方为王者之道]
 	-> c_capture_benevolent
 
 === c_explore_zhuolu_zhinanche ===
@@ -238,6 +242,17 @@
 #show:qingyue:smile:float
 「欸——从此往后，天下有不顺的，你披山通道、从而征之，一辈子未尝宁居。」 #speaker:青月 #hint:天下有不顺者，黄帝从而征之……披山通道，未尝宁居。
 「呼——你走完了他这一战。看懂了吗？他不是靠一个人多能打，是靠把天下的力气合到了一处呀。」 #speaker:青月
+#actclear:huangdi_zhuolu_act
+#show:qingyue:tease:float
+「呐——涿鹿之战的原文，你记全了吗？来，把这九黎玉珠布阵破一破——征师诸侯、禽杀蚩尤，都在里头哦。」 #speaker:青月
+#minigame:match3:zhuolu_1
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，迷阵已破，涿鹿之战的原文，你全记下了！」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「迷阵未破也无妨，征师诸侯、合而不散的道理，你心里已经明白了。」 #speaker:青月
+}
 #show:qingyue:calm:float
 「蚩尤死了。可他身后还有一整个九黎部族——那些人呢？太史公没写这一笔，我替你看看。」 #speaker:青月
 #show:qingyue:worry:float
@@ -248,7 +263,7 @@
 #show:qingyue:calm:float
 「后来呀，九黎的铜匠和你的铜匠坐在同一个铸坊里，一起炼铜、一起开模。阿铜的大女儿嫁给了有熊氏的铁匠——两家结亲时，谁也不提当年打过仗的事。那已经是上一辈的恩怨了。」 #speaker:青月
 #show:qingyue:solemn:float
-「遂禽杀蚩尤——太史公只写了五个字。可这五个字底下，是阿铜从铸刀变成铸锄，是九黎从叛族变成匠户。杀一个首领只要一刀，安一族的百姓却要一辈子的功夫。」 #speaker:青月 #ending:canon
+「遂禽杀蚩尤——太史公只写了五个字。可这五个字底下，是阿铜从铸刀变成铸锄，是九黎从叛族变成匠户。杀一个首领只要一刀，安一族的百姓却要一辈子的功夫。」 #speaker:青月 #ending:canon #quiz:quiz_zhuolu_zhinanche
 -> END
 
 // ═══ IF线 · 招抚（自由模式歧路：不战，招蚩尤来朝）═══

@@ -14,7 +14,7 @@ VAR zhi = 0
 // 第一幕：以兵法见吴王（起点·真才立身）
 // ═══════════════════════════════════════════════
 === act1_jian ===
-#bg:wu_gong_ting
+#bg:wu_gong_ting_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「欸嘿——又一位穿越客落到我这儿啦！这一回你要变的人呀，是把『令行禁止』四个字，用宫女的血写活了的那位——兵家之祖，孙武。」 #speaker:青月

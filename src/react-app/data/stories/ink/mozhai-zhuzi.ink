@@ -61,6 +61,7 @@ VAR feigong = 0
 
 === act2_gongshou ===
 #bg:song_wall
+#bgm:tension
 你解下腰带，围起来当作城池；拿了些木片，当作守城的器械。
 公输般用了九种攻城的方法，你九次挡住了他。
 公输般攻城的办法用完了，你守城的办法还有余。
@@ -100,6 +101,7 @@ VAR feigong = 0
 
 === act4_hanshe ===
 #bg:song_city
+#bgm:court
 你回鲁国，路过宋国。天上下着雨，你想到闾门（城门）里避雨，守闾门的人却不让你进去——他们根本不知道，就是你救了宋国。
 #show:qingyue:sad:float
 「……你看，你救了宋国，宋人却不知道，连避个雨都不让你进。这就是墨家的『义』呀——做了好事，不图回报。」 #speaker:青月
@@ -138,30 +140,35 @@ VAR feigong = 0
 === act1_buguan_death ===
 你觉得楚国攻宋和你没关系，继续著书讲学。可你不是主张兼爱非攻吗？听说自己的学说要救天下人，真的到了要出手的时候你却不去，你的「非攻」就成了空话。墨家从此失去了那种赴火蹈刃的侠气，变成了空讲学问的学派，没多久就失传了。
 #bg:qin_prison
+#bgm:dark
 #death:buguan #speaker:青月
 -> END
 
 === act2_buobian_death ===
 公输般说他义不杀人，你却没抓住这句话反驳他，反而走了。公输般也乐得不被你说教，继续帮楚王造云梯。没有你的那番「义不杀少而杀众」的驳斥，公输般不会心服，楚王也不会见你，宋国还是会被攻打。
 #bg:qin_prison
+#bgm:dark
 #death:buobian #speaker:青月
 -> END
 
 === act2_tuibian_death ===
 你说不过楚王，就退缩回了鲁国。可你忘了——「非攻」不是靠说的，是靠守！你没有展示墨守的本事，楚王怎么会相信攻不下宋国？你连推演的勇气都没有，还谈什么非攻？
 #bg:qin_prison
+#bgm:dark
 #death:tuibian #speaker:青月
 -> END
 
 === act3_qiurao_death ===
 你求公输般不要杀你，这恰恰暴露了你的恐惧——公输般一看你怕了，就更要杀你了，因为杀了你就真的没人能守城了。你忘了你还有弟子三百人在宋城上！你要是说出这句话，楚王才不敢动手；你一求饶，反而让他看轻了你。
 #bg:qin_prison
+#bgm:dark
 #death:qiurao #speaker:青月
 -> END
 
 === act4_tubao_death ===
 你觉得宋人不知好歹，发誓再也不管闲事。可你是墨子呀！墨家的精神就是「不迁怒，不贰过」「兴天下之利，除天下之害」，做好事不是为了图报。你要是这么想，就不是那个摩顶放踵利天下的墨翟了。
 #bg:qin_prison
+#bgm:dark
 #death:tubao #speaker:青月
 -> END
 
@@ -183,6 +190,7 @@ VAR feigong = 0
 
 === if_shousong_2 ===
 #bg:song_wall
+#bgm:tension
 你没有把守城变成殉城。你让禽滑釐持你亲书，再赴楚营：楚军三日不能下，已折兵数千；宋城之上，墨者守器有余，弟子尚三百。攻之，徒耗楚国之力，宋终不可得。 #speaker:墨翟
 #show:songwang:reluctant:center
 楚王本已疲师，见血战三日而城不下，长叹一声：「善哉。寡人请无攻宋矣。」 #speaker:楚王
@@ -197,6 +205,7 @@ VAR feigong = 0
 === if_shousong_death ===
 你下令死守到底，一个墨者也不许退。墨者们真的做到了「死不旋踵」——可楚军是宋军的十倍，云梯之外还有冲车、地道。城终究破了，三百墨者无一生还，你也死在城头。宋城破，宋民被屠。你守住了「死不旋踵」的名节，却没守住你要守的人——非攻是为了止杀，不是为了让所有人一起死。摩顶放踵利天下的墨翟，把「利天下」熬成了「殉城池」。
 #bg:qin_prison
+#bgm:dark
 #death:xunsong #speaker:青月
 -> END
 

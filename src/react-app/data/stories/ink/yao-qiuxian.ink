@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 帝尧 · 咨岳求贤 · 择嗣与鸿水
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
@@ -6,7 +6,7 @@
 -> c_open
 
 === c_open ===
-#bg:yao_court
+#bg:yao_court_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「来得正巧，快替我搭把手——你瞧这满案的竹简，全是举荐的名帖，都快堆到我下巴啦。」 #speaker:青月
@@ -28,9 +28,11 @@
 
 * #correct #hint:尧曰：吁！顽凶，不用。——一声长叹，尧否了自己的亲儿子。 [「吁！顽凶。」——你当着满朝文武，亲口否了自己的儿子]
 	-> c_danzhu_reject
+* #correct [召丹朱来见，当面考较——先看看他到底成不成器]
+	-> c_explore_danzhu_test
 * [「到底是我的血脉。」——你点头属意丹朱：名正言顺，满朝无人敢驳]
 	-> death_danzhu
-* [不授天下，也不弃他——封丹朱于房，予一方之土历练，看他能否磨去那身顽气]
+* #correct [不授天下，也不弃他——封丹朱于房，予一方之土历练，看他能否磨去那身顽气]
 	-> if_fangdanzhu_1
 
 === c_danzhu_reject ===
@@ -54,6 +56,8 @@
 
 * #correct #hint:尧曰：共工善言，其用僻，似恭漫天，不可。 [「似恭漫天。」——你识破他的巧言，不用]
 	-> c_gonggong_reject
+* #correct [遣人暗查共工治绩——先看看他办的实事，再做定夺]
+	-> c_explore_gonggong_check
 * [「言之有功，姑且委政于他。」——你把政事交给共工]
 	-> death_gonggong
 
@@ -82,7 +86,9 @@
 
 * #correct #hint:尧于是听岳用鲧。——虽疑鲧，尧仍纳众谏，权且一试。 [你叹一口气：「试。」——纳四岳之谏，权且用鲧]
 	-> c_gun_try
-* [「我说过不可，就是不可！」——你固执己见，一意回绝众意]
+* #correct [问四岳：鲧究竟有何能耐？你们为何举他？]
+	-> c_explore_gun_inquire
+* #correct [「我说过不可，就是不可！」——你固执己见，一意回绝众意]
 	-> c_gun_refuse
 
 === c_gun_refuse ===
@@ -104,7 +110,7 @@
 	-> c_gun_fail
 * [「已经用了他，便一路信他到底。」——你一味倚重鲧，堙水不改]
 	-> death_gun
-* [不换人，换法子——严令鲧弃堙改疏，随山浚川、导水入海]
+* #correct [不换人，换法子——严令鲧弃堙改疏，随山浚川、导水入海]
 	-> if_gaifa_1
 
 === c_gun_fail ===
@@ -131,8 +137,77 @@
 「听见那个名字了吗？舜。」 #speaker:青月
 「你择嗣的两难、治水的九年徒劳，绕了这么大一圈，原来都是为了在这一刻——听见他的名字。」 #speaker:青月
 #show:qingyue:smile:float
-「呼——你走完了尧的这一程。看懂了吗？真正的圣君，不是从不选错，而是选错了，还肯睁开眼，接着往下找。」 #speaker:青月 #ending:canon
+「呼——你走完了尧的这一程。看懂了吗？真正的圣君，不是从不选错，而是选错了，还肯睁开眼，接着往下找。」 #speaker:青月 #impact:impact_qiuxian_sijuxian #ending:canon #quiz:quiz_qiuxian_qiuxian
 -> END
+
+// ═══ 探索节点 · 咨岳求贤 ═══
+
+=== c_explore_danzhu_test ===
+#bg:yao_court
+#bgm:court
+#show:danzhu:proud:right
+#show:qingyue:calm:float
+你命人传丹朱上殿。他来了，步子轻浮，眼神里带着藏不住的傲气。 #speaker:青月
+你问他：「近日读了什么书？」 #speaker:尧
+丹朱撇撇嘴：「书？儿臣忙着练棋呢。父亲，儿臣昨日赢了大舅三局，他说朝中无人能胜我。」 #speaker:丹朱
+你又问：「若天下有一州遭了灾，你怎么办？」 #speaker:尧
+丹朱想了想：「征粮。从别州调。别州不肯？那就——征。」 #speaker:青月
+#show:qingyue:tease:float
+「你看——第一个念头就是征，不是救。这就是丹朱。」 #speaker:青月
+「不是不聪明，是聪明用错了地方。他看天下，只看到棋盘——争、抢、赢。看不到棋盘底下，是人命。」 #speaker:青月
+
+* #correct [再问：你弟弟放勋呢？你与他相比如何？]
+	#show:qingyue:calm:float
+	「丹朱嗤笑：『放勋？他整天跟一帮农夫混在一起，有什么出息。』」 #speaker:青月
+	「可你心里清楚——放勋去田里看过百姓的粮仓，丹朱连朝堂外的事都不愿听。一个往下看，一个往上看。高下，你已看出来了。」 #speaker:青月
+	-> c_danzhu
+* #correct [心中已明，回去决断]
+	-> c_danzhu
+
+=== c_explore_gonggong_check ===
+#bg:yao_court
+#bgm:court
+#show:gonggong:smiling:right
+#show:qingyue:calm:float
+你没有被共工的巧言打动，先遣暗使去查他办过的实事。 #speaker:青月
+消息传回来—— #speaker:青月
+「他聚拢的民众，确实是办了些工程：修了一条路，开了一片渠。可修路的民夫，是他从各部强征来的，没给一文工钱。」 #speaker:青月
+「开渠的地方，是他自己的田——渠开了，他的地值了钱，旁人的田反倒被渠占了。」 #speaker:青月
+#show:qingyue:tease:float
+「你看——他说『旁聚布功』，功是有的。可这功，聚的是谁的好处，布的是谁的地？」 #speaker:青月
+「巧言的人，做事总带着一层壳。你不掰开看，就以为里头是实的。」 #speaker:青月
+
+* #correct [问：他表面恭顺，私下如何？]
+	#show:qingyue:worry:float
+	「暗使说：『面上对谁都是笑，可底下，他的手下欺压小部，他装作看不见。有人告到他面前，他说——小事，不必烦天子。』」 #speaker:青月
+	「『似恭漫天』——太史公这四个字，真是一字不差。恭是面子，漫是里子。你信了他的面子，他就拿里子掏空你。」 #speaker:青月
+	-> c_gonggong
+* #correct [查清楚了，回去决断]
+	-> c_gonggong
+
+=== c_explore_gun_inquire ===
+#bg:flood_sky
+#bgm:danger
+#show:gun:stern:right
+#show:qingyue:calm:float
+你没有急着答应或拒绝，先问四岳：「鲧——你们说他可以。他究竟有何能耐？」 #speaker:尧
+四岳答道：「鲧刚毅果决，有魄力，能服众。堤防之术，天下无出其右——他筑的堤，又高又厚，比谁都结实。」 #speaker:四岳
+#show:qingyue:tease:float
+「你看——四岳说的都是优点。可你心里有数：刚毅，过了头就是固执；服众，过了头就是跋扈；堤防之术再好，堵得住一时，堵得住一世吗？」 #speaker:青月
+「可四岳也不是瞎举——当时天下，确实没有比鲧更能干的人了。这就是两难：不是最好的选择，是唯一的选择。」 #speaker:青月
+
+* #correct [问：鲧的『负命毁族』，究竟是怎么回事？]
+	#show:qingyue:worry:float
+	「青月说：『鲧违逆过天命——他自认为对的事，旁人劝不动。他的部落也因此吃过亏：他一意孤行，族里有人反对，他压了下去。』」 #speaker:青月
+	「『负命』是不听天，『毁族』是不听人。一个天上地下都不听劝的人，你能指望他治水时听得进反对意见吗？」 #speaker:青月
+	-> c_gun
+* #correct [问：除了鲧，当真没有别人了？]
+	#show:qingyue:calm:float
+	「四岳摇头：『没有。年轻人还没长成，老一辈的要么老了，要么死了。鲧是眼下唯一有经验、有魄力、有手段的人。』」 #speaker:青月
+	「这就是尧的难处——不是在好和坏之间选，是在坏和更坏之间选。用鲧，是赌一把；不用鲧，是连赌的本钱都没有。」 #speaker:青月
+	-> c_gun
+* #correct [问清楚了，回去决断]
+	-> c_gun
 
 // ═══ IF线 · 房丹朱（自由模式歧路：封子一方以历练）═══
 
@@ -180,12 +255,14 @@
 === death_danzhu ===
 #hide:danzhu
 #bg:flood_sky
+#bgm:danger
 你终究没舍得那点骨肉私情，把天下许给了丹朱。可他顽凶的性子藏不住——他一朝在位，诸侯不服，狱讼不至，讴歌者不歌其名。天下人用脚投了票，纷乱由此而起。 #death:danzhu #speaker:青月
 -> END
 
 === death_gonggong ===
 #hide:gonggong
 #bg:flood_sky
+#bgm:danger
 你被那张巧嘴说动了，把政事交到共工手里。他果然放纵邪僻，貌似恭敬，行事却败坏朝纲。似恭而漫天，政事一日坏过一日，你悔之已晚。 #death:gonggong #speaker:青月
 -> END
 

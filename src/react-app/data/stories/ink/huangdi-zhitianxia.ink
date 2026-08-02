@@ -3,6 +3,9 @@
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
 
+VAR mg_result = ""
+VAR mg_score = 0
+
 -> c_open
 
 === c_open ===
@@ -30,11 +33,12 @@
 	-> c_roam_good
 * [依老臣之言，安居涿鹿，坐受四方朝贡]
 	-> c_indulge
-* [不深居，也不奔波——大营涿鹿之阿，筑一座固定的都城，令万国来朝于此]
+* #correct [不深居，也不奔波——大营涿鹿之阿，筑一座固定的都城，令万国来朝于此]
 	-> if_dingdu_1
 
 === c_indulge ===
 #bg:xuanyuan_court
+#bgm:court
 你自居深宫，日日受贡，绝迹于四野。远方诸国久不见天子之德，只闻天子之威，渐生离心。荤粥复扰北疆，江海之邦观望不朝，昔日合符的诸侯，一个个称疾不至。 #speaker:青月
 你以刀兵得的天下，也终将只用刀兵去守——而刀兵，守不住人心。天子之名，就这样从你身上一点点褪去了。 #death:indulge #speaker:青月
 -> END
@@ -124,6 +128,7 @@
 
 === c_appoint ===
 #bg:xuanyuan_court
+#bgm:court
 #show:qingyue:worry:float
 政务如山，万国待治。你独坐案前，一人之力，终究照不到四海每一个角落。 #speaker:青月
 一名近侍低声道：「大权最好独揽，君上事必躬亲，方无旁落之忧。贤名再高的外人，也信不得。」 #speaker:近侍
@@ -133,13 +138,13 @@
 
 * #correct #hint:置左右大监，监于万国。举风后、力牧、常先、大鸿以治民。 [设左右大监监察万国，举风后、力牧、常先、大鸿以治民]
 	-> c_appoint_good
-* [大权独揽，事必躬亲，只信身边亲信]
+* #correct [大权独揽，事必躬亲，只信身边亲信]
 	-> c_appoint_solo
-* [与风后闲谈，问他辅佐天子之道]
+* #correct [与风后闲谈，问他辅佐天子之道]
 	-> c_explore_zhitianxia_fenghou
 * [将天下分为九州，每州设一牧，各牧其民]
 	-> c_appoint_jiuzhou
-* [不问出身，广招天下贤才——有才者，皆可入仕]
+* #correct [不问出身，广招天下贤才——有才者，皆可入仕]
 	-> c_appoint_recruit
 
 === c_appoint_jiuzhou ===
@@ -197,6 +202,7 @@
 
 === c_appoint_good ===
 #bg:xuanyuan_court
+#bgm:court
 #show:qingyue:smile:float
 「欸——漂亮！这才是共主的气象。」 #speaker:青月
 你设置左右大监，分察万国；举风后、力牧、常先、大鸿四位贤臣，各司其职以治民。百官皆以「云」命名，军队号为「云师」。 #speaker:青月 #hint:官名皆以云命，为云师。置左右大监，监于万国。举风后、力牧、常先、大鸿以治民。
@@ -207,6 +213,7 @@
 
 === c_appoint_good_from_recruit ===
 #bg:xuanyuan_court
+#bgm:court
 #show:qingyue:smile:float
 「欸——用人唯才，天下归心！这不就是正史里写的『举风后、力牧、常先、大鸿以治民』嘛。」 #speaker:青月 #hint:官名皆以云命，为云师。置左右大监，监于万国。举风后、力牧、常先、大鸿以治民。
 万国和顺，你又获得宝鼎，观象授时，推算节令时日。 #speaker:青月 #hint:获宝鼎，迎日推策。
@@ -227,7 +234,7 @@
 	-> c_tianshi_good
 * [恃威逆天，罢农兴役，大营土木以显功]
 	-> c_defy
-* [不夺农时，也不大兴土木——先让百姓休养生息，待国力充足再图长远]
+* #correct [不夺农时，也不大兴土木——先让百姓休养生息，待国力充足再图长远]
 	-> c_tianshi_rest
 * [与史官商议，如何既能兴役又不夺农时——可否错开农时、分段施工？]
 	-> c_tianshi_compromise
@@ -401,9 +408,9 @@
 
 * #correct #hint:黄帝崩，其孙昌意之子高阳立——不钦定，让有圣德者承之。 [不预立储。你把天下交给『德』，谁有圣德，天下自会归他]
 	-> c_lineage_shishi
-* [钦定嫡长玄嚣为储，立下父死子继、嫡长承统的定制]
+* #correct [钦定嫡长玄嚣为储，立下父死子继、嫡长承统的定制]
 	-> if_lichu_1
-* [不立储，也不指定——让诸侯们自己推举有德者]
+* #correct [不立储，也不指定——让诸侯们自己推举有德者]
 	-> c_lineage_vote
 * [立高阳为储——他有圣德，理应承统]
 	-> c_lineage_gaoyang
@@ -431,6 +438,17 @@
 === c_lineage_shishi ===
 #show:qingyue:solemn:float
 「你没有钦定。日后你崩葬桥山，继你而立的，正是那个有圣德的孙儿——帝颛顼。」 #speaker:青月 #hint:黄帝崩，葬桥山……其孙昌意之子高阳立，是为帝颛顼也。
+#actclear:huangdi_zhitianxia_act
+#show:qingyue:tease:float
+「最后一关——太史公写你『崩葬桥山』，这段竹简，你认得全吗？」 #speaker:青月
+#minigame:bamboo:1:4:5
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，黄帝崩葬桥山的原文，你全认下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「简序暂乱也无妨，垂衣治天下的道理，你心里已经明白了。」 #speaker:青月
+}
 #show:qingyue:smile:float
-「呼——你走完了黄帝这一程。下一世，我们去看高阳如何『依鬼神以制义』，好不好呀？」 #speaker:青月 #ending:canon
+「呼——你走完了黄帝这一程。下一世，我们去看高阳如何『依鬼神以制义』，好不好呀？」 #speaker:青月 #ending:canon #quiz:quiz_zhitianxia_tianshi
 -> END
