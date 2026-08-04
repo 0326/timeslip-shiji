@@ -247,7 +247,7 @@ VAR zongheng = 0
     -> ending_shishi
 - else:
     -> ending_shishi
-}
+} #speaker:青月
 
 // ─── 结局一 · 史实结局（车裂自己以报仇 → 纵横家最后的狠辣）───
 === ending_shishi ===

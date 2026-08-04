@@ -88,7 +88,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，往后读着读着，自然就通啦。」 #speaker:青月
-}
+} #speaker:青月
 「坐稳咯，青月要送你穿越啦——」 #speaker:青月
 -> c_chuanyue
 

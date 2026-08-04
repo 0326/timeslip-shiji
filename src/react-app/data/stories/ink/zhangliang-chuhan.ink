@@ -204,7 +204,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「竹简暂乱也无妨，隐忍与恭敬的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 -> act4_yuzhu
 
 // ═══════════════════════════════════════════════
@@ -380,7 +380,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「竹简暂乱也无妨，深藏不露、料事如神的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 -> act8_huace
 
 // ═══════════════════════════════════════════════
@@ -529,7 +529,7 @@ VAR mg_score = 0
 	-> ending_chisong
 - else:
 	-> ending_lianzhan
-}
+} #speaker:青月
 
 // ─── 结局一 · 明哲身退（史实智者结局：身退倾向高 → 从赤松子游）───
 === ending_chisong ===

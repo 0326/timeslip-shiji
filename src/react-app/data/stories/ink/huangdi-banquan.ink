@@ -249,7 +249,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，三战而后得其志，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 #show:qingyue:tease:float
 「欸嘿——别急着喘气呀。涿鹿那一场，才是真正的硬仗……不过那是下一世的事啦。」 #speaker:青月
 「这一劫，你走完了。看懂了吗？先修德、后振兵，三战而不贪功——天下，是这么一寸一寸挣来的。」 #speaker:青月 #ending:canon #quiz:quiz_banquan_minde

@@ -164,8 +164,8 @@ VAR gangzheng = 0
 		-> ending_beiju
 	- else:
 		-> ending_shishi
-	}
-}
+	} #speaker:青月
+} #speaker:青月
 
 === ending_shishi ===
 #show:qingyue:sad:float

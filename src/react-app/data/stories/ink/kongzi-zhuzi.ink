@@ -352,7 +352,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简牍散乱，你也不忙着缀了——也罢，大化流行，自有后来人替你整理。」 #speaker:青月
-}
+} #speaker:青月
 -> act7_huolin
 
 // ═══════════════════════════════════════════════

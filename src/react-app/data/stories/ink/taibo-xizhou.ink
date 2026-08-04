@@ -162,7 +162,7 @@ VAR de = 0
     -> ending_canon
 - else:
     -> ending_ping_fan
-}
+} #speaker:青月
 
 === ending_canon ===
 #bg:qi_palace

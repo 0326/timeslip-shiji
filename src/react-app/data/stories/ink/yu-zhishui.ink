@@ -180,7 +180,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，改堵为疏、三过不入的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 「呼——玄圭在手，你就是禹了。看懂了吗？改堵为疏，是智；三过不入，是仁。少一样，这滔天的水，都到不了尽头呀。」 #speaker:青月 #ending:canon
 #hide:siyue
 #hide:tushan
