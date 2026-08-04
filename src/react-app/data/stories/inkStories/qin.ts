@@ -5,6 +5,10 @@ import lisiQinSource from "../ink/lisi-qin.ink?raw";
 import jingkeQinSource from "../ink/jingke-qin.ink?raw";
 import lvbuweiQinSource from "../ink/lvbuwei-qin.ink?raw";
 import mengtianQinSource from "../ink/mengtian-qin.ink?raw";
+import miaogongQinSource from "../ink/miaogong-qin.ink?raw";
+import extraQinmuBailixiSource from "../ink/extras/extra-qinmu-bailixi.ink?raw";
+import extraQinmuShimaSource from "../ink/extras/extra-qinmu-shima.ink?raw";
+import extraQinmuYouyuSource from "../ink/extras/extra-qinmu-youyu.ink?raw";
 
 export const qinInkStories: Record<string, InkStoryConfig> = {
 	"qshihuang:qin": {
@@ -256,6 +260,85 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 				kind: "if",
 				epigraph: "熬过了赵高，却熬着看那个天下一寸寸塌下去——原来痛快地死，也是一种慈悲。",
 			},
+		},
+	},
+	"qinmu:qin": {
+		key: "qinmu:qin",
+		title: "秦缪公任好 · 霸西戎",
+		source: miaogongQinSource,
+		precompiled: false,
+		deaths: {
+			ying_bailixi: {
+				reason: "弃百里傒而不用，秦终为西陲小国",
+				classical: "秦闻百里傒贤，欲用之，楚不可。穆公乃以五羖羊皮赎之。",
+				analysis:
+					"百里傒是秦穆公用贤的起点——五张黑公羊皮赎来的不只是一个亡国奴，而是『五羖大夫』这个礼贤下士的标志。你若弃之不用，秦国便永远只是西陲的附庸，不会有后来的蹇叔、由余，更不会有霸西戎。",
+			},
+			wupian_attack: {
+				reason: "晋饥伐晋以不义失德，反被晋所乘几亡",
+				classical: "百里傒曰：天灾流行，国家代有。救灾恤邻，道也。",
+				analysis:
+					"救灾恤邻不是迂腐——秦予晋粟，看似吃亏，实则收了晋国的人心。后来秦饥，三百食马者以死报德，正是当初仁德的回报。你弃德用诈，虽快一时，终受其祸。",
+			},
+			bian_yi: {
+				reason: "殽之战不听蹇叔哭师，秦三将被俘全军覆没",
+				classical: "蹇叔曰：径数国千里而袭人，希有得利者。必死于殽，余收尔骨焉。",
+				analysis:
+					"蹇叔的哭师不是怯懦——千里袭人，师行必过殽，殽有二陵，晋人必伏。这是军势的判断，不是占卜。缪公不听，结果『无一人得脱』。你若不听谏，殽之败就在眼前。",
+			},
+		},
+		endings: {
+			canon: {
+				title: "霸西戎",
+				kind: "canon",
+				epigraph: "百里傒、蹇叔、由余——秦之所以霸，非唯力也，亦以德。",
+			},
+			if_bailixi_ignored: {
+				title: "弃贤西陲",
+				kind: "if",
+				epigraph: "五张羊皮换了一个秦伯的见识——你不肯换，那就一辈子守着西陲那片天。",
+			},
+			if_no_grain: {
+				title: "乘危失德",
+				kind: "if",
+				epigraph: "秦晋之德，始于一粒粟；秦晋之怨，也始于一粒粟。",
+			},
+			if_no_xiao: {
+				title: "不霸西戎",
+				kind: "if",
+				epigraph: "殽之败可免，霸西戎亦不可得——历史的幸运，从来不是免费的。",
+			},
+		},
+	},
+	// ═══ 番外 · NPC视角 ═══
+	"extra:qinmu-bailixi": {
+		key: "extra:qinmu-bailixi",
+		title: "番外 · 五羖之前",
+		source: extraQinmuBailixiSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "五羊皮换一个天下", kind: "canon", epigraph: "亡国奴、贩牛叟、五张羊皮——换来了秦国霸业的起点。" },
+		},
+	},
+	"extra:qinmu-shima": {
+		key: "extra:qinmu-shima",
+		title: "番外 · 三百食马者",
+		source: extraQinmuShimaSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "一碗酒换三百命", kind: "canon", epigraph: "仁德不是交易——可它就是会回来。" },
+		},
+	},
+	"extra:qinmu-youyu": {
+		key: "extra:qinmu-youyu",
+		title: "番外 · 由余使秦",
+		source: extraQinmuYouyuSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "戎狄来投", kind: "canon", epigraph: "一个给舞台，一个给本事——君臣相遇，不过如此。" },
 		},
 	},
 };

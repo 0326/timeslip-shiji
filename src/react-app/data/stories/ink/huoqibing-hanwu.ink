@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 骠骑将军 · 霍去病 · 封狼居胥 · 汉武盛世
 // 史源：《史记·卫将军骠骑列传》（卷一百一十一）
 // 母题：少年天才——流星般璀璨的战神｜致命特质：贵不省士、敢作敢当、天不假年
@@ -31,13 +31,30 @@ VAR lengku = 0
     -> act1_raodang
 * [遵命留在大军两翼，稳扎稳打]
     -> death_wending
+* #correct #hint:知己知彼，百战不殆——先摸清敌情再决断 [先问问老兵，匈奴后方到底什么情况]
+    -> c_explore_baibai
 
 === death_wending ===
 你稳扎稳打，在两翼策应，无过也无功——你舅舅会喜欢你这种听话的将领。可你不是那样的人。史上的霍去病第一次出征就带着八百骑甩开大军数百里，斩获两千余级，封冠军侯——冠军，是「功冠全军」之意。你选择了稳妥，就不是那个十八岁封侯的少年了。 #death:wending #speaker:青月
 -> END
 
+=== c_explore_baibai ===
+#show:qingyue:default:float
+你找来军中老兵——当年跟过卫青龙城之战的老斥候，脸上全是风霜刻出的纹路。 #speaker:青月
+「校尉，匈奴把主力摆在正面，后方辎重大营只有些老弱看管。过了那道山梁，再往北跑两百里，就是他们的王帐。」老兵用刀鞘在地上画了条线，「但那条路全是戈壁，没水没草，八百人跑进去，要是跑不出来……」 #speaker:青月
+他顿了顿，又补了一句：「不过，匈奴人想不到有人敢这么打。他们防的是大军，不是一股孤军。」 #speaker:青月 #hint:匈奴以为汉军不能远涉大漠，故其辎重多在前方而后方空虚。
+#show:qingyue:tease:float
+「情报到手了——匈奴后方空虚，但路途凶险。怎么选？」 #speaker:青月
+
+* #correct [情报已明，八百骑奔袭后方！]
+    ~ tiancai = tiancai + 1
+    -> act1_raodang
+* [路太险了，还是留在两翼策应]
+    -> death_wending
+
 === act1_raodang ===
 #bg:longcheng_raid
+#bgm:battle
 你率八百骁骑狂飙突进，直弃大军数百里，斩单于祖父、俘单于叔父罗姑比，斩首二千二十八级——这是你舅舅卫青龙城首功的数倍！ #speaker:青月 #hint:剽姚校尉斩首虏二千二十八级……封去病为冠军侯。
 武帝大喜，封你为冠军侯——「冠军」者，功冠全军也。这一年你才十八岁。
 #show:qingyue:smile:float
@@ -61,6 +78,7 @@ VAR lengku = 0
 
 === act2_xiangdi ===
 #bg:northern_frontier
+#bgm:march
 武帝要你学孙吴兵法，你回答：「顾方略何如耳，不至学古兵法。」 #speaker:青月 #hint:天子尝欲教之孙吴兵法，对曰：顾方略何如耳，不至学古兵法。
 天子为你治府第，你看完说了一句千古豪言——
 * #correct #hint:匈奴未灭，无以家为也！——少年壮志 [「匈奴未灭，无以家为也！」]
@@ -75,6 +93,7 @@ VAR lengku = 0
 
 === act2_hunxie ===
 #bg:longcheng_raid
+#bgm:battle
 这年秋天，匈奴浑邪王因屡败欲降汉。武帝怕他诈降，派你率兵去受降。浑邪王的部众望见汉军，多有不愿降而欲逃者，局势一触即发——数万人一旦哗变，后果不堪设想。 #speaker:青月 #hint:浑邪王裨将见汉军而多欲不降者，颇遁去。
 #show:qingyue:worry:float
 「呐——浑邪王的人要跑，是追是停？」 #speaker:青月
@@ -84,13 +103,30 @@ VAR lengku = 0
     -> act2_xiang
 * [大军压阵，先观望再定，不冒入险地]
     -> death_chishi
+* #correct #hint:受降如用兵，虚实不明则进退失据——先遣斥候探明 [先遣斥候探一探浑邪王的虚实]
+    -> c_explore_hunxie
 
 === death_chishi ===
 你谨慎观望，逃亡者越来越多，哗变扩散——数万人一旦失控，就是大溃败。史上的霍去病以果决著称：他驰入敌营、见浑邪王、斩八千人，把一场哗变掐灭在萌芽。你犹豫了一刻，就永远失去了控制局面的机会。 #death:chishi #speaker:青月
 -> END
 
+=== c_explore_hunxie ===
+#show:qingyue:default:float
+你派出几骑斥候，乔装接近浑邪王大营。半日后，斥候飞马回报—— #speaker:青月
+「禀将军，浑邪王确有降意，但他压不住底下的人。休屠王的人已经反悔，正在暗中鼓动逃亡——浑邪王杀了休屠王才勉强稳住局面。」斥候舔了舔干裂的嘴唇，「可若再拖下去，动摇的就不止休屠王的人了。」 #speaker:青月 #hint:休屠王后悔，浑邪王杀之，并将其众。
+「浑邪王自己也在两难之间——怕汉军，又怕单于追责，所以才等着受降。可他手下那些动摇的人，随时可能哗变散去。」 #speaker:青月
+#show:qingyue:worry:float
+「局势很清楚——浑邪王想降但压不住人，再拖下去只会更乱。怎么选？」 #speaker:青月
+
+* #correct [不能再等了，驰入大营，亲自稳住浑邪王！]
+    ~ guoqu = guoqu + 1
+    -> act2_xiang
+* [太冒险了，先稳住阵脚观望]
+    -> death_chishi
+
 === act2_xiang ===
 #bg:northern_frontier
+#bgm:march
 你单骑驰入降营，斩了八千欲逃亡者，稳住了局面。浑邪王顺利归降，河西走廊从此正式归入汉朝版图——金城、河西并南山至盐泽，空无匈奴。 #speaker:青月 #hint:降者数万，号称十万。则陇西、北地、河西益少胡寇。
 #show:qingyue:smile:float
 「河西走廊打通了！可是呐——你打仗的方式，让很多老将看不懂，也让你的士兵很苦。」 #speaker:青月
@@ -101,10 +137,18 @@ VAR lengku = 0
 * #correct #hint:其在塞外，卒乏粮，或不能自振，而骠骑尚穿域蹋鞠——贵不省士，这就是霍去病 [「打赢就行，其他的不必管。」你转身继续蹋鞠]
     ~ lengku = lengku + 1
     -> act2_xiang_end
-* [开仓分粮，与士卒同食——这一仗，靠的是他们的命换来的]
+* #correct [开仓分粮，与士卒同食——这一仗，靠的是他们的命换来的]
     -> if_shengshi_1
 
 === act2_xiang_end ===
+#show:qingyue:default:float
+「呐，降营里有个叫阿勒的牧人——浑邪王部属，带着妻子和六十只羊走了三天才走到汉军跟前。」 #speaker:青月
+「他不是战士，只是个放羊的。可匈奴跟汉打了这么多年，牧人比谁都苦——单于要人打仗，羊群被征了当军粮，逃到漠北连水草都找不到。」 #speaker:青月
+「阿勒说，他看见汉军旗帜的时候，第一反应不是害怕，是松了口气。他选了投降，不是因为爱汉人，是因为他的羊需要草，他的孩子需要活。」 #speaker:青月
+「他的妻子抱着最小的孩子，站在羊群中间，看着汉军士卒来登记户口——她不懂什么叫归降，只知道从今天起，不用再在半夜被号角惊醒了。」 #speaker:青月
+「阿勒回头望了一眼北边，那是他放了一辈子羊的地方。然后他转过身，跟着羊群，往南走了。」 #speaker:青月
+#show:qingyue:solemn:float
+「战争是王的事，可承受战争的，永远是最普通的那些人。」 #speaker:青月
 #actclear:huoqibing_act2
 -> act3_langjuxu
 
@@ -150,6 +194,7 @@ VAR lengku = 0
 
 === act4_shegan ===
 #bg:chang_an_street
+#bgm:peaceful
 你在甘泉宫射猎时，一箭射杀了李敢。武帝闻讯，为你遮掩，对外说李敢是被鹿撞死的。 #speaker:青月 #hint:骠骑将军去病与青有亲，射杀敢。去病时方贵幸，上讳云鹿触杀之。
 #show:qingyue:sad:float
 「……你杀了他。天子替你瞒了下来。可这是你人生里的一个暗面——天才也有冷酷。」 #speaker:青月
@@ -174,6 +219,7 @@ VAR lengku = 0
 
 === if_shengshi_1 ===
 #bg:northern_frontier
+#bgm:march
 #show:qingyue:worry:float
 「欸？这一步……史书上没有哦。史书里的他，塞外士卒饿着，他还在踢球。」 #speaker:青月
 你下令开仓，把天子赏的数十车粱肉分给士卒，自己也蹲在营火边，与他们同啃干粮。老卒们愣住了——冠军侯从没这样过。 #speaker:青月
@@ -182,6 +228,7 @@ VAR lengku = 0
 
 === if_shengshi_2 ===
 #bg:langjuxu
+#bgm:epic
 #show:qingyue:default:float
 封狼居胥那一仗，你的兵为你死战——一支既有天才主帅、又有士卒归心的军队，几乎是无敌的。斩获比史书上更多，伤亡却更少。 #speaker:青月
 #show:qingyue:solemn:float
@@ -199,6 +246,7 @@ VAR lengku = 0
 
 === if_buzao_1 ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:worry:float
 「欸？这一步……是最大胆的一步了。」 #speaker:青月
 「史书里的他，元狩六年就去世了，才二十四岁——天不假年，是这颗流星最深的遗憾。可我们假设一下：如果他没死呢？」 #speaker:青月
@@ -207,6 +255,7 @@ VAR lengku = 0
 
 === if_buzao_2 ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:solemn:float
 你三十岁、四十岁，战功无人能及，威名震于漠北与朝堂。 #speaker:青月
 可武帝老了，太子据仁厚而你锋锐；卫氏一门，皇后、大将军、骠骑，权势烈火烹油。史书里卫青谦退、你早逝，卫氏的锋芒才没有刺到那个多疑的皇帝眼里。 #speaker:青月

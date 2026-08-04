@@ -8,6 +8,8 @@
 VAR ren = 0
 VAR zhiyu = 0
 VAR zili = 0
+VAR mg_result = ""
+VAR mg_score = 0
 
 -> act1_kuaxia
 
@@ -30,6 +32,7 @@ VAR zili = 0
 
 === act1_piaomu ===
 #bg:riverside
+#bgm:peaceful
 #show:piaomu:default:left
 你在城下钓鱼，几个老妇在河边漂洗丝絮。其中一位见你饿得发慌，便把自己的饭分给你，一连数十日。 #speaker:青月 #hint:诸母漂，有一母见信饥，饭信，竟漂数十日。
 你心里一热，脱口道：「他日我一定重重报答您。」 #speaker:韩信
@@ -42,6 +45,7 @@ VAR zili = 0
 
 === act1_challenge ===
 #bg:huaiyin_street
+#bgm:peaceful
 #show:tuzhong:default:right
 一个屠户少年拦住你，当街讥笑：「你个子高、爱带刀，其实胆子小得很！」 #speaker:屠中少年
 他叉腰堵在市口，众人围拢起哄：「你不怕死，就一剑刺我；怕死，就从我胯下钻过去！」 #speaker:屠中少年 #hint:信能死，刺我；不能死，出我袴下。
@@ -56,6 +60,28 @@ VAR zili = 0
 	-> act1_endure
 * [「我这柄剑，不斩无名之辈——今日，破例。」满街人都看着，退了这一步，你在淮阴便再抬不起头]
 	-> death_kuaxia
+* #correct [俯身之前，你还想在心里多问一句——这口气，究竟是怎么咽下去的？]
+	-> c_explore_hanxin_kuaxia
+
+=== c_explore_hanxin_kuaxia ===
+#show:qingyue:worry:float
+「呐——胯下这一钻，你心里到底在盘算什么？」 #speaker:青月
+
+* #correct [你死死盯着他——他若再逼一步，你真的会拔剑]
+	#show:qingyue:solemn:float
+	「你掂量过：他值不值得你赔上一条命？不值得。所以你忍了。」 #speaker:青月
+	「这不是怕，是算。杀一个屠中少年，断了你登坛拜将的路——这笔账，你在心里过了一遍。」 #speaker:青月
+	-> act1_challenge
+* #correct [你在心里问自己：这把剑，到底什么时候才能出鞘]
+	#show:qingyue:tease:float
+	「剑出鞘，是用来斩敌的，不是用来杀这种人的。这一点，你比谁都清楚。」 #speaker:青月
+	「你把这柄剑留着，留到登坛拜将、百万军中取上将首级的那一天。」 #speaker:青月
+	-> act1_challenge
+* #correct [你不再多想——先忍下这口气，来日方长]
+	#show:qingyue:smile:float
+	「对。忍，不是怯懦，是把命留给将来。」 #speaker:青月
+	「淮阴市上这一俯，后来换来了汉家的半壁江山——值。」 #speaker:青月
+	-> act1_challenge
 
 === death_kuaxia ===
 满街哄笑变作惊叫。血溅在尘土里——你痛快了一瞬，却也从此成了亡命的杀人犯，藏身草莽，再无出头之日。兵仙，就死在了这条淮阴的市井小街上。 #death:kuaxia #speaker:青月
@@ -96,6 +122,7 @@ VAR zili = 0
 
 === act2_hanjun ===
 #bg:camp_han_night
+#bgm:tension
 你到了汉营，仍不出名，只做了个连敖。不久竟因牵连犯法，同案十三人一个个被推上刑场。 #speaker:青月 #hint:坐法当斩，其辈十三人皆已斩，次至信。
 刀光一路砍下来，血溅刑台。轮到你了。 #speaker:青月
 #show:qingyue:worry:float
@@ -172,6 +199,19 @@ VAR zili = 0
 「欸——漂亮！半生的才华，今日总算有人接得住了。」 #speaker:青月
 #show:qingyue:solemn:float
 「他解衣给你穿，推食给你吃。这份『知遇』，你会记它一辈子……也会因它，走不出那一步。」 #speaker:青月
+
+// ↓ NPC side narrative: 汉军营中老伙夫老陈——"不拘一格降人才"对底层的意义
+#show:qingyue:solemn:float
+「这件事，被汉军营里一个老伙夫看在了眼里——」 #speaker:青月
+#show:qingyue:calm:float
+「老陈是个老兵，年轻时在淮阴街市讨过饭。他第一次见韩信，就是在淮阴市的屠户案前——那时候韩信趴在地上，从一个屠中少年的胯下爬过去，满街人都在笑他没出息。」 #speaker:青月
+「后来老陈在汉营做了伙夫，日日在灶边烧饭。有天夜里，他看见丞相萧何急吼吼地牵马出营，官袍下摆沾满了泥，膝盖上还蹭破了一块皮。老陈当时就嘀咕：『丞相这是追谁呢？逃亡的将军都走了几十个，没见他追过一个。』」 #speaker:青月
+#show:qingyue:tease:float
+「第二天答案揭晓了——那个当年在淮阴街市钻人胯下的韩信，被丞相追了回来，还被汉王择良日、斋戒、设坛场、具礼地拜了做大将军。」 #speaker:青月
+「老伙夫后来跟灶边的小兵们说：『你们知道吗？我见过他钻胯下的样子。那会儿谁都笑他没出息——可你们看，今儿他站在高坛上，汉王亲自把大将军印递给他。』」 #speaker:青月
+#show:qingyue:smile:float
+「『不拘一格降人才』——这句话，落到老陈这种底层老兵身上，就是活生生的：一个钻过胯下的人，也能做大将军。世道变了，小人物的活路，也跟着变了。」 #speaker:青月
+
 #actclear:hanxin_act3
 -> act4_beishui
 
@@ -184,7 +224,6 @@ VAR zili = 0
 === act4_beishui ===
 #bg:jingxing
 #bgm:danger
-#minigame:jingxing
 你东出陈仓定三秦，又以疑兵陈船、木罂暗渡，虏魏王、破代军。如今率数万之众，东下井陉击赵。 #speaker:青月 #hint:陈船欲度临晋，而伏兵从夏阳以木罂缻渡军，袭安邑。
 赵军二十万据井陉口。他们的谋士李左车献了毒计：截你粮道、坚壁勿战，要教你十日之内断粮而溃。 #speaker:青月 #hint:愿足下假臣奇兵三万人，从间道绝其辎重。
 #show:qingyue:worry:float
@@ -213,6 +252,16 @@ VAR zili = 0
 #show:qingyue:default:float
 「这份气度，跟项羽『印刓敝忍不能予』，正好两个极端。会打仗的多，会用降人之智的少呀。」 #speaker:青月
 #actclear:hanxin_act4
+#show:qingyue:tease:float
+「呐——井陉背水一战的原文，你记全了吗？来，把这些竹简缀回去——背水列阵、拔帜易帜、陷之死地，都在里头哦。」 #speaker:青月
+#minigame:jingxing
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，井陉背水一战的原文，你全记下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「竹简暂乱也无妨，陷之死地而后生的道理，你心里已经明白了。」 #speaker:青月
+}
 -> act5_sanfen
 
 // ═══════════════════════════════════════════════
@@ -250,10 +299,10 @@ VAR zili = 0
 * #correct #hint:韩信犹豫不忍倍汉，又自以为功多，汉终不夺我齐——史上的他，选了忠。 [「汉王待我甚厚，我岂可乡利倍义！」你谢绝蒯通，甘愿忠汉到底]
 	~ zhiyu = zhiyu + 1
 	-> act6_jianghou
-* #hint:此为反事实——史上韩信终未敢取，若取则无汉家四百年。 [「天与弗取，反受其咎。」你心底那点野心，被蒯通点燃了]
+* #correct #hint:此为反事实——史上韩信终未敢取，若取则无汉家四百年。 [「天与弗取，反受其咎。」你心底那点野心，被蒯通点燃了]
 	~ zili = zili + 2
 	-> act5_ziliyin
-* [「据齐、连燕赵——好，我便替这天下，添一只鼎足。」你当真按下了印，起兵自立]
+* #correct [「据齐、连燕赵——好，我便替这天下，添一只鼎足。」你当真按下了印，起兵自立]
 	-> if_santian_1
 
 === act5_ziliyin ===
@@ -294,6 +343,7 @@ VAR zili = 0
 
 === if_santian_zuoguan ===
 #bg:qi_land
+#bgm:peaceful
 你选了守。齐地富庶，你深沟高垒，练兵积粟，不与两家争一城一地。楚汉在荥阳打了三年，果然俱疲。 #speaker:青月
 可你也算漏了一样东西——刘邦的隐忍，比项羽深得多。汉王一面与你虚与委蛇，一面遣郦生、随何游说燕赵，暗掘你的墙脚；又数遣间使，离你君臣。 #speaker:青月
 #show:qingyue:sad:float
@@ -341,7 +391,7 @@ VAR zili = 0
 
 * #correct #hint:此为史实之路，然钟离眛之言应验——被擒仍难免。史上韩信正是走了这条『不长者』的路。 [你终究还是逼死了钟离眛，提着他的头去陈地见驾]
 	-> act6_qin
-* #hint:护友是德，然史上韩信自度无罪、未反，仍难逃一擒——此路亦通向被贬。 [你不肯出卖故人，坦然去见皇上，自信无罪]
+* #correct #hint:护友是德，然史上韩信自度无罪、未反，仍难逃一擒——此路亦通向被贬。 [你不肯出卖故人，坦然去见皇上，自信无罪]
 	-> act6_qin
 
 === act6_qin ===

@@ -23,7 +23,7 @@ const NAV_ITEMS = [
 	{ to: "/classics", label: "典籍", icon: Library, end: false },
 	{ to: "/archive", label: "图鉴", icon: BookMarked, end: false },
 	// 召唤（/gacha）暂时隐藏，功能保留待启用
-	{ to: "/codex/deaths", label: "史鉴", icon: ScrollText, end: false },
+	{ to: "/codex", label: "史鉴", icon: ScrollText, end: false },
 	{ to: "/achieve", label: "成就", icon: Trophy, end: false },
 ];
 
@@ -47,7 +47,9 @@ interface AppNavProps {
 export function AppNav({ variant = "page" }: AppNavProps) {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const { gachaTickets, fragments, points } = useUserStore((s) => s.progress);
+	const { gachaTickets = 0, fragments = 0, points = 0 } = useUserStore(
+		(s) => s.progress ?? { gachaTickets: 0, fragments: 0, points: 0 },
+	);
 	const openAuth = useUiStore((s) => s.openAuthModal);
 	const sfxEnabled = useUiStore((s) => s.sfxEnabled);
 	const toggleSfx = useUiStore((s) => s.toggleSfx);

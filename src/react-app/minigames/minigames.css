@@ -129,6 +129,33 @@
 	min-height: 400px;
 }
 
+/* done 阶段：结算中过渡动画 */
+.mg-done {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-4);
+	min-height: 300px;
+	padding: var(--space-8);
+}
+.mg-done-spinner {
+	width: 40px;
+	height: 40px;
+	border: 3px solid var(--color-rice-dim, rgba(255,255,255,0.15));
+	border-top-color: var(--color-gold, #d4a017);
+	border-radius: 50%;
+	animation: mgSpin 0.8s linear infinite;
+}
+.mg-done-text {
+	font-size: 16px;
+	color: var(--color-rice-dim, rgba(255,255,255,0.6));
+	letter-spacing: 0.15em;
+}
+@keyframes mgSpin {
+	to { transform: rotate(360deg); }
+}
+
 @media (max-width: 640px) {
 	.mg-title { font-size: 24px; letter-spacing: 0.1em; }
 	.mg-intro { padding: var(--space-6) var(--space-4) var(--space-4); }

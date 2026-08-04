@@ -9,7 +9,7 @@ VAR boldness = 0
 -> act1_chao_ge
 
 === act1_chao_ge ===
-#bg:huaiyin_street
+#bg:huaiyin_street_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「欸嘿——又一位穿越客落到我这儿啦！坐稳咯~」 #speaker:青月
@@ -155,6 +155,7 @@ VAR boldness = 0
 
 === act5_charge ===
 #bg:zhuolu_field
+#bgm:battle
 #show:qingyue:smile:float
 你以耄耋之年，第一个拍马冲向七十万大军！白发在风中猎猎飞扬，白旄指向朝歌——这四万五千人，见老尚父亲冒矢石，军心大振。
 商军前阵的奴隶们本就不愿为纣送死，见你冲来，纷纷掉转戈矛——「前徒倒戈」！
@@ -189,6 +190,7 @@ VAR boldness = 0
 
 === act6_qixiu ===
 #bg:shun_house
+#bgm:court
 #show:qingyue:smile:float
 「欸——聪明！这才是那个直钩钓王侯的姜太公嘛！」 #speaker:青月
 你连夜东行，黎明时赶到营丘——正赶上莱人来攻！你立刻整军部署，击退莱夷，坐稳了齐国。
@@ -205,6 +207,7 @@ VAR boldness = 0
 你到齐国后，修政简礼，通商工之业，便鱼盐之利——人民多归齐，齐成大国。
 { boldness >= 2:
     #bg:taishan_peak
+#bgm:epic
     #show:qingyue:solemn:float
     「……你等了七十年，冲了七十万人的阵，连夜赶了百里的路。」 #speaker:青月
     「你这一生最厉害的，不是兵法——是『待时』。时机未到，你能在渭水边钓一辈子鱼；时机一到，你敢以八十高龄第一个冲阵。」 #speaker:青月

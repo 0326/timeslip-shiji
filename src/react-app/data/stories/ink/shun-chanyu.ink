@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 虞舜 · 禅位于禹 · 南巡崩于苍梧 · 二妃泣竹
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
@@ -20,6 +20,7 @@
 
 === c_heir ===
 #bg:yushun_court
+#bgm:court
 #show:shangjun:idle:right
 你的儿子商均立在阶下。他不坏，只是……平庸。治水，他不通；理民，他无能；你说的话，他半懂不懂。 #speaker:青月 #hint:舜子商均亦不肖。
 #show:qingyue:worry:float
@@ -47,6 +48,7 @@
 === c_recommend_yu ===
 #hide:shangjun
 #bg:yushun_court
+#bgm:court
 #show:yu:respectful:center
 你召来禹。这个人，当年他的父亲鲧治水九年无功而被诛，他却不避嫌、不记怨，躬身接过治水之任——三过家门而不入，终于导九川、平洪水，令天下重归可居。 #speaker:青月 #hint:舜举禹治水，九州攸同。
 「禹啊，」你说，「天命不常，唯德是辅。我老了。今荐你于天，摄行天子之政——你可愿担这天下？」 #speaker:舜
@@ -83,6 +85,7 @@
 
 === c_farewell ===
 #bg:gui_river
+#bgm:peaceful
 #show:ehuang:gentle:left
 #show:nvying:gentle:right
 临行，娥皇、女英来送你。这两位尧的女儿，当年下嫁给你这个鳏夫，与你共历焚廪穿井之险，一路走了几十年。 #speaker:青月
@@ -134,7 +137,7 @@
 尧传舜，舜传禹——两代圣王，都没把天下留给自己的儿子。「传贤不传子」这条规矩，自此立在了华夏文明的开篇。 #speaker:青月 #hint:自黄帝至舜、禹……以章明德。
 #show:qingyue:smile:float
 「呼——看懂了吗？他这一生，得于德，也终于德。」 #speaker:青月
-「而湘水边那两竿泣血的斑竹，是史书之外，天地替他留的一滴眼泪呀。」 #speaker:青月 #ending:canon
+「而湘水边那两竿泣血的斑竹，是史书之外，天地替他留的一滴眼泪呀。」 #speaker:青月 #impact:impact_chanyu_shanrangzhi #ending:canon #quiz:quiz_chanyu_shanrangzhi
 #hide:shun
 #hide:yu
 #hide:ehuang

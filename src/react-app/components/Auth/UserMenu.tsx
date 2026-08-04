@@ -55,10 +55,10 @@ export function UserMenu({ onOpenLogin }: UserMenuProps) {
 			<button
 				className="user-avatar-btn"
 				onClick={() => setMenuOpen(!menuOpen)}
-				title={user.nickname}
+				title={user.nickname ?? user.username ?? "用户"}
 			>
 				<div className="user-avatar">
-					{user.nickname.slice(0, 1)}
+					{(user.nickname ?? user.username ?? "?").slice(0, 1)}
 				</div>
 			</button>
 
@@ -68,11 +68,11 @@ export function UserMenu({ onOpenLogin }: UserMenuProps) {
 					<div className="user-dropdown">
 						<div className="user-dropdown-header">
 							<div className="user-dropdown-avatar">
-								{user.nickname.slice(0, 1)}
+								{(user.nickname ?? user.username ?? "?").slice(0, 1)}
 							</div>
 							<div className="user-dropdown-info">
-								<div className="user-dropdown-name">{user.nickname}</div>
-								<div className="user-dropdown-username">@{user.username}</div>
+								<div className="user-dropdown-name">{user.nickname ?? user.username ?? "未命名"}</div>
+							<div className="user-dropdown-username">@{user.username ?? "未知"}</div>
 							</div>
 							<Cloud size={14} className="cloud-badge" />
 						</div>

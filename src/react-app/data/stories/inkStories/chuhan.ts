@@ -7,6 +7,14 @@ import zhangliangChuhanSource from "../ink/zhangliang-chuhan.ink?raw";
 import chenshengChuhanSource from "../ink/chensheng-chuhan.ink?raw";
 import pengyueChuhanSource from "../ink/pengyue-chuhan.ink?raw";
 import yingbuChuhanSource from "../ink/yingbu-chuhan.ink?raw";
+// 番外 · 上帝视角
+import extraXiangyuGaixiaSource from "../ink/extras/extra-xiangyu-gaixia.ink?raw";
+import extraLiubangPeixiangSource from "../ink/extras/extra-liubang-peixiang.ink?raw";
+import extraHanxinPiaomuSource from "../ink/extras/extra-hanxin-piaomu.ink?raw";
+import extraZhangliangHuangshigongSource from "../ink/extras/extra-zhangliang-huangshigong.ink?raw";
+import extraChenshengDazexiangSource from "../ink/extras/extra-chensheng-dazexiang.ink?raw";
+import extraPengyueJuyeSource from "../ink/extras/extra-pengyue-juye.ink?raw";
+import extraYingbuLishanSource from "../ink/extras/extra-yingbu-lishan.ink?raw";
 
 export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"hanxin:chuhan": {
@@ -475,6 +483,77 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 				kind: "if",
 				epigraph: "他塞住了成皋、据住了敖仓，把『胜败未知』拖成了僵局——没输，却也始终没能赢。",
 			},
+		},
+	},
+	// ═══ 番外 · 上帝视角 ═══
+	"extra:xiangyu-gaixia": {
+		key: "extra:xiangyu-gaixia",
+		title: "上帝视角 · 垓下的楚卒",
+		source: extraXiangyuGaixiaSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "楚卒的那杆断戈", kind: "canon", epigraph: "本纪写英雄的败，侧面写小兵的活。正侧合看，历史才是热的。" },
+		},
+	},
+	"extra:liubang-peixiang": {
+		key: "extra:liubang-peixiang",
+		title: "上帝视角 · 沛县的老兄弟",
+		source: extraLiubangPeixiangSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "大风歌的酒和泪", kind: "canon", epigraph: "威加海内的背后，是安得猛士的空——大风起，云飞扬，吹不散沛县那一夜的酒和泪。" },
+		},
+	},
+	"extra:hanxin-piaomu": {
+		key: "extra:hanxin-piaomu",
+		title: "上帝视角 · 淮阴的漂母",
+		source: extraHanxinPiaomuSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "漂母的千金不换", kind: "canon", epigraph: "大人物的传记里写着王侯将相的功；市井的那些小人物，藏着历史的温度。" },
+		},
+	},
+	"extra:zhangliang-huangshigong": {
+		key: "extra:zhangliang-huangshigong",
+		title: "上帝视角 · 圯上的老人",
+		source: extraZhangliangHuangshigongSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "三十年等一把帝王师", kind: "canon", epigraph: "没有扔鞋的人等了三十年，捡鞋的人——就永远捡不到那卷书。" },
+		},
+	},
+	"extra:chensheng-dazexiang": {
+		key: "extra:chensheng-dazexiang",
+		title: "上帝视角 · 大泽乡的戍卒",
+		source: extraChenshengDazexiangSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "九百戍卒的那一声喊", kind: "canon", epigraph: "燎原之火，从九百个冻得发抖的戍卒脚下烧起来——那句口号，先在他们心里喊了一千遍。" },
+		},
+	},
+	"extra:pengyue-juye": {
+		key: "extra:pengyue-juye",
+		title: "上帝视角 · 钜野泽的渔盗",
+		source: extraPengyueJuyeSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "一颗人头立起的军纪", kind: "canon", epigraph: "慈不掌兵四个字，落到底，是泽中老渔盗眼睁睁看着同乡兄弟被推出去斩的那一刀。" },
+		},
+	},
+	"extra:yingbu-lishan": {
+		key: "extra:yingbu-lishan",
+		title: "上帝视角 · 骊山的刑徒",
+		source: extraYingbuLishanSource,
+		precompiled: false,
+		deaths: {},
+		endings: {
+			canon: { title: "黥面笑着说出的那句谶", kind: "canon", epigraph: "骊山几十万刑徒，只有一个笑着受了那一刀、又笑着冲出来——当刑而王四个字，是闯出来的。" },
 		},
 	},
 };

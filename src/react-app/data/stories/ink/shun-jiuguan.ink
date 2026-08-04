@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 虞舜 · 命九官组阁 · 组阁治世
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
@@ -34,6 +34,7 @@
 
 === c_shierm ===
 #bg:wenzu_temple
+#bgm:solemn
 #show:siyue:calm:right
 你来到文祖庙，与四岳商议，大开四门，畅通四方耳目。你命十二州牧评议天子之德，广施厚德、远离佞人——蛮夷都望风而服。 #speaker:青月 #hint:辟四门，明通四方耳目，命十二牧论帝德……则蛮夷率服。
 #show:qingyue:smile:float
@@ -65,6 +66,7 @@
 
 === c_yu_pingtu ===
 #bg:zuge_court
+#bgm:court
 #show:yu:calm:center
 禹拜了拜、叩头到地：『臣不如稷、契与皋陶，请以此职授之。』 #speaker:禹 #hint:禹拜稽首，让于稷、契与皋陶。
 你摆手止住他：『不必让了。禹，你去治理水土——去吧。』 #speaker:舜 #hint:舜曰：然，往矣。
@@ -117,6 +119,7 @@
 
 === c_kaogong ===
 #bg:zuge_court
+#bgm:court
 二十二人已各就其位。你对他们说：『你们二十二人，要恭谨啊，时时辅佐上天交给我的事业。』 #speaker:舜 #hint:嗟！女二十有二人，敬哉，惟时相天事。
 #show:qingyue:worry:float
 「呐——最后一步，也是最难的一步。授了官，就完了吗？」 #speaker:青月
@@ -153,7 +156,7 @@
 禹劈开九山、疏通九泽、开决九河、划定九州，各地按职来贡，无不合宜。四海之内，都感戴你的功德。 #speaker:青月 #hint:唯禹之功为大，披九山，通九泽，决九河，定九州……四海之内咸戴帝舜之功。
 #show:qingyue:smile:float
 「呼——你走完了这一场组阁。看懂了吗？」 #speaker:青月
-「量才授职，各得其人；三考黜陟，功者自显。天下彰明的德政，就是从你这里开始的呀。」 #speaker:青月 #hint:天下明德皆自虞帝始。 #ending:canon
+「量才授职，各得其人；三考黜陟，功者自显。天下彰明的德政，就是从你这里开始的呀。」 #speaker:青月 #hint:天下明德皆自虞帝始。 #impact:impact_jiuguan_liangcaishouzhi #ending:canon #quiz:quiz_jiuguan_liangcaishouzhi
 #hide:siyue
 #hide:yu
 #hide:houji
@@ -172,6 +175,7 @@
 你到底避开了那对父子。殛其父而用其子，你怕天下人议论，也怕禹心里那道过不去的坎。司空之任，你改授了皋陶——他断狱最平，为人最稳。 #speaker:青月
 皋陶不敢辞，尽心竭力。他立法度、征徒役、按图勘水，样样章法齐整。 #speaker:青月
 #bg:flood_sky
+#bgm:danger
 #show:qingyue:calm:float
 可水不认章法。三年，孟门之下溃了两回；五年，兖州依旧是一片泽国。 #speaker:青月
 「他哪里做错了呢？没有。他只是没交过那九年的学费呀。」 #speaker:青月

@@ -1,0 +1,425 @@
+/* ── 竹简牌局（Card Pai Gow）样式 ── */
+/* 类前缀 cd- (card)；中式风格变量沿用全局 --color-* / --font-serif */
+
+.cd-root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+	padding: var(--space-2) 0 var(--space-4);
+	position: relative;
+	min-height: 420px;
+}
+
+/* ── 顶部 HUD ── */
+.cd-hud {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 8px;
+}
+.cd-title {
+	font-size: 20px;
+	letter-spacing: 0.2em;
+	color: var(--color-gold, #c9a84c);
+}
+.cd-score {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+.cd-score-me {
+	color: var(--color-gold, #c9a84c);
+	font-weight: 600;
+}
+.cd-score-ai {
+	color: var(--color-vermilion-light, #e74c3c);
+}
+.cd-score-sep {
+	color: var(--color-muted);
+}
+.cd-round {
+	margin-left: 4px;
+	padding: 2px 10px;
+	background: rgba(0, 0, 0, 0.3);
+	border-radius: 999px;
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	border: 1px solid rgba(201, 168, 76, 0.2);
+}
+
+/* ── 牌序图例 ── */
+.cd-legend-toggle {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+.cd-legend-btn {
+	font-size: 12px;
+}
+.cd-legend {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 2px;
+	font-size: 12px;
+	padding: 5px 12px;
+	background: rgba(0, 0, 0, 0.25);
+	border-radius: var(--radius, 6px);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+}
+.cd-legend-label {
+	color: var(--color-muted);
+	margin-right: 4px;
+}
+.cd-legend-item {
+	font-family: var(--font-serif);
+	color: var(--color-rice);
+	font-size: 13px;
+}
+.cd-legend-arrow {
+	margin: 0 3px;
+	color: var(--color-muted);
+	font-size: 10px;
+}
+
+/* ── 棋盘布局 ── */
+.cd-board {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+}
+.cd-ai-row,
+.cd-player-row {
+	display: flex;
+	justify-content: center;
+}
+
+/* ── 手牌区 ── */
+.cd-hand {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	min-height: 92px;
+}
+
+/* ── 竹简牌（通用） ── */
+.cd-card {
+	width: 52px;
+	height: 84px;
+	border-radius: 4px;
+	border: 1px solid #3a2610;
+	background: linear-gradient(180deg, #d4a96a 0%, #b8854a 50%, #8b5a2b 100%);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.2),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+		0 2px 6px rgba(0, 0, 0, 0.4);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 4px;
+	cursor: default;
+	position: relative;
+	user-select: none;
+	font-family: var(--font-serif);
+	transition: transform 0.2s, box-shadow 0.2s;
+}
+/* 竹简编绳纹理 */
+.cd-card::before,
+.cd-card::after {
+	content: "";
+	position: absolute;
+	left: -1px;
+	right: -1px;
+	height: 3px;
+	background: rgba(58, 38, 16, 0.55);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+.cd-card::before {
+	top: 14%;
+}
+.cd-card::after {
+	bottom: 14%;
+}
+
+/* 牌面文字（竖排） */
+.cd-card-name {
+	font-size: 26px;
+	color: #2a1a08;
+	text-shadow: 0 1px 0 rgba(255, 220, 150, 0.4);
+	line-height: 1;
+	writing-mode: vertical-rl;
+	letter-spacing: 0.05em;
+}
+.cd-card-points {
+	font-size: 10px;
+	color: rgba(42, 26, 8, 0.7);
+	letter-spacing: 0.1em;
+}
+
+/* ── 玩家手牌（可点击） ── */
+.cd-card-face {
+	cursor: pointer;
+	color: inherit;
+	font: inherit;
+	text-align: center;
+	-webkit-appearance: none;
+	appearance: none;
+}
+.cd-card-face:hover:not(:disabled) {
+	transform: translateY(-8px);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.25),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+		0 8px 16px rgba(0, 0, 0, 0.5);
+}
+.cd-card-face:disabled {
+	cursor: not-allowed;
+	opacity: 0.65;
+}
+
+/* ── 牌背（竹纹） ── */
+.cd-card-back {
+	background:
+		repeating-linear-gradient(90deg, rgba(58, 38, 16, 0.25) 0px, rgba(58, 38, 16, 0) 2px, rgba(58, 38, 16, 0.25) 4px),
+		linear-gradient(180deg, #8b5a2b 0%, #6b4520 50%, #4a3015 100%);
+	border-color: #2a1a08;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.cd-card-back-text {
+	font-size: 18px;
+	color: rgba(255, 220, 150, 0.3);
+	font-family: var(--font-serif);
+	writing-mode: vertical-rl;
+	letter-spacing: 0.3em;
+}
+
+/* ── 出牌区中央牌（稍大） ── */
+.cd-card-sm {
+	width: 60px;
+	height: 92px;
+}
+.cd-card-sm .cd-card-name {
+	font-size: 30px;
+}
+
+/* ── 出牌竞技区 ── */
+.cd-arena {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 16px;
+	padding: var(--space-3, 12px) 0;
+}
+.cd-played {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100px;
+	min-width: 64px;
+	transition: all 0.3s;
+}
+.cd-played-empty {
+	font-size: 12px;
+	color: var(--color-muted);
+	letter-spacing: 0.2em;
+	padding: 22px 16px;
+	border: 1px dashed rgba(201, 168, 76, 0.2);
+	border-radius: 6px;
+	text-align: center;
+	writing-mode: vertical-rl;
+}
+
+/* 出牌入场动画 */
+.cd-ai-played .cd-card {
+	animation: cdPlayInTop 0.3s ease-out;
+}
+.cd-player-played .cd-card {
+	animation: cdPlayInBottom 0.3s ease-out;
+}
+@keyframes cdPlayInTop {
+	from {
+		opacity: 0;
+		transform: translateY(-20px) scale(0.85);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+@keyframes cdPlayInBottom {
+	from {
+		opacity: 0;
+		transform: translateY(20px) scale(0.85);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+/* 胜负高亮 */
+.cd-played.winner .cd-card {
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.3),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+		0 0 18px rgba(201, 168, 76, 0.75),
+		0 4px 12px rgba(0, 0, 0, 0.4);
+	border-color: var(--color-gold, #c9a84c);
+	animation: cdPulse 0.6s ease-out;
+}
+.cd-played.loser .cd-card {
+	opacity: 0.4;
+	filter: grayscale(0.4);
+}
+@keyframes cdPulse {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+/* VS / 回合结果 */
+.cd-vs {
+	min-width: 48px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.cd-vs-text {
+	font-size: 14px;
+	color: var(--color-muted);
+	letter-spacing: 0.3em;
+	font-family: var(--font-serif);
+}
+.cd-result {
+	font-family: var(--font-serif);
+	font-size: 18px;
+	letter-spacing: 0.3em;
+	padding: 3px 14px;
+	border-radius: 999px;
+	animation: cdPulse 0.5s ease-out;
+}
+.cd-result-win {
+	color: var(--color-gold, #c9a84c);
+	border: 1px solid var(--color-gold, #c9a84c);
+	background: rgba(201, 168, 76, 0.15);
+}
+.cd-result-lose {
+	color: var(--color-vermilion-light, #e74c3c);
+	border: 1px solid var(--color-vermilion, #c0392b);
+	background: rgba(192, 57, 43, 0.15);
+}
+.cd-result-tie {
+	color: var(--color-rice-dim);
+	border: 1px solid var(--color-ink-mid, #4a3a2a);
+	background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── 底部控制 ── */
+.cd-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 8px;
+	margin-top: var(--space-2, 8px);
+	flex-wrap: wrap;
+}
+.cd-btn-go {
+	background: rgba(201, 168, 76, 0.2) !important;
+	border-color: var(--color-gold, #c9a84c) !important;
+	color: var(--color-gold, #c9a84c) !important;
+	font-weight: 600;
+}
+.cd-btn-go:hover {
+	background: rgba(201, 168, 76, 0.35) !important;
+}
+
+/* ── 终局遮罩 ── */
+.cd-overlay {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2, 8px);
+	background: rgba(0, 0, 0, 0.82);
+	backdrop-filter: blur(4px);
+	border-radius: var(--radius, 6px);
+	animation: cdScaleIn 0.4s ease-out;
+	z-index: 5;
+}
+.cd-overlay-win {
+	color: var(--color-gold, #c9a84c);
+}
+.cd-overlay-lose {
+	color: var(--color-vermilion-light, #e74c3c);
+}
+.cd-overlay-title {
+	font-family: var(--font-serif);
+	font-size: 28px;
+	letter-spacing: 0.3em;
+	margin-top: var(--space-2, 8px);
+}
+.cd-overlay-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+}
+@keyframes cdScaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* ── 窄屏适配 ── */
+@media (max-width: 640px) {
+	.cd-card {
+		width: 44px;
+		height: 72px;
+		padding: 6px 3px;
+	}
+	.cd-card-name {
+		font-size: 22px;
+	}
+	.cd-card-points {
+		font-size: 9px;
+	}
+	.cd-card-sm {
+		width: 52px;
+		height: 80px;
+	}
+	.cd-card-sm .cd-card-name {
+		font-size: 26px;
+	}
+	.cd-hand {
+		gap: 5px;
+		min-height: 80px;
+	}
+	.cd-arena {
+		gap: 10px;
+	}
+	.cd-overlay-title {
+		font-size: 22px;
+	}
+}

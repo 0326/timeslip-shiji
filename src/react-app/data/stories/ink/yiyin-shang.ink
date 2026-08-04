@@ -40,6 +40,7 @@ VAR quan = 0
 
 === act1_yong ===
 #bg:bo_capital
+#bgm:court
 #show:tang:default:left
 成汤本欲赶你出去，可听着听着，眼神变了。他屏退左右，请你上座，与你彻夜长谈素王九主之事。天亮时，他把国政交到了你手上。 #speaker:汤 #hint:汤举任以国政。
 #show:qingyue:solemn:float
@@ -62,6 +63,7 @@ VAR quan = 0
 
 === act2_zezhu ===
 #bg:youshen_ye
+#bgm:peaceful
 你在夏都住了些时日。桀虽暴虐失德，可宫室煊赫、甲兵尚盛，眼前仍是天下共主的排场。有夏旧臣暗示：你这般大才，何必屈居东方小邦？留下，便是一朝卿相。 #speaker:青月
 #show:qingyue:worry:float
 「呐——这是你的岔口。夏还没倒，眼下它给的位子，比亳都高得多。」 #speaker:青月
@@ -81,6 +83,7 @@ VAR quan = 0
 
 === act2_gui ===
 #bg:bo_capital
+#bgm:court
 你自北门入亳，路遇女鸠、女房，把夏之将亡、天命之所归，一一告与成汤，作《女鸠》《女房》二篇。 #speaker:青月 #hint:复归于亳。入自北门，遇女鸠、女房，作《女鸠女房》。
 #show:qingyue:solemn:float
 「『既丑有夏，复归于亳』。你替成汤，把天命看清楚了——它，正一寸寸离开夏。」 #speaker:青月
@@ -184,6 +187,7 @@ VAR quan = 0
 
 === act5_shezheng ===
 #bg:tong_gong
+#bgm:dark
 #show:taijia:sad:center
 桐宫的门，在太甲身后合上了。他对着成汤的墓，从暴怒，到沉默，到低头。而亳都的朝堂上，你摄行政、当国事，代天子受诸侯之朝。 #speaker:青月 #hint:伊尹放之于桐宫，三年。伊尹摄行政当国，以朝诸侯。
 #show:qingyue:solemn:float

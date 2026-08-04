@@ -9,7 +9,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "./Home.css";
-import { useUiStore } from "../../store/uiStore";
 import { useAuthGate } from "../../hooks/useAuthGate";
 import { AppNav } from "../../components/Layout/AppNav";
 
@@ -28,10 +27,9 @@ const GAME_MODES = [
   {
     id: "free",
     title: "自由模式",
-    desc: "通关正史模式后解锁",
+    desc: "穿越歧路 · 探索历史的另一种可能",
     icon: Compass,
     color: "#5a9fb5",
-    storyLocked: true,
   },
   {
     id: "duel",
@@ -45,7 +43,6 @@ const GAME_MODES = [
 
 export function HomePage() {
   const navigate = useNavigate();
-  const pushToast = useUiStore((s) => s.pushToast);
   const requireAuth = useAuthGate();
   const [mounted, setMounted] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
@@ -61,15 +58,6 @@ export function HomePage() {
 
   const handleModeClick = (mode: (typeof GAME_MODES)[number]) => {
     if (mode.locked) return;
-    if (mode.storyLocked) {
-      pushToast({
-        kind: "info",
-        title: "尚未解锁",
-        subtitle: "通关正史模式后解锁自由模式",
-        icon: "🔒",
-      });
-      return;
-    }
     // 开始游戏前拦截：未注册/登录则弹出注册框
     requireAuth(() => navigate(`/story?mode=${mode.id}`));
   };
@@ -133,7 +121,7 @@ export function HomePage() {
             {GAME_MODES.map((mode, i) => (
               <motion.button
                 key={mode.id}
-                className={`kv-mode-btn ${mode.locked ? "locked" : ""} ${mode.storyLocked ? "story-locked" : ""}`}
+                className={`kv-mode-btn ${mode.locked ? "locked" : ""}`}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 40 }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
@@ -150,7 +138,7 @@ export function HomePage() {
                     <span className="kv-mode-title">{mode.title}</span>
                     <span className="kv-mode-desc">{mode.desc}</span>
                   </div>
-                  {mode.locked || mode.storyLocked ? (
+                  {mode.locked ? (
                     <Lock size={16} className="kv-mode-lock" />
                   ) : (
                     <ChevronRight size={16} className="kv-mode-arrow" />

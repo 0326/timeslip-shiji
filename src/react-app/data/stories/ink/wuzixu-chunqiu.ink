@@ -31,6 +31,7 @@ VAR lie = 0
 
 === act1_zhao ===
 #bg:chu_ping_ting
+#bgm:dark
 #show:qingyue:solemn:float
 「费无忌又出了最毒的一招：他对平王说，伍奢那两个儿子都贤，不除必为楚忧。于是拿你父亲做人质，诈召你们兄弟。」 #speaker:青月 #hint:伍奢有二子，皆贤，不诛且为楚忧。可以其父质而召之，不然且为楚患。
 #show:wushe:solemn:left
@@ -59,6 +60,7 @@ VAR lie = 0
 
 === act1_wang ===
 #bg:chu_ping_ting
+#bgm:dark
 哥哥伍尚束手就擒前，回头看你：「汝能报杀父之仇，我将归死。」 #speaker:伍尚 #hint:汝能报杀父之仇，我将归死。
 「兄长——你去全孝，我去报仇。楚王！我伍员活一日，你便一日睡不安枕！」 #speaker:伍子胥
 你张弓搭箭，逼退使者，转身遁入荒野。 #speaker:青月 #hint:伍胥贯弓执矢向使者，使者不敢进，伍胥遂亡。
@@ -103,6 +105,7 @@ VAR lie = 0
 
 === act2_yufu ===
 #bg:zhaoguan_ye
+#bgm:tension
 你终于潜出昭关，追者仍在后。到了江边，走投无路。 #speaker:青月 #hint:至江，江上有一渔父乘船，知伍胥之急，乃渡伍胥。
 #show:yufu:default:left
 江上一叶渔舟。渔父看你一眼，什么也没问，便载你过了江。 #speaker:青月
@@ -168,6 +171,7 @@ VAR lie = 0
 
 === act3_tui ===
 #bg:wushi_xiao
+#bgm:melancholy
 你把专诸引荐给公子光，自己退隐乡野，和太子建之子胜一起耕田。 #speaker:青月 #hint:乃进专诸于公子光，退而与太子建之子胜耕于野。
 「箫，可以吹给吴市听；刀，只藏给一个人看。公子光——你要王位，我要郢都。咱们，各取所需。」 #speaker:伍子胥
 #show:qingyue:solemn:float
@@ -211,6 +215,7 @@ VAR lie = 0
 
 === act4_cheng ===
 #bg:yuchang
+#bgm:danger
 专诸擘开鱼腹，抽出鱼肠剑，一击刺穿王僚——专诸当场被杀，公子光自立，是为吴王阖庐。 #speaker:青月 #hint:公子光乃令专诸袭刺吴王僚而自立，是为吴王阖庐。
 #show:qingyue:solemn:float
 阖庐既立，得志，召你为行人，与谋国事。 #speaker:青月 #hint:阖庐既立，得志，乃召伍员以为行人，而与谋国事。
@@ -301,6 +306,7 @@ VAR lie = 0
 
 === act6_bian ===
 #bg:bianshi
+#bgm:tragic
 你掘开平王之墓，拖出那具尸骨，鞭之三百，然后已。 #speaker:青月 #hint:乃掘楚平王墓，出其尸，鞭之三百，然后已。
 #show:qingyue:worry:float
 故友申包胥逃在山中，使人来责你：「子之报仇，其以甚乎！今子故平王之臣，亲北面而事之，今至于僇死人，此岂其无天道之极乎！」 #speaker:青月 #hint:子之报仇，其以甚乎！……今至于僇死人，此岂其无天道之极乎！

@@ -1,0 +1,436 @@
+/* 完璧归赵 潜行时机小游戏 样式 前缀 lx- */
+
+.lx-root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+	padding: var(--space-2) 0 var(--space-4);
+	position: relative;
+}
+
+.lx-hud {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.lx-title {
+	font-size: 20px;
+	letter-spacing: 0.3em;
+	color: var(--color-gold, #c9a84c);
+	text-shadow: 0 0 12px rgba(201, 168, 76, 0.3);
+}
+
+.lx-stats {
+	font-size: 12px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+	display: flex;
+	gap: 8px;
+}
+
+.lx-hint {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+	margin: 0;
+	line-height: 1.8;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.2);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
+}
+
+.lx-stage {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: var(--space-2);
+}
+
+.lx-board {
+	display: grid;
+	gap: 3px;
+	padding: 10px;
+	background:
+		linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.15) 100%),
+		linear-gradient(0deg, #2a1810 0%, #3a2618 50%, #2a1810 100%);
+	border: 2px solid #5a3a20;
+	border-radius: var(--radius-lg, 12px);
+	box-shadow:
+		inset 0 2px 8px rgba(255, 200, 120, 0.1),
+		inset 0 -2px 8px rgba(0, 0, 0, 0.5),
+		0 8px 24px rgba(0, 0, 0, 0.5);
+	width: 100%;
+	max-width: 560px;
+	aspect-ratio: 7 / 5;
+}
+
+.lx-cell {
+	position: relative;
+	background:
+		linear-gradient(145deg, #4a3828 0%, #3a2818 100%);
+	border: 1px solid rgba(90, 58, 32, 0.6);
+	border-radius: 4px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.15s ease;
+	overflow: hidden;
+}
+
+.lx-cell::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image:
+		repeating-linear-gradient(
+			0deg,
+			transparent 0px,
+			transparent 18px,
+			rgba(0, 0, 0, 0.08) 18px,
+			rgba(0, 0, 0, 0.08) 19px
+		),
+		repeating-linear-gradient(
+			90deg,
+			transparent 0px,
+			transparent 18px,
+			rgba(0, 0, 0, 0.08) 18px,
+			rgba(0, 0, 0, 0.08) 19px
+		);
+	pointer-events: none;
+}
+
+.lx-cell-alt {
+	background:
+		linear-gradient(145deg, #3d2e20 0%, #2e2014 100%);
+}
+
+.lx-cell:hover:not(:has(.lx-pillar)) {
+	background:
+		linear-gradient(145deg, #5a4630 0%, #4a3624 100%);
+	box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.35);
+}
+
+.lx-vision {
+	background:
+		linear-gradient(145deg, rgba(180, 60, 50, 0.35) 0%, rgba(120, 30, 25, 0.35) 100%) !important;
+	box-shadow:
+		inset 0 0 0 1px rgba(231, 76, 60, 0.45),
+		inset 0 0 16px rgba(231, 76, 60, 0.2);
+	animation: lxVisionPulse 1.6s ease-in-out infinite;
+}
+
+@keyframes lxVisionPulse {
+	0%, 100% { background-color: rgba(180, 60, 50, 0.25); }
+	50% { background-color: rgba(200, 70, 60, 0.42); }
+}
+
+.lx-exit {
+	background:
+		linear-gradient(145deg, rgba(201, 168, 76, 0.25) 0%, rgba(138, 111, 31, 0.25) 100%) !important;
+	box-shadow:
+		inset 0 0 0 2px var(--color-gold, #c9a84c),
+		inset 0 0 24px rgba(201, 168, 76, 0.35),
+		0 0 16px rgba(201, 168, 76, 0.25);
+	animation: lxExitGlow 2s ease-in-out infinite;
+}
+
+@keyframes lxExitGlow {
+	0%, 100% { box-shadow: inset 0 0 0 2px var(--color-gold, #c9a84c), inset 0 0 20px rgba(201, 168, 76, 0.3), 0 0 12px rgba(201, 168, 76, 0.2); }
+	50% { box-shadow: inset 0 0 0 2px #f0d989, inset 0 0 32px rgba(240, 217, 137, 0.5), 0 0 24px rgba(240, 217, 137, 0.4); }
+}
+
+.lx-start {
+	background:
+		linear-gradient(145deg, rgba(46, 139, 87, 0.18) 0%, rgba(30, 100, 60, 0.18) 100%) !important;
+	box-shadow: inset 0 0 0 1px rgba(46, 139, 87, 0.45);
+}
+
+.lx-pillar {
+	width: 78%;
+	height: 78%;
+	background:
+		linear-gradient(145deg, #6a6560 0%, #4a4642 50%, #363230 100%);
+	border: 1px solid #2a2624;
+	border-radius: 4px;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 255, 255, 0.12),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+		0 2px 6px rgba(0, 0, 0, 0.4);
+	position: relative;
+}
+
+.lx-pillar::after {
+	content: '';
+	position: absolute;
+	inset: 18% 30%;
+	background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 100%);
+	border-radius: 2px;
+}
+
+.lx-exit-mark {
+	font-family: var(--font-serif, "Songti SC", "Noto Serif CJK SC", serif);
+	font-size: clamp(16px, 4.2vw, 28px);
+	color: var(--color-gold, #c9a84c);
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-shadow:
+		0 0 8px rgba(201, 168, 76, 0.6),
+		0 1px 2px rgba(0, 0, 0, 0.6);
+	z-index: 1;
+}
+
+.lx-soldier {
+	position: relative;
+	width: 80%;
+	height: 80%;
+	background:
+		linear-gradient(145deg, #a03028 0%, #7a1c14 50%, #4a0f0a 100%);
+	border: 1px solid #2a0805;
+	border-radius: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 120, 100, 0.25),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.45),
+		0 2px 6px rgba(0, 0, 0, 0.4);
+	transition: transform 0.2s ease;
+	z-index: 2;
+}
+
+.lx-soldier.lx-caught {
+	animation: lxSoldierCaught 0.5s ease-in-out infinite;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 120, 100, 0.4),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.5),
+		0 0 20px rgba(231, 76, 60, 0.7);
+}
+
+@keyframes lxSoldierCaught {
+	0%, 100% { transform: scale(1); }
+	50% { transform: scale(1.08); }
+}
+
+.lx-soldier-arrow {
+	position: absolute;
+	font-size: clamp(9px, 2.2vw, 13px);
+	color: #ffd6c8;
+	line-height: 1;
+	pointer-events: none;
+}
+
+.lx-dir-up .lx-soldier-arrow { top: 6%; left: 50%; transform: translateX(-50%); }
+.lx-dir-down .lx-soldier-arrow { bottom: 6%; left: 50%; transform: translateX(-50%); }
+.lx-dir-left .lx-soldier-arrow { left: 8%; top: 50%; transform: translateY(-50%); }
+.lx-dir-right .lx-soldier-arrow { right: 8%; top: 50%; transform: translateY(-50%); }
+
+.lx-soldier-label {
+	font-family: var(--font-serif, "Songti SC", "Noto Serif CJK SC", serif);
+	font-size: clamp(14px, 3.6vw, 22px);
+	color: #fff0e0;
+	font-weight: 700;
+	letter-spacing: 0;
+	line-height: 1;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.lx-player {
+	position: relative;
+	width: 82%;
+	height: 82%;
+	background:
+		linear-gradient(145deg, #2e8b57 0%, #228b4d 50%, #166638 100%);
+	border: 1px solid #0d3a20;
+	border-radius: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow:
+		inset 0 2px 4px rgba(140, 220, 160, 0.3),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+		0 3px 10px rgba(46, 139, 87, 0.5),
+		0 0 14px rgba(46, 139, 87, 0.25);
+	animation: lxPlayerBob 2.2s ease-in-out infinite;
+	z-index: 3;
+}
+
+@keyframes lxPlayerBob {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-2px); }
+}
+
+.lx-player-label {
+	font-family: var(--font-serif, "Songti SC", "Noto Serif CJK SC", serif);
+	font-size: clamp(15px, 3.8vw, 24px);
+	color: #eafff0;
+	font-weight: 700;
+	letter-spacing: 0.05em;
+	line-height: 1;
+	text-shadow:
+		0 0 8px rgba(140, 220, 160, 0.5),
+		0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.lx-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px 16px;
+	justify-content: center;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.18);
+	border-radius: var(--radius, 6px);
+	border: 1px solid rgba(90, 58, 32, 0.35);
+}
+
+.lx-legend-item {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 12px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.04em;
+}
+
+.lx-legend-swatch {
+	width: 18px;
+	height: 18px;
+	border-radius: 3px;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+	flex-shrink: 0;
+}
+
+.lx-legend-player {
+	background: linear-gradient(145deg, #2e8b57, #166638);
+	box-shadow: inset 0 1px 2px rgba(140, 220, 160, 0.3);
+}
+
+.lx-legend-soldier {
+	background: linear-gradient(145deg, #a03028, #4a0f0a);
+}
+
+.lx-legend-vision {
+	background: rgba(200, 70, 60, 0.35);
+	box-shadow: inset 0 0 0 1px rgba(231, 76, 60, 0.45);
+}
+
+.lx-legend-pillar {
+	background: linear-gradient(145deg, #6a6560, #363230);
+}
+
+.lx-legend-exit {
+	background: rgba(201, 168, 76, 0.25);
+	box-shadow: inset 0 0 0 2px var(--color-gold, #c9a84c);
+}
+
+.lx-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+}
+
+.lx-dpad {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 4px;
+}
+
+.lx-dpad-row {
+	display: flex;
+	gap: 4px;
+}
+
+.lx-dpad-btn {
+	width: 40px;
+	height: 40px;
+	background: linear-gradient(145deg, #3a2818 0%, #2a1810 100%);
+	border: 1px solid #5a3a20;
+	border-radius: 6px;
+	color: var(--color-rice-dim);
+	font-size: 14px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 0.15s ease;
+	box-shadow:
+		inset 0 1px 2px rgba(255, 200, 120, 0.08),
+		0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.lx-dpad-btn:hover:not(:disabled) {
+	background: linear-gradient(145deg, #4a3828 0%, #3a2818 100%);
+	color: var(--color-gold, #c9a84c);
+	border-color: var(--color-gold, #c9a84c);
+	transform: translateY(-1px);
+}
+
+.lx-dpad-btn:active:not(:disabled) {
+	transform: translateY(0);
+	box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.lx-dpad-btn:disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+}
+
+.lx-actions {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.lx-finish {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: rgba(0, 0, 0, 0.82);
+	backdrop-filter: blur(4px);
+	border-radius: var(--radius-lg, 12px);
+	animation: lxScaleIn 0.4s ease-out;
+	color: var(--color-gold, #c9a84c);
+	z-index: 10;
+}
+
+.lx-finish.lose {
+	color: var(--color-vermilion-light, #e74c3c);
+}
+
+.lx-finish-title {
+	font-size: 28px;
+	letter-spacing: 0.25em;
+	margin-top: var(--space-2);
+}
+
+.lx-finish-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+}
+
+@keyframes lxScaleIn {
+	from { opacity: 0; transform: scale(0.85); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 640px) {
+	.lx-title { font-size: 17px; letter-spacing: 0.2em; }
+	.lx-stats { font-size: 11px; gap: 6px; }
+	.lx-hint { font-size: 12px; padding: 6px 10px; }
+	.lx-board { padding: 7px; gap: 2px; }
+	.lx-legend { gap: 8px 12px; padding: 6px 10px; }
+	.lx-legend-item { font-size: 11px; gap: 5px; }
+	.lx-legend-swatch { width: 16px; height: 16px; }
+	.lx-dpad-btn { width: 36px; height: 36px; font-size: 13px; }
+	.lx-finish-title { font-size: 22px; letter-spacing: 0.2em; }
+}
