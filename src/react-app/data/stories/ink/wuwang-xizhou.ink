@@ -9,7 +9,7 @@ VAR resolve = 0
 -> act1_ji_wei
 
 === act1_ji_wei ===
-#bg:xuanyuan_court
+#bg:xuanyuan_court_alt2
 #bgm:solemn
 #show:qingyue:solemn:float
 「嘘。轻些落地——这里是灵堂。」青月罕见地压低了声音，连铃铛都按住了。 #speaker:青月
@@ -17,7 +17,7 @@ VAR resolve = 0
 「他给你留下了三分天下有其二的基业、太公望为师周公旦为辅的班底——还有一句没做完的事：伐纣。」 #speaker:青月
 你睁开眼。父亲的灵堂前，你捧着他留下的木主牌位，眼泪还没干。文王在位五十年，把周经营成了天下最有德望的邦国，可他到死也没有伐纣——他在等天命。
 现在这个天命，交到了你手里。
-#show:taigong:solemn:left
+#show:jiangshang:solemn:left
 太公望拄着黄钺立在堂下：「太子，何时东观兵？」 #speaker:姜尚
 #show:zhougong:calm:right
 周公旦皱起眉：「师尚父！父丧未殡，何言兵事？」 #speaker:周公旦
@@ -38,14 +38,14 @@ VAR resolve = 0
 #bgm:martial
 #show:qingyue:default:float
 你把文王的木主牌位载在中军战车上，自称「太子发」——表示这是奉父王之命征伐，不是你自作主张。
-#show:taigong:stern:left
+#show:jiangshang:stern:left
 师尚父发号：「总尔众庶，与尔舟楫，后至者斩！」 #speaker:姜尚
 你率军渡河，到了河中央，一条白鱼跃入你的舟中。你俯身取来祭了天。渡了河，又有一团火从天而降，落到你屋顶上，化成一只赤色的乌鸦，叫声响彻云霄。
 #show:qingyue:solemn:float
 「白鱼入舟、赤乌流火——这都是祥瑞啊！而且你猜怎么着？不期而会盟津的诸侯，有——八——百——家！」 #speaker:青月
 八百诸侯齐聚盟津，黄河边上旌旗遮天。诸侯们群情激昂，齐声高喊：「纣可伐矣！」
 你站在高台上，望着这八百张热切的脸，手心都是汗。有那么一瞬间，你几乎要下令渡河了。
-#show:taigong:stern:left
+#show:jiangshang:stern:left
 太公望按着黄钺走到你身边，声音低得只有你们两人听得见：「太子，老臣只问一句——你看见的，是八百家诸侯，还是八百家各自的心思？」 #speaker:姜尚
 #show:qingyue:worry:float
 「可诸侯们说得也在理呀——『天与不取，反受其咎』！这八百家是自己来的，散了，下回还聚得齐吗？比干、箕子倒还在朝歌死谏，商的太师少师也没跑出来……」 #speaker:青月
@@ -110,6 +110,7 @@ VAR resolve = 0
 
 === act3_shi_shi ===
 #bg:zhuolu_field
+#bgm:battle
 #show:qingyue:smile:float
 你发表《牧誓》，历数纣听信妇人言、不祭祖宗、遗弃王父母弟、用四方罪逋逃之罪——「今予发，惟恭行天之罚！」
 太公望以耄耋之年，亲率百夫致师，第一个冲向敌阵。
@@ -238,6 +239,7 @@ VAR resolve = 0
 
 === if_xianfa_2 ===
 #bg:muye
+#bgm:battle
 朝歌震动。比干亲自巡城，纣王收起酒杯，商军倾国而出——这一仗，没有前徒倒戈。七十万人的戈矛，是真的向你压过来的。
 血战三日。太公望的奇计一层层拆开商军的阵脚，八百诸侯轮番填进战线。你赢了——赢得只剩半口气。
 #show:qingyue:sad:float

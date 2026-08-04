@@ -8,6 +8,7 @@ import { useUiStore } from "../store/uiStore";
 export interface SceneState {
 	background: string;
 	characters: Record<string, { expression: string; position: Position }>;
+	bgm: string;
 }
 
 export interface UseStoryResult {
@@ -20,9 +21,11 @@ export interface UseStoryResult {
 	retry: () => void;
 	restart: () => void;
 	completeMinigame: (result: "win" | "lose" | "skip", score?: number) => void;
+	/** 回到上一个抉择点（不推进剧情），返回 false 表示无快照可恢复 */
+	revertToChoice: () => boolean;
 }
 
-const DEFAULT_SCENE: SceneState = { background: "default", characters: {} };
+const DEFAULT_SCENE: SceneState = { background: "default", characters: {}, bgm: "" };
 
 /**
  * 驱动叙事引擎，并将死亡 / 通关 / 存档等副作用接入 userStore。
@@ -66,6 +69,11 @@ export function useStory(
 						icon: "📖",
 					});
 				}
+				// 死亡触发史识碎片解锁（death_<chapter>_<deathId>）
+				const chapter = storyId.split(":")[1];
+				if (chapter) {
+					store.getState().unlockKnowledge(storyId, charId, `death_${chapter}_${death.id}`);
+				}
 			}
 		},
 		[storyId, charId, store, pushToast],
@@ -97,9 +105,16 @@ export function useStory(
 			try {
 				runner = createRunner(storyKey, {
 					onAchievement: (id) => store.getState().unlockAchievement(id),
+					onUnlockKnowledge: (id) => store.getState().unlockKnowledge(storyId, charId, id),
 					// 切换背景 = 进入新场景：清空上一幕的立绘，由本幕的 show 重新登场
 					onBackground: (bg) =>
-						applyScene((p) => ({ ...p, background: bg, characters: {} })),
+						applyScene((p) => ({
+							...p,
+							background: bg,
+							characters: Object.fromEntries(
+								Object.entries(p.characters).filter(([, c]) => c.position === "float")
+							)
+						})),
 					onShowCharacter: (id, expression, position) =>
 						applyScene((p) => ({
 							...p,
@@ -114,6 +129,8 @@ export function useStory(
 							delete next[id];
 							return { ...p, characters: next };
 						}),
+					onBGM: (track) =>
+						applyScene((p) => ({ ...p, bgm: track })),
 				}, { strict });
 			} catch {
 				setNotFound(true);
@@ -237,5 +254,18 @@ export function useStory(
 		[onDeath, persist, handleEnded, checkpointScene],
 	);
 
-	return { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame };
+	const revertToChoice = useCallback(() => {
+		const r = runnerRef.current;
+		if (!r) return false;
+		const next = r.revertToChoicePoint();
+		if (!next) return false;
+		// 画面复位到抉择点快照（死亡分支可能改过背景/立绘）
+		sceneRef.current = sceneCheckpointRef.current;
+		setScene(sceneCheckpointRef.current);
+		setState(next);
+		checkpointScene(next);
+		return true;
+	}, [checkpointScene]);
+
+	return { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, revertToChoice };
 }

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
 	ArrowLeft,
@@ -8,6 +8,7 @@ import {
 	Compass,
 	CheckCircle2,
 	Lock,
+	X,
 } from "lucide-react";
 import "./StorySelect.css";
 import { getSeriesStorylines } from "../../data/storylines";
@@ -18,6 +19,7 @@ import { useUiStore } from "../../store/uiStore";
 import { useAuthGate } from "../../hooks/useAuthGate";
 import { CHARACTERS } from "../../data/characters";
 import { getSprite, getBackground } from "../../data/sceneAssets";
+import type { EndingEntry } from "../../engine/shijiInkAdapter";
 
 function getDifficultyStars(d: number) {
 	return Array.from({ length: 5 }, (_, i) => i < d);
@@ -56,6 +58,8 @@ export function SeriesChapterPage() {
 	const getPerspective = useUserStore((s) => s.getPerspective);
 	const pushToast = useUiStore((s) => s.pushToast);
 	const requireAuth = useAuthGate();
+	/** 当前展开结局清单的章节（storylineId）；null = 不展开 */
+	const [endingsPreviewId, setEndingsPreviewId] = useState<string | null>(null);
 
 	const series = SERIES.find((s) => s.id === seriesId);
 
@@ -71,7 +75,7 @@ export function SeriesChapterPage() {
 				: null;
 			const isCompleted = !!prog?.isCompleted;
 			const isStarted = !!prog?.isStarted && !isCompleted;
-			const locked = !prevCleared;
+			const locked = false; // 全章节解锁：关闭章节顺序锁
 			// 仅"本身已解锁(prevCleared)且已通关"的篇章才解锁下一篇；
 			// 被锁篇章即便存档里残留通关记录，也不向后传递解锁（防止旧存档跳关）
 			prevCleared = prevCleared && isCompleted;
@@ -238,14 +242,20 @@ export function SeriesChapterPage() {
 											</span>
 											<span className="ss-meta-year">{sl.year}</span>
 											{mode === "free" && endingsTotal >= 2 && (
-												<span
-													className="ss-meta-item ss-meta-endings"
-													title="结局收集"
-												>
-													<Compass size={12} /> 结局 {endingsUnlocked}/
-													{endingsTotal}
-												</span>
-											)}
+											<button
+												type="button"
+												className="ss-meta-item ss-meta-endings ss-meta-endings-btn"
+												title="点击查看本章结局收集"
+												onClick={(e) => {
+													e.stopPropagation();
+													setEndingsPreviewId(sl.id);
+												}}
+												onMouseDown={(e) => e.stopPropagation()}
+											>
+												<Compass size={12} /> 结局 {endingsUnlocked}/
+												{endingsTotal}
+											</button>
+										)}
 										</div>
 										<span
 											className={`btn btn-cut btn-sm ss-chapter-cta ${
@@ -282,6 +292,86 @@ export function SeriesChapterPage() {
 					})}
 				</div>
 			</main>
+
+			{/* 结局收集弹窗：点击章节角标弹出，复用 vn-choices / choice-btn 视觉语言 */}
+			{endingsPreviewId && (() => {
+				const sl = chapters.find((c) => c.sl.id === endingsPreviewId)?.sl;
+				const persp = sl?.perspectives[0];
+				if (!sl || !persp) return null;
+				const cfg = inkStories[persp.storyKey];
+				const endings = cfg?.endings;
+				if (!endings) return null;
+				const prog = getPerspective(sl.id, persp.characterId);
+				const unlockedSet = new Set(prog.unlockedEndings ?? []);
+				const orderedIds = Object.keys(endings).sort((a, b) => {
+					const ka = endings[a].kind;
+					const kb = endings[b].kind;
+					if (ka === kb) return 0;
+					return ka === "canon" ? -1 : 1;
+				});
+				return (
+					<div
+						className="ss-endings-overlay"
+						onClick={() => setEndingsPreviewId(null)}
+					>
+						<div
+							className="ss-endings-popup"
+							onClick={(e) => e.stopPropagation()}
+						>
+							<button
+								className="ss-endings-close"
+								onClick={() => setEndingsPreviewId(null)}
+								title="关闭"
+							>
+								<X size={16} />
+							</button>
+							<div className="ss-endings-title serif">
+								『{sl.title}』· 结局收集
+							</div>
+							<div className="ss-endings-sub dim">
+								以{getCharacterName(persp.characterId)}视角 · {unlockedSet.size}/
+								{orderedIds.length} 已照见
+							</div>
+							<div className="ss-endings-list">
+								{orderedIds.map((eid, idx) => {
+									const e: EndingEntry = endings[eid];
+									const unlocked = unlockedSet.has(eid);
+									return unlocked ? (
+										<div key={eid} className="ss-ending-item unlocked">
+											<div className="ss-ending-item-head">
+												<span className={`ss-ending-kind ${e.kind}`}>
+													{e.kind === "canon" ? "史实终局" : "历史的歧路"}
+												</span>
+												<span className="ss-ending-idx">第 {idx + 1} 结局</span>
+											</div>
+											<div className="ss-ending-name serif">『{e.title}』</div>
+											{e.epigraph && (
+												<p className="ss-ending-epigraph serif">{e.epigraph}</p>
+											)}
+										</div>
+									) : (
+										<div key={eid} className="ss-ending-item locked">
+											<Lock size={16} />
+											<div className="ss-ending-name-locked serif">
+												第 {idx + 1} 结局 · 未照见
+											</div>
+											<div className="ss-ending-sub-locked dim">
+												走过这条歧路才会照见
+											</div>
+										</div>
+									);
+								})}
+							</div>
+							<button
+								className="btn btn-ghost ss-endings-goto"
+								onClick={() => navigate("/codex")}
+							>
+								前往结局图鉴 <Compass size={14} />
+							</button>
+						</div>
+					</div>
+				);
+			})()}
 		</div>
 	);
 }

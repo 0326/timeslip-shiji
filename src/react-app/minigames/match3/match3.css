@@ -1,0 +1,206 @@
+/* 涿鹿珠阵（Match-3） —— 中式色彩三消样式 */
+
+.m3-root {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-3) 0;
+}
+
+/* ── 顶部 HUD ── */
+.m3-hud {
+	width: 100%;
+	max-width: 360px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius);
+}
+.m3-level {
+	font-size: 16px;
+	letter-spacing: 0.2em;
+	color: var(--color-gold, #c9a84c);
+	font-weight: 600;
+}
+.m3-stats {
+	display: flex;
+	gap: 6px;
+	font-size: 12px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+}
+
+/* ── 棋盘 ── */
+.m3-wrap {
+	background: linear-gradient(160deg, #1a1008 0%, #2a1810 100%);
+	padding: 8px;
+	border-radius: var(--radius-lg);
+	border: 1px solid var(--color-ink-light);
+	box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+.m3-board {
+	display: grid;
+	grid-template-columns: repeat(6, 48px);
+	grid-template-rows: repeat(7, 48px);
+	gap: 3px;
+}
+
+/* ── 单元格 ── */
+.m3-cell {
+	width: 48px;
+	height: 48px;
+	border: none;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.03);
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform var(--duration, 200ms), box-shadow var(--duration, 200ms);
+	position: relative;
+}
+.m3-cell:hover:not(:disabled) {
+	transform: scale(1.05);
+}
+.m3-cell.selected {
+	box-shadow: 0 0 0 2px var(--color-gold, #c9a84c), 0 0 12px rgba(201, 168, 76, 0.5);
+	transform: scale(1.08);
+}
+.m3-cell:disabled {
+	cursor: default;
+}
+
+/* ── 珠子（六色） ── */
+.m3-gem {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	display: block;
+	box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.3),
+		0 2px 4px rgba(0, 0, 0, 0.4);
+	position: relative;
+}
+.m3-gem::after {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 8px;
+	width: 10px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.55);
+	filter: blur(1px);
+}
+
+/* 0 青玉 */
+.m3-jade .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #6ec8b0, #2e8b6e 60%, #1a5c42);
+}
+/* 1 朱砂 */
+.m3-cinnabar .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #e8765a, #c0392b 60%, #7d2018);
+}
+/* 2 玄墨 */
+.m3-ink .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #4a4a52, #2c2c34 60%, #14141a);
+}
+/* 3 黄土 */
+.m3-earth .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #d9b86a, #b8860b 60%, #7a5808);
+}
+/* 4 白骨 */
+.m3-bone .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #f0e8d8, #c9b89a 60%, #8a7a5c);
+}
+/* 5 紫雾 */
+.m3-fog .m3-gem {
+	background: radial-gradient(circle at 35% 30%, #9a7ab8, #6c5b8a 60%, #3e2f5c);
+}
+
+/* ── 图例 ── */
+.m3-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 14px;
+	justify-content: center;
+	max-width: 360px;
+}
+.m3-legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+}
+.m3-gem-mini {
+	width: 14px;
+	height: 14px;
+	border-radius: 50%;
+	display: inline-block;
+	box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+}
+.m3-jade { background: radial-gradient(circle at 35% 30%, #6ec8b0, #2e8b6e); }
+.m3-cinnabar { background: radial-gradient(circle at 35% 30%, #e8765a, #c0392b); }
+.m3-ink { background: radial-gradient(circle at 35% 30%, #4a4a52, #2c2c34); }
+.m3-earth { background: radial-gradient(circle at 35% 30%, #d9b86a, #b8860b); }
+.m3-bone { background: radial-gradient(circle at 35% 30%, #f0e8d8, #c9b89a); }
+.m3-fog { background: radial-gradient(circle at 35% 30%, #9a7ab8, #6c5b8a); }
+
+/* ── 操作区 ── */
+.m3-actions {
+	display: flex;
+	gap: var(--space-2);
+}
+
+/* ── 结果遮罩 ── */
+.m3-result {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	background: rgba(0, 0, 0, 0.85);
+	border-radius: var(--radius-lg);
+	color: var(--color-rice);
+	animation: mgFadeIn 0.3s ease-out;
+}
+.m3-result.win {
+	color: var(--color-gold, #c9a84c);
+}
+.m3-result.lose {
+	color: var(--color-rice-dim);
+}
+.m3-result-title {
+	font-size: 22px;
+	letter-spacing: 0.2em;
+	font-weight: 600;
+}
+.m3-result-sub {
+	font-size: 13px;
+	letter-spacing: 0.1em;
+	opacity: 0.8;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 480px) {
+	.m3-board {
+		grid-template-columns: repeat(6, 40px);
+		grid-template-rows: repeat(7, 40px);
+	}
+	.m3-cell {
+		width: 40px;
+		height: 40px;
+	}
+	.m3-gem {
+		width: 30px;
+		height: 30px;
+	}
+}

@@ -11,6 +11,7 @@ import { hanchuInkStories } from "./hanchu";
 import { qinInkStories } from "./qin";
 import { xizhouInkStories } from "./xizhou";
 import { zhuziInkStories } from "./zhuzi";
+import { qunxiangInkStories } from "./qunxiang";
 
 export const inkStories: Record<string, InkStoryConfig> = {
 	...wudiInkStories,
@@ -23,4 +24,5 @@ export const inkStories: Record<string, InkStoryConfig> = {
 	...qinInkStories,
 	...xizhouInkStories,
 	...zhuziInkStories,
+	...qunxiangInkStories,
 };

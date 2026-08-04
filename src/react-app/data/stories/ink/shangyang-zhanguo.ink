@@ -77,6 +77,7 @@ VAR tuishen = 0
 
 === act2_xinmin ===
 #bg:qin_fating
+#bgm:court
 法令已经拟好，你却没有立刻颁布——你担心秦国百姓不信。这是变法的第一关：新法再严再好，百姓不信，就是一张废纸。 #speaker:青月 #hint:令既具，未布，恐民之不信。
 #show:qingyue:worry:float
 「唔……要怎样才能让百姓相信，这次的法令是说到做到的？秦国立过太多朝令夕改的规矩了，百姓早被糊弄怕了。」 #speaker:青月
@@ -84,6 +85,7 @@ VAR tuishen = 0
 
 === act2_limu ===
 #bg:qin_nanshimen
+#bgm:solemn
 你在国都栎阳市集的南门，立起一根三丈高的木头，当众宣布：「谁能把这根木头搬到北门，赏十金。」 #speaker:青月 #hint:已乃立三丈之木于国都市南门，募民有能徙置北门者予十金。
 百姓围了一圈又一圈，指指点点，没人敢搬——十金搬一根木头？哪有这样的好事，一定是骗人的。 #speaker:青月
 #show:qingyue:tease:float
@@ -175,6 +177,7 @@ VAR tuishen = 0
 
 === act5_zhaoliang ===
 #bg:shang_yi
+#bgm:peaceful
 一个叫赵良的人来见你。你问他：「你看我治理秦国，跟五羖大夫百里奚比，谁更贤？」 #speaker:青月 #hint:子观我治秦也，孰与五羖大夫贤？
 #show:zhaoliang:solemn:left
 赵良正色道：「千人之诺诺，不如一士之谔谔。我愿意终日正言而无诛，可以吗？」 #speaker:赵良 #hint:千人之诺诺，不如一士之谔谔。
@@ -214,6 +217,7 @@ VAR tuishen = 0
 公子虔等了八年的机会终于来了——他们立刻告发商君欲反，秦惠王发吏捕你。 #speaker:青月 #hint:公子虔之徒告商君欲反，发吏捕商君。
 你仓皇出逃，一路跑到边境关口，想住一家客舍。 #speaker:青月
 #bg:guanxia_keshe
+#bgm:melancholy
 客舍主人不知道你是谁，摆摆手说：「商君之法，舍人无验者坐之」——收留没有凭证的人，店主连坐。 #speaker:青月 #hint:商君之法，舍人无验者坐之。
 你闻言，仰天长叹—— #speaker:青月
 「嗟乎！为法之敝一至此哉！」 #speaker:商鞅 #hint:商君喟然叹曰：嗟乎，为法之敝一至此哉！

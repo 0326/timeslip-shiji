@@ -7,6 +7,8 @@
 
 VAR wu = 0
 VAR tui = 0
+VAR mg_result = ""
+VAR mg_score = 0
 
 -> act1_guochou
 
@@ -85,10 +87,24 @@ VAR tui = 0
 
 === act2_end ===
 #bg:plank_road
+#bgm:tension
 你埋名匿迹，藏身下邳。博浪沙的失败，把一个以匹夫之勇报仇的刺客，逼上了另一条路。 #speaker:青月 #hint:良乃更名姓，亡匿下邳。
 #show:qingyue:solemn:float
 「一百二十斤的铁椎，终究只砸出个『误中副车』。少年的血气，走到了尽头。」 #speaker:青月
 「你还不知道——就在这下邳的一座桥上，有个老人，正等着改写你的一生。」 #speaker:青月
+
+// ↓ NPC side narrative: 韩地书生小郑——"五世相韩"复仇对天下寒门的感召
+#show:qingyue:sad:float
+「这件事，传到了韩地一个书生耳朵里——」 #speaker:青月
+#show:qingyue:calm:float
+「小郑是韩国旧族的旁支，韩亡之后，家道中落，沦落在田间做佣耕。他每日在田里弯腰插秧，抬头便能望见北方的天际——那是韩国故土的方向。」 #speaker:青月
+「那天傍晚，村中有个行脚的货郎，带来了一个消息：『听说了吗？有个韩地的公子，散尽家财求了个大力士，在博浪沙用一百二十斤的铁椎，要杀秦始皇！没杀成，误中了副车。秦始皇大怒，全国大搜捕，搜得极急！』」 #speaker:青月
+#show:qingyue:tease:float
+「小郑听罢，把锄头往田里一插，双膝一软，就在田埂上跪了下来——面朝北方，磕了三个响头。」 #speaker:青月
+「旁人笑他：『一个逃犯，值得你跪？』小郑却抬头道：『他五世相韩，散尽家财求刺客，为的不是一家一姓，是咱们整个韩地的骨气。韩国亡了，可有人还记得替它报仇——这就够了。』」 #speaker:青月
+#show:qingyue:solemn:float
+「张良这一椎，虽没杀成秦始皇，却让天下的寒门知道：韩国的仇，有人记着；亡国的恨，有人敢报。这比杀成了，还震动人心。」 #speaker:青月
+
 #actclear:zhangliang_act2
 -> act3_yishang
 
@@ -101,7 +117,6 @@ VAR tui = 0
 === act3_yishang ===
 #bg:riverside
 #bgm:solemn
-#minigame:yishang
 你闲来在下邳的桥上散步。一个穿粗布褐衣的老人走到你身边，忽然把自己的鞋子甩落到桥下，回头对你说：「小子，下去把鞋捡上来！」 #speaker:黄石公 #hint:直堕其履圯下，顾谓良曰：孺子，下取履！
 #show:qingyue:worry:float
 「呐——你博浪沙敢刺秦始皇，是个眼里揉不得沙的人。一个陌生老头，当街这样使唤你……」 #speaker:青月
@@ -112,6 +127,28 @@ VAR tui = 0
 	-> act3_lvwo
 * [「老匹夫欺人！」你一把揪住他，就要动手]
 	-> death_ouzhi
+* #correct [且慢——这老人的来历，你想先探个究竟]
+	-> c_explore_zhangliang_yuanshang
+
+=== c_explore_zhangliang_yuanshang ===
+#show:qingyue:worry:float
+「呐——这老头怪得很。你心里转着几个念头——」 #speaker:青月
+
+* #correct [这老人真的是个普通的下邳隐士吗？]
+	#show:qingyue:solemn:float
+	「史书上说，他后来在谷城山下化作了一块黄石。所以后人叫他黄石公——他的真实身份，是个千古之谜。」 #speaker:青月
+	「但你此刻不需要管他是谁。你只需要记住：他考你的，不是出身，是『忍』。他选在你博浪沙失败之后出现， timing 刚刚好。」 #speaker:青月
+	-> act3_yishang
+* #correct [他要传给我的那卷书，究竟是什么？]
+	#show:qingyue:tease:float
+	「《太公兵法》——传说是姜子牙留下的兵书。后世说它『授之张良，良得以灭秦亡楚』。」 #speaker:青月
+	「可这书再神，也要有人能读进去。老人挑中你，是因为你在博浪沙撞了南墙，终于把『匹夫之勇』换成了『隐忍之智』。」 #speaker:青月
+	-> act3_yishang
+* #correct [你说的『忍小忿就大谋』，到底怎么悟透？]
+	#show:qingyue:smile:float
+	「忍，不是怯懦。是把拳头收回来，等时机到了再打出去。」 #speaker:青月
+	「你博浪沙那一椎，是不忍；此刻捡鞋穿鞋，是忍。一忍一不忍之间，刺客变成了谋圣——这就是圯上老人三试的深意。」 #speaker:青月
+	-> act3_yishang
 
 === death_ouzhi ===
 你到底没忍住，一拳挥了出去。老人踉跄倒地，冷冷看你一眼，拂袖而去。你出了口恶气，却也把一场天大的机缘，连同那卷《太公兵法》，一起打没了。博浪沙的莽夫始终是莽夫——那个能做帝王师的张良，止步于这一拳。 #death:ouzhi #speaker:青月
@@ -158,6 +195,16 @@ VAR tui = 0
 #show:qingyue:smile:float
 「欸——你听懂了吗？从今往后，你不再以铁椎报仇，而以兵法谋天下。那个刺客死了，谋圣，活了。」 #speaker:青月
 #actclear:zhangliang_act3
+#show:qingyue:tease:float
+「呐——圯上老人三试你的原文，你记全了吗？来，把这些竹简缀回去——三试的序、孺子可教，都在里头哦。」 #speaker:青月
+#minigame:yishang
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，圯上三试的原文，你全记下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「竹简暂乱也无妨，隐忍与恭敬的道理，你心里已经明白了。」 #speaker:青月
+}
 -> act4_yuzhu
 
 // ═══════════════════════════════════════════════
@@ -287,7 +334,6 @@ VAR tui = 0
 === act7_hongmen ===
 #bg:tent_night
 #bgm:danger
-#minigame:hongmen
 项羽兵临鸿门，四十万大军，要击破沛公。当夜，项伯——当年你在下邳收留过的杀人逃犯——连夜驰入军中，私下找到你，要拉你一起逃命。 #speaker:青月 #hint:项伯乃夜驰入沛公军，私见张良，欲与俱去。
 #show:qingyue:worry:float
 「呐——一饭一恩皆有回响。当年你救过项伯的命，今夜他来救你的命。可你若跟他走，就丢下了沛公……」 #speaker:青月
@@ -325,6 +371,16 @@ VAR tui = 0
 「你不急着献策，先逼沛公认清『固不能却项羽』——唯有看清自己挡不住，才肯放下妄念、转而结好项伯。」 #speaker:青月
 「四十万大军的杀局，被你一夜之间，化于无形。深藏不露、料事如神——谋圣之名，从鸿门开始，天下皆知。」 #speaker:青月
 #actclear:zhangliang_act7
+#show:qingyue:tease:float
+「呐——鸿门宴的原文，你记全了吗？来，把这些竹简缀回去——项伯夜告、卑辞谢罪、脱身殿后，都在里头哦。」 #speaker:青月
+#minigame:hongmen
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，鸿门运筹的原文，你全记下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「竹简暂乱也无妨，深藏不露、料事如神的道理，你心里已经明白了。」 #speaker:青月
+}
 -> act8_huace
 
 // ═══════════════════════════════════════════════
@@ -343,6 +399,7 @@ VAR tui = 0
 
 === act8_xiayi ===
 #bg:camp_han_night
+#bgm:tension
 彭城惨败，汉军大溃。退到下邑，汉王下马靠着马鞍问你：「关东之地我都不要了，肯拿去封赏——谁能与我共建功业、破了项羽？」 #speaker:青月 #hint:吾欲捐关以东等弃之，谁可与共功者？
 #show:qingyue:worry:float
 「呐——这是一道定天下的大题。你若只盯着眼前一城一地的得失，就答不出它。」 #speaker:青月
@@ -360,6 +417,7 @@ VAR tui = 0
 
 === act8_jiezhu ===
 #bg:camp_han_night
+#bgm:tension
 汉三年，项羽急围荥阳。汉王慌了，郦食其献策：复立六国之后，授印分封，收天下人心以孤立项羽。汉王连声叫好，就要刻印。 #speaker:青月 #hint:陛下诚能复立六国后世……汉王曰：善。趣刻印。
 #show:liubang:default:right
 你从外面进来。汉王正在吃饭，把郦食其的计策告诉你，问：「子房看这计如何？」 #speaker:青月 #hint:子房前！客有为我计桡楚权者……于子房何如？
@@ -423,10 +481,10 @@ VAR tui = 0
 * #correct #hint:臣愿封留足矣，不敢当三万户——辞厚封、取薄邑，功成身退的第一步。 [「当年我在留县与陛下相遇，那是天意。封我留县就足够了，三万户不敢当。」]
 	~ tui = tui + 1
 	-> act9_yongchi
-* [「臣之功，配得上三万户。」你坦然受了齐地三万户的厚封]
+* #correct [「臣之功，配得上三万户。」你坦然受了齐地三万户的厚封]
 	~ tui = tui - 1
 	-> act9_yongchi
-* [三万户你都不要——你要的从来只有一个韩。你辞了汉封，向高帝请命:愿归故韩之地,重立韩嗣,为汉守东方藩屏]
+* #correct [三万户你都不要——你要的从来只有一个韩。你辞了汉封，向高帝请命:愿归故韩之地,重立韩嗣,为汉守东方藩屏]
 	-> if_fuhan_1
 
 === act9_yongchi ===
@@ -447,6 +505,7 @@ VAR tui = 0
 
 === act9_sihao ===
 #bg:han_palace
+#bgm:court
 天下既定，你便称多病，闭门修习辟谷导引，渐渐淡出朝堂。可高帝要废太子、立赵王如意，吕后惶急，来求你。 #speaker:青月 #hint:留侯性多病……上欲废太子，立戚夫人子赵王如意。
 #show:qingyue:worry:float
 「呐——废立太子，是动摇国本的大事。群臣力谏都没用。你身已半退，是要卷进这滩浑水，还是袖手？」 #speaker:青月

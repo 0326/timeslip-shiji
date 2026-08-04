@@ -1,0 +1,344 @@
+/* 铁匠锻兵 —— 合成+时间管理样式（中式风格，前缀 fg-） */
+
+.fg-root {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-3) 0;
+	overflow: hidden;
+	min-height: 420px;
+}
+
+/* ── 炉火背景（CSS 渐变模拟火焰） ── */
+.fg-fire {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 65%;
+	pointer-events: none;
+	z-index: 0;
+	background:
+		radial-gradient(ellipse at 18% 100%, rgba(255, 140, 40, 0.38), transparent 60%),
+		radial-gradient(ellipse at 82% 100%, rgba(255, 90, 30, 0.32), transparent 60%),
+		radial-gradient(ellipse at 50% 115%, rgba(255, 200, 80, 0.5), transparent 70%);
+	animation: fgFlicker 1.8s ease-in-out infinite alternate;
+}
+@keyframes fgFlicker {
+	0%   { opacity: 0.72; transform: translateY(0) scaleY(1); }
+	50%  { opacity: 1;    transform: translateY(-6px) scaleY(1.04); }
+	100% { opacity: 0.82; transform: translateY(-2px) scaleY(0.98); }
+}
+.fg-root > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* ── 顶部 HUD ── */
+.fg-hud {
+	width: 100%;
+	max-width: 520px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 14px;
+	background: rgba(0, 0, 0, 0.34);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius);
+}
+.fg-level {
+	font-size: 15px;
+	letter-spacing: 0.18em;
+	color: var(--color-gold, #c9a84c);
+	font-weight: 600;
+}
+.fg-timer {
+	font-size: 13px;
+	letter-spacing: 0.1em;
+	color: var(--color-rice-dim);
+}
+.fg-time-num {
+	color: var(--color-vermilion-light, #e74c3c);
+	font-weight: 700;
+	font-size: 16px;
+	margin: 0 2px;
+}
+
+/* ── 舞台：目标 + 锻造台 ── */
+.fg-stage {
+	display: flex;
+	gap: var(--space-4);
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	max-width: 520px;
+}
+
+/* 目标兵器卡 */
+.fg-target {
+	width: 130px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+.fg-target-label {
+	font-size: 11px;
+	letter-spacing: 0.25em;
+	color: var(--color-rice-dim);
+}
+.fg-target-card {
+	width: 100%;
+	padding: 14px 8px;
+	background: rgba(0, 0, 0, 0.34);
+	border: 1px solid var(--color-ink-light);
+	border-radius: var(--radius);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
+}
+.fg-target-card.fg-bronze-sword {
+	border-color: #d9a441;
+	box-shadow: 0 0 12px rgba(217, 164, 65, 0.25);
+}
+.fg-target-card.fg-steel-sword {
+	border-color: #c0c8d8;
+	box-shadow: 0 0 12px rgba(192, 200, 216, 0.22);
+}
+.fg-target-card.fg-mystic-sword {
+	border-color: #8a7ab8;
+	box-shadow: 0 0 14px rgba(138, 122, 184, 0.3);
+}
+.fg-target-name {
+	font-size: 14px;
+	letter-spacing: 0.12em;
+	color: var(--color-rice);
+	font-weight: 600;
+}
+.fg-target-desc {
+	font-size: 11px;
+	line-height: 1.7;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.04em;
+}
+.fg-target-sword { width: 46px; height: 46px; }
+.fg-target-orb { width: 40px; height: 40px; }
+
+/* ── 锻造台（石板风格） ── */
+.fg-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 78px);
+	grid-template-rows: repeat(3, 78px);
+	gap: 6px;
+	padding: 10px;
+	background: linear-gradient(160deg, #2b2620 0%, #1a1612 100%);
+	border: 1px solid var(--color-ink-light);
+	border-radius: var(--radius-lg, 12px);
+	box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.7), 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+.fg-cell {
+	width: 78px;
+	height: 78px;
+	border: 1px solid #4a4035;
+	border-radius: 8px;
+	background:
+		radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.06), transparent 60%),
+		linear-gradient(145deg, #3a3128, #251d16);
+	cursor: pointer;
+	padding: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	transition: transform var(--duration, 200ms), box-shadow var(--duration, 200ms),
+		border-color var(--duration, 200ms);
+}
+.fg-cell:hover:not(:disabled) {
+	transform: scale(1.04);
+	border-color: var(--color-gold, #c9a84c);
+}
+.fg-cell:disabled {
+	cursor: default;
+}
+.fg-cell.flash {
+	animation: fgForgeFlash 0.45s ease-out;
+}
+@keyframes fgForgeFlash {
+	0%   { box-shadow: 0 0 0 2px #fff, 0 0 28px rgba(255, 240, 180, 1); transform: scale(1.14); }
+	100% { box-shadow: 0 0 0 2px var(--color-gold, #c9a84c), 0 0 14px rgba(255, 200, 80, 0.4); transform: scale(1); }
+}
+
+/* ── 原料圆球 ── */
+.fg-orb {
+	width: 42px;
+	height: 42px;
+	border-radius: 50%;
+	display: block;
+	box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.42), inset 0 2px 4px rgba(255, 255, 255, 0.3),
+		0 2px 4px rgba(0, 0, 0, 0.4);
+	position: relative;
+}
+.fg-orb::after {
+	content: "";
+	position: absolute;
+	top: 5px;
+	left: 8px;
+	width: 11px;
+	height: 6px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.5);
+	filter: blur(1px);
+}
+
+/* 原料配色（橙红/银白/深灰/黑） */
+.fg-orb.fg-cu, .fg-orb-mini.fg-cu { background: radial-gradient(circle at 35% 30%, #ff8a4a, #c0392b 60%, #7d2018); }
+.fg-orb.fg-sn, .fg-orb-mini.fg-sn { background: radial-gradient(circle at 35% 30%, #e8e8ee, #b8b8c4 60%, #80808c); }
+.fg-orb.fg-fe, .fg-orb-mini.fg-fe { background: radial-gradient(circle at 35% 30%, #5a5a62, #34343c 60%, #14141a); }
+.fg-orb.fg-c,  .fg-orb-mini.fg-c  { background: radial-gradient(circle at 35% 30%, #3a3a3a, #161616 60%, #000); }
+/* 合金配色（金棕/银） */
+.fg-orb.fg-bronze, .fg-orb-mini.fg-bronze { background: radial-gradient(circle at 35% 30%, #ecc080, #b8860b 60%, #6e4f08); }
+.fg-orb.fg-steel,  .fg-orb-mini.fg-steel  { background: radial-gradient(circle at 35% 30%, #dde2ec, #98a0b0 60%, #5a6270); }
+
+/* ── 剑（lucide Sword 着色） ── */
+.fg-sword {
+	width: 42px;
+	height: 42px;
+}
+.fg-sword.fg-bronze-sword { color: #d9a441; filter: drop-shadow(0 0 4px rgba(217, 164, 65, 0.6)); }
+.fg-sword.fg-steel-sword  { color: #c0c8d8; filter: drop-shadow(0 0 4px rgba(192, 200, 216, 0.6)); }
+.fg-sword.fg-mystic-sword { color: #9a86c8; filter: drop-shadow(0 0 6px rgba(154, 134, 200, 0.85)); }
+
+/* ── 配方提示 ── */
+.fg-recipes {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+	justify-content: center;
+	max-width: 520px;
+}
+.fg-recipe {
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.06em;
+	padding: 3px 9px;
+	background: rgba(0, 0, 0, 0.28);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: 999px;
+}
+
+/* ── 原料栏 ── */
+.fg-materials {
+	display: flex;
+	gap: var(--space-2);
+	flex-wrap: wrap;
+	justify-content: center;
+	max-width: 520px;
+}
+.fg-mat {
+	display: inline-flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	padding: 7px 11px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius);
+	cursor: pointer;
+	color: var(--color-rice-dim);
+	font-size: 11px;
+	letter-spacing: 0.06em;
+	transition: all var(--duration, 200ms);
+}
+.fg-mat:hover:not(:disabled) {
+	border-color: var(--color-gold, #c9a84c);
+	color: var(--color-rice);
+}
+.fg-mat.selected {
+	border-color: var(--color-gold, #c9a84c);
+	box-shadow: 0 0 0 1px var(--color-gold, #c9a84c), 0 0 10px rgba(201, 168, 76, 0.4);
+	color: var(--color-rice);
+}
+.fg-mat:disabled {
+	cursor: default;
+	opacity: 0.6;
+}
+.fg-orb-mini {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	display: inline-block;
+	box-shadow: inset 0 -2px 3px rgba(0, 0, 0, 0.42), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+.fg-erase {
+	color: var(--color-rice-dim);
+}
+
+/* ── 操作区 ── */
+.fg-actions {
+	display: flex;
+	gap: var(--space-2);
+}
+
+/* ── 结果遮罩 ── */
+.fg-result {
+	position: absolute;
+	inset: 0;
+	z-index: 5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	background: rgba(0, 0, 0, 0.85);
+	border-radius: var(--radius-lg, 12px);
+	color: var(--color-rice);
+	animation: mgFadeIn 0.3s ease-out;
+}
+.fg-result.win {
+	color: var(--color-gold, #c9a84c);
+}
+.fg-result.lose {
+	color: var(--color-rice-dim);
+}
+.fg-result-title {
+	font-size: 22px;
+	letter-spacing: 0.2em;
+	font-weight: 600;
+}
+.fg-result-sub {
+	font-size: 13px;
+	letter-spacing: 0.1em;
+	opacity: 0.8;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 540px) {
+	.fg-stage {
+		flex-direction: column;
+		gap: var(--space-3);
+	}
+	.fg-target {
+		width: 100%;
+		max-width: 260px;
+	}
+	.fg-grid {
+		grid-template-columns: repeat(3, 66px);
+		grid-template-rows: repeat(3, 66px);
+	}
+	.fg-cell {
+		width: 66px;
+		height: 66px;
+	}
+	.fg-orb {
+		width: 36px;
+		height: 36px;
+	}
+	.fg-sword {
+		width: 36px;
+		height: 36px;
+	}
+}

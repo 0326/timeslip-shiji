@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { motion, useSpring } from "framer-motion";
-import { BookOpen, X } from "lucide-react";
+import { BookOpen, GitBranch, List, X } from "lucide-react";
 import "./Archive.css";
 import { Drawer } from "../../components/ui";
 import {
@@ -9,14 +9,20 @@ import {
 	fetchFigureDetail,
 	fetchFigureList,
 	pickAssetFile,
-	sizedAssetUrl,
 	type FigureAsset,
 	type FigureBundle,
 	type MainFigureDetail,
 } from "../../services/mainProjectApi";
 import { getCharacter } from "../../data/characters";
+import { getArchivePortrait, getArchiveMeta, SPRITES, SPRITE_DYNASTY_MAP } from "../../data/sceneAssets";
+import { ARCHIVE_BIOS } from "../../data/sceneAssets/archiveBios";
+import {
+	buildMindMapGraph,
+	getPassagesFor,
+} from "../../data/sceneAssets/archivePassages";
 import { STORYLINE_MAP } from "../../data/storylines";
 import { useAuthGate } from "../../hooks/useAuthGate";
+import MindMap from "./MindMap";
 
 const LIFE_MAX = 80; // 命途条参考寿命
 const NAV_LIST_LIMIT = 500; // 前后切换导航使用的列表大小
@@ -34,10 +40,10 @@ const yearShort = (y: number | null) =>
 const yearFull = (y: number | null) =>
 	y == null ? "年份待考" : y < 0 ? `公元前 ${Math.abs(y)} 年` : `公元 ${y} 年`;
 
-/** 立绘：鼠标 3D 倾斜。有全身图时走 fullscene 模式，否则卡片兜底。 */
+/** 立绘：鼠标 3D 倾斜。优先本地图鉴CG立绘，无CG时用卡片式glyph兜底。
+ *  不再使用远程API全身图/avatar（远程图为透明PNG线稿，在图鉴中显示异常）。 */
 function Portrait({
 	figure,
-	asset,
 }: {
 	figure: MainFigureDetail;
 	asset?: FigureAsset | null;
@@ -45,17 +51,18 @@ function Portrait({
 	const rx = useSpring(0, { stiffness: 120, damping: 16 });
 	const ry = useSpring(0, { stiffness: 120, damping: 16 });
 
-	const fullUrl = asset
-		? sizedAssetUrl(pickAssetFile(asset, "portrait-full"), 896)
-		: null;
-	const bustUrl = asset
-		? sizedAssetUrl(pickAssetFile(asset, "portrait-bust"), 768)
-		: null;
-	const avatarSrc = figure.avatar || figure.avatar_url || null;
-	const glyph = figure.name?.charAt(0) || figure.id.charAt(0).toUpperCase();
+	// 本地图鉴CG立绘（精致厚涂CG风格），优先使用
+	const localArchiveUrl = getArchivePortrait(figure.id);
+	const localMeta = getArchiveMeta(figure.id);
 
-	// 全身图 / 半身图模式：贴底顶天大立绘
-	if (asset && (fullUrl || bustUrl)) {
+	// CG立绘加载失败状态：失败后降级到卡片glyph模式
+	const [cgFailed, setCgFailed] = useState(false);
+
+	const glyph = localMeta?.glyph ?? figure.name?.charAt(0) ?? figure.id.charAt(0).toUpperCase();
+	const displayName = localMeta?.name ?? figure.name;
+
+	// 优先：本地图鉴CG立绘 → fullscene 模式（CG加载失败时降级到glyph卡片）
+	if (localArchiveUrl && !cgFailed) {
 		return (
 			<div className="ad-fullscene" style={{ perspective: 1600 }}>
 				<motion.div
@@ -72,19 +79,17 @@ function Portrait({
 					}}
 				>
 					<img
-						src={fullUrl || bustUrl!}
-						alt={figure.name}
+						src={localArchiveUrl}
+						alt={displayName}
 						className="ad-fullscene-img"
-						onError={(e) =>
-							((e.currentTarget as HTMLImageElement).style.display = "none")
-						}
+						onError={() => setCgFailed(true)}
 					/>
 				</motion.div>
 			</div>
 		);
 	}
 
-	// 兜底：卡片式立绘
+	// 兜底：卡片式立绘（glyph 大字 + 装饰角标）
 	return (
 		<div style={{ perspective: 1100 }}>
 			<motion.div
@@ -100,19 +105,7 @@ function Portrait({
 					ry.set(0);
 				}}
 			>
-				{!avatarSrc && <span className="ad-portrait-glyph">{glyph}</span>}
-				{avatarSrc && (
-					<img
-						src={avatarSrc}
-						alt={figure.name}
-						onError={(e) => {
-							(e.currentTarget as HTMLImageElement).style.display = "none";
-							const sib = (e.currentTarget as HTMLImageElement)
-								.previousElementSibling;
-							if (sib) (sib as HTMLElement).style.display = "block";
-						}}
-					/>
-				)}
+				<span className="ad-portrait-glyph">{glyph}</span>
 				<span className="ad-corner tl" />
 				<span className="ad-corner tr" />
 				<span className="ad-corner bl" />
@@ -127,11 +120,25 @@ function QuestDrawer({
 	open,
 	onClose,
 	figure,
+	onNodeClick,
 }: {
 	open: boolean;
 	onClose: () => void;
 	figure: MainFigureDetail;
+	onNodeClick: (id: string) => void;
 }) {
+	const [tab, setTab] = useState<"timeline" | "mindmap">("timeline");
+	const mindMapGraph = useMemo(
+		() => buildMindMapGraph(figure.id),
+		[figure.id],
+	);
+	const hasRelations = mindMapGraph.links.length > 0 || mindMapGraph.nodes.length > 1;
+
+	useEffect(() => {
+		// 人物切换时，若没有关联人物就默认 timeline；切回 timeline 防止空的思维导图
+		if (!hasRelations) setTab("timeline");
+	}, [figure.id, hasRelations]);
+
 	return (
 		<Drawer open={open} onClose={onClose}>
 			<div className="ad-drawer-head">
@@ -140,6 +147,29 @@ function QuestDrawer({
 						生平历程 · {figure.passages.length} 事
 					</div>
 					<div className="ad-drawer-title">{figure.name}</div>
+				</div>
+				<div className="ad-drawer-tabs">
+					<button
+						type="button"
+						className={`ad-drawer-tab ${tab === "timeline" ? "is-active" : ""}`}
+						onClick={() => setTab("timeline")}
+						aria-label="时间线"
+						title="时间线视图"
+					>
+						<List size={14} />
+						<span>时间线</span>
+					</button>
+					<button
+						type="button"
+						className={`ad-drawer-tab ${tab === "mindmap" ? "is-active" : ""}`}
+						onClick={() => setTab("mindmap")}
+						aria-label="关系思维导图"
+						title={hasRelations ? "事件关联思维导图" : "暂无关联人物"}
+						disabled={!hasRelations}
+					>
+						<GitBranch size={14} />
+						<span>关联人物</span>
+					</button>
 				</div>
 				<button
 					className="ad-drawer-close"
@@ -150,41 +180,57 @@ function QuestDrawer({
 				</button>
 			</div>
 			<div className="ad-drawer-body">
-				{figure.passages.length === 0 ? (
-					<div
-						style={{
-							textAlign: "center",
-							color: "var(--color-muted)",
-							padding: "var(--space-8)",
-						}}
-					>
-						此人物史料待补录
-					</div>
+				{tab === "timeline" ? (
+					figure.passages.length === 0 ? (
+						<div
+							style={{
+								textAlign: "center",
+								color: "var(--color-muted)",
+								padding: "var(--space-8)",
+							}}
+						>
+							此人物史料待补录
+						</div>
+					) : (
+						<ol className="ad-timeline">
+							{figure.passages.map((p, idx) => (
+								<li className="ad-quest" key={p.passage_id || idx}>
+									<div className="ad-quest-rail">
+										<span className="ad-node" />
+									</div>
+									<div className="ad-quest-card">
+										<span className="ad-quest-year">
+											{yearFull(p.year)}
+											{p.location && (
+												<span className="ad-quest-loc">· {p.location}</span>
+											)}
+										</span>
+										<h3 className="ad-quest-title">
+											{p.title || p.chapter_name}
+										</h3>
+										<p className="ad-quest-text">{p.content}</p>
+										<span className="ad-quest-link">
+											出自《{p.book_name}》· 第{p.volume_no}卷 · {p.chapter_name}
+										</span>
+									</div>
+								</li>
+							))}
+						</ol>
+					)
 				) : (
-					<ol className="ad-timeline">
-						{figure.passages.map((p, idx) => (
-							<li className="ad-quest" key={p.passage_id || idx}>
-								<div className="ad-quest-rail">
-									<span className="ad-node" />
-								</div>
-								<div className="ad-quest-card">
-									<span className="ad-quest-year">
-										{yearFull(p.year)}
-										{p.location && (
-											<span className="ad-quest-loc">· {p.location}</span>
-										)}
-									</span>
-									<h3 className="ad-quest-title">
-										{p.title || p.chapter_name}
-									</h3>
-									<p className="ad-quest-text">{p.content}</p>
-									<span className="ad-quest-link">
-										出自《{p.book_name}》· 第{p.volume_no}卷 · {p.chapter_name}
-									</span>
-								</div>
-							</li>
-						))}
-					</ol>
+					hasRelations ? (
+						<MindMap graph={mindMapGraph} onNodeClick={onNodeClick} />
+					) : (
+						<div
+							style={{
+								textAlign: "center",
+								color: "var(--color-muted)",
+								padding: "var(--space-8)",
+							}}
+						>
+							暂无关联人物可展示
+						</div>
+					)
 				)}
 			</div>
 		</Drawer>
@@ -205,6 +251,7 @@ export default function ArchiveDetailPage() {
 	const [navIds, setNavIds] = useState<string[]>(
 		(location.state as { ids?: string[] })?.ids ?? [],
 	);
+	const backFrom = (location.state as { from?: string })?.from ?? "";
 
 	// 拉取详情 + 视觉资产
 	useEffect(() => {
@@ -215,14 +262,49 @@ export default function ArchiveDetailPage() {
 		setAssetBundle(null);
 		Promise.all([fetchFigureDetail(id), fetchFigureBundle(id)])
 			.then(([fig, bundle]) => {
-				if (!fig) {
+			const localPassages = id ? getPassagesFor(id) : [];
+			if (!fig) {
+				// 远程API不可用，尝试本地兜底
+				const sp = id ? SPRITES[id] : null;
+				if (sp) {
+					const localFigure: MainFigureDetail = {
+						id: id!,
+						name: sp.name,
+						aliases: [],
+						birth_year: null,
+						death_year: null,
+						dynasty: (id && SPRITE_DYNASTY_MAP[id]) || "",
+						identity: "",
+						bio_summary: (id && ARCHIVE_BIOS[id]) || "",
+						keyword_tags: [],
+						avatar_icon: "",
+						avatar_url: null,
+						avatar: null,
+						gender: "unknown" as const,
+						star: 0,
+						src_book: "shiji",
+						src_juan: null,
+						src_chapter: null,
+						passages: localPassages as MainFigureDetail["passages"],
+					};
+					setFigure(localFigure);
+				} else {
 					setError("人物未找到");
 					setFigure(null);
-					return;
 				}
-				setFigure(fig);
-				if (bundle) setAssetBundle(bundle);
-			})
+				return;
+			}
+			// 远程bio为空时用本地兜底
+			if (!fig.bio_summary && id && ARCHIVE_BIOS[id]) {
+				fig.bio_summary = ARCHIVE_BIOS[id];
+			}
+			// 远程 passages 为空就注入本地手写/自动生成的时间线
+			if ((!fig.passages || fig.passages.length === 0) && localPassages.length > 0) {
+				fig.passages = localPassages as MainFigureDetail["passages"];
+			}
+			setFigure(fig);
+			if (bundle) setAssetBundle(bundle);
+		})
 			.catch(() => setError("加载失败"))
 			.finally(() => setLoading(false));
 	}, [id]);
@@ -252,11 +334,55 @@ export default function ArchiveDetailPage() {
 		navIndex >= 0 && navIndex < navIds.length - 1 ? navIds[navIndex + 1] : null;
 
 	const goPrev = useCallback(() => {
-		if (prevId) navigate(`/archive/${prevId}`, { state: { ids: navIds } });
-	}, [prevId, navigate, navIds]);
+		if (prevId) navigate(`/archive/${prevId}`, { state: { ids: navIds, from: backFrom } });
+	}, [prevId, navigate, navIds, backFrom]);
 	const goNext = useCallback(() => {
-		if (nextId) navigate(`/archive/${nextId}`, { state: { ids: navIds } });
-	}, [nextId, navigate, navIds]);
+		if (nextId) navigate(`/archive/${nextId}`, { state: { ids: navIds, from: backFrom } });
+	}, [nextId, navigate, navIds, backFrom]);
+
+	// 返回按钮：优先回到用户进入图鉴时的原页面（带筛选/搜索/翻页状态），否则直接回 /archive
+	const handleBack = useCallback(
+		(e: React.MouseEvent) => {
+			e.preventDefault();
+			if (backFrom) {
+				navigate(backFrom);
+			} else {
+				navigate("/archive");
+			}
+		},
+		[navigate, backFrom],
+	);
+
+	// 思维导图中点击人物：跳转到该人物详情页，并保持抽屉开启
+	const handleNodeClick = useCallback(
+		(nodeId: string) => {
+			if (!nodeId || nodeId === figure?.id) return;
+			navigate(`/archive/${nodeId}`, {
+				state: { ids: navIds, from: backFrom },
+			});
+			// 路由切换后会重新 mount；用 sessionStorage 标记"新页面打开抽屉"
+			try {
+				sessionStorage.setItem("timeslip.archive.questOpen", "1");
+			} catch {
+				/* ignore */
+			}
+		},
+		[figure?.id, navigate, navIds, backFrom],
+	);
+
+	// 从 sessionStorage 恢复"跳转后继续打开抽屉"的状态
+	useEffect(() => {
+		let v: string | null = null;
+		try {
+			v = sessionStorage.getItem("timeslip.archive.questOpen");
+			sessionStorage.removeItem("timeslip.archive.questOpen");
+		} catch {
+			/* ignore */
+		}
+		if (v === "1" && figure) {
+			setQuestOpen(true);
+		}
+	}, [figure]);
 
 	// 键盘左右方向键
 	useEffect(() => {
@@ -310,11 +436,9 @@ export default function ArchiveDetailPage() {
 	const titlePlates =
 		figure.aliases?.filter((a) => a.length > 1).slice(0, 4) || [];
 	const hasQuests = figure.passages.length > 0;
-	const hasFullScene = !!(
-		defaultAsset &&
-		(pickAssetFile(defaultAsset, "portrait-full") ||
-			pickAssetFile(defaultAsset, "portrait-bust"))
-	);
+	// 本地图鉴CG立绘优先，有本地立绘才算 fullscene（不再检查远程API全身图）
+	const hasLocalArchive = !!getArchivePortrait(figure.id);
+	const hasFullScene = hasLocalArchive;
 	const sceneBg = defaultAsset
 		? pickAssetFile(defaultAsset, "background")
 		: null;
@@ -336,7 +460,7 @@ export default function ArchiveDetailPage() {
 					: undefined
 			}
 		>
-			<Link to="/archive" className="ad-back">
+			<Link to="/archive" className="ad-back" onClick={handleBack}>
 				<span className="ad-back-arrow" aria-hidden="true">‹</span> 返回图鉴
 			</Link>
 
@@ -468,7 +592,7 @@ export default function ArchiveDetailPage() {
 			</button>
 		</div>
 
-		<QuestDrawer open={questOpen} onClose={() => setQuestOpen(false)} figure={figure} />
+		<QuestDrawer open={questOpen} onClose={() => setQuestOpen(false)} figure={figure} onNodeClick={handleNodeClick} />
 	</div>
 );
 }

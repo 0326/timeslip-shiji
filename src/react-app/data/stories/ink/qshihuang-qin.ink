@@ -31,6 +31,7 @@ VAR tyranny = 0
 
 === act1_pingluan ===
 #bg:jinian_palace
+#bgm:court
 你当即下令：相国昌平君、昌文君发卒攻嫪毐！咸阳一战斩首数百，叛军溃散。
 #show:qingyue:solemn:float
 「……『车裂以徇，灭其宗。』」 #speaker:青月
@@ -46,9 +47,11 @@ VAR tyranny = 0
 
 === act2_chulu ===
 #bg:xianyang_court
+#bgm:court
 吕不韦被免相出就国河南。可一年过去，诸侯宾客使者相望于道请他出山——他的势力仍大得让你不安。
 你赐书：「君何功于秦？秦封君河南，食十万户。君何亲于秦？号称仲父。其与家属徙处蜀！」
 #bg:shu_road
+#bgm:melancholy
 吕不韦接信，深知你已不容他。
 #show:qingyue:sad:float
 「他饮鸩自尽了。那个把你爹扶上王位、又把你送上王位的商人，死在迁蜀路上。」 #speaker:青月
@@ -66,6 +69,7 @@ VAR tyranny = 0
 
 === act3_chengdi ===
 #bg:xianyang_court
+#bgm:court
 丞相王绾上奏：燕齐楚地远，请立诸子为王以镇之。群臣皆以为便。廷尉李斯独持异议。
 #show:lisi:cold:center
 「周文武所封子弟同姓甚众，然后属疏远，相攻击如仇雠。今海内赖陛下一统，皆为郡县，诸子功臣以公赋税重赏赐之，甚足易制。置诸侯不便。」
@@ -79,6 +83,7 @@ VAR tyranny = 0
 
 === act3_tongyi ===
 #bg:xianyang_court
+#bgm:court
 你说：「天下共苦战斗不休，以有侯王。赖宗庙天下初定，又复立国，是树兵也！廷尉议是。」
 分天下为三十六郡，收天下兵器聚之咸阳销以为金人十二。
 #show:qingyue:smile:float
@@ -101,6 +106,7 @@ VAR tyranny = 0
 
 === act4_fenshu_kengru ===
 #bg:xianyang_palace_feast
+#bgm:court
 三十四年咸阳宫酒宴，博士淳于越进言：「事不师古而能长久者，非所闻也。」要你复分法学古。
 #show:lisi:cold:center
 李斯奏：「今诸生不师今而学古，以非当世，惑乱黔首。私学而相与非法教，入则心非，出则巷议——如此弗禁，则主势降乎上，党与成乎下。」
@@ -119,6 +125,7 @@ VAR tyranny = 0
 
 === act5_fusu ===
 #bg:xianyang_court
+#bgm:court
 制曰：「可。」焚书令下。然后侯生卢生求药不得，背后谤你逃亡。你大怒，派御史案问诸生——
 诸生传相告引，你亲自圈定四百六十余人，皆坑之咸阳。
 #show:fusu:worried:left
@@ -157,6 +164,7 @@ VAR tyranny = 0
 
 === if_yizhao_1 ===
 #bg:shaqiu_platform
+#bgm:tragic
 #show:qingyue:worry:float
 「欸？这一步……史书上没有哦。我也是第一次看。」 #speaker:青月
 你撑起最后一点力气，召使者入帐。当着胡亥与李斯的面，你亲手把玺书交了出去：「即刻发往上郡。让扶苏——与丧会咸阳而葬。」 #speaker:青月 #hint:乃为玺书赐公子扶苏曰：「与丧会咸阳而葬。」
@@ -210,6 +218,7 @@ VAR tyranny = 0
 
 === ending_tyrant ===
 #bg:afang_palace
+#bgm:epic
 #achieve:qshihuang_unify
 你走到终点。赵高李斯篡改遗诏，立胡亥赐死扶苏蒙恬。
 秦二世元年七月，陈胜吴广于大泽乡揭竿——「王侯将相宁有种乎！」

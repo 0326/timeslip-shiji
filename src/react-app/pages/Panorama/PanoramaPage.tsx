@@ -1,10 +1,12 @@
 import { useState, type CSSProperties } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, GitFork, Clock, BookText, Lock } from "lucide-react";
+import { ArrowLeft, GitFork, Clock, BookText, Lock, Route, Sparkles } from "lucide-react";
 import "./Panorama.css";
 import { getStoryline } from "../../data/storylines";
 import { getCharacter } from "../../data/characters";
 import { getPanorama } from "../../data/panorama";
+import { getStoryFlow } from "../../data/storyFlow";
+import { getButterflyEffects } from "../../data/butterfly";
 import { useUserStore } from "../../store/userStore";
 import { useAuthGate } from "../../hooks/useAuthGate";
 import { storylineProgress } from "../../store/selectors";
@@ -13,8 +15,10 @@ import { ERA_LABELS } from "../../types/character";
 import { EventTimeline } from "./EventTimeline";
 import { RelationGraph } from "./RelationGraph";
 import { SourceLibrary } from "./SourceLibrary";
+import { StoryFlow } from "./StoryFlow";
+import { ButterflyTimeline } from "./ButterflyTimeline";
 
-type Tab = "timeline" | "relation" | "source";
+type Tab = "timeline" | "relation" | "source" | "flow" | "butterfly";
 
 export default function PanoramaPage() {
 	const { storyId = "" } = useParams();
@@ -27,6 +31,8 @@ export default function PanoramaPage() {
 	const panorama = getPanorama(storyId);
 	const focus = story ? getCharacter(story.focusCharacter) : undefined;
 	const { done } = storylineProgress(progress, storyId);
+	const flow = story?.perspectives[0] ? getStoryFlow(story.perspectives[0].storyKey) : undefined;
+	const butterfly = getButterflyEffects(storyId);
 
 	// 无效故事线
 	if (!story || !panorama || !focus) {
@@ -108,6 +114,16 @@ export default function PanoramaPage() {
 				<button className={`pill${tab === "source" ? " active" : ""}`} onClick={() => setTab("source")}>
 					<BookText size={14} /> 原文典籍库
 				</button>
+				{flow && (
+					<button className={`pill${tab === "flow" ? " active" : ""}`} onClick={() => setTab("flow")}>
+						<Route size={14} /> 故事路线图
+					</button>
+				)}
+				{butterfly && butterfly.length > 0 && (
+					<button className={`pill${tab === "butterfly" ? " active" : ""}`} onClick={() => setTab("butterfly")}>
+						<Sparkles size={14} /> 蝴蝶效应
+					</button>
+				)}
 			</nav>
 
 			<div className="pano-body">
@@ -121,6 +137,19 @@ export default function PanoramaPage() {
 					</div>
 				)}
 				{tab === "source" && <SourceLibrary storyId={story.id} source={panorama.source} />}
+				{tab === "flow" && flow && (
+					<div className="pano-flow-wrap">
+						<div className="pano-flow-intro">
+							以 <span className="gold serif">{focus.name}</span> 为主角，看这段历史中每一个选择如何铺就不同的命运。
+						</div>
+						<StoryFlow nodes={flow} title={story.subtitle} />
+					</div>
+				)}
+				{tab === "butterfly" && butterfly && (
+					<div className="pano-butterfly-wrap">
+						<ButterflyTimeline effects={butterfly} />
+					</div>
+				)}
 			</div>
 		</div>
 	);

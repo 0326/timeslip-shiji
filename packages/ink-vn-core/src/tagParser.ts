@@ -103,7 +103,7 @@ export function extractStageEffects(tags: string[]): {
 					pos = (parts[2] as Position) || "center";
 				} else if (parts.length === 2) {
 					// Distinguish position from expression
-					if (parts[1] === "left" || parts[1] === "center" || parts[1] === "right") {
+					if (["left", "center", "right", "float"].includes(parts[1])) {
 						pos = parts[1] as Position;
 					} else {
 						expr = parts[1];

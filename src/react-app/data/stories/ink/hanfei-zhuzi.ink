@@ -35,6 +35,7 @@ VAR shuonan = 0
 
 === act2_shuonan ===
 #bg:zhu_book
+#bgm:melancholy
 你在写《说难》。你比任何人都清楚游说之难。
 「凡说之难，非吾知之有以说之难也，又非吾辩之难能明吾意之难也，又非吾敢横失能尽之难也。」
 「凡说之难，在知所说之心，可以吾说当之。」 #hint:在知所说之心。
@@ -60,6 +61,7 @@ VAR shuonan = 0
 
 === act3_shiqin ===
 #bg:qindu_xianyang
+#bgm:court
 有人把你的书传到了秦国。
 #show:qinwang:amazed:center
 秦王嬴政读了《孤愤》《五蠹》，感叹说：「嗟乎，寡人得见此人与之游，死不恨矣！」 #speaker:秦王
@@ -89,6 +91,7 @@ VAR shuonan = 0
 
 === act4_yuyang ===
 #bg:qin_prison
+#bgm:dark
 秦王以为然，把你下狱吏治罪。
 #show:lisi:cunning:left
 李斯派人给你送来了毒药，让你自杀。 #speaker:使者
@@ -107,6 +110,7 @@ VAR shuonan = 0
 你喝下了毒药。云阳狱里很冷。你想起自己写的话——「夫龙之为虫也，可扰狎而骑也；然其喉下有逆鳞径尺，人有婴之，则必杀人。」
 你知道人主有逆鳞，你一直小心不碰——可你没想到，真正杀你的，不是人主的逆鳞，是同学的妒忌。
 #bg:qindu_xianyang
+#bgm:court
 后来秦王后悔了，派人来赦免你——可你已经死了。
 #show:qingyue:solemn:float
 「秦王后悔了，可晚了。」 #speaker:青月
@@ -130,24 +134,28 @@ VAR shuonan = 0
 === act1_buxie_death ===
 你放弃了著书，直接去游说韩王，用纵横之术取富贵。可你口吃，你不擅长当面辩说；你的纵横术又不如苏秦张仪。你在韩国朝堂上说错了话，触怒了韩王，被放逐出去，潦倒而死。那部集法家大成的《韩非子》，再也不会有了。
 #bg:qin_prison
+#bgm:dark
 #death:hengshuo #speaker:青月
 -> END
 
 === act2_zhiyan_death ===
 你觉得知道归知道，真到了人主面前该说还是得说。可你忘了自己写的话——周泽未渥而语极知，说行而有功则德亡，说不行而有败则见疑。你第一次见韩王就直言极谏，韩王觉得你这个公子太狂妄，从此再也不见你。你连说话的机会都没了。
 #bg:qin_prison
+#bgm:dark
 #death:zhiyan #speaker:青月
 -> END
 
 === act3_shangshu_death ===
 你太急了。初到秦国，周泽未渥，你就立刻上书献灭六国之策。秦王看了虽然欣赏，可李斯、姚贾立刻在旁边说你「为韩不为秦」，秦王本就多疑，你这么急着献策反而坐实了间谍的嫌疑——你连辩白的机会都没有，就被下了狱。
 #bg:qin_prison
+#bgm:dark
 #death:shangshu #speaker:青月
 -> END
 
 === act4_dengdai_death ===
 你不肯自杀，你要等秦王后悔。可你忘了——狱是李斯管的。他不会让你活着见到秦王。你在狱中被李斯的人慢慢折磨而死，比喝毒药痛苦百倍。你等的赦免令确实来了，可来的时候，你已经是一具冰冷的尸体。
 #bg:qin_prison
+#bgm:dark
 #death:dengdai #speaker:青月
 -> END
 
@@ -191,6 +199,7 @@ VAR shuonan = 0
 
 === if_liuhan_2 ===
 #bg:zhu_book
+#bgm:melancholy
 可韩国太弱了。数年后，秦军压境，破新郑，虏韩王安，韩亡。 #hint:秦因急攻韩。
 兵火里，你的竹简散了一半。你抱着残稿逃到乡野，做了个再没人认得的老书生。有人问你姓名，你只说：一个写过些字的韩人。
 #show:qingyue:sad:float

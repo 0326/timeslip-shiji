@@ -9,7 +9,7 @@ VAR dajiuzhou = 0
 -> act1_tantian
 
 === act1_tantian ===
-#bg:qi_jixia
+#bg:qi_jixia_alt1
 #bgm:mystical
 #show:qingyue:tease:float
 「欸嘿——这一回，你是邹衍，齐国人。」 #speaker:青月
@@ -38,6 +38,7 @@ VAR dajiuzhou = 0
 
 === act2_wude ===
 #bg:qi_jixia
+#bgm:peaceful
 你提出了五德终始说。
 「天地开辟以来，五德转移——金木水火土，各有相应的治道，符瑞就像影子和回声一样对应。」
 「虞土、夏木、殷金、周火——代火者必将水，天且先见水气胜。水气胜，故其色尚黑，其事则水。」 #hint:五德转移，治各有宜，而符应若兹。
@@ -62,6 +63,7 @@ VAR dajiuzhou = 0
 
 === act3_dajiuzhou ===
 #bg:xingye_night
+#bgm:mystery
 夜深了。你和弟子们仰望星空，讲起了大九州的学说。
 「儒者所谓的『中国』，在整个天下里，只占八十一分之一罢了！」你说。
 #show:jinanguo:shocked:center
@@ -84,6 +86,7 @@ VAR dajiuzhou = 0
 
 === act4_zhuhou ===
 #bg:yan_jieshi
+#bgm:epic
 你的学说闳大不经，可王公大人们初见你的学说，都惊惧而想要受其感化。你到了梁国，梁惠王郊迎，执宾主之礼。到了赵国，平原君侧身陪行，亲自为你拂拭座席。
 到了燕国——
 #show:qingyue:smile:float
@@ -125,24 +128,28 @@ VAR dajiuzhou = 0
 === act1_butan_death ===
 你放弃了谈天，改讲治国之术。可讲治国的人太多了——商鞅、吴起、孙膑、孟子、荀子，你一个阴阳家去跟他们争，根本争不过。你没有了自己独特的学说，变成了一个平庸的稷下先生，「谈天衍」这个名号，再也不属于你了。
 #bg:qin_prison
+#bgm:dark
 #death:butan #speaker:青月
 -> END
 
 === act2_bushuo_death ===
 你不敢说五德终始，怕被认为是妖言惑众。可你是阴阳家呀！没有了五德转移，你还讲什么？你的学说失去了核心，变成了一堆没有灵魂的阴阳占验，再也没有那个敢说「代火者必将水」的邹衍了。
 #bg:qin_prison
+#bgm:dark
 #death:bushuo #speaker:青月
 -> END
 
 === act3_budao_death ===
 你承认大九州是自己瞎说的，天下就禹贡九州那么大。可你自己否定了自己最有想象力的学说——那个能想象出八十一分之一中国的邹衍，死了。后世的人也永远不会知道「赤县神州」这四个字了。
 #bg:qin_prison
+#bgm:dark
 #death:budao #speaker:青月
 -> END
 
 === act4_ronghua_death ===
 你觉得自己受尊荣是因为学说高明，于是你沉浸在王公大人的礼遇中，不再提仁义节俭。你变成了一个只会用阴阳灾异讨好君主的方士，再也不是那个有「牛鼎之意」、想把君主引向正道的邹衍了。
 #bg:qin_prison
+#bgm:dark
 #death:ronghua #speaker:青月
 -> END
 

@@ -132,6 +132,13 @@ export class InkRunner implements NarrativeRunner {
 					meta: parsed.meta,
 				});
 			}
+
+			// 遇到 #minigame 标签时立即中断：让引擎暂停在小游戏处，
+			// 等玩家完成后再由 completeMinigame() 设置 mg_result 并继续推进。
+			// 这样 mg_result 条件分支才能正确评估。
+			if (parsed.meta.minigame) {
+				break;
+			}
 		}
 
 		// Collect choices
@@ -153,6 +160,9 @@ export class InkRunner implements NarrativeRunner {
 			state = "death";
 		} else if (choices.length > 0) {
 			state = "choice";
+		} else if (this.story.canContinue) {
+			// 因 #minigame 中断时 ink 还有后续内容，不是真正结束
+			state = "text";
 		} else {
 			state = "ended";
 		}
@@ -205,6 +215,22 @@ export class InkRunner implements NarrativeRunner {
 	/** Restore ink narrative state from a snapshot */
 	restore(snapshot: string): void {
 		this.story.state.LoadJson(snapshot);
+	}
+
+	/** 收集当前暂停点的选项（不推进剧情） */
+	getCurrentChoices(): RunnerChoice[] {
+		const choices: RunnerChoice[] = [];
+		for (let i = 0; i < this.story.currentChoices.length; i++) {
+			const c = this.story.currentChoices[i];
+			const choiceTags = c.tags ?? [];
+			const meta: TagMeta = this.tagsToMeta(choiceTags);
+			choices.push({
+				text: c.text,
+				meta,
+				_index: c.index,
+			});
+		}
+		return choices;
 	}
 
 	/** Get the checkpoint snapshot (paragraph start — restoring here replays content) */

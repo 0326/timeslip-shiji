@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 虞舜 · 流放四凶 · 举贤去恶，天下咸服
 // 史源：《史记·五帝本纪》（shun-liuxiong / shun-juxian）
 // ═══════════════════════════════════════════════
@@ -21,6 +21,7 @@ VAR banished = false
 
 === c_raise ===
 #bg:simen_court
+#bgm:court
 #show:siyue:calm:right
 四岳向你陈情：「摄政——高阳氏有才子八人，世称『八恺』；高辛氏有才子八人，世称『八元』。这十六族世代积德，声名不坠。可自尧一朝至今，竟无一人被举用啊。」 #speaker:四岳 #hint:高阳氏有才子八人，谓之八恺。高辛氏有才子八人，谓之八元。
 「一个都没有用？」你放下手中的简册，眉头拧了起来，「积善之族闲置在野，作乱之徒盘踞在朝——难怪这天下治不顺。」 #speaker:舜
@@ -43,6 +44,7 @@ VAR banished = false
 
 === c_raise_good ===
 #bg:simen_court
+#bgm:court
 #achieve:shun_raise_worthy
 #show:qingyue:smile:float
 你举八恺，使主后土，统揆百事，无不时序；举八元，使布五教于四方——父义、母慈、兄友、弟恭、子孝，内平外成。 #speaker:青月 #hint:举八元，使布五教于四方，父义，母慈，兄友，弟恭，子孝，内平外成。
@@ -53,6 +55,7 @@ VAR banished = false
 
 === c_sixiong ===
 #bg:simen_court
+#bgm:court
 #hide:siyue
 #show:gonggong:calm:left
 天下有四个不才之族，为祸已久：帝鸿氏之子浑沌，掩义隐贼；少暤氏之子穷奇，毁信恶忠；颛顼氏之子梼杌，不可教训；缙云氏之子饕餮，贪于饮食货贿。 #speaker:青月 #hint:天下谓之浑沌、穷奇、梼杌、饕餮。
@@ -78,6 +81,7 @@ VAR banished = false
 
 === c_choose_how ===
 #bg:simen_court
+#bgm:court
 #hide:gonggong
 #show:qingyue:tease:float
 帝尧准了你的奏请。可如何处置这四凶，还在你一念之间。 #speaker:青月
@@ -125,7 +129,7 @@ VAR banished = false
 	「你看——摄政的头一课，不是发号施令，是让对的人各归其位、错的人各偿其罪。」 #speaker:青月
 	#show:qingyue:smile:float
 	「善举则股肱盈朝，恶去则四门无凶。天下为什么服你？因为你的赏罚，桩桩件件都当得起。」 #speaker:青月
-	「呼——你走通了他这一程。看懂了吗？治天下的『德』，从来不是心软，是让善恶各得其分呀。」 #speaker:青月 #ending:canon
+	「呼——你走通了他这一程。看懂了吗？治天下的『德』，从来不是心软，是让善恶各得其分呀。」 #speaker:青月 #impact:impact_liuxiong_sixiongzu #ending:canon #quiz:quiz_liuxiong_sixiongzu
 	-> END
 - else:
 	#show:qingyue:worry:float
