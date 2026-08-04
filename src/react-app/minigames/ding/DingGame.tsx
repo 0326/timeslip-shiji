@@ -103,26 +103,25 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 		initBoard();
 	}, [initBoard]);
 
-	// 倒计时
+	// 倒计时（用户未交互前不启动，防止挂载后自动判负）
 	useEffect(() => {
 		if (won || lost) return;
+		if (!userInteractedRef.current) return;
 		const id = window.setInterval(() => {
 			setTimeLeft((t) => Math.max(0, t - 1));
 		}, 1000);
 		return () => window.clearInterval(id);
 	}, [won, lost]);
 
-	// 时间到 → 失败
+	// 时间到 → 失败（仅改状态，回调交给下方的终局 effect）
 	useEffect(() => {
 		if (timeLeft > 0 || won || lost || finishedRef.current) return;
 		setLost(true);
 		finishedRef.current = true;
 		sfx.play("lose");
-		const t = setTimeout(() => onComplete({ result: "lose", score: 0 }), 1200);
-		return () => clearTimeout(t);
-	}, [timeLeft, won, lost, onComplete]);
+	}, [timeLeft, won, lost]);
 
-	// 胜利检测：所有块回到正确位置
+	// 胜利检测：所有块回到正确位置（仅改状态，回调交给下方的终局 Effect）
 	useEffect(() => {
 		if (pieces.length === 0 || won || lost) return;
 		const ok = pieces.every((p, i) => p.id === i);
@@ -130,11 +129,19 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 		setWon(true);
 		finishedRef.current = true;
 		sfx.play("win");
-		// 分数：剩余时间越多越高，下限 40
-		const score = Math.max(40, Math.min(100, Math.round((timeLeft / level.time) * 100)));
-		const t = setTimeout(() => onComplete({ result: "win", score }), 1400);
+	}, [pieces, won, lost]);
+
+	// 终局回调：独立 Effect，避免与状态变更同处一个 Effect 导致 cleanup 误清 setTimeout
+	useEffect(() => {
+		if (!won && !lost) return;
+		if (won) {
+			const score = Math.max(40, Math.min(100, Math.round((timeLeft / level.time) * 100)));
+			const t = setTimeout(() => onComplete({ result: "win", score }), 1400);
+			return () => clearTimeout(t);
+		}
+		const t = setTimeout(() => onComplete({ result: "lose", score: 0 }), 1200);
 		return () => clearTimeout(t);
-	}, [pieces, won, lost, timeLeft, level.time, onComplete]);
+	}, [won, lost, timeLeft, level.time, onComplete]);
 
 	function handleClick(index: number) {
 		if (won || lost) return;
@@ -214,8 +221,10 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 								onClick={() => handleClick(i)}
 								disabled={won || lost}
 							>
-								<span className="dg-piece-num">{p.id + 1}</span>
+								{!correct && <span className="dg-piece-num">{p.id + 1}</span>}
 								<span className="dg-piece-pattern" />
+								<span className="dg-piece-sheen" />
+								{correct && <span className="dg-piece-ding" />}
 							</button>
 						);
 					})}

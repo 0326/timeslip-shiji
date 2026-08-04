@@ -10,7 +10,11 @@ import {
 } from "lucide-react";
 import "./Home.css";
 import { useAuthGate } from "../../hooks/useAuthGate";
+import { resolveBgm } from "../../data/bgm";
 import { AppNav } from "../../components/Layout/AppNav";
+
+/** 首页专用 BGM — 千里江山图，区别于各章节场景 BGM */
+const HOME_BGM_TRACK = "epic_6";
 
 /* ───────────── KV 图片基础路径 ───────────── */
 const KV_BASE = import.meta.env.VITE_KV_BASE_URL || "/images/kv";
@@ -34,10 +38,9 @@ const GAME_MODES = [
   {
     id: "duel",
     title: "对决模式",
-    desc: "即将上线",
+    desc: "宿命对决 · 与历史人物一决高下",
     icon: Swords,
     color: "#d4503c",
-    locked: true,
   },
 ];
 
@@ -47,6 +50,27 @@ export function HomePage() {
   const [mounted, setMounted] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+
+  /* ── 首页 BGM（古风 · 千里江山图，默认开启，离开即停） ── */
+  const bgmAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    const track = resolveBgm(HOME_BGM_TRACK);
+    if (!track.url) return;
+
+    const audio = new Audio(track.url);
+    audio.loop = true;
+    audio.volume = 0.35;
+    audio.play().catch(() => {});
+    bgmAudioRef.current = audio;
+
+    return () => {
+      audio.pause();
+      audio.src = "";
+      audio.load();
+      bgmAudioRef.current = null;
+    };
+  }, []);
 
   useEffect(() => {
     setMounted(true);
@@ -59,7 +83,11 @@ export function HomePage() {
   const handleModeClick = (mode: (typeof GAME_MODES)[number]) => {
     if (mode.locked) return;
     // 开始游戏前拦截：未注册/登录则弹出注册框
-    requireAuth(() => navigate(`/story?mode=${mode.id}`));
+    if (mode.id === "duel") {
+      requireAuth(() => navigate("/duel"));
+    } else {
+      requireAuth(() => navigate(`/story?mode=${mode.id}`));
+    }
   };
 
   return (
