@@ -47,6 +47,7 @@ VAR tui = 0
 
 === act1_escape ===
 #bg:wei_cezhong
+#bgm:dark
 守卫得了你的承诺，去请示魏齐——「请把席子里的死人扔出去吧。」魏齐正醉，随口道：「可矣。」
 你被当作死人抬出了相府。魏人郑安平救了你，把你藏起来，更姓名曰——张禄。
 #show:qingyue:tease:float
@@ -74,6 +75,7 @@ VAR tui = 0
 
 === act2_gong ===
 #bg:qin_qixiang
+#bgm:court
 你到了离宫，假装不知道永巷（宫内通道），径直往里走。这时候秦王来了，宦官怒而驱赶你——「王至！」
 #show:qingyue:tease:float
 「呐——你等了一年多，就是为了这一句话。」 #speaker:青月
@@ -223,6 +225,7 @@ VAR tui = 0
 
 === act5_qiuqing ===
 #bg:qin_chaotang
+#bgm:court
 你跪求秦王饶过白起。秦王沉吟良久，虽然没有收回成命，但也没有立刻派使者追赐剑——只是让白起迁阴密，不必留在咸阳。
 可白起走到杜邮，还是愤而自刎了——他不是死在你的谗言下，是死在他自己的刚直上。
 #show:qingyue:sad:float

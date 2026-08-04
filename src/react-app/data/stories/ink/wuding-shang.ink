@@ -248,6 +248,7 @@ VAR de = 0
 
 === if_daixian_2 ===
 #bg:fuxian_ban
+#bgm:peaceful
 你以中才治中政。殷政修了几分，边患也靖了几分——像一件补好的旧衣，能穿，却谈不上焕然。 #speaker:青月
 多年后你巡行西方，路过傅险。夯声一下一下，一队胥靡正在版筑之间修墙。你勒住马，在人堆里搜寻——岁月太久，你已记不清梦里那张脸了。 #speaker:青月 #hint:是时说为胥靡，筑于傅险。
 #show:qingyue:sad:float
@@ -271,6 +272,7 @@ VAR de = 0
 
 === if_xuju_2 ===
 #bg:wuding_xing
+#bgm:epic
 等他终于站到你的身侧、称得上「相」的那一天，你们君臣，都已两鬓染霜。 #speaker:青月
 他还是那个圣人，把余年全给了殷。政修了，民安了——只是「大治」两个字，终究瘦成了「小康」。 #speaker:青月 #hint:举以为相，殷国大治。
 #show:qingyue:sad:float

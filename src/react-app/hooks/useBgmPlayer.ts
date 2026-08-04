@@ -3,6 +3,10 @@ import { resolveBgm } from "../data/bgm";
 
 const FADE_MS = 2000;
 const TARGET_VOLUME = 0.35;
+/** ducking 目标音量（小游戏期间压低到约 1/3，给音效让出空间） */
+const DUCK_VOLUME = 0.12;
+/** ducking 过渡时长（比切歌短，进出小游戏更跟手） */
+const DUCK_FADE_MS = 600;
 const STORAGE_KEY = "cysj-bgm";
 const CDN_FALLBACK = {
 	danger: "https://freesound-down.audiodown.com:3321/preview?file=Inf%2FCinematic+Tense+Dramatic+by+Infraction+%5BNo+Copyright+Music%5D+_+Diabolus.mp3",
@@ -25,6 +29,8 @@ function readEnabled(): boolean {
 
 interface UseBgmPlayerOptions {
 	enabled?: boolean;
+	/** true 时正在播放的 BGM 平滑压低到 DUCK_VOLUME（小游戏期间用） */
+	ducked?: boolean;
 }
 
 /** BGM 播放器：双音频交叉淡入淡出，无缝切换 */
@@ -32,6 +38,8 @@ export function useBgmPlayer(opts: UseBgmPlayerOptions = {}) {
 	const activeRef = useRef<BgmAudio | null>(null);
 	const nextRef = useRef<BgmAudio | null>(null);
 	const fadeRafRef = useRef<number>(0);
+	const duckRafRef = useRef<number>(0);
+	const duckedRef = useRef<boolean>(opts.ducked ?? false);
 	const pendingTrackRef = useRef<string>("");
 	const triedFallbackRef = useRef<Set<string>>(new Set());
 	const switchingRef = useRef<boolean>(false);
@@ -55,12 +63,14 @@ export function useBgmPlayer(opts: UseBgmPlayerOptions = {}) {
 		const step = (now: number) => {
 			const t = Math.min(1, (now - startT) / FADE_MS);
 			const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+			// ducked 时新曲目渐入到压低音量，而非满音量
+			const goal = duckedRef.current ? DUCK_VOLUME : TARGET_VOLUME;
 
 			if (from) {
 				from.volume = Math.max(0, startFromVol * (1 - eased));
 				from.audio.volume = from.volume;
 			}
-			to.volume = Math.min(TARGET_VOLUME, startToVol + (TARGET_VOLUME - startToVol) * eased);
+			to.volume = Math.min(goal, startToVol + (goal - startToVol) * eased);
 			to.audio.volume = to.volume;
 
 			if (t < 1) {
@@ -80,6 +90,7 @@ export function useBgmPlayer(opts: UseBgmPlayerOptions = {}) {
 
 	const stopInternal = useCallback(() => {
 		cancelAnimationFrame(fadeRafRef.current);
+		cancelAnimationFrame(duckRafRef.current);
 		if (activeRef.current) {
 			activeRef.current.audio.pause();
 			activeRef.current.audio.src = "";
@@ -98,6 +109,36 @@ export function useBgmPlayer(opts: UseBgmPlayerOptions = {}) {
 			if (cleanup) cleanup();
 		}
 	}, []);
+
+	/** ducking：把当前 BGM 平滑过渡到目标音量（ducked 时降至 DUCK_VOLUME，否则恢复 TARGET_VOLUME）。
+	 *  只作用于 activeRef（当前曲目），不干扰 crossFade 进行中的 nextRef。
+	 *  crossFade 会接管 nextRef 的音量曲线，故 ducking 只需管 active。 */
+	const applyDuck = useCallback((ducked: boolean) => {
+		cancelAnimationFrame(duckRafRef.current);
+		const target = ducked ? DUCK_VOLUME : TARGET_VOLUME;
+		const startT = performance.now();
+		const step = (now: number) => {
+			const active = activeRef.current;
+			if (!active) return;
+			// 切歌进行中时跳过 ducking（让 crossFade 完成接管），稍后 effect 会重新触发
+			if (switchingRef.current) return;
+			const t = Math.min(1, (now - startT) / DUCK_FADE_MS);
+			const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+			const from = active.volume;
+			active.volume = from + (target - from) * eased;
+			active.audio.volume = active.volume;
+			if (t < 1) {
+				duckRafRef.current = requestAnimationFrame(step);
+			}
+		};
+		duckRafRef.current = requestAnimationFrame(step);
+	}, []);
+
+	// 响应外部 ducked 开关
+	useEffect(() => {
+		duckedRef.current = opts.ducked ?? false;
+		applyDuck(duckedRef.current);
+	}, [opts.ducked, applyDuck]);
 
 	const playWithUrl = useCallback(
 		(trackId: string, url: string) => {

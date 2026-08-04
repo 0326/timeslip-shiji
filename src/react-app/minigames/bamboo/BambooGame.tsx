@@ -2,9 +2,10 @@
 // 玩法：打乱的 4-6 条竹简（原文短句），点击上下交换或拖到正确位置，将它们还原成史记原文的顺序。
 // 素材：直接从 chapters/NNN.ts 的 original 切句。默认按 storyKey 选章；param 可指定 juan:segIndex:sliceCount。
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { MinigameProps } from "../types";
 import { CheckCircle2, Shuffle, RotateCcw, GripVertical } from "lucide-react";
+import { sfx } from "../../lib/sfx";
 import "./bamboo.css";
 
 interface BambooStrip {
@@ -14,6 +15,10 @@ interface BambooStrip {
 
 // 默认章节映射：storyKey → [juan卷号, segIndex段落索引, sliceCount竹简数]
 const DEFAULT_MAP: Record<string, [number, number, number]> = {
+	"huangdi:qiyuan": [1, 0, 5],    // 五帝本纪·黄帝开头 5简
+	"huangdi:banquan": [1, 1, 5],   // 五帝本纪·阪泉三战 5简
+	"huangdi:zhuolu": [1, 2, 5],    // 五帝本纪·涿鹿擒蚩尤 5简
+	"huangdi:zhitianxia": [1, 4, 5],// 五帝本纪·崩葬桥山 5简
 	"kongzi:zhuzi": [47, 0, 5],   // 孔子世家·首段 5简
 	"wenwang:xizhou": [4, 0, 5],  // 周本纪·开篇 5简
 	"liubang:chuhan": [8, 0, 5],  // 高祖本纪·首段 5简
@@ -77,14 +82,18 @@ function pickSentences(juan: number, segIndex: number, count: number): string[] 
 }
 
 function shuffle<T>(arr: T[]): T[] {
-	const a = [...arr];
-	for (let i = a.length - 1; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[a[i], a[j]] = [a[j], a[i]];
-	}
-	// 防止初始就是正确顺序
-	if (a.every((v, i) => v === arr[i])) return shuffle(arr);
-	return a;
+  if (arr.length <= 1) return [...arr];
+  // 无限重试直到不是正确顺序；length>=2 必存在非原序排列
+  let guard = 0;
+  let a: T[] = [];
+  do {
+    a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+  } while (a.every((v, i) => v === arr[i]) && guard++ < 100);
+  return a;
 }
 
 export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProps) {
@@ -106,45 +115,54 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 	const [moves, setMoves] = useState(0);
 	const [won, setWon] = useState(false);
 	const [dragId, setDragId] = useState<number | null>(null);
+	const onCompleteRef = useRef(onComplete);
+	onCompleteRef.current = onComplete;
+	// 用户是否已实际交互（swap/拖拽）。初始化或重洗时不检测胜利，防止挂载即通关
+	const userInteractedRef = useRef(false);
 
 	useEffect(() => {
-		if (original.length === 0) {
-			// 没有素材自动判过
-			onComplete({ result: "skip", score: 0 });
-			return;
-		}
+		if (original.length === 0) return;
 		const init = shuffle(original.map((text, i) => ({ id: i, text })));
 		setStrips(init);
 		setMoves(0);
 		setWon(false);
 		setSelected(null);
-	}, [original, onComplete]);
+		// 初始化/重洗后重置交互标志
+		userInteractedRef.current = false;
+	}, [original]);
 
 	useEffect(() => {
-		if (strips.length === 0) return;
+		// 少于 2 简时无法打乱，直接跳过避免误判胜利
+		if (strips.length < 2) return;
+		// 双重保护：必须用户实际交互后才检测胜利
+		if (!userInteractedRef.current) return;
 		const ok = strips.every((s, i) => s.id === i);
 		if (ok && !won) {
 			setWon(true);
+			sfx.play("win");
 			const score = moves <= Math.ceil(count * 1.5) ? 100 : moves <= count * 3 ? 80 : 60;
-			const t = setTimeout(() => onComplete({ result: "win", score }), 900);
+			const t = setTimeout(() => onCompleteRef.current({ result: "win", score }), 900);
 			return () => clearTimeout(t);
 		}
-	}, [strips, won, moves, count, onComplete]);
+	}, [strips, won, moves, count]);
 
 	function swap(i: number, j: number) {
 		if (i === j || i < 0 || j < 0 || i >= strips.length || j >= strips.length) return;
+		userInteractedRef.current = true;
 		setStrips((prev) => {
 			const next = [...prev];
 			[next[i], next[j]] = [next[j], next[i]];
 			return next;
 		});
 		setMoves((m) => m + 1);
+		sfx.play("pop");
 	}
 
 	function onStripClick(i: number) {
 		if (won) return;
 		if (selected === null) {
 			setSelected(i);
+			sfx.play("click");
 		} else if (selected === i) {
 			setSelected(null);
 		} else {
@@ -164,10 +182,13 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 		setStrips(shuffle(original.map((text, i) => ({ id: i, text }))));
 		setMoves(0);
 		setSelected(null);
+		sfx.play("shuffle");
+		sfx.resetCombo();
 	}
 
 	function handleReset() {
 		if (won) return;
+		userInteractedRef.current = true; // 查看原文视为交互，允许触发胜利
 		setStrips((prev) => [...prev].sort((a, b) => a.id - b.id));
 		setMoves((m) => m + 5); // 查看答案惩罚步数
 		setSelected(null);
@@ -190,7 +211,19 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 		setDragId(null);
 	}
 
-	if (original.length === 0) return null;
+	if (original.length === 0) {
+		return (
+			<div className="bamboo-root">
+				<div className="bamboo-hud">
+					<div className="bamboo-title serif">竹简缀合</div>
+				</div>
+				<p className="bamboo-hint">原文素材暂缺，请点击"跳过"继续剧情。</p>
+				<div className="bamboo-controls">
+					<button className="btn btn-ghost" onClick={onSkip}>跳过</button>
+				</div>
+			</div>
+		);
+	}
 
 	const correctCount = strips.filter((s, i) => s.id === i).length;
 

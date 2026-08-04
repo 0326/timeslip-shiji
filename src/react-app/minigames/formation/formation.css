@@ -1,0 +1,417 @@
+/* 排兵布阵（Formation）—— 中式令箭/竹简风格 */
+/* 样式类前缀: fm- */
+
+.fm-root {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+	padding: var(--space-2) 0 var(--space-4);
+}
+
+/* ── 顶部 HUD ── */
+.fm-hud {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: var(--space-3);
+}
+.fm-title-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.fm-title {
+	font-size: 20px;
+	letter-spacing: 0.2em;
+	color: var(--color-gold, #c9a84c);
+}
+.fm-level-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 12px;
+	color: var(--color-vermilion-light, #e74c3c);
+	letter-spacing: 0.12em;
+	padding: 2px 10px;
+	background: rgba(192, 57, 43, 0.15);
+	border: 1px solid rgba(192, 57, 43, 0.4);
+	border-radius: 999px;
+	width: fit-content;
+}
+.fm-stats {
+	font-size: 12px;
+	color: var(--color-muted, #8a7d6a);
+	letter-spacing: 0.1em;
+	display: flex;
+	gap: 8px;
+	white-space: nowrap;
+}
+
+/* ── 提示语 ── */
+.fm-hint {
+	font-size: 13px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.05em;
+	margin: 0;
+	line-height: 1.8;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.2);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
+}
+
+/* ── 区域标签 ── */
+.fm-area-label {
+	font-size: 11px;
+	letter-spacing: 0.3em;
+	color: var(--color-muted, #8a7d6a);
+	margin-bottom: 8px;
+	padding-left: 4px;
+	position: relative;
+}
+.fm-area-label::before {
+	content: "";
+	position: absolute;
+	left: -4px;
+	top: 50%;
+	width: 3px;
+	height: 12px;
+	background: var(--color-gold, #c9a84c);
+	transform: translateY(-50%);
+	opacity: 0.6;
+}
+
+/* ── 已排序区域（上方） ── */
+.fm-placed-area {
+	padding: var(--space-2) 0;
+}
+.fm-placed-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: flex-start;
+	min-height: 132px;
+	padding: 12px;
+	background: linear-gradient(180deg, rgba(201, 168, 76, 0.06) 0%, rgba(0, 0, 0, 0.15) 100%);
+	border: 1px dashed rgba(201, 168, 76, 0.3);
+	border-radius: var(--radius, 6px);
+}
+
+/* ── 待排序区域（下方） ── */
+.fm-pending-area {
+	padding: var(--space-2) 0;
+}
+.fm-pending-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: flex-start;
+	min-height: 132px;
+	padding: 12px;
+	background: rgba(0, 0, 0, 0.18);
+	border: 1px solid var(--color-ink-mid, #3a2a1a);
+	border-radius: var(--radius, 6px);
+}
+
+/* ── 令箭基础（令箭造型：上尖下平） ── */
+.fm-token {
+	position: relative;
+	width: 58px;
+	height: 118px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	/* 上端尖头的令箭外形 */
+	clip-path: polygon(50% 0%, 100% 14%, 100% 100%, 0% 100%, 0% 14%);
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	user-select: none;
+	transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+.fm-token-text {
+	writing-mode: vertical-rl;
+	text-orientation: upright;
+	font-size: 17px;
+	letter-spacing: 0.12em;
+	line-height: 1.1;
+	color: #fff5d4;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 待排令箭（竹简/木质） ── */
+.fm-token-pending {
+	cursor: pointer;
+	border: none;
+	padding: 0;
+	background: linear-gradient(180deg, #b07d3e 0%, #8a5a2b 45%, #6b4321 100%);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.18),
+		inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+		0 3px 6px rgba(0, 0, 0, 0.4);
+}
+/* 竹简纹理：两道横向编绳 */
+.fm-token-pending::before,
+.fm-token-pending::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: rgba(0, 0, 0, 0.28);
+	pointer-events: none;
+}
+.fm-token-pending::before {
+	top: 22%;
+}
+.fm-token-pending::after {
+	bottom: 22%;
+}
+.fm-token-pending:hover:not(:disabled) {
+	transform: translateY(-4px);
+	filter: brightness(1.1);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.25),
+		inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+		0 8px 16px rgba(0, 0, 0, 0.5);
+}
+.fm-token-pending:disabled {
+	opacity: 0.7;
+	cursor: default;
+}
+
+/* 点错抖动 + 红光 */
+.fm-token-pending.error {
+	animation: fmShake 0.5s ease;
+	background: linear-gradient(180deg, #c0392b 0%, #962d20 60%, #6e1f15 100%);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 120, 100, 0.3),
+		inset 0 -3px 5px rgba(0, 0, 0, 0.4),
+		0 0 16px rgba(231, 76, 60, 0.7);
+}
+.fm-token-pending.error .fm-token-text {
+	color: #ffe8e0;
+}
+@keyframes fmShake {
+	0%, 100% { transform: translateX(0); }
+	15% { transform: translateX(-6px) rotate(-2deg); }
+	30% { transform: translateX(6px) rotate(2deg); }
+	45% { transform: translateX(-5px) rotate(-1deg); }
+	60% { transform: translateX(5px) rotate(1deg); }
+	75% { transform: translateX(-3px); }
+}
+
+/* ── 已排令箭占位（空槽） ── */
+.fm-token-placed.empty {
+	background: rgba(255, 255, 255, 0.04);
+	border: 1px dashed rgba(201, 168, 76, 0.25);
+	clip-path: none;
+	border-radius: 4px;
+}
+.fm-token-placed.empty .fm-token-num {
+	opacity: 0.4;
+}
+
+/* ── 已排令箭（金色） ── */
+.fm-token-placed.filled {
+	background: linear-gradient(180deg, #f5d97a 0%, #c9a84c 45%, #9a7a2e 100%);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 245, 200, 0.4),
+		inset 0 -3px 5px rgba(80, 60, 10, 0.3),
+		0 3px 8px rgba(0, 0, 0, 0.45);
+	border: none;
+	animation: fmDrop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.fm-token-placed.filled .fm-token-text {
+	color: #3a2a08;
+	text-shadow: 0 1px 0 rgba(255, 245, 200, 0.5);
+}
+@keyframes fmDrop {
+	from { transform: translateY(-14px) scale(0.9); opacity: 0; }
+	to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* 序号徽记（仅在已排区显示） */
+.fm-token-num {
+	position: absolute;
+	top: 18px;
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 12px;
+	color: #6b4e10;
+	background: rgba(255, 245, 200, 0.55);
+	border-radius: 50%;
+	border: 1px solid rgba(107, 78, 16, 0.4);
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+}
+.fm-token-placed.filled .fm-token-text {
+	/* 文字下移避开序号 */
+	margin-top: 14px;
+}
+
+/* 本关完成时金光流转 */
+.fm-token-placed.glow {
+	animation: fmGlow 1s ease-in-out infinite;
+}
+@keyframes fmGlow {
+	0%, 100% {
+		box-shadow:
+			inset 0 2px 4px rgba(255, 245, 200, 0.4),
+			inset 0 -3px 5px rgba(80, 60, 10, 0.3),
+			0 0 8px rgba(245, 217, 122, 0.5);
+	}
+	50% {
+		box-shadow:
+			inset 0 2px 4px rgba(255, 245, 200, 0.6),
+			inset 0 -3px 5px rgba(80, 60, 10, 0.3),
+			0 0 22px rgba(245, 217, 122, 0.95),
+			0 0 36px rgba(201, 168, 76, 0.6);
+	}
+}
+
+/* ── 已排走后下方的空位（保持布局稳定） ── */
+.fm-token-ghost {
+	width: 58px;
+	height: 118px;
+	clip-path: polygon(50% 0%, 100% 14%, 100% 100%, 0% 100%, 0% 14%);
+	background: rgba(255, 255, 255, 0.02);
+	border: 1px dashed rgba(255, 255, 255, 0.06);
+	opacity: 0.4;
+}
+
+/* ── 控制按钮 ── */
+.fm-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--space-3);
+	margin-top: var(--space-2);
+	flex-wrap: wrap;
+}
+
+/* ── 单关完成提示 ── */
+.fm-level-clear {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: rgba(0, 0, 0, 0.72);
+	backdrop-filter: blur(4px);
+	border-radius: var(--radius, 6px);
+	animation: fmScaleIn 0.35s ease-out;
+	color: var(--color-gold, #c9a84c);
+	z-index: 5;
+}
+.fm-level-clear-title {
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	font-size: 26px;
+	letter-spacing: 0.3em;
+}
+.fm-level-clear-sub {
+	font-size: 12px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.15em;
+}
+
+/* ── 通关成功（光效） ── */
+.fm-win {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: radial-gradient(circle at center, rgba(60, 40, 8, 0.85) 0%, rgba(0, 0, 0, 0.92) 70%);
+	backdrop-filter: blur(6px);
+	border-radius: var(--radius, 6px);
+	animation: fmScaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+	color: var(--color-gold, #c9a84c);
+	z-index: 10;
+	overflow: hidden;
+}
+/* 旋转光柱 */
+.fm-win-rays {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 200%;
+	height: 200%;
+	transform: translate(-50%, -50%);
+	background: conic-gradient(
+		from 0deg,
+		rgba(245, 217, 122, 0) 0deg,
+		rgba(245, 217, 122, 0.18) 18deg,
+		rgba(245, 217, 122, 0) 36deg,
+		rgba(245, 217, 122, 0) 72deg,
+		rgba(245, 217, 122, 0.14) 90deg,
+		rgba(245, 217, 122, 0) 108deg,
+		rgba(245, 217, 122, 0) 180deg,
+		rgba(245, 217, 122, 0.18) 198deg,
+		rgba(245, 217, 122, 0) 216deg,
+		rgba(245, 217, 122, 0) 288deg,
+		rgba(245, 217, 122, 0.14) 306deg,
+		rgba(245, 217, 122, 0) 324deg,
+		rgba(245, 217, 122, 0) 360deg
+	);
+	animation: fmRays 8s linear infinite;
+	pointer-events: none;
+	opacity: 0.9;
+}
+@keyframes fmRays {
+	from { transform: translate(-50%, -50%) rotate(0deg); }
+	to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.fm-win-title {
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	font-size: 30px;
+	letter-spacing: 0.35em;
+	margin-top: var(--space-2);
+	text-shadow: 0 0 18px rgba(245, 217, 122, 0.8), 0 2px 6px rgba(0, 0, 0, 0.6);
+	animation: fmPulse 1.8s ease-in-out infinite;
+}
+.fm-win-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.12em;
+}
+@keyframes fmPulse {
+	0%, 100% { text-shadow: 0 0 14px rgba(245, 217, 122, 0.6), 0 2px 6px rgba(0, 0, 0, 0.6); }
+	50% { text-shadow: 0 0 26px rgba(245, 217, 122, 1), 0 2px 6px rgba(0, 0, 0, 0.6); }
+}
+@keyframes fmScaleIn {
+	from { opacity: 0; transform: scale(0.85); }
+	to { opacity: 1; transform: scale(1); }
+}
+
+/* ── 小屏适配 ── */
+@media (max-width: 640px) {
+	.fm-token {
+		width: 48px;
+		height: 104px;
+	}
+	.fm-token-ghost {
+		width: 48px;
+		height: 104px;
+	}
+	.fm-token-text {
+		font-size: 15px;
+	}
+	.fm-placed-row,
+	.fm-pending-row {
+		gap: 8px;
+		padding: 10px;
+		min-height: 116px;
+	}
+	.fm-win-title {
+		font-size: 24px;
+		letter-spacing: 0.25em;
+	}
+}

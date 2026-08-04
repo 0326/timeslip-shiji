@@ -162,6 +162,7 @@ VAR jiao = 0
 
 === act3_she ===
 #bg:wu_gong_ting
+#bgm:court
 #show:qingyue:solemn:float
 你终究没听子胥。你受了句践的降，与他盟誓，罢兵而归。 #speaker:青月 #hint:吴王不听，听太宰嚭，卒许越平，与盟而罢兵去。
 句践膝行顿首，谢过你的不杀之恩，回越国去了。你望着他远去的背影，觉得自己既报了父仇，又得了个称臣的越国——何等风光。 #speaker:青月

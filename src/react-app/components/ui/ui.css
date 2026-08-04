@@ -226,26 +226,34 @@
 	z-index: var(--z-drawer);
 	background: rgba(5, 4, 3, 0.6);
 	animation: fadeIn var(--duration-normal) var(--ease-out);
+	/* 强制提升合成层，防止被 sticky+backdrop-filter 的顶栏压住 */
+	transform: translateZ(0);
+	isolation: isolate;
 }
 .drawer {
 	position: fixed;
-	top: 0;
+	top: var(--nav-h);
 	right: 0;
 	bottom: 0;
-	z-index: var(--z-drawer);
+	z-index: calc(var(--z-drawer) + 1);
 	width: min(440px, 92vw);
 	background: var(--color-ink-light);
 	border-left: 1px solid var(--color-gold-dim);
 	box-shadow: var(--shadow);
 	overflow-y: auto;
 	animation: drawerIn var(--duration-normal) var(--ease-out);
+	/* will-change 保证抽屉在动画结束后仍保留独立合成层，
+	   不被 sticky 顶栏的 backdrop-filter 合成层压盖 */
+	will-change: transform;
+	isolation: isolate;
+	/* 抽屉内容从导航栏下方开始渲染，头部完全避开顶栏 */
 }
 @keyframes drawerIn {
 	from {
-		transform: translateX(100%);
+		transform: translate3d(100%, 0, 0);
 	}
 	to {
-		transform: translateX(0);
+		transform: translate3d(0, 0, 0);
 	}
 }
 

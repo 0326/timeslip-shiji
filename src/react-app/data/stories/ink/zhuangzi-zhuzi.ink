@@ -37,6 +37,7 @@ VAR wuyong = 0
 
 === act2_haoliang ===
 #bg:haoshui_bridge
+#bgm:peaceful
 你和惠子游于濠梁之上。水清见底，鯈鱼一队队穿桥而过。 #speaker:青月
 你凭着桥栏看了半晌，随口道：「鯈鱼出游从容，是鱼之乐也。」 #speaker:庄周
 #show:huizi:serious:center
@@ -64,6 +65,7 @@ VAR wuyong = 0
 
 === act3_yewei ===
 #bg:wuyi_mud
+#bgm:peaceful
 濮水边。你钓着鱼，楚威王的两位大夫持节而来，身后的车装着千金聘礼。 #speaker:青月 #hint:楚威王闻庄周贤，使使厚币迎之，许以为相。
 #show:chushi:offering:center
 「愿以境内累矣！」大夫躬身长揖——楚王要请你做卿相，把整个楚国托给你。 #speaker:楚使
@@ -105,6 +107,7 @@ VAR wuyong = 0
 
 === act4_gupen ===
 #bg:chuye_garden
+#bgm:peaceful
 你的妻子死了。惠子来吊丧，却看见你箕踞鼓盆而歌。 #speaker:青月
 #show:huizi:shocked:center
 「与人居，长子老身，死不哭亦足矣——又鼓盆而歌，不亦甚乎！」惠子气得声音发抖。这一回，他不是来辩的，他是真的看不下去。 #speaker:惠子
@@ -129,6 +132,7 @@ VAR wuyong = 0
 
 === act5_wuyong ===
 #bg:qi_jixia
+#bgm:peaceful
 你和弟子们行于山中，见一棵大树，枝干拳曲、木理散乱——正因不成材，匠人过而不顾，得以终其天年。 #speaker:青月
 弟子问你：「先生，这棵树因为不材，反倒活到了今天——这是什么道理呀？」 #speaker:青月
 「山木自寇也，膏火自煎也。」你拍了拍那树干，「桂可食，故伐之；漆可用，故割之——我这漆园小吏，割了半辈子漆，最懂这个。有用的，都被用完了。」 #speaker:庄周
@@ -209,35 +213,41 @@ VAR wuyong = 0
 === act1_mengdie_death ===
 你认定自己是庄周，蝴蝶只是虚妄的梦。分清了真假，人是站稳了——可你这一执著，齐物的门就关上了：是非、彼此、物我、生死，从此样样都要分个清楚，样样都放不下。那个梦蝶的庄周成了个较真的俗人，再也写不出《齐物论》。
 #bg:qin_prison
+#bgm:dark
 #death:zhiwu #speaker:青月
 -> END
 
 === act2_bian_death ===
 你承认自己不知鱼乐。惠子抚掌大笑——按名理，他确实无懈可击，你认得心服口服。可你输掉的不是一场辩论，是那种用整个生命去感受世界的心。从此濠上的鱼乐只是个名理问题，桥还是桥，水还是水，鱼游得再从容，也游不进你心里了。那个知鱼之乐的庄子，死在了逻辑手里。
 #bg:qin_prison
+#bgm:dark
 #death:bianbai #speaker:青月
 -> END
 
 === act3_xiang_death ===
 你接受了聘礼，做了楚国的卿相。一入朝堂就是漩涡——你想无为，君主令你决狱杀人；你想齐物，同僚逼你分个敌我。没几年，你因谗被逐，潦倒而死。临死你想起濮水边自己讲过的神龟——宁生而曳尾涂中。你这只龟，终于被供上了庙堂：巾笥藏之，尊贵极了，可骨头都烂了呀。
 #bg:qin_prison
+#bgm:dark
 #death:xiangwei #speaker:青月
 -> END
 
 === act3_xiniu_death ===
 你应了。起初真是两全其美——郢都馆舍清雅，岁奉千金，大王隔三差五来听你谈道，执礼甚恭。第二年，大王请你在祭天大典上为国祈福；第三年，请你为伐宋之师占一个吉日。你说不——可披了三年文绣的牺牛，太庙的钟声一响，还由得它说不吗？「虽欲为孤豚，岂可得乎」——这话是你自己说的呀。
 #bg:qin_prison
+#bgm:dark
 #death:xiniu #speaker:青月
 -> END
 
 === act4_ku_death ===
 你放下盆，放声大哭。哭她，也哭你自己——你毕竟看不透生死这一关。丧妻之痛击倒了你，从此逢死必恸、遇变则惧，《至乐》那样的文字再也写不出来了。那个以为生死如四季运行的庄子，在妻子的灵前，自己也死了一半。
 #bg:qin_prison
+#bgm:dark
 #death:shangqi #speaker:青月
 -> END
 
 === act5_yong_death ===
 你觉得无用不如有用，于是发奋要做个有用的人——游说诸侯、献策取功名。可你天生不是那块料：你的话太荒唐，你的思想太远，王公大人不能器之。最后你既没做成有用的卿相，也丢了那个可以逍遥的自己，两头落空。山木自寇，膏火自煎——你把自己当柴烧了，火还没人来烤。
 #bg:qin_prison
+#bgm:dark
 #death:zhuiyong #speaker:青月
 -> END

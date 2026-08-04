@@ -142,6 +142,7 @@ VAR shan = 0
 
 === act3_zhaoling ===
 #bg:zunwang_meng
+#bgm:court
 你救了燕，进伐山戎至孤竹而还。燕庄公送你送入齐境，你说——「不是天子，诸侯相送不出境，我不可对燕失礼。」于是割地与燕，命燕君重修召公之政、向周纳贡。 #speaker:青月 #hint:桓公曰：非天子，诸侯相送不出境，吾不可以无礼于燕。于是分沟割燕君所至与燕，命燕君复修召公之政，纳贡于周。
 你又率诸侯筑楚丘城、为卫国另立国君，存邢救卫，存亡继绝。 #speaker:青月 #hint:齐率诸侯城楚丘而立卫君。
 #show:guanzhong:default:right
@@ -193,6 +194,7 @@ VAR shan = 0
 
 === act4_ding ===
 #bg:kuiqiu_hui
+#bgm:triumph
 #show:guanzhong:default:right
 管仲进言：封禅须得远方珍怪之物齐备方可。你听懂了这话里的意思，借这个台阶，罢了封禅之念。 #speaker:青月 #hint:乃说桓公以远方珍怪物至乃得封，桓公乃止。
 #show:qingyue:solemn:float
@@ -384,6 +386,7 @@ VAR shan = 0
 
 === if_baoxiang_2 ===
 #bg:guanbao_jian
+#bgm:peaceful
 #show:qingyue:sad:float
 「更远的地方呢？山戎照旧伐燕，狄人照旧破邢灭卫——诸夏危而无人倡义。中原，等不来那面『尊王攘夷』的旗了。」 #speaker:青月 #hint:君且欲霸王，非管夷吾不可。夷吾所居国国重，不可失也。
 #show:qingyue:solemn:float

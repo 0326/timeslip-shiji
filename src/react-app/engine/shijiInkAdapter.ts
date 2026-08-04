@@ -21,6 +21,7 @@ import type {
 	StoryState,
 	Vars,
 } from "./types";
+import { bgmMatcher } from "../lib/bgmMatcher";
 
 /** Death registry entry: maps a deathId (from #death:ID tag) to full death info */
 export interface DeathEntry {
@@ -37,6 +38,16 @@ export interface EndingEntry {
 	kind: "canon" | "if";
 	/** 判词/结语：一句余味收束（通关屏引用展示） */
 	epigraph?: string;
+}
+
+/** Impact registry entry: maps an impactId (from #impact:ID tag) to display info */
+export interface ImpactEntry {
+	/** 此刻抉择：玩家做出的关键选择描述（卡片上区块一） */
+	choice: string;
+	/** 史记原文：对应的史书引用（卡片上区块二） */
+	source: string;
+	/** 历史影响：该选择对后世的意义（卡片上区块三） */
+	impact: string;
 }
 
 /**
@@ -57,6 +68,8 @@ export interface InkStoryConfig {
 	deaths: Record<string, DeathEntry>;
 	/** Ending registry: maps endingId → EndingEntry（#ending:ID 的文案单一数据源） */
 	endings?: Record<string, EndingEntry>;
+	/** Impact registry: maps impactId → ImpactEntry（#impact:ID 的文案单一数据源） */
+	impacts?: Record<string, ImpactEntry>;
 }
 
 /** Adapter behaviour options (mode-dependent game rules). */
@@ -93,6 +106,7 @@ const STRICT_DEATH_ANALYSIS =
  *   - #correct                                            → marks a choice as historically correct
  *   - #death:ID                                           → triggers death state (ID looks up in deaths registry)
  *   - #achieve:ID                                         → fires onAchievement callback
+ *   - #impact:ID                                          → displays historical impact card (looks up in impacts registry)
  *   - Choice tags go BEFORE the choice text:  * #correct [Choice text] -> target
  */
 export class ShijiInkAdapter implements IStoryRunner {
@@ -121,8 +135,14 @@ export class ShijiInkAdapter implements IStoryRunner {
 	private endingAchievement?: string;
 	// 本次结局的 #ending:ID（结局注册表键）
 	private endingId?: string;
+	// 自由模式下，死亡分支转为假想结局时携带的死亡信息（用于生成结局标题/题词）
+	private deathAsEnding?: { id?: string; reason: string; classical: string; analysis: string } | null;
 	// 最近一次触发的小游戏（buildState 消费后即清）
 	private pendingMinigame: { id: string; param?: string } | null = null;
+	// 手动触发的小游戏标记（从学练测收面板触发，完成后不推进叙事）
+	private manualMinigame = false;
+	// 最近一次触发的历史影响卡片（buildState 消费后即清）
+	private pendingImpact: { choice: string; source: string; impact: string } | null = null;
 
 	constructor(config: InkStoryConfig, cb: EngineCallbacks = {}, opts: AdapterOptions = {}) {
 		this.config = config;
@@ -150,9 +170,14 @@ export class ShijiInkAdapter implements IStoryRunner {
 		// probing 期间（严格模式前瞻探测）全部静默，防止探测分支污染舞台与统计。
 		const inkCallbacks: InkStageCallbacks = {
 			onBackground: (bg) => {
-				if (this.probing) return;
-				this.cb.onBackground?.(bg);
-			},
+			if (this.probing) return;
+			this.cb.onBackground?.(bg);
+			// 场景切换时立即播放该场景的BGM
+			const sceneTrackId = bgmMatcher.setScene(bg);
+			if (sceneTrackId) {
+				this.cb.onBGM?.(sceneTrackId);
+			}
+		},
 			onShowCharacter: (id, expr, pos) => {
 				if (this.probing) return;
 				this.cb.onShowCharacter?.(id, expr ?? "default", pos);
@@ -162,12 +187,11 @@ export class ShijiInkAdapter implements IStoryRunner {
 				this.cb.onHideCharacter?.(id);
 			},
 			onBGM: (track) => {
-				if (this.probing) return;
-				this.cb.onBGM?.(track);
-			},
+			if (this.probing) return;
+			this.cb.onBGM?.(track);
+		},
 			onChoice: (choice, _index) => {
 				if (this.probing) return;
-				// Choice selected → increment stats
 				this.vars._choices = (this.vars._choices as number) + 1;
 				if (choice.meta.correct) {
 					this.vars._correct = (this.vars._correct as number) + 1;
@@ -205,12 +229,20 @@ export class ShijiInkAdapter implements IStoryRunner {
 
 		// Build death info if this is a death state
 		let death: StoryState["death"] = null;
+		let ended = output.state === "ended";
 		if (output.state === "death" && output.deathId) {
 			this.vars._deaths = (this.vars._deaths as number) + 1;
-			death = this.buildDeath(output.deathId);
+			// 自由模式：死亡分支当作假想结局，不显示死亡页面
+			if (!this.strict) {
+				ended = true;
+				this.endingId = output.deathId;
+				this.deathAsEnding = this.buildDeath(output.deathId);
+			} else {
+				death = this.buildDeath(output.deathId);
+			}
 		}
 
-		return this.buildState(output, death, output.state === "ended");
+		return this.buildState(output, death, ended);
 	}
 
 	/** Select a choice by index and advance. */
@@ -243,12 +275,20 @@ export class ShijiInkAdapter implements IStoryRunner {
 		}
 
 		let death: StoryState["death"] = null;
+		let ended = output.state === "ended";
 		if (output.state === "death" && output.deathId) {
 			this.vars._deaths = (this.vars._deaths as number) + 1;
-			death = this.buildDeath(output.deathId);
+			// 自由模式：死亡分支当作假想结局，不显示死亡页面
+			if (!this.strict) {
+				ended = true;
+				this.endingId = output.deathId;
+				this.deathAsEnding = this.buildDeath(output.deathId);
+			} else {
+				death = this.buildDeath(output.deathId);
+			}
 		}
 
-		return this.buildState(output, death, output.state === "ended");
+		return this.buildState(output, death, ended);
 	}
 
 	/**
@@ -256,11 +296,28 @@ export class ShijiInkAdapter implements IStoryRunner {
 	 * 探测分支期间不会调用此方法（completeMinigame 仅由 UI 在玩家实际操作后触发）。
 	 */
 	completeMinigame(result: "win" | "lose" | "skip", score?: number): StoryState {
-		// 写回 ink 变量，供后续分支判断使用
+		// 手动触发的小游戏：完成后不推进叙事，直接回到当前对话
+		if (this.manualMinigame) {
+			this.manualMinigame = false;
+			this.pendingMinigame = null;
+			// 重建当前对话状态（无小游戏、无推进）
+			return this.buildState({ state: "text", segments: [], choices: [], deathId: undefined }, null, false);
+		}
+		// ink 标签触发的小游戏：写入 ink 变量，继续推进叙事
 		this.runner.setVar("mg_result", result);
 		this.runner.setVar("mg_score", Math.max(0, Math.min(100, Math.round(score ?? (result === "win" ? 100 : 0)))));
 		this.pendingMinigame = null;
 		return this.advance();
+	}
+
+	/**
+	 * 手动触发小游戏（从学练测收面板等 UI 触发）
+	 * 与 ink 标签触发的区别：不写入 ink 变量，直接返回小游戏状态
+	 */
+	triggerMinigame(gameId: string, param?: string): StoryState {
+		this.pendingMinigame = { id: gameId, param };
+		this.manualMinigame = true;
+		return this.buildState({ state: "text", segments: [], choices: [], deathId: undefined }, null, false);
 	}
 
 	/**
@@ -273,11 +330,22 @@ export class ShijiInkAdapter implements IStoryRunner {
 		let survives: boolean;
 		try {
 			let out = this.runner.choose(index);
-			// choose 可能停在 "text"（段落中途）：继续推进直到终态
+			// 推进直到终态（ended/death），遇到中间 choice 时自动选第一项继续探测。
+			// 这样可以判断探索型选项的最终走向，而不是停在中间抉择点导致误拦截。
 			let guard = 0;
-			while (out.state === "text" && guard++ < 300) {
-				out = this.runner.advance();
+			while (guard++ < 500) {
+				if (out.state === "text") {
+					out = this.runner.advance();
+					continue;
+				}
+				if (out.state === "choice" && out.choices.length > 0) {
+					out = this.runner.choose(0);
+					continue;
+				}
+				break;
 			}
+			// 只有分支自然走到 #death 才放行（保留作者写好的死亡文案史识价值）；
+			// 直达非死亡结局（ended/反事实结局）或停在抉择点 → 判"偏离正史"失败
 			survives = out.state !== "death";
 		} catch {
 			// 探测异常时保守放行（按原分支走）
@@ -318,6 +386,23 @@ export class ShijiInkAdapter implements IStoryRunner {
 		return this.advance();
 	}
 
+	/**
+	 * 回到上一个抉择点（不推进剧情），用于玩家看完某选项下文后想尝试其他选项。
+	 * 恢复 lastChoiceSnapshot 后直接收集选项，不调用 advance（不计数、不覆盖快照）。
+	 */
+	revertToChoicePoint(): StoryState | null {
+		if (!this.lastChoiceSnapshot) return null;
+		this.runner.restore(this.lastChoiceSnapshot);
+		// 恢复后重新收集选项（不推进），用于构建抉择点状态
+		const choices = this.runner.getCurrentChoices();
+		if (choices.length === 0) return null;
+		// 同步 lastChoices，供下次 choose 使用
+		this.lastChoices = choices;
+		// 构建一个无文本的抉择点状态
+		const output: RunnerOutput = { state: "choice", segments: [], choices, deathId: undefined };
+		return this.buildState(output, null, false);
+	}
+
 	/** Restart the story from the beginning. */
 	restart(): void {
 		this.vars = {
@@ -339,6 +424,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.actIndex = 0;
 		this.pendingActClear = null;
 		this.pendingMinigame = null;
+		this.pendingImpact = null;
 		this.endingAchievement = undefined;
 		this.endingId = undefined;
 		this.syncInkVarsToStats();
@@ -402,8 +488,11 @@ export class ShijiInkAdapter implements IStoryRunner {
 	private resetPerTurnState(): void {
 		this.endingAchievement = undefined;
 		this.endingId = undefined;
+		this.deathAsEnding = null;
 		this.pendingActClear = null;
 		this.pendingMinigame = null;
+		this.manualMinigame = false;
+		this.pendingImpact = null;
 	}
 
 	/**
@@ -442,6 +531,19 @@ export class ShijiInkAdapter implements IStoryRunner {
 				} else {
 					this.pendingMinigame = { id: raw.slice(0, colon), param: raw.slice(colon + 1) };
 				}
+			}
+			if (seg.meta.impact && typeof seg.meta.impact === "string" && !this.probing) {
+				const impactId = seg.meta.impact;
+				const entry = this.config.impacts?.[impactId];
+				if (entry) {
+					this.pendingImpact = { choice: entry.choice, source: entry.source, impact: entry.impact };
+				}
+				// 同步触发史识碎片解锁（即使 impacts 注册表未配置也回调，允许 data/knowledge 单独维护碎片）
+				this.cb.onUnlockKnowledge?.(impactId);
+			}
+			if (seg.meta.quiz && typeof seg.meta.quiz === "string" && !this.probing) {
+				// 章末测验占位：直接解锁对应 quiz_ 史识碎片（后续可扩展为弹出测验 UI）
+				this.cb.onUnlockKnowledge?.(seg.meta.quiz);
 			}
 		}
 	}
@@ -509,23 +611,44 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.pendingActClear = null;
 
 		const minigame = this.pendingMinigame ?? undefined;
-		// 注意：pendingMinigame 不在这里清空——UI 还需要读取它来挂载 GameHost。
-		// 清空时机：UI 调用 completeMinigame() 后，advance 开头 resetPerTurnState 清空。
+		const impact = this.pendingImpact ?? undefined;
 
-		// 结局信息：#ending:ID 查注册表；未注册/未标注时按 #achieve 回退推断类型
 		let ending: StoryState["ending"];
 		if (ended) {
 			const id = this.endingId;
 			if (id) {
 				const entry = this.config.endings?.[id];
-				ending = {
-					id,
-					title: entry?.title ?? "",
-					kind: entry?.kind ?? (id === "canon" || this.endingAchievement ? "canon" : "if"),
-					epigraph: entry?.epigraph,
-				};
+				// 自由模式下死亡分支转结局：用 death 信息生成标题与题词
+				if (this.deathAsEnding && !entry) {
+					const d = this.deathAsEnding;
+					ending = {
+						id,
+						title: d.reason || "历史的歧路",
+						kind: "if",
+						epigraph: d.classical ? `「${d.classical}」${d.analysis ? "　" + d.analysis : ""}` : d.analysis,
+					};
+				} else {
+					ending = {
+						id,
+						title: entry?.title ?? "",
+						kind: entry?.kind ?? (id === "canon" || this.endingAchievement ? "canon" : "if"),
+						epigraph: entry?.epigraph,
+					};
+				}
 			} else if (this.endingAchievement) {
 				ending = { id: "canon", title: "", kind: "canon" };
+			}
+		}
+
+		for (const seg of output.segments) {
+			if (seg.text && !this.probing) {
+				const match = bgmMatcher.match(seg.text, seg.speaker);
+				if (match) {
+					const trackId = bgmMatcher.switchTo(match.mood, match.strong);
+					if (trackId) {
+						this.cb.onBGM?.(trackId);
+					}
+				}
 			}
 		}
 
@@ -541,6 +664,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 			ending,
 			actClear,
 			minigame,
+			impact,
 		};
 	}
 

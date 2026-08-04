@@ -1,0 +1,300 @@
+/* 屈原问天 选词填空 竹简卷轴样式 前缀 qy- */
+
+.qy-root {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+	padding: var(--space-2) 0 var(--space-4);
+}
+.qy-hud {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.qy-title {
+	font-size: 20px;
+	letter-spacing: 0.25em;
+	color: var(--color-gold, #c9a84c);
+}
+.qy-stats {
+	font-size: 12px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+	display: flex;
+	gap: 8px;
+}
+.qy-hint {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+	margin: 0;
+	line-height: 1.8;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.2);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
+}
+.qy-stage {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-4);
+}
+.qy-scroll {
+	position: relative;
+	background:
+		linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.15) 100%),
+		linear-gradient(90deg, #8b5a2b 0%, #a8783a 50%, #8b5a2b 100%);
+	border: 1px solid #3a2610;
+	border-radius: var(--radius-lg, 12px);
+	padding: 28px 24px;
+	box-shadow:
+		inset 0 2px 6px rgba(255, 220, 150, 0.18),
+		inset 0 -2px 6px rgba(0, 0, 0, 0.35),
+		0 6px 20px rgba(0, 0, 0, 0.4);
+	overflow: hidden;
+}
+.qy-scroll::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background-image: repeating-linear-gradient(
+		90deg,
+		rgba(0, 0, 0, 0.08) 0px,
+		rgba(0, 0, 0, 0.08) 1px,
+		rgba(255, 220, 150, 0.04) 1px,
+		rgba(255, 220, 150, 0.04) 28px
+	);
+	pointer-events: none;
+}
+.qy-scroll-endcap {
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 10px;
+	background: linear-gradient(180deg, #6b4520 0%, #3a2610 50%, #1f140a 100%);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+	z-index: 2;
+}
+.qy-scroll-endcap-top { top: 0; border-radius: var(--radius-lg, 12px) var(--radius-lg, 12px) 0 0; }
+.qy-scroll-endcap-bottom { bottom: 0; border-radius: 0 0 var(--radius-lg, 12px) var(--radius-lg, 12px); }
+.qy-verse-wrap {
+	position: relative;
+	z-index: 1;
+	padding: 16px 4px 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 14px;
+	min-height: 140px;
+	justify-content: center;
+	text-align: center;
+}
+.qy-verse-index {
+	font-size: 12px;
+	letter-spacing: 0.3em;
+	color: rgba(244, 215, 154, 0.65);
+}
+.qy-verse {
+	font-family: var(--font-serif, "Songti SC", "Noto Serif CJK SC", serif);
+	font-size: 26px;
+	line-height: 2;
+	letter-spacing: 0.15em;
+	color: #fff5d4;
+	margin: 0;
+	text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.qy-verse-text { white-space: normal; }
+.qy-blank {
+	display: inline-block;
+	min-width: 1.2em;
+	padding: 0 4px;
+	margin: 0 2px;
+	border-bottom: 2px dashed rgba(244, 215, 154, 0.65);
+	color: transparent;
+	background: transparent;
+	transition: all 0.25s ease;
+	vertical-align: baseline;
+}
+.qy-blank.filled-correct {
+	color: var(--color-gold, #c9a84c);
+	border-bottom-color: var(--color-gold, #c9a84c);
+	background: rgba(201, 168, 76, 0.18);
+	border-radius: 4px;
+	animation: qyPop 0.4s ease-out;
+	text-shadow: 0 0 8px rgba(201, 168, 76, 0.6);
+}
+@keyframes qyPop {
+	0% { transform: scale(0.6); opacity: 0; }
+	60% { transform: scale(1.25); opacity: 1; }
+	100% { transform: scale(1); opacity: 1; }
+}
+.qy-note {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	max-width: 540px;
+	padding: 10px 14px;
+	background: rgba(0, 0, 0, 0.32);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
+	font-size: 13px;
+	line-height: 1.9;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+	animation: qyNoteIn 0.4s ease-out;
+}
+.qy-note-tag {
+	flex-shrink: 0;
+	font-family: var(--font-serif);
+	font-size: 12px;
+	color: var(--color-gold, #c9a84c);
+	border: 1px solid rgba(201, 168, 76, 0.5);
+	border-radius: 3px;
+	padding: 0 6px;
+	margin-top: 2px;
+	letter-spacing: 0.1em;
+}
+@keyframes qyNoteIn {
+	from { opacity: 0; transform: translateY(6px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+.qy-options {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 12px;
+}
+.qy-tag {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding: 16px 8px 14px;
+	background: linear-gradient(180deg, #c89a5a 0%, #a8783a 50%, #7a5320 100%);
+	border: 1px solid #3a2610;
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.25),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+		0 3px 8px rgba(0, 0, 0, 0.4);
+	user-select: none;
+}
+.qy-tag-knot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: #3a2610;
+	box-shadow: 0 0 0 2px rgba(244, 215, 154, 0.4);
+	margin-top: -22px;
+	margin-bottom: 2px;
+}
+.qy-tag-text {
+	font-family: var(--font-serif, "Songti SC", "Noto Serif CJK SC", serif);
+	font-size: 26px;
+	letter-spacing: 0.1em;
+	color: #fff5d4;
+	line-height: 1;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.qy-tag:hover:not(:disabled) {
+	transform: translateY(-3px);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 220, 150, 0.3),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.35),
+		0 6px 14px rgba(0, 0, 0, 0.5);
+}
+.qy-tag:disabled { cursor: not-allowed; }
+.qy-tag-correct {
+	background: linear-gradient(180deg, #f0d989 0%, #c9a84c 50%, #8a6f1f 100%);
+	border-color: #5a4510;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 240, 200, 0.4),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.3),
+		0 0 18px rgba(201, 168, 76, 0.6);
+	animation: qyGoldPulse 0.5s ease-out;
+}
+.qy-tag-correct .qy-tag-text {
+	color: #2a1810;
+	text-shadow: 0 1px 1px rgba(255, 240, 200, 0.5);
+}
+@keyframes qyGoldPulse {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.1); box-shadow: 0 0 28px rgba(201, 168, 76, 0.8); }
+	100% { transform: scale(1); }
+}
+.qy-tag-wrong {
+	background: linear-gradient(180deg, #a04030 0%, #7a2018 50%, #4a0f0a 100%);
+	border-color: #2a0805;
+	box-shadow:
+		inset 0 2px 4px rgba(255, 120, 100, 0.2),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.4),
+		0 3px 8px rgba(0, 0, 0, 0.4);
+	animation: qyShake 0.5s ease-in-out;
+}
+.qy-tag-wrong .qy-tag-text {
+	color: #ffd6c8;
+	text-decoration: line-through;
+	text-decoration-color: rgba(255, 200, 180, 0.6);
+}
+@keyframes qyShake {
+	0%, 100% { transform: translateX(0); }
+	15% { transform: translateX(-6px); }
+	30% { transform: translateX(5px); }
+	45% { transform: translateX(-4px); }
+	60% { transform: translateX(3px); }
+	75% { transform: translateX(-2px); }
+	90% { transform: translateX(1px); }
+}
+.qy-tag-dim {
+	opacity: 0.35;
+	filter: grayscale(0.4);
+}
+.qy-controls {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 8px;
+	margin-top: var(--space-2);
+}
+.qy-finish {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: rgba(0, 0, 0, 0.82);
+	backdrop-filter: blur(4px);
+	border-radius: var(--radius-lg, 12px);
+	animation: qyScaleIn 0.4s ease-out;
+	color: var(--color-gold, #c9a84c);
+	z-index: 5;
+}
+.qy-finish.lose { color: var(--color-vermilion-light, #e74c3c); }
+.qy-finish-title {
+	font-size: 30px;
+	letter-spacing: 0.3em;
+	margin-top: var(--space-2);
+}
+.qy-finish-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+}
+@keyframes qyScaleIn {
+	from { opacity: 0; transform: scale(0.85); }
+	to { opacity: 1; transform: scale(1); }
+}
+@media (max-width: 640px) {
+	.qy-verse { font-size: 20px; letter-spacing: 0.1em; line-height: 1.9; }
+	.qy-options { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+	.qy-tag-text { font-size: 22px; }
+	.qy-scroll { padding: 24px 16px; }
+	.qy-title { font-size: 18px; }
+	.qy-finish-title { font-size: 24px; }
+}

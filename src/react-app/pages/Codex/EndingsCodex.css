@@ -1,0 +1,147 @@
+/* ============ 结局图鉴（在死亡图鉴样式之上叠加） ============ */
+
+/* 顶部 tab 切换：死亡图鉴 / 结局图鉴 */
+.codex-tabs {
+	display: flex;
+	gap: var(--space-2);
+	margin-bottom: var(--space-5);
+	padding-bottom: var(--space-3);
+	border-bottom: 1px dashed var(--color-ink-mid);
+}
+
+.codex-tab {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: var(--radius-ctl);
+	border: 1px solid transparent;
+	background: transparent;
+	color: var(--color-rice-dim);
+	font-family: var(--font-serif);
+	font-size: 14px;
+	letter-spacing: 0.12em;
+	transition: background var(--duration-fast), color var(--duration-fast),
+		border-color var(--duration-fast);
+}
+
+.codex-tab:hover {
+	background: rgba(184, 151, 58, 0.08);
+	color: var(--color-rice);
+}
+
+.codex-tab.active {
+	background: rgba(184, 151, 58, 0.14);
+	border-color: var(--color-gold-dim);
+	color: var(--color-gold-light);
+}
+
+/* 结局条目网格：与死亡图鉴同网格，但卡片更宽以容纳判词 */
+.codex-ending-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: var(--space-3);
+}
+
+/* 章节计数用青色（区别于死亡图鉴的朱色） */
+.codex-char-count-endings {
+	color: var(--color-cyan-light) !important;
+}
+
+/* ── 结局条目：.game-card 基座 + --accent 身份色 ── */
+.ending-entry {
+	padding: var(--space-4);
+	animation: fadeUp var(--duration-normal) var(--ease-out) both;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.ending-entry.unlocked {
+	border-color: color-mix(in srgb, var(--accent) 40%, var(--color-ink-mid));
+	background:
+		linear-gradient(160deg, color-mix(in srgb, var(--accent) 14%, transparent), transparent 60%),
+		linear-gradient(180deg, var(--color-ink-light), var(--color-ink-soft));
+}
+
+.ending-entry.locked {
+	border-style: dashed;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 140px;
+	gap: var(--space-2);
+	color: var(--color-muted);
+}
+
+.ending-entry-lbl {
+	font-family: var(--font-serif);
+	font-size: var(--text-body);
+	letter-spacing: 0.25em;
+	color: var(--color-rice-dim);
+}
+
+.ending-entry-sub {
+	font-size: 11px;
+	color: var(--color-muted);
+	letter-spacing: 0.1em;
+}
+
+.ending-entry-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2);
+	font-size: 11px;
+	letter-spacing: 0.15em;
+}
+
+.ending-entry-kind {
+	padding: 2px 8px;
+	border-radius: var(--radius-pill);
+	border: 1px solid currentColor;
+}
+
+.ending-entry-kind.canon {
+	color: var(--color-gold-light);
+	border-color: color-mix(in srgb, var(--color-gold) 50%, transparent);
+	background: rgba(184, 151, 58, 0.1);
+}
+
+.ending-entry-kind.if {
+	color: var(--color-cyan-light);
+	border-color: color-mix(in srgb, var(--color-cyan-light) 45%, transparent);
+	background: rgba(80, 180, 200, 0.08);
+}
+
+.ending-entry-idx {
+	color: var(--color-rice-faint);
+	font-variant-numeric: tabular-nums;
+}
+
+.ending-entry-title {
+	font-size: var(--text-h3);
+	letter-spacing: 0.1em;
+	color: color-mix(in srgb, var(--accent) 60%, var(--color-rice));
+	font-weight: 700;
+	line-height: 1.4;
+}
+
+.ending-entry-epigraph {
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	line-height: 1.9;
+	border-left: 2px solid color-mix(in srgb, var(--accent) 45%, var(--color-ink-mid));
+	padding-left: var(--space-3);
+	margin-top: var(--space-1);
+}
+
+@media (max-width: 640px) {
+	.codex-ending-grid {
+		grid-template-columns: 1fr;
+	}
+	.ending-entry-title {
+		font-size: var(--text-body);
+	}
+}

@@ -19,7 +19,7 @@ VAR mg_score = 0
 // ───────────────────────────────
 
 === act1_tingzhang ===
-#bg:huaiyin_street
+#bg:huaiyin_street_alt2
 #bgm:solemn
 #show:qingyue:tease:float
 「欸嘿——又一位穿越客落到我这儿啦！这一回可不得了。」 #speaker:青月
@@ -74,7 +74,7 @@ VAR mg_score = 0
 * #correct #hint:吾非敢自爱，恐能薄……愿更相推择可者。以退为进，坐得名正言顺。 [几番推让：「置将不善，一败涂地」，让萧曹这些文吏先怕事推托]
 	~ ren = ren + 1
 	-> act2_ligong
-* [当仁不让，一口应下，立刻自称沛公]
+* #correct [当仁不让，一口应下，立刻自称沛公]
 	-> act2_ligong
 
 === act2_ligong ===
@@ -116,6 +116,7 @@ VAR mg_score = 0
 === act3_rugong ===
 #hide:baishe
 #bg:han_palace
+#bgm:court
 你西入咸阳。秦宫珍宝如山、美人如云——你脚一软，真想住下来歇一歇。 #speaker:青月 #hint:欲止宫休舍。
 #show:fankuai:worry:left
 樊哙、张良急忙拦你：「秦所以亡，正为此奢！沛公岂欲有天下乎，还是要做个富家翁？」 #speaker:樊哙
@@ -137,6 +138,16 @@ VAR mg_score = 0
 #show:qingyue:solemn:float
 「秦法繁苛，诽谤者族、偶语者弃市。你九个字就换了它——秦人争着牵牛担酒来犒军，你还推让不受。」 #speaker:青月 #hint:秦人大喜……唯恐沛公不为秦王。
 「一个爱酒色的无赖，在最想放纵的时候忍住了。这一忍，你赢下的是天底下最要紧的一仗——**民心**。」 #speaker:青月
+#show:qingyue:calm:float
+「约法三章传出去的那天，咸阳囚牢里有个老吏，叫老孙。」 #speaker:青月
+「秦法繁苛，他做了二十年狱吏，见过『赭衣塞路，囹圄成市』——刑徒的囚笼一个挨一个，破草席都没半张。」 #speaker:青月
+「那天他听见外头有人喊：『杀人者死，伤人及盗抵罪！余悉除去秦法！』」 #speaker:青月
+#show:qingyue:smile:float
+「他愣了半天，把囚笼里铺了二十年的破席子，拆了。」 #speaker:青月
+「旁边的狱卒问：『孙叔，这是你攒了一辈子的家当啊！』老孙笑：『从今往后，不用再给囚笼铺席子了——没人再往里塞那么多人了。』」 #speaker:青月
+#show:qingyue:solemn:float
+「他把那片破席拆了当床单，铺在自己那间不足一弓的土屋里。二十年了，他第一次，不用跟刑徒挤一张席。」 #speaker:青月
+「约法三章，九个字。可对老孙来说，是从『赭衣塞路』到『不用再收囚笼』的一辈子。」 #speaker:青月
 -> act3_clear
 
 === act3_clear ===
@@ -164,9 +175,12 @@ VAR mg_score = 0
 	-> act4_zhang
 * [据理力争：「先入关者王之，是怀王亲口的约！」当场硬扛项羽]
 	-> death_yingkang
+* #correct [沛公此去鸿门，有何全身而退之计？]
+	-> c_explore_lvbizhi
 
 === act4_zhang ===
 #bg:tent_night
+#bgm:tension
 你在帐中赔尽笑脸，项羽果然心软，还把告密的曹无伤卖给了你。可范增举玦、项庄舞剑，杀机没散。 #speaker:青月 #hint:此沛公左司马曹无伤言之。
 樊哙闯帐、怒目而立，替你争回一口气。趁着这乱，你借口如厕，想脱身。 #speaker:青月
 #show:qingyue:tease:float
@@ -181,6 +195,9 @@ VAR mg_score = 0
 === act4_clear ===
 #actclear:liubang_act4
 #bg:huaiyin_street
+#bgm:peaceful
+#show:qingyue:tease:float
+「呐——鸿门宴上你把命保住了，可这军帐的阵势，你还能走脱吗？来，试试这步棋——大行不顾细谨，出了这帐，就是活路。」 #speaker:青月
 #minigame:klotski:mid
 { mg_result == "win":
 	#show:qingyue:smile:float
@@ -219,6 +236,7 @@ VAR mg_score = 0
 
 === act5_hanzhongdui ===
 #bg:palace
+#bgm:court
 #show:hanxin:default:center
 韩信登坛，替你剖析天下：项羽匹夫之勇、妇人之仁，所过残灭，失尽人心；而你入关约法三章，秦民归心。 #speaker:韩信 #hint:项羽王诸将之有功者，而王独居南郑，是迁也……及其锋而用之，可以有大功。
 「大王只要决策东乡，还定三秦，天下可图。」你听得拍案——相见恨晚。 #speaker:青月
@@ -252,6 +270,7 @@ VAR mg_score = 0
 
 === act6_jixin ===
 #bg:riverside
+#bgm:peaceful
 #show:jixin:default:center
 将军纪信站出来：「事急矣，臣请诳楚。」他要假扮你、乘你的王驾出东门诈降，替你去死。 #speaker:纪信 #hint:将军纪信乃乘王驾，诈为汉王，诳楚。
 #show:qingyue:worry:float
@@ -265,6 +284,7 @@ VAR mg_score = 0
 
 === act6_fenbei ===
 #bg:riverside
+#bgm:peaceful
 纪信被项羽烧死，你却已逃出生天。此后广武对峙，项羽把你父亲太公架上砧板，威胁要烹了他。 #speaker:青月 #hint:项羽烧杀纪信。
 你却隔涧笑答：「吾与项羽俱北面受命怀王，约为兄弟，吾翁即若翁。必欲烹而翁，则幸分我一杯羹。」 #speaker:刘季 #hint:必欲烹而翁，则幸分我一杯羹。
 #show:qingyue:solemn:float
@@ -305,7 +325,7 @@ VAR mg_score = 0
 * #correct #hint:此三者皆人杰，吾能用之，此吾所以取天下也——知人善任，是刘邦一生最清醒的自知。 [「运筹不如子房，镇国不如萧何，将兵不如韩信——吾能用此三杰」]
 	~ yong = yong + 1
 	-> act7_lunsanjie
-* [「天命在朕，斩白蛇、有龙气，天下本该归朕」，独揽其功]
+* #correct [「天命在朕，斩白蛇、有龙气，天下本该归朕」，独揽其功]
 	~ caiji = caiji + 1
 	-> act7_lunsanjie
 
@@ -348,7 +368,7 @@ VAR mg_score = 0
 * #correct #hint:高帝用陈平奇计……围以得开——天子能屈能伸，一时之辱换一世江山。 [「用陈平之计。丢这一次脸，换一条命、一个天下——值。」你依计脱围，回长安定和亲之策]
 	~ ren = ren + 1
 	-> act8_dafeng
-* [「天子岂能向胡妇乞命！集死士，向匈奴最薄处，强突——朕就不信杀不出去！」]
+* #correct [「天子岂能向胡妇乞命！集死士，向匈奴最薄处，强突——朕就不信杀不出去！」]
 	-> if_baideng_1
 
 === act8_dafeng ===
@@ -363,10 +383,10 @@ VAR mg_score = 0
 
 * #correct #hint:安得猛士兮守四方——一半是求贤的雄心，一半是无人可信的苍凉。 [「安得猛士兮守四方！」——你起舞，慷慨伤怀，泣数行下]
 	-> act8_ending_gate
-* [把歌咽回去，只在心里盘算：哪个功臣还没除，哪个还能反]
+* #correct [把歌咽回去，只在心里盘算：哪个功臣还没除，哪个还能反]
 	~ caiji = caiji + 1
 	-> act8_ending_gate
-* [「不……朕封了他们王，就该让他们真做王。共打的天下，凭什么不能共守？」——你决意不再诛异姓功臣]
+* #correct [「不……朕封了他们王，就该让他们真做王。共打的天下，凭什么不能共守？」——你决意不再诛异姓功臣]
 	-> if_gongtianxia_1
 
 === act8_ending_gate ===
@@ -412,6 +432,7 @@ VAR mg_score = 0
 
 === death_yajie ===
 #bg:huaiyin_street
+#bgm:peaceful
 你押着人赶路，终究还是逃散殆尽。按秦法，失徒者死——你没等到起兵那一天，就被就地正法了。 #death:yajie #speaker:青月
 -> END
 
@@ -421,26 +442,31 @@ VAR mg_score = 0
 
 === death_qingong ===
 #bg:han_palace
+#bgm:court
 你住进了秦宫，日日声色。士卒离心、张良樊哙寒心，项羽大军压境时，你众叛亲离，连霸上都退不回去了。 #death:qingong #speaker:青月
 -> END
 
 === death_yingkang ===
 #bg:tent_feast
+#bgm:court
 你在鸿门当众硬顶项羽，据约力争。项羽勃然大怒，范增趁势起身——四十万对十万，你连夜里都没能熬过去。 #death:yingkang #speaker:青月
 -> END
 
 === death_cixing ===
 #bg:tent_night
+#bgm:tension
 你顾着体面，回帐正式辞行。范增等的正是这一刻，项庄的剑再落下时，樊哙也拦不住了。 #death:cixing #speaker:青月
 -> END
 
 === death_shixin ===
 #bg:plank_road
+#bgm:tension
 你嫌韩信出身低微，只给了个闲职。韩信当夜亡去，萧何月下也没追回。没有兵仙，你困死汉中，再没能还定三秦。 #death:shixin #speaker:青月
 -> END
 
 === death_shouwei ===
 #bg:riverside
+#bgm:peaceful
 你不忍纪信替死，执意共守孤城。荥阳粮尽城破，你与满城将士一同被俘——项羽这一次，可不会再放你了。 #death:shouwei #speaker:青月
 -> END
 
@@ -463,6 +489,7 @@ VAR mg_score = 0
 
 === if_gongtianxia_2 ===
 #bg:han_palace
+#bgm:court
 #show:qingyue:default:float
 你没有伪游云梦，没有诈捕韩信。你反把三人召到长安，赐宴、加封、许以世守其国：「朕与诸君，共守此天下。」 #speaker:青月
 韩信感泣——他到底没白等那个解衣推食的知遇。彭越、黥布卸下了半生的猜疑，安心做他们的王。异姓诸侯环卫京师，边有燕代、南有淮楚，汉家一时如众星拱月。 #speaker:青月
@@ -503,6 +530,7 @@ VAR mg_score = 0
 
 === if_baideng_2 ===
 #bg:zhuolu_field
+#bgm:battle
 #show:qingyue:default:float
 你亲率死士，向匈奴阵列最薄的西北角猛冲。汉军步卒结阵死战，一时竟撕开一道口子——你的悍勇，还是当年斩蛇泽中的那个亭长。 #speaker:青月
 可草原骑兵来去如风。你冲得开一阵，冲不散四十万。冒顿见你亲出，反而合围更紧，箭如飞蝗。你身边的樊哙、夏侯婴一个个带伤，替你挡下劈来的弯刀。 #speaker:青月
@@ -521,3 +549,36 @@ VAR mg_score = 0
 「能屈能伸，是你一辈子的本事。可你偏偏在白登，选了不屈——赢了面子，输了里子。一个懂得低头的刘邦，本不该在这里逞英雄呀。」 #speaker:青月
 你带着满身箭创回了长安。这一战你没败，也没赢；你只是证明了：有些仗，能打，却不该打。天子的尊严，有时比一场惨胜更贵，也更贱。 #speaker:青月 #ending:if_baideng
 -> END
+
+// ═══════════════════════════════════════════════
+// 探索 · 沛公避鸿门宴计 —— 全身而退的三策
+// ═══════════════════════════════════════════════
+
+=== c_explore_lvbizhi ===
+#show:qingyue:default:float
+「你心里清楚——鸿门那顿饭，是去吃项羽的刀。你带的百十骑，在四十万大军面前，不够塞牙缝。」 #speaker:青月
+「可你还是得去。不去，就是『心虚』，给了项羽开战的由头。那这顿饭，怎么吃法？」 #speaker:青月
+
+* #correct [张良斡旋，项伯内应——靠人]
+	#show:qingyue:calm:float
+	「张良跟项伯是老相识。项伯在项羽帐下，能说得上话。让他在项羽面前替你说几句软话，先稳住霸王那点『义』心。」 #speaker:青月
+	「这是你这辈子最擅长的——用『人』。你不会打仗，可你会用会打仗的人，会用能说得上话的人。」 #speaker:青月
+	-> act4_hongmen_return
+
+* #correct [樊哙闯帐，制造混乱——靠勇]
+	#show:qingyue:tease:float
+	「樊哙那样的猛人，带剑拥盾闯帐，瞋目视项王，头发上指。项羽见了这等壮士，反而不好在席间杀你。」 #speaker:青月
+	「这是你另一个本事——在关键时刻，让别人替你挡刀。樊哙的『勇』，跟你的『忍』，是绝配。」 #speaker:青月
+	-> act4_hongmen_return
+
+* #correct [尿遁不辞而别——靠无赖]
+	#show:qingyue:smile:float
+	「『大行不顾细谨，大礼不辞小让』——刘邦的脸皮，在这一刻比城墙还厚。你借口如厕，抄小路溜之大吉。」 #speaker:青月
+	「这是别人学不来的——项羽一辈子都做不到『不辞而别』。可你，做到了。」 #speaker:青月
+	-> act4_hongmen_return
+
+=== act4_hongmen_return ===
+#show:qingyue:calm:float
+「想清楚了？鸿门宴上，刘邦能活下来，靠的不是运气，是能屈。」 #speaker:青月
+「这份能屈，旁人学不来。项羽学不来，韩信也学不来——偏偏亭长出身的刘邦，天生就会。」 #speaker:青月
+-> act4_hongmen

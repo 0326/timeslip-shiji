@@ -11,6 +11,7 @@ import { hanchuStorylines } from "./hanchu";
 import { qinStorylines } from "./qin";
 import { xizhouStorylines } from "./xizhou";
 import { zhuziStorylines } from "./zhuzi";
+import { qunxiangStorylines } from "./qunxiang";
 
 export const STORYLINES: Storyline[] = [
 	...wudiStorylines,
@@ -23,6 +24,7 @@ export const STORYLINES: Storyline[] = [
 	...qinStorylines,
 	...xizhouStorylines,
 	...zhuziStorylines,
+	...qunxiangStorylines,
 ];
 
 export const STORYLINE_MAP: Record<string, Storyline> = Object.fromEntries(

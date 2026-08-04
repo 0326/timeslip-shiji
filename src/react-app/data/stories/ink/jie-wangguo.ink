@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 夏桀 · 荒暴亡国
 // 史源：《史记·夏本纪》
 // ═══════════════════════════════════════════════
@@ -71,6 +71,7 @@
 
 === c_huangbao ===
 #bg:xia_terrace
+#bgm:court
 你不以为意，继续在夏台之上享乐。你觉得这天下，是禹打下来的、启坐上去的，到你桀手里，绝不会丢。 #speaker:青月
 可日子一天天过去，你的政令越来越没人听。你征的税越来越重，来的粮却越来越少；你派的官越来越多，管的事却越来越烂。 #speaker:青月
 #show:qingyue:worry:float
@@ -81,6 +82,7 @@
 
 === c_death_ao ===
 #bg:xia_terrace
+#bgm:court
 你下诏召汤入朝。使者到了商，汤恭恭敬敬地来了——带着贡品，带着笑容，带着你想象不到的底气。
 汤跪拜，口称臣。你居高临下，满意地笑了：「算他识相。」 #speaker:青月
 可你不知道的是：汤回商之后，做的第一件事不是继续装乖，而是召集伊尹、仲虺，把你的国力、你的虚实、你朝堂上的每一个人，都摸了一遍。 #speaker:青月
@@ -107,6 +109,7 @@
 
 === c_death_shatang ===
 #bg:xia_terrace
+#bgm:court
 你杀了关龙逄。这是最后一个敢对你直言的大臣。从此，夏台之上，再无人敢说一个不字。 #speaker:青月
 #hide:jie
 可不说，不代表不想。不说，只是把沉默攒成了怨恨，把怨恨酿成了倒戈。 #speaker:青月
@@ -128,6 +131,7 @@
 #hide:tang
 #hide:jie
 #bg:nanchao_exile
+#bgm:death
 #show:jie:despair:center
 南巢的荒野里，你坐在一块石头上。身后是逃不掉的流放，身前是走不完的荒路。 #speaker:青月
 #show:qingyue:solemn:float
@@ -141,6 +145,7 @@
 
 === c_death_silent ===
 #bg:xia_terrace
+#bgm:court
 你没有杀关龙逄，但也没有听。你沉默着，像一尊石像。 #speaker:青月
 #show:qingyue:sad:float
 关龙逄看着你的沉默，长叹一声，退了出去。他知道，这个王朝，已经药石无医了。 #speaker:青月
@@ -151,6 +156,7 @@
 
 === c_death_exile ===
 #bg:xia_terrace
+#bgm:court
 你把关龙逄打了出去。你既不杀他，也不听他——你只是不想再听人烦你。 #speaker:青月
 关龙逄带着一身伤退了。朝堂上，大臣们看到了：直谏的代价，是一道鞭子。虽不至于死，但谁还想再来？ #speaker:青月
 #show:qingyue:worry:float
@@ -179,13 +185,14 @@
 你败走鸣条，放逐南巢。夏后氏四百余年，亡于你手。 #speaker:青月 #hint:桀走鸣条，遂放而死。
 
 #bg:nanchao_exile
+#bgm:death
 #show:qingyue:calm:float
 「四百年。从禹治水到你荒暴，夏用了整整四百年来走到这一步。」 #speaker:青月
 「你站在南巢的荒野里，看着身后的废墟——那废墟里，有你曾祖父治过的水、有你祖父打过的仗、有你父亲立过的规矩。」 #speaker:青月
 #show:qingyue:sad:float
 「全没了。不是一朝一夕没的——是一寸一寸，被傲慢吃掉的。」 #speaker:青月
 #show:qingyue:smile:float
-「呼——你走完了桀的这一程。最后想问你一个问题：如果你早知道结局，你还会不会说那句『朕不在乎』？」 #speaker:青月 #ending:canon
+「呼——你走完了桀的这一程。最后想问你一个问题：如果你早知道结局，你还会不会说那句『朕不在乎』？」 #speaker:青月 #ending:canon #impact:impact_wangguo_shangde #quiz:quiz_wangguo_shangde
 -> END
 
 === c_end_wangguo ===
