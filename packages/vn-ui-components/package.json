@@ -1,0 +1,27 @@
+{
+  "name": "vn-ui-components",
+  "version": "0.1.0",
+  "description": "Reusable UI components for Historical VN: theme provider, menu screens, VN textbox, character codex, save/load dialog, gacha, achievements, settings, and the VN HUD + overlays. React + TypeScript + CSS-in-CSS vars. Decoupled from ink-vn-core via vn-game-systems interface so UI can be replaced.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles.css"
+  },
+  "sideEffects": ["./src/styles.css"],
+  "dependencies": {
+    "vn-content-schemas": "workspace:*",
+    "vn-game-systems": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0"
+  }
+}

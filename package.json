@@ -1,53 +1,63 @@
 {
-	"name": "timeslip-shiji",
-	"description": "A template for building a React application with Vite, Hono, and Cloudflare Workers",
-	"cloudflare": {
-		"label": "Vite React Template",
-		"products": [
-			"Workers"
-		],
-		"categories": [],
-		"preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/532a5378-9717-4964-385b-5fafd2160200/public",
-		"preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/ec7f4be5-d1d6-4e94-0851-126341745400/preview",
-		"publish": true
-	},
-	"dependencies": {
-		"d3": "^7.9.0",
-		"framer-motion": "^12.42.2",
-		"hono": "4.11.1",
-		"inkjs": "~2.4.0",
-		"lucide-react": "^1.21.0",
-		"react": "19.2.1",
-		"react-dom": "19.2.1",
-		"react-router-dom": "^7.18.0",
-		"zustand": "^5.0.14"
-	},
-	"devDependencies": {
-		"@cloudflare/vite-plugin": "^1.15.3",
-		"@eslint/js": "9.39.1",
-		"@types/d3": "^7.4.3",
-		"@types/node": "24.10.1",
-		"@types/react": "19.2.7",
-		"@types/react-dom": "19.2.3",
-		"@vitejs/plugin-react": "5.1.1",
-		"eslint": "9.39.2",
-		"eslint-plugin-react-hooks": "7.0.1",
-		"eslint-plugin-react-refresh": "0.4.24",
-		"globals": "16.5.0",
-		"typescript": "5.9.3",
-		"typescript-eslint": "8.48.0",
-		"vite": "^7.0.0",
-		"wrangler": "4.88.0"
-	},
-	"private": true,
-	"scripts": {
-		"build": "tsc -b && vite build",
-		"cf-typegen": "wrangler types",
-		"check": "tsc && vite build && wrangler deploy --dry-run",
-		"deploy": "wrangler deploy",
-		"dev": "vite",
-		"lint": "eslint .",
-		"preview": "npm run build && vite preview"
-	},
-	"type": "module"
+  "name": "timeslip-shiji",
+  "version": "1.0.0",
+  "private": true,
+  "description": "穿越·史记 历史 VN 游戏框架 — 基于 Ink + React 的叙事引擎，输入史书素材生成完整可玩的历史视觉小说游戏",
+  "cloudflare": {
+    "label": "Timeslip Shiji VN Framework",
+    "products": ["Workers"],
+    "categories": [],
+    "preview_icon_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/532a5378-9717-4964-385b-5fafd2160200/public",
+    "preview_image_url": "https://imagedelivery.net/wSMYJvS3Xw-n339CbDyDIA/ec7f4be5-d1d6-4e94-0851-126341745400/preview",
+    "publish": true
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "framer-motion": "^12.42.2",
+    "hono": "4.11.1",
+    "inkjs": "~2.4.0",
+    "lucide-react": "^1.21.0",
+    "react": "19.2.1",
+    "react-dom": "19.2.1",
+    "react-router-dom": "^7.18.0",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.15.3",
+    "@eslint/js": "9.39.1",
+    "@types/d3": "^7.4.3",
+    "@types/node": "24.10.1",
+    "@types/react": "19.2.7",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "5.1.1",
+    "eslint": "9.39.2",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "eslint-plugin-react-refresh": "0.4.24",
+    "globals": "16.5.0",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.48.0",
+    "vite": "^7.0.0",
+    "wrangler": "4.88.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "pnpm run build && vite preview",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint .",
+    "deploy": "wrangler deploy",
+    "cf-typegen": "wrangler types",
+    "--- Framework workspace scripts ---": "",
+    "build:packages": "pnpm -r --filter './packages/*' run build",
+    "typecheck:packages": "pnpm -r --filter './packages/*' run typecheck",
+    "lint:packages": "pnpm -r --filter './packages/*' run lint",
+    "test:packages": "pnpm -r --filter './packages/*' run test",
+    "validate:content": "pnpm --filter vn-asset-pipeline run validate --",
+    "scaffold:project": "pnpm --filter vn-build-tools run scaffold --"
+  },
+  "type": "module"
 }
