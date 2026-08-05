@@ -135,7 +135,7 @@ VAR banished = false
 	#show:qingyue:worry:float
 	你走到了这一步，却少了几分周全。摄政之路，容不得半步差池。 #speaker:青月
 	-> END
-}
+} #speaker:青月
 
 // ═══ IF线 · 干戈南征（自由模式歧路：不流放，以兵讨三苗）═══
 

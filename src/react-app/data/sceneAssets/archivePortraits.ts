@@ -1,7 +1,8 @@
 /**
  * 图鉴专用CG立绘注册表（精致厚涂CG风格）。
  *
- * 与剧情立绘（/assets/figures/）分离，图鉴页面优先使用此处的CG立绘。
+ * 与剧情/对话立绘（/assets/figures/）强制分离，图鉴页面只能使用此处的CG立绘。
+ * 后续修改对话立绘时，不要改动 /assets/archive-figures/ 下的文件。
  * 每生成一批CG立绘后，将角色ID添加到 ARCHIVE_CG_READY 集合中。
  *
  * 文件路径约定：/assets/archive-figures/<id>/full-default.jpg
@@ -155,6 +156,7 @@ const ARCHIVE_CG_READY = new Set<string>([
 	"qijie",
 	"tiandan",
 	"shenshizu",
+	"sigongzi",
 	"mengchangjun",
 	"pingyuanjun",
 	"xinlingjun",
@@ -338,14 +340,44 @@ const ARCHIVE_CG_READY = new Set<string>([
 ]);
 
 /**
+ * 图鉴锁定角色。
+ * 这些角色的图鉴形象已经与对话立绘分开定稿，后续剧情/对话立绘改动不能覆盖这些资源。
+ */
+export const ARCHIVE_PORTRAIT_LOCKED_IDS = new Set<string>([
+	"meixi",
+	"pangeng",
+	"gongsunchujiu",
+	"caomo",
+	"liuxiahui",
+	"chengying",
+	"sigongzi",
+	"gongsunlong",
+	"pangjuan",
+	"bianque",
+	"likui-zg",
+	"chuliji",
+	"ganluo",
+	"ganmao",
+	"fuhao",
+	"simarangju",
+	"wuqi",
+	"chuzhuangwang",
+]);
+
+/**
  * 获取图鉴CG立绘路径。
  * @returns CG立绘URL，或 null（未生成时由调用方 fallback 到剧情立绘）
  */
 export function getArchiveCGUrl(id: string): string | null {
 	if (ARCHIVE_CG_READY.has(id)) {
-		return `/assets/archive-figures/${id}/full-default.jpg?v=shiji-event-style-batch13-20260802`;
+		return `/assets/archive-figures/${id}/full-default.jpg?v=archive-locked-regen-20260803-b`;
 	}
 	return null;
+}
+
+/** 判断该角色图鉴是否已锁定，供后续素材脚本或维护逻辑避让。 */
+export function isArchivePortraitLocked(id: string): boolean {
+	return ARCHIVE_PORTRAIT_LOCKED_IDS.has(id);
 }
 
 /** 获取所有已生成CG立绘的角色ID */

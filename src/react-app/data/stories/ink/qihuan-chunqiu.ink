@@ -268,7 +268,7 @@ VAR shan = 0
 	管仲卒了。你按他的遗言,一度逐走了竖刁、易牙、开方三人。 #speaker:青月 #hint:管仲死，而桓公不用管仲言，卒近用三子。
 - else:
 	管仲卒了。你终究没远那三个人——只是仲父新丧,你到底心虚,暂叫他们避出宫去。 #speaker:青月 #hint:管仲死，而桓公不用管仲言，卒近用三子。
-}
+} #speaker:青月
 可日子一久,你食不甘味、宫中冷清。你想念易牙调的那口羹、竖刁的贴身伺候、开方的曲意逢迎…… #speaker:青月
 #show:shudiao:default:left
 #show:yiya:default:right
@@ -279,7 +279,7 @@ VAR shan = 0
 	「逐是逐了,可你耽于易牙的美味、竖刁的谄顺——你想再召他们回来。」 #speaker:青月
 - else:
 	「避是避了,可不过数日,你就想再召他们回来。」 #speaker:青月
-}
+} #speaker:青月
 -> act6_ze
 
 === act6_ze ===
@@ -329,7 +329,7 @@ VAR shan = 0
 	-> ending_reflect
 - else:
 	-> ending_shishi
-}
+} #speaker:青月
 
 === ending_shishi ===
 #bg:qi_e_si

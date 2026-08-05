@@ -141,6 +141,8 @@
 .archive-card[data-identity="后妃"] { --accent: var(--identity-consort); }
 .archive-card[data-identity="游侠"] { --accent: var(--identity-knight); }
 .archive-card[data-identity="异族"] { --accent: var(--identity-foreign); }
+.archive-card[data-identity="宦官"] { --accent: var(--identity-strategist); }
+.archive-card[data-identity="外戚"] { --accent: var(--identity-minister); }
 
 /* 未拥有：.game-card.is-locked 已剪影化，这里只加角标 */
 .archive-card.is-locked::after {

@@ -252,7 +252,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「迷阵未破也无妨，征师诸侯、合而不散的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 #show:qingyue:calm:float
 「蚩尤死了。可他身后还有一整个九黎部族——那些人呢？太史公没写这一笔，我替你看看。」 #speaker:青月
 #show:qingyue:worry:float

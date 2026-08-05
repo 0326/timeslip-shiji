@@ -247,7 +247,7 @@ VAR tuishen = 0
     -> ending_kebo
 - else:
     -> ending_shishi
-}
+} #speaker:青月
 
 // ─── 结局一 · 史实悲剧（弗从赵良 → 作法自毙车裂）───
 === ending_shishi ===

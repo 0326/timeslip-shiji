@@ -1,0 +1,296 @@
+/* ═════════════════════ 对决游戏页 ═════════════════════ */
+.dp-root {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.dp-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-ink);
+}
+.dp-empty {
+  position: relative;
+  z-index: 2;
+  margin-top: 160px;
+  text-align: center;
+  color: var(--color-rice-dim);
+}
+.dp-empty h2 {
+  margin-bottom: 16px;
+}
+
+/* ── HUD（始终在游戏之上） ── */
+.dp-hud {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 20px;
+  background: var(--color-ink-soft);
+  border-bottom: 1px solid var(--color-ink-mid);
+  flex-shrink: 0;
+}
+.dp-hud-back {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  color: var(--color-rice-dim);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: color 0.2s;
+}
+.dp-hud-back:hover {
+  color: var(--color-rice);
+}
+.dp-hud-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.dp-hud-player,
+.dp-hud-opponent {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  letter-spacing: 0.06em;
+  color: var(--color-rice);
+}
+.dp-hud-opponent {
+  color: var(--color-vermilion-light);
+}
+.dp-hud-score {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.dp-wins {
+  color: var(--color-gold-light);
+}
+.dp-sep {
+  color: var(--color-muted);
+}
+.dp-losses {
+  color: var(--color-vermilion-light);
+}
+.dp-hud-round {
+  font-size: 13px;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+.dp-hud-game {
+  color: var(--color-gold-dim);
+}
+
+/* ── 游戏区域 ── */
+.dp-game-area {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 小游戏容器 */
+.dp-game-wrap {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+/* ── 开场提示 ── */
+.dp-intro {
+  text-align: center;
+  animation: dpFadeIn 0.35s ease-out;
+}
+.dp-intro-title {
+  font-size: 28px;
+  color: var(--color-gold-light);
+  margin: 0 0 12px;
+  letter-spacing: 0.1em;
+}
+.dp-intro-desc {
+  font-size: 15px;
+  color: var(--color-rice-dim);
+  margin: 0 0 10px;
+  line-height: 1.6;
+  max-width: 360px;
+}
+.dp-intro-type {
+  display: inline-block;
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 24px;
+  padding: 3px 12px;
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-ink-mid);
+  border-radius: 12px;
+}
+
+/* ── 局间过渡 ── */
+.dp-between {
+  text-align: center;
+  color: var(--color-rice-dim);
+  animation: dpFadeIn 0.35s ease-out;
+}
+.dp-between-rounds {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+.dp-round-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--color-ink-mid);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  color: var(--color-muted);
+}
+.dp-round-dot.current {
+  border-color: var(--color-gold-dim);
+  color: var(--color-gold-light);
+}
+.dp-round-dot.win {
+  border-color: var(--color-gold);
+  color: var(--color-gold-light);
+  background: rgba(184, 151, 58, 0.12);
+}
+.dp-round-dot.lose {
+  border-color: var(--color-vermilion);
+  color: var(--color-vermilion-light);
+  background: rgba(192, 57, 43, 0.1);
+}
+.dp-round-dot.draw {
+  border-color: var(--color-muted);
+  color: var(--color-muted);
+}
+
+.dp-round-verdict {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-size: 18px;
+}
+.dp-round-verdict-game {
+  font-family: var(--font-serif);
+  color: var(--color-rice);
+  letter-spacing: 0.04em;
+}
+.dp-round-verdict-result {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  padding: 4px 16px;
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+}
+.dp-round-verdict-result.win {
+  color: var(--color-gold-light);
+  background: rgba(184, 151, 58, 0.15);
+}
+.dp-round-verdict-result.lose {
+  color: var(--color-vermilion-light);
+  background: rgba(192, 57, 43, 0.12);
+}
+.dp-round-verdict-result.draw {
+  color: var(--color-muted);
+  background: rgba(122, 110, 92, 0.1);
+}
+
+.dp-btn-next-round {
+  padding: 12px 36px;
+  background: var(--color-gold);
+  border: none;
+  border-radius: 10px;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(184, 151, 58, 0.35);
+}
+.dp-btn-next-round:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(184, 151, 58, 0.5);
+}
+
+/* ── 最终结果 ── */
+.dp-result {
+  text-align: center;
+  animation: dpFadeIn 0.4s ease-out;
+}
+@keyframes dpFadeIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+.dp-result-icon {
+  margin-bottom: 16px;
+}
+.dp-result-icon.win { color: var(--color-gold-light); }
+.dp-result-icon.lose { color: var(--color-vermilion-light); }
+.dp-result-title {
+  font-size: 28px;
+  color: var(--color-rice);
+  margin: 0 0 8px;
+  letter-spacing: 0.08em;
+}
+.dp-result-score {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-gold-light);
+  margin: 0 0 24px;
+  letter-spacing: 0.1em;
+}
+.dp-result-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+.dp-btn-primary {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--color-gold), #7a6426);
+  border: none;
+  border-radius: 10px;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(184, 151, 58, 0.3);
+}
+.dp-btn-primary:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 18px rgba(184, 151, 58, 0.45);
+}
+
+@media (max-width: 600px) {
+  .dp-hud { padding: 10px 12px; gap: 8px; }
+  .dp-hud-player, .dp-hud-opponent { font-size: 13px; }
+  .dp-hud-score { font-size: 18px; }
+  .dp-hud-round { font-size: 11px; }
+}

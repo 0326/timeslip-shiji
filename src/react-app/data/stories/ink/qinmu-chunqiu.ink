@@ -311,7 +311,7 @@ VAR guo = 0
 	-> ending_shishi
 - else:
 	-> ending_reflect
-}
+} #speaker:青月
 
 // ─── 史实结局：霸西戎·三良殉葬《黄鸟》之哀 ───
 === ending_shishi ===

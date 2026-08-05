@@ -177,7 +177,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，静渊与执中的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 -> c_diku_coda
 
 === c_diku_coda ===
