@@ -210,7 +210,7 @@ VAR tui = 0
     -> ending_lianheng
 - else:
     -> ending_shishi
-}
+} #speaker:青月
 
 // ─── 结局一 · 史实善终（走为上计 → 相魏一岁卒）───
 === ending_shishi ===

@@ -19,7 +19,6 @@ import { ARCHIVE_BIOS } from "../../data/sceneAssets/archiveBios";
 
 const SHIJI = "shiji";
 const PAGE_SIZE = 24;
-const FILTER_TOP_N = 12; // 筛选带只展示 top N 个朝代/身份
 
 // 排除系统角色（非历史人物），不出现在图鉴中
 const EXCLUDED_SPRITE_IDS = new Set(["qingyue"]);
@@ -191,6 +190,128 @@ export function ArchivePage() {
   // 客户端分页
   const [page, setPage] = useState(1);
 
+  // 本地 sprite ID 集合（用于判断角色是否有本地立绘）
+  const localSpriteIdSet = useMemo(
+    () =>
+      new Set(
+        ARCHIVE_SPRITE_IDS.filter((id) => !EXCLUDED_SPRITE_IDS.has(id)),
+      ),
+    [],
+  );
+
+  /** 按规范化名称去重：同一人物不同 ID 只保留一条，优先保留有本地立绘的 */
+  const dedupByName = useCallback(
+    (items: MainFigure[]): MainFigure[] => {
+      const nameToItem = new Map<string, MainFigure>();
+      const result: MainFigure[] = [];
+
+      for (const it of items) {
+        const normalized = normalizeName(it.name);
+        const allNames = [
+          normalized,
+          ...(it.aliases || []).map((a) => normalizeName(a)),
+        ].filter((n) => n.length > 0);
+
+        // 检查是否已存在同名项
+        let existingEntry: { idx: number; item: MainFigure } | null = null;
+        for (const name of allNames) {
+          const existing = nameToItem.get(name);
+          if (existing) {
+            const idx = result.indexOf(existing);
+            if (idx >= 0) {
+              existingEntry = { idx, item: existing };
+              break;
+            }
+          }
+        }
+
+        if (existingEntry) {
+          const old = existingEntry.item;
+          // 评分：有本地立绘的角色加 100 分（确保不被远程角色替换）
+          const oldScore =
+            (old.bio_summary ? 2 : 0) +
+            (old.identity ? 1 : 0) +
+            old.star * 0.1 +
+            (localSpriteIdSet.has(old.id) ? 100 : 0);
+          const newScore =
+            (it.bio_summary ? 2 : 0) +
+            (it.identity ? 1 : 0) +
+            it.star * 0.1 +
+            (localSpriteIdSet.has(it.id) ? 100 : 0);
+
+          if (newScore > oldScore) {
+            // 新项更优：保留新项 ID（可能有立绘），合并旧项的补充数据
+            const merged: MainFigure = {
+              ...it,
+              bio_summary: it.bio_summary || old.bio_summary,
+              identity: it.identity || old.identity,
+              star: it.star || old.star,
+              dynasty: it.dynasty || old.dynasty,
+              aliases: [
+                ...new Set([
+                  ...(it.aliases || []),
+                  ...(old.aliases || []),
+                ]),
+              ],
+              gender: it.gender !== "unknown" ? it.gender : old.gender,
+              birth_year: it.birth_year ?? old.birth_year,
+              death_year: it.death_year ?? old.death_year,
+            };
+            result[existingEntry.idx] = merged;
+            for (const name of allNames) {
+              nameToItem.set(name, merged);
+            }
+            // 删除旧项的名称映射
+            const oldNames = [
+              normalizeName(old.name),
+              ...(old.aliases || []).map((a) => normalizeName(a)),
+            ];
+            for (const oldName of oldNames) {
+              if (nameToItem.get(oldName) === old) {
+                nameToItem.delete(oldName);
+              }
+            }
+            // 重新添加合并项的映射
+            for (const name of allNames) {
+              nameToItem.set(name, merged);
+            }
+          } else {
+            // 旧项更优：保留旧项，合并新项的补充数据
+            const merged: MainFigure = {
+              ...old,
+              bio_summary: old.bio_summary || it.bio_summary,
+              identity: old.identity || it.identity,
+              star: old.star || it.star,
+              dynasty: old.dynasty || it.dynasty,
+              aliases: [
+                ...new Set([
+                  ...(old.aliases || []),
+                  ...(it.aliases || []),
+                ]),
+              ],
+              gender: old.gender !== "unknown" ? old.gender : it.gender,
+              birth_year: old.birth_year ?? it.birth_year,
+              death_year: old.death_year ?? it.death_year,
+            };
+            result[existingEntry.idx] = merged;
+            for (const name of allNames) {
+              nameToItem.set(name, merged);
+            }
+          }
+        } else {
+          // 新项，添加
+          result.push(it);
+          for (const name of allNames) {
+            nameToItem.set(name, it);
+          }
+        }
+      }
+
+      return result;
+    },
+    [localSpriteIdSet],
+  );
+
   // 一次性拉取并合并数据
   useEffect(() => {
     setLoading(true);
@@ -323,127 +444,7 @@ export function ArchivePage() {
         setAllItems(dedupByName(localItems));
       })
       .finally(() => setLoading(false));
-  }, []);
-
-
-  // 本地 sprite ID 集合（用于判断角色是否有本地立绘）
-  const localSpriteIdSet = useMemo(
-    () =>
-      new Set(
-        ARCHIVE_SPRITE_IDS.filter((id) => !EXCLUDED_SPRITE_IDS.has(id)),
-      ),
-    [],
-  );
-
-  /** 按规范化名称去重：同一人物不同 ID 只保留一条，优先保留有本地立绘的 */
-  function dedupByName(items: MainFigure[]): MainFigure[] {
-    const nameToItem = new Map<string, MainFigure>();
-    const result: MainFigure[] = [];
-
-    for (const it of items) {
-      const normalized = normalizeName(it.name);
-      const allNames = [
-        normalized,
-        ...(it.aliases || []).map((a) => normalizeName(a)),
-      ].filter((n) => n.length > 0);
-
-      // 检查是否已存在同名项
-      let existingEntry: { idx: number; item: MainFigure } | null = null;
-      for (const name of allNames) {
-        const existing = nameToItem.get(name);
-        if (existing) {
-          const idx = result.indexOf(existing);
-          if (idx >= 0) {
-            existingEntry = { idx, item: existing };
-            break;
-          }
-        }
-      }
-
-      if (existingEntry) {
-        const old = existingEntry.item;
-        // 评分：有本地立绘的角色加 100 分（确保不被远程角色替换）
-        const oldScore =
-          (old.bio_summary ? 2 : 0) +
-          (old.identity ? 1 : 0) +
-          old.star * 0.1 +
-          (localSpriteIdSet.has(old.id) ? 100 : 0);
-        const newScore =
-          (it.bio_summary ? 2 : 0) +
-          (it.identity ? 1 : 0) +
-          it.star * 0.1 +
-          (localSpriteIdSet.has(it.id) ? 100 : 0);
-
-        if (newScore > oldScore) {
-          // 新项更优：保留新项 ID（可能有立绘），合并旧项的补充数据
-          const merged: MainFigure = {
-            ...it,
-            bio_summary: it.bio_summary || old.bio_summary,
-            identity: it.identity || old.identity,
-            star: it.star || old.star,
-            dynasty: it.dynasty || old.dynasty,
-            aliases: [
-              ...new Set([
-                ...(it.aliases || []),
-                ...(old.aliases || []),
-              ]),
-            ],
-            gender: it.gender !== "unknown" ? it.gender : old.gender,
-            birth_year: it.birth_year ?? old.birth_year,
-            death_year: it.death_year ?? old.death_year,
-          };
-          result[existingEntry.idx] = merged;
-          for (const name of allNames) {
-            nameToItem.set(name, merged);
-          }
-          // 删除旧项的名称映射
-          const oldNames = [
-            normalizeName(old.name),
-            ...(old.aliases || []).map((a) => normalizeName(a)),
-          ];
-          for (const oldName of oldNames) {
-            if (nameToItem.get(oldName) === old) {
-              nameToItem.delete(oldName);
-            }
-          }
-          // 重新添加合并项的映射
-          for (const name of allNames) {
-            nameToItem.set(name, merged);
-          }
-        } else {
-          // 旧项更优：保留旧项，合并新项的补充数据
-          const merged: MainFigure = {
-            ...old,
-            bio_summary: old.bio_summary || it.bio_summary,
-            identity: old.identity || it.identity,
-            star: old.star || it.star,
-            dynasty: old.dynasty || it.dynasty,
-            aliases: [
-              ...new Set([
-                ...(old.aliases || []),
-                ...(it.aliases || []),
-              ]),
-            ],
-            gender: old.gender !== "unknown" ? old.gender : it.gender,
-            birth_year: old.birth_year ?? it.birth_year,
-            death_year: old.death_year ?? it.death_year,
-          };
-          result[existingEntry.idx] = merged;
-          for (const name of allNames) {
-            nameToItem.set(name, merged);
-          }
-        }
-      } else {
-        // 新项，添加
-        result.push(it);
-        for (const name of allNames) {
-          nameToItem.set(name, it);
-        }
-      }
-    }
-
-    return result;
-  }
+  }, [dedupByName]);
 
   // 搜索 debounce
   const [qInput, setQInput] = useState(q);
@@ -452,33 +453,50 @@ export function ArchivePage() {
     return () => clearTimeout(t);
   }, [qInput]);
 
-  // 朝代筛选选项（从最终数据计算，确保数量准确）
+  const searchMatches = useCallback((it: MainFigure, keyword: string) => {
+    if (!keyword) return true;
+    const ql = keyword.toLowerCase();
+    return (
+      it.name?.toLowerCase().includes(ql) ||
+      it.aliases?.some((a) => a.toLowerCase().includes(ql)) ||
+      it.bio_summary?.toLowerCase().includes(ql)
+    );
+  }, []);
+
+  // 朝代筛选选项：保留身份/搜索条件，排除“朝代自身条件”，确保按钮数量等于点选后的实际结果数
   const dynastyOptions = useMemo(() => {
     const counts = new Map<string, number>();
     for (const it of allItems) {
+      if (identity && it.identity !== identity) continue;
+      if (!searchMatches(it, q)) continue;
       if (it.dynasty) {
         counts.set(it.dynasty, (counts.get(it.dynasty) || 0) + 1);
       }
     }
     return Array.from(counts.entries())
       .map(([value, count]) => ({ value, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, FILTER_TOP_N);
-  }, [allItems]);
+      .sort(
+        (a, b) =>
+          (DYNASTY_ORDER[a.value] ?? 99) - (DYNASTY_ORDER[b.value] ?? 99) ||
+          b.count - a.count ||
+          a.value.localeCompare(b.value),
+      );
+  }, [allItems, identity, q, searchMatches]);
 
-  // 身份筛选选项（从最终数据计算）
+  // 身份筛选选项：保留朝代/搜索条件，排除“身份自身条件”，确保不会出现数量对不上或有分类被截掉
   const identityOptions = useMemo(() => {
     const counts = new Map<string, number>();
     for (const it of allItems) {
+      if (dynasty && it.dynasty !== dynasty) continue;
+      if (!searchMatches(it, q)) continue;
       if (it.identity) {
         counts.set(it.identity, (counts.get(it.identity) || 0) + 1);
       }
     }
     return Array.from(counts.entries())
       .map(([value, count]) => ({ value, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, FILTER_TOP_N);
-  }, [allItems]);
+      .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
+  }, [allItems, dynasty, q, searchMatches]);
 
   // 客户端筛选 + 排序
   const processedItems = useMemo(() => {
@@ -494,13 +512,7 @@ export function ArchivePage() {
     }
     // 搜索
     if (q) {
-      const ql = q.toLowerCase();
-      items = items.filter(
-        (it) =>
-          it.name?.toLowerCase().includes(ql) ||
-          it.aliases?.some((a) => a.toLowerCase().includes(ql)) ||
-          it.bio_summary?.toLowerCase().includes(ql),
-      );
+      items = items.filter((it) => searchMatches(it, q));
     }
 
     // 排序
@@ -522,7 +534,7 @@ export function ArchivePage() {
     }
 
     return items;
-  }, [allItems, dynasty, identity, q, sort]);
+  }, [allItems, dynasty, identity, q, sort, searchMatches]);
 
   // 筛选条件变化时重置页码
   useEffect(() => {
@@ -535,6 +547,7 @@ export function ArchivePage() {
   }, [processedItems, page]);
 
   const totalShiji = allItems.length;
+  const currentTotal = processedItems.length;
   const hasMore = page * PAGE_SIZE < processedItems.length;
 
   // 加载更多（客户端分页）
@@ -624,19 +637,21 @@ export function ArchivePage() {
             <button
               className={`pill ${sort === "era" ? "active" : ""}`}
               onClick={() => setSort("era")}
+              title="按朝代时间线排序，同朝代按出生年份"
             >
               时序
             </button>
             <button
               className={`pill ${sort === "star" ? "active" : ""}`}
               onClick={() => setSort("star")}
+              title="按星级从高到低排序，同星级按姓名排序"
             >
-              星级
+              星级↓
             </button>
           </div>
           <span className="panel-stat archive-stat">
-            <b>{totalShiji || CHARACTERS.length}</b>
-            <span>史记人物</span>
+            <b>{currentTotal}</b>
+            <span>当前 / 共 {totalShiji || CHARACTERS.length}</span>
           </span>
         </div>
       </div>
@@ -733,7 +748,7 @@ function ArchiveCard({
           <span
             className="archive-card-star"
             data-star={figure.star}
-            title={`${figure.star} 星`}
+            title={`${figure.star} 星；星级排序按星级从高到低，同星按姓名`}
           >
             {"★".repeat(figure.star)}
           </span>

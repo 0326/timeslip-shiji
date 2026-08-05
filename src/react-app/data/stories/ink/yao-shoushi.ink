@@ -149,7 +149,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，敬授民时的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 「呼——你走完了他治世的这一程。下一程，是把这天下托给谁。可那，又是另一个故事咯。」 #speaker:青月 #impact:impact_shoushi_lifa #ending:canon #quiz:quiz_shoushi_runyue
 #hide:xihe
 -> END

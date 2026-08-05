@@ -166,7 +166,7 @@ VAR merciful = true
 	「刑是死的，人是活的。少了那一点哀矜之心，法便只剩森森的牙。你这一世的舜……差的，就是这口气。」 #speaker:青月
 	#show:qingyue:calm:float
 	「要不……再走一遍？把那颗慎刑之心，找回来。我等你呀。」 #speaker:青月 #ending:if_gaozhen
-}
+} #speaker:青月
 -> END
 
 // ═══ IF线 · 金赎天下（自由模式歧路：赎法大开，以金代刑）═══

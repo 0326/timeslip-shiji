@@ -255,8 +255,8 @@ VAR quanmou = 0
 		-> ending_gangyi
 	- else:
 		-> ending_shishi
-	}
-}
+	} #speaker:青月
+} #speaker:青月
 
 === ending_shishi ===
 #show:qingyue:solemn:float

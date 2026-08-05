@@ -52,7 +52,7 @@ VAR mg_score = 0
 #bg:riverside
 #bgm:peaceful
 #show:xiangyu:default:center
-这一年，秦始皇巡游会稽，车驾如龙。你隔江望着那金舆华盖，脱口而出——
+这一年，秦始皇巡游会稽，车驾如龙。你隔江望着那金舆华盖，脱口而出—— #speaker:青月
 「彼可取而代也！」 #speaker:项羽 #hint:籍曰：彼可取而代也。
 #show:xiangliang:default:left
 项梁慌忙捂住你的嘴：「别乱说，要灭族的！」——可他看你的眼神，是惊，也是喜。 #speaker:项梁
@@ -421,7 +421,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「也罢，你已杀得汉兵辟易数里，乌江在前——再不必打了。」 #speaker:青月
-}
+} #speaker:青月
 「快战三胜，你把『天亡我』刻进了这二十八骑心里。可青月听着，只觉得心疼——前面就是乌江了。」 #speaker:青月
 -> act8_wujiang
 
@@ -465,7 +465,7 @@ VAR mg_score = 0
 	-> end_wangu
 - else:
 	-> end_yingxiong
-}
+} #speaker:青月
 
 // 结局 A · 史实悲剧终局（刚愎众叛型）
 === end_wangu ===
@@ -506,8 +506,8 @@ VAR mg_score = 0
 #bgm:court
 #show:qingyue:worry:float
 「欸？！第三条路——你既不落刀，也不放人，你要把他……扣下来？」 #speaker:青月
-你按住剑，却对刘邦一笑：「沛公远来辛苦。鸿门风大，且在营中安歇几日；你那十万人马，本王替你整肃整肃。」
-刘邦脸色一僵，张良垂目，范增举着的那块玉玦，也僵在了半空。
+你按住剑，却对刘邦一笑：「沛公远来辛苦。鸿门风大，且在营中安歇几日；你那十万人马，本王替你整肃整肃。」 #speaker:青月
+刘邦脸色一僵，张良垂目，范增举着的那块玉玦，也僵在了半空。 #speaker:青月
 #show:fanzeng:worry:left
 「大王！」范增急了，「杀之，绝后患；纵之，是养虎。你这一扣——是把虎养在自己帐中啊！」 #speaker:范增
 #show:qingyue:solemn:float
@@ -518,8 +518,8 @@ VAR mg_score = 0
 #bg:camp_chu
 #bgm:march
 #show:xiangyu:default:center
-你收了刘邦的兵符，遣项伯监其军。汉军群龙无首，萧何、张良在关中急得团团转，士卒一夜逃散大半。
-你独大了。四十万楚军，天下再无人敢撄其锋。
+你收了刘邦的兵符，遣项伯监其军。汉军群龙无首，萧何、张良在关中急得团团转，士卒一夜逃散大半。 #speaker:青月
+你独大了。四十万楚军，天下再无人敢撄其锋。 #speaker:青月
 #show:qingyue:worry:float
 「可是呀——你扣的，是一个已经卑辞谢罪、约为兄弟的人。」 #speaker:青月
 消息传开，诸侯人人自危：连来谢罪行礼的都能扣，谁还敢与这西楚霸王共事？你以『义』起家，这一扣，把『义』字扣出了一道裂缝。 #speaker:青月 #hint:项羽以立楚起家，重然诺。
@@ -538,7 +538,7 @@ VAR mg_score = 0
 #bgm:solemn
 #show:qingyue:worry:float
 「你……上船了。可你眼里没有苟活的怯——是不甘，是那口『我不算完』的气。」 #speaker:青月
-你登上亭长的船。桨声欸乃，江水把你渡向江东——你起兵的地方。
+你登上亭长的船。桨声欸乃，江水把你渡向江东——你起兵的地方。 #speaker:青月
 「一千年后，杜牧站在这乌江边，写了一句偏心你的诗：『江东子弟多才俊，卷土重来未可知』。你渡了这一次，就是要证明这一句。」 #speaker:青月
 -> if_dujiang_2
 
@@ -546,8 +546,8 @@ VAR mg_score = 0
 #bg:camp_chu
 #bgm:march
 #show:xiangyu:default:center
-你回到江东，登高一呼。可应者，寥寥。
-当年随你出征的八千子弟，一个都没能回来。他们的父母兄长站在田埂上望着你，眼里没有恨，只有一种更让你难受的东西——沉默。
+你回到江东，登高一呼。可应者，寥寥。 #speaker:青月
+当年随你出征的八千子弟，一个都没能回来。他们的父母兄长站在田埂上望着你，眼里没有恨，只有一种更让你难受的东西——沉默。 #speaker:青月
 #show:qingyue:sad:float
 「王安石也写过一句，接的正是杜牧：『江东子弟今虽在，肯与君王卷土来？』」 #speaker:青月
 「子弟还在，可他们……还肯把儿子，再交到你手里吗？」 #speaker:青月

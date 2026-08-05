@@ -261,7 +261,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「竹简暂乱也无妨，陷之死地而后生的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 -> act5_sanfen
 
 // ═══════════════════════════════════════════════
@@ -454,7 +454,7 @@ VAR mg_score = 0
 	-> ending_zili
 - else:
 	-> ending_shishi
-}
+} #speaker:青月
 
 // ─── 结局一 · 史实悲剧（忠汉到底 → 钟室之祸）───
 === ending_shishi ===
