@@ -40,6 +40,14 @@ const LOCAL_NAMES: Record<string, string> = {
   fanzeng: "范增",
   fankuai: "樊哙",
   yuji: "虞姬",
+  // 群英传角色
+  guojie: "郭解",
+  zhuke: "朱家",
+  zhuanzhu: "专诸",
+  yurang: "豫让",
+  niezheng: "聂政",
+  jingke: "荆轲",
+  jumeng: "剧孟",
 };
 
 // ── 本地兜底简介（主项目不可用时的 fallback） ──

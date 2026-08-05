@@ -10,7 +10,8 @@ import { SeriesChapterPage } from "./pages/Story/SeriesChapterPage";
 import { ArchivePage } from "./pages/Archive/ArchivePage";
 import { AchievementPage } from "./pages/Achievement/AchievementPage";
 import { ClassicsPage } from "./pages/Classics/ClassicsPage";
-import { DeathsCodexPage } from "./pages/Codex/DeathsCodexPage";
+import { CodexPage } from "./pages/Codex/CodexPage";
+import { KnowledgeCodexPage } from "./pages/Codex/KnowledgeCodexPage";
 import { useAuthStore } from "./store/authStore";
 
 // 重页面代码分割（D3 / VN 引擎 / 长篇原文）
@@ -40,7 +41,8 @@ const router = createBrowserRouter([
       { path: "archive", element: <ArchivePage /> },
       { path: "archive/:id", element: lazyEl(<ArchiveDetailPage />) },
       { path: "achieve", element: <AchievementPage /> },
-      { path: "codex/deaths", element: <DeathsCodexPage /> },
+      { path: "codex", element: <CodexPage /> },
+      { path: "codex/knowledge/:storyKey", element: <KnowledgeCodexPage /> },
       { path: "classics", element: <ClassicsPage /> },
       { path: "classics/:juan", element: lazyEl(<ClassicReaderPage />) },
       { path: "panorama/:storyId", element: lazyEl(<PanoramaPage />) },

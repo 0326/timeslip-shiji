@@ -36,6 +36,7 @@ VAR ambition = 0
 
 === act2_jianzhuke ===
 #bg:qin_library
+#bgm:solemn
 你愤然写下《谏逐客书》：
 「臣闻吏议逐客，窃以为过矣。昔穆公求士，西取由余于戎，东得百里奚于宛……孝公用商鞅之法，惠王用张仪之计，昭王得范雎——此四君者，皆以客之功。」
 「泰山不让土壤，故能成其大；河海不择细流，故能就其深；王者不却众庶，故能明其德。」
@@ -94,6 +95,7 @@ VAR ambition = 0
 
 === act4_jiaozao ===
 #bg:chamber_secret
+#bgm:danger
 #show:qingyue:sad:float
 「你仰天而叹，垂泪太息：『嗟乎！独遭乱世，既以不能死，安托命哉！』——你同意了。」 #speaker:青月
 于是相与谋，诈为受始皇诏立胡亥为太子，更书赐长子扶苏：
@@ -102,6 +104,7 @@ VAR ambition = 0
 「扶苏接书泣而自杀，蒙恬不肯死被囚后也吞药自尽。」 #speaker:青月
 「你以为可以保全仓鼠之位——可你错了。胡亥即位后听信赵高，严法刻刑，赋敛愈重，戍徭无已。」 #speaker:青月
 #bg:xianyang_court
+#bgm:court
 你想进谏，胡亥却责问你：「吾欲肆志广欲，长享天下而无害，为之奈何？」
 赵高在一旁进谗：「丞相的儿子李由和陈胜是邻县人，盗贼过三川城，李由不肯出击——听说他们还有文书往来！」
 #show:qingyue:worry:float
@@ -115,6 +118,7 @@ VAR ambition = 0
 
 === act5_duze ===
 #bg:xianyang_court
+#bgm:court
 你为了自保，上书阿谀胡亥，提出「督责之术」——让君主独断专行，以严刑峻法督察臣下，使臣民不敢有非分之想。
 胡亥大悦，于是行督责益严，税民深者为明吏，杀人众者为忠臣。路上的行人有一半受过刑，死人的尸体每天堆积在街市上。
 #show:qingyue:sad:float
@@ -155,6 +159,7 @@ VAR ambition = 0
 
 === if_shuijia_1 ===
 #bg:xianyang_court
+#bgm:court
 #show:qingyue:worry:float
 「欸？你真的要停？史书上的李斯，这一步可是停不下来的哦……我也是第一次看。」 #speaker:青月
 次日，你上书乞骸骨：老臣驽下，愿归上蔡，守先人坟墓。始皇再三挽留——当年王翦称病归频阳，他放了；如今你引荀卿「物禁大盛」四字固请，他盯着你看了很久，终于点头。 #speaker:青月 #hint:吾闻之荀卿曰「物禁大盛」。
@@ -184,8 +189,10 @@ VAR ambition = 0
 #show:qingyue:tease:float
 「好险呀——赵高的耳目若快上半夜，落地的就是你的头啦。」 #speaker:青月
 #bg:shangjun_camp
+#bgm:march
 蒙恬得书，按剑而起。三十万边军的旌旗，一夜之间全朝了南。 #speaker:青月
 #bg:xianyang_court
+#bgm:court
 扶苏奉丧即位。赵高族诛，胡亥就国。天下人只知道先帝崩于巡途、长子奉遗诏而立——沙丘那一夜的刀光，被你死死捂在了棋盘底下。 #speaker:青月
 #show:qingyue:default:float
 「你保住了大秦，也保住了名节。可是呀——」 #speaker:青月

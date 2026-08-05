@@ -143,6 +143,7 @@ VAR liang = 0
 
 === act3_xing ===
 #bg:kuaijishan
+#bgm:melancholy
 文种膝行至吴王帐前，顿首而言：「君王亡臣句践，使陪臣种敢告下执事：句践请为臣，妻为妾。」 #speaker:青月 #hint:句践请为臣，妻为妾。
 吴王本欲许之。伍子胥进言：「天以越赐吴，勿许也。」 #speaker:青月 #hint:子胥言于吴王曰：天以越赐吴，勿许也。
 #show:qingyue:worry:float

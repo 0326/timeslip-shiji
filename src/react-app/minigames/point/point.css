@@ -1,0 +1,462 @@
+/* 点兵升将（Point）—— 物理合成（2048 风格），中式木质战阵风格 */
+/* 样式类前缀: pt- */
+
+.pt-root {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-3, 12px);
+	padding: var(--space-2) 0 var(--space-4);
+	user-select: none;
+}
+
+/* ── 顶部 HUD ── */
+.pt-hud {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-end;
+	gap: var(--space-3);
+}
+.pt-title-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.pt-title {
+	font-size: 20px;
+	letter-spacing: 0.2em;
+	color: var(--color-gold, #c9a84c);
+}
+.pt-subtag {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 12px;
+	color: var(--color-vermilion-light, #e74c3c);
+	letter-spacing: 0.12em;
+	padding: 2px 10px;
+	background: rgba(192, 57, 43, 0.15);
+	border: 1px solid rgba(192, 57, 43, 0.4);
+	border-radius: 999px;
+	width: fit-content;
+}
+.pt-stats {
+	font-size: 12px;
+	color: var(--color-muted, #8a7d6a);
+	letter-spacing: 0.1em;
+	display: flex;
+	gap: 8px;
+	white-space: nowrap;
+}
+.pt-stats b {
+	color: var(--color-rice, #e8d9b5);
+	font-weight: 600;
+}
+
+/* ── 提示语 ── */
+.pt-hint {
+	font-size: 13px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.05em;
+	margin: 0;
+	line-height: 1.8;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.2);
+	border-left: 3px solid var(--color-gold, #c9a84c);
+	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
+}
+
+/* ── 升级路线图例 ── */
+.pt-legend {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 8px 10px;
+	background: rgba(0, 0, 0, 0.18);
+	border: 1px solid var(--color-ink-mid, #3a2a1a);
+	border-radius: var(--radius, 6px);
+}
+.pt-leg {
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	font-size: 12px;
+	padding: 2px 8px;
+	border-radius: 4px;
+	color: #fff5d4;
+	letter-spacing: 0.05em;
+}
+.pt-leg-arrow {
+	color: var(--color-muted, #8a7d6a);
+	font-size: 12px;
+}
+.pt-leg-lv1 {
+	background: #6b6b6b;
+}
+.pt-leg-lv2 {
+	background: #2a8f8f;
+}
+.pt-leg-lv3 {
+	background: #3a6fb0;
+}
+.pt-leg-lv4 {
+	background: #4a8a4a;
+}
+.pt-leg-lv5 {
+	background: #7a4ba8;
+}
+.pt-leg-lv6 {
+	background: #d07a2a;
+}
+.pt-leg-lv7 {
+	background: linear-gradient(160deg, #f5d97a 0%, #c9a84c 100%);
+	color: #3a2a08;
+	font-weight: 600;
+}
+
+/* ── 棋盘（深色木质） ── */
+.pt-board {
+	position: relative;
+	width: min(92vw, 420px);
+	aspect-ratio: 1;
+	align-self: center;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	gap: 8px;
+	padding: 10px;
+	border-radius: var(--radius-lg, 12px);
+	background: linear-gradient(160deg, #3a2412 0%, #2a1a0c 50%, #1d1108 100%);
+	border: 1px solid var(--color-ink-light, #4a3520);
+	box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.6), 0 6px 20px rgba(0, 0, 0, 0.5);
+	touch-action: none; /* 阻止滑动时页面滚动 */
+}
+/* 木纹叠层 */
+.pt-board::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: repeating-linear-gradient(
+		90deg,
+		rgba(255, 220, 150, 0.035) 0px,
+		rgba(255, 220, 150, 0.035) 2px,
+		transparent 2px,
+		transparent 9px
+	);
+	pointer-events: none;
+	opacity: 0.6;
+}
+
+/* ── 格子槽 ── */
+.pt-cell {
+	position: relative;
+	border-radius: 6px;
+	background: rgba(0, 0, 0, 0.3);
+	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.55);
+}
+
+/* ── 方块基础 ── */
+.pt-tile {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	color: #fff5d4;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 255, 255, 0.18),
+		inset 0 -3px 5px rgba(0, 0, 0, 0.35),
+		0 2px 5px rgba(0, 0, 0, 0.4);
+}
+.pt-rank {
+	font-size: clamp(15px, 4.4vw, 21px);
+	letter-spacing: 0.04em;
+	line-height: 1;
+}
+
+/* ── 各等级配色 ── */
+.pt-lv1 {
+	background: linear-gradient(160deg, #8a8a8a 0%, #5e5e5e 100%);
+}
+.pt-lv2 {
+	background: linear-gradient(160deg, #3aa3a3 0%, #237070 100%);
+}
+.pt-lv3 {
+	background: linear-gradient(160deg, #4a82c8 0%, #2f5a93 100%);
+}
+.pt-lv4 {
+	background: linear-gradient(160deg, #5aa55a 0%, #3a7a3a 100%);
+}
+.pt-lv5 {
+	background: linear-gradient(160deg, #9a5fc4 0%, #6e3f93 100%);
+}
+.pt-lv6 {
+	background: linear-gradient(160deg, #e08a3a 0%, #a85f1e 100%);
+}
+.pt-lv7 {
+	background: linear-gradient(160deg, #f5d97a 0%, #c9a84c 100%);
+	color: #3a2a08;
+	text-shadow: 0 1px 0 rgba(255, 245, 200, 0.5);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 245, 200, 0.5),
+		inset 0 -3px 5px rgba(80, 60, 10, 0.3),
+		0 0 16px rgba(245, 217, 122, 0.8),
+		0 2px 6px rgba(0, 0, 0, 0.5);
+}
+/* 上将金色光晕（用伪元素脉动，避免与合成动画冲突） */
+.pt-lv7::after {
+	content: "";
+	position: absolute;
+	inset: -3px;
+	border-radius: 9px;
+	box-shadow:
+		0 0 18px rgba(245, 217, 122, 0.9),
+		0 0 36px rgba(201, 168, 76, 0.5);
+	animation: ptGlow 1.6s ease-in-out infinite;
+	pointer-events: none;
+}
+@keyframes ptGlow {
+	0%,
+	100% {
+		opacity: 0.55;
+	}
+	50% {
+		opacity: 1;
+	}
+}
+
+/* ── 合成 / 新生动画 ── */
+.pt-tile.pt-merge {
+	animation: ptMerge 0.22s ease;
+	z-index: 2;
+}
+@keyframes ptMerge {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.18);
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+.pt-tile.pt-new {
+	animation: ptNew 0.2s ease;
+}
+@keyframes ptNew {
+	from {
+		transform: scale(0.4);
+		opacity: 0;
+	}
+	to {
+		transform: scale(1);
+		opacity: 1;
+	}
+}
+
+/* ── 控制区 ── */
+.pt-controls {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--space-3);
+	margin-top: var(--space-2);
+	flex-wrap: wrap;
+}
+.pt-actions {
+	display: flex;
+	gap: var(--space-2);
+}
+
+/* ── 方向键（十字） ── */
+.pt-dpad {
+	display: grid;
+	grid-template-columns: repeat(3, 34px);
+	grid-template-rows: repeat(3, 34px);
+	gap: 4px;
+}
+.pt-dpad-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 6px;
+	background: linear-gradient(160deg, #4a3520 0%, #2e2014 100%);
+	border: 1px solid var(--color-ink-light, #4a3520);
+	color: var(--color-rice, #e8d9b5);
+	cursor: pointer;
+	transition: transform 0.12s, filter 0.12s, background 0.12s;
+	padding: 0;
+}
+.pt-dpad-btn:hover {
+	filter: brightness(1.15);
+	background: linear-gradient(160deg, #5a4228 0%, #3a2818 100%);
+}
+.pt-dpad-btn:active {
+	transform: scale(0.92);
+}
+.pt-up {
+	grid-area: 1 / 2 / 2 / 3;
+}
+.pt-left {
+	grid-area: 2 / 1 / 3 / 2;
+}
+.pt-right {
+	grid-area: 2 / 3 / 3 / 4;
+}
+.pt-down {
+	grid-area: 3 / 2 / 4 / 3;
+}
+
+/* ── 通关（半透明，让金色上将透出） ── */
+.pt-win {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: radial-gradient(
+		circle at center,
+		rgba(60, 40, 8, 0.55) 0%,
+		rgba(0, 0, 0, 0.85) 70%
+	);
+	backdrop-filter: blur(3px);
+	border-radius: var(--radius, 6px);
+	color: var(--color-gold, #c9a84c);
+	z-index: 20;
+	overflow: hidden;
+	animation: ptScaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.pt-win-rays {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 220%;
+	height: 220%;
+	transform: translate(-50%, -50%);
+	background: conic-gradient(
+		from 0deg,
+		rgba(245, 217, 122, 0) 0deg,
+		rgba(245, 217, 122, 0.16) 18deg,
+		rgba(245, 217, 122, 0) 36deg,
+		rgba(245, 217, 122, 0) 90deg,
+		rgba(245, 217, 122, 0.12) 108deg,
+		rgba(245, 217, 122, 0) 126deg,
+		rgba(245, 217, 122, 0) 198deg,
+		rgba(245, 217, 122, 0.16) 216deg,
+		rgba(245, 217, 122, 0) 234deg,
+		rgba(245, 217, 122, 0) 306deg,
+		rgba(245, 217, 122, 0.12) 324deg,
+		rgba(245, 217, 122, 0) 342deg,
+		rgba(245, 217, 122, 0) 360deg
+	);
+	animation: ptRays 8s linear infinite;
+	pointer-events: none;
+	opacity: 0.85;
+}
+@keyframes ptRays {
+	from {
+		transform: translate(-50%, -50%) rotate(0deg);
+	}
+	to {
+		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+.pt-win-title {
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	font-size: 30px;
+	letter-spacing: 0.35em;
+	margin-top: var(--space-2);
+	text-shadow: 0 0 18px rgba(245, 217, 122, 0.85), 0 2px 6px rgba(0, 0, 0, 0.6);
+	animation: ptPulse 1.8s ease-in-out infinite;
+}
+.pt-win-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.12em;
+}
+@keyframes ptPulse {
+	0%,
+	100% {
+		text-shadow: 0 0 14px rgba(245, 217, 122, 0.6), 0 2px 6px rgba(0, 0, 0, 0.6);
+	}
+	50% {
+		text-shadow: 0 0 26px rgba(245, 217, 122, 1), 0 2px 6px rgba(0, 0, 0, 0.6);
+	}
+}
+
+/* ── 失败 ── */
+.pt-lose {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	background: radial-gradient(
+		circle at center,
+		rgba(40, 8, 8, 0.7) 0%,
+		rgba(0, 0, 0, 0.92) 70%
+	);
+	backdrop-filter: blur(4px);
+	border-radius: var(--radius, 6px);
+	color: var(--color-vermilion-light, #e74c3c);
+	z-index: 20;
+	animation: ptScaleIn 0.4s ease-out;
+}
+.pt-lose-title {
+	font-family: var(--font-serif, "STKaiti", "KaiTi", serif);
+	font-size: 28px;
+	letter-spacing: 0.3em;
+	margin-top: var(--space-2);
+	text-shadow: 0 0 14px rgba(231, 76, 60, 0.6), 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+.pt-lose-sub {
+	font-size: 13px;
+	color: var(--color-rice-dim, #c9b896);
+	letter-spacing: 0.12em;
+}
+@keyframes ptScaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0.88);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* ── 小屏适配 ── */
+@media (max-width: 640px) {
+	.pt-board {
+		width: min(88vw, 360px);
+		gap: 6px;
+		padding: 8px;
+	}
+	.pt-rank {
+		font-size: clamp(14px, 4.2vw, 18px);
+	}
+	.pt-legend {
+		gap: 3px;
+		padding: 6px 8px;
+	}
+	.pt-leg {
+		font-size: 11px;
+		padding: 2px 6px;
+	}
+	.pt-win-title,
+	.pt-lose-title {
+		font-size: 24px;
+		letter-spacing: 0.25em;
+	}
+	.pt-controls {
+		justify-content: center;
+	}
+}

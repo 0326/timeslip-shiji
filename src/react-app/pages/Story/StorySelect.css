@@ -748,6 +748,191 @@
 	color: var(--color-cyan-light);
 }
 
+/* 角标作为可点击按钮：保留胶囊外观，悬停高亮 */
+.ss-meta-endings-btn {
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: var(--radius-pill);
+	padding: 2px 8px;
+	background: transparent;
+	transition: background var(--duration-fast), border-color var(--duration-fast);
+}
+
+.ss-meta-endings-btn:hover {
+	background: rgba(80, 180, 200, 0.12);
+	border-color: color-mix(in srgb, var(--color-cyan-light) 40%, transparent);
+}
+
+/* ── 结局收集弹窗：复用 vn-choices / choice-btn 视觉语言 ── */
+.ss-endings-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 50;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--space-4);
+	background: radial-gradient(ellipse at 50% 50%, rgba(5, 4, 3, 0.7), rgba(5, 4, 3, 0.92));
+	backdrop-filter: blur(3px);
+	animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.ss-endings-popup {
+	position: relative;
+	width: min(560px, 92vw);
+	max-height: 80vh;
+	overflow-y: auto;
+	padding: var(--space-6) var(--space-6) var(--space-5);
+	background: linear-gradient(180deg, rgba(28, 24, 19, 0.96), rgba(20, 16, 12, 0.98));
+	border: 1px solid var(--color-gold-dim);
+	clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+	box-shadow: var(--shadow-gold);
+	animation: fadeUp var(--duration-normal) var(--ease-out);
+}
+
+.ss-endings-close {
+	position: absolute;
+	top: 12px;
+	right: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border-radius: var(--radius-ctl);
+	color: var(--color-rice-dim);
+	background: transparent;
+	transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.ss-endings-close:hover {
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--color-rice);
+}
+
+.ss-endings-title {
+	font-size: var(--text-h3);
+	letter-spacing: 0.12em;
+	color: var(--color-gold-light);
+	text-align: center;
+	margin-bottom: var(--space-1);
+}
+
+.ss-endings-sub {
+	font-size: 12px;
+	text-align: center;
+	letter-spacing: 0.15em;
+	margin-bottom: var(--space-4);
+	padding-bottom: var(--space-3);
+	border-bottom: 1px dashed var(--color-ink-mid);
+}
+
+.ss-endings-list {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-2);
+}
+
+.ss-ending-item {
+	padding: var(--space-3) var(--space-4);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius-card);
+	animation: fadeUp var(--duration-normal) var(--ease-out) both;
+}
+
+.ss-ending-item.unlocked {
+	border-color: color-mix(in srgb, var(--color-gold) 35%, var(--color-ink-mid));
+	background: linear-gradient(160deg, rgba(184, 151, 58, 0.08), transparent 60%);
+}
+
+.ss-ending-item.locked {
+	border-style: dashed;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	min-height: 80px;
+	color: var(--color-muted);
+	text-align: center;
+}
+
+.ss-ending-item-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--space-2);
+	font-size: 11px;
+	letter-spacing: 0.15em;
+	margin-bottom: 6px;
+}
+
+.ss-ending-kind {
+	padding: 2px 8px;
+	border-radius: var(--radius-pill);
+	border: 1px solid currentColor;
+}
+
+.ss-ending-kind.canon {
+	color: var(--color-gold-light);
+	border-color: color-mix(in srgb, var(--color-gold) 50%, transparent);
+	background: rgba(184, 151, 58, 0.1);
+}
+
+.ss-ending-kind.if {
+	color: var(--color-cyan-light);
+	border-color: color-mix(in srgb, var(--color-cyan-light) 45%, transparent);
+	background: rgba(80, 180, 200, 0.08);
+}
+
+.ss-ending-idx {
+	color: var(--color-rice-faint);
+	font-variant-numeric: tabular-nums;
+}
+
+.ss-ending-name {
+	font-size: var(--text-body);
+	letter-spacing: 0.08em;
+	color: var(--color-rice);
+	font-weight: 700;
+	line-height: 1.5;
+}
+
+.ss-ending-name-locked {
+	font-size: var(--text-caption);
+	letter-spacing: 0.2em;
+	color: var(--color-rice-dim);
+}
+
+.ss-ending-sub-locked {
+	font-size: 11px;
+	letter-spacing: 0.1em;
+}
+
+.ss-ending-epigraph {
+	font-size: var(--text-caption);
+	color: var(--color-rice-dim);
+	line-height: 1.9;
+	border-left: 2px solid var(--color-gold-dim);
+	padding-left: var(--space-3);
+	margin-top: 6px;
+}
+
+.ss-endings-goto {
+	display: block;
+	margin: var(--space-4) auto 0;
+}
+
+@keyframes fadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes fadeUp {
+	from { opacity: 0; transform: translateY(8px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
 .ss-star {
 	color: var(--color-rice-faint);
 	font-size: 11px;

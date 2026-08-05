@@ -9,7 +9,7 @@ VAR courage = 0
 -> act1_wu_beng
 
 === act1_wu_beng ===
-#bg:xia_court
+#bg:xia_court_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「跟你说件有趣的事——一千多年后，有个叫孔丘的老先生，晚年总是叹气：『甚矣吾衰也！久矣吾不复梦见周公！』」 #speaker:青月
@@ -239,6 +239,7 @@ VAR courage = 0
 
 === act5_jie_zi ===
 #bg:shun_house
+#bgm:court
 「一沐三捉发，一饭三吐哺，起以待士，犹恐失天下之贤人！」——你洗一次头要三次握着头发停下来见贤士，吃一顿饭要三次吐出口中的食物迎客。
 #show:qingyue:smile:float
 「曹操《短歌行》里那句『周公吐哺，天下归心』说的就是这一刻呀。」 #speaker:青月
@@ -248,6 +249,7 @@ VAR courage = 0
 可成王不敢以你为臣，把你葬在了毕地——陪在文王身边，以明「予不敢臣周公」。
 { loyalty >= 1 && courage >= 1:
     #bg:taishan_peak
+#bgm:epic
     #show:qingyue:solemn:float
     「周公啊周公——」 #speaker:青月
     「你摄政七年，南面而朝诸侯七年，人人说你要篡位，你一声不吭。等成王长大，你乖乖北面就臣位，把天下好好还给他。」 #speaker:青月

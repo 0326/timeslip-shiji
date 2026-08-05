@@ -1,0 +1,363 @@
+/* 治水疏渠（Channel） —— 管道拼接样式
+   石板泥土底 · 青铜管道 · 水流蓝 · 水源蓝光 · 大海蓝绿波纹 */
+
+.ch-root {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: var(--space-3);
+	padding: var(--space-2) 0 var(--space-4);
+	user-select: none;
+	-webkit-user-select: none;
+
+	/* ── 管道游戏专用色板 ── */
+	--ch-cell: 64px;
+	--ch-bronze: #b8860b;
+	--ch-bronze-dark: #7a5808;
+	--ch-water: #2d92b8;
+	--ch-water-glow: rgba(95, 184, 216, 0.6);
+	--ch-source: #1a6b8a;
+	--ch-sea: #2e8b8b;
+	--ch-rock: #5a534a;
+	--ch-dirt-1: #3d2818;
+	--ch-dirt-2: #452e1c;
+}
+
+/* ── 顶部 HUD ── */
+.ch-hud {
+	width: 100%;
+	max-width: 380px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 12px;
+	background: rgba(0, 0, 0, 0.3);
+	border: 1px solid var(--color-ink-mid);
+	border-radius: var(--radius);
+}
+.ch-title-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+.ch-title {
+	font-size: 18px;
+	letter-spacing: 0.2em;
+	color: var(--color-gold);
+	font-weight: 600;
+}
+.ch-subtitle {
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.15em;
+}
+.ch-stats {
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+.ch-timer {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 13px;
+	color: var(--color-rice);
+	letter-spacing: 0.05em;
+	font-variant-numeric: tabular-nums;
+}
+.ch-timer-low {
+	color: var(--color-vermilion-light);
+	animation: chBlink 1s ease-in-out infinite;
+}
+@keyframes chBlink {
+	50% { opacity: 0.45; }
+}
+.ch-stat {
+	font-size: 12px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.1em;
+}
+
+.ch-hint {
+	max-width: 380px;
+	margin: 0;
+	font-size: 12px;
+	line-height: 1.8;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.05em;
+	text-align: center;
+}
+
+/* ── 棋盘外框（石板风） ── */
+.ch-board-wrap {
+	background: linear-gradient(160deg, #2a1d12 0%, #1a1208 100%);
+	padding: 10px;
+	border-radius: var(--radius-lg);
+	border: 2px solid #6b4a2b;
+	box-shadow:
+		inset 0 0 30px rgba(0, 0, 0, 0.6),
+		0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.ch-board {
+	display: grid;
+	gap: 3px;
+}
+
+/* ── 单元格基底（泥土纹理） ── */
+.ch-cell {
+	width: var(--ch-cell);
+	height: var(--ch-cell);
+	border: none;
+	border-radius: 6px;
+	padding: 0;
+	cursor: default;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: repeating-linear-gradient(
+		45deg,
+		var(--ch-dirt-1) 0,
+		var(--ch-dirt-1) 4px,
+		var(--ch-dirt-2) 4px,
+		var(--ch-dirt-2) 8px
+	);
+	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+	overflow: hidden;
+}
+.ch-cell.ch-clickable {
+	cursor: pointer;
+}
+.ch-cell.ch-clickable:hover {
+	box-shadow:
+		inset 0 0 0 2px var(--ch-bronze),
+		inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* ── 管道旋转容器 ── */
+.ch-pipe-rotate {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+	will-change: transform;
+}
+.ch-pipe-svg {
+	width: 100%;
+	height: 100%;
+	display: block;
+	pointer-events: none;
+}
+/* 管道描边色（青铜） */
+.ch-pipe-svg line,
+.ch-pipe-svg path {
+	stroke: var(--ch-bronze);
+	stroke-linecap: butt;
+	transition: stroke 0.35s ease, filter 0.35s ease;
+}
+
+/* ── 水流充盈：管道变蓝 ── */
+.ch-cell.ch-filled {
+	background: repeating-linear-gradient(
+		45deg,
+		#1a3a4a 0,
+		#1a3a4a 4px,
+		#1f4458 4px,
+		#1f4458 8px
+	);
+}
+.ch-cell.ch-filled .ch-pipe-svg line,
+.ch-cell.ch-filled .ch-pipe-svg path {
+	stroke: var(--ch-water);
+	filter: drop-shadow(0 0 3px var(--ch-water-glow));
+	animation: chWaterPulse 2.5s ease-in-out infinite;
+}
+@keyframes chWaterPulse {
+	50% { filter: drop-shadow(0 0 6px var(--ch-water-glow)); }
+}
+
+/* ── 水源格（蓝色发光 + 水滴） ── */
+.ch-cell.ch-type-source {
+	background: radial-gradient(circle at 50% 50%, #2d92b8 0%, #1a6b8a 60%, #0f4a60 100%);
+	box-shadow:
+		inset 0 0 16px rgba(95, 184, 216, 0.6),
+		0 0 20px rgba(45, 146, 184, 0.5);
+	animation: chSourcePulse 2.4s ease-in-out infinite;
+}
+@keyframes chSourcePulse {
+	50% {
+		box-shadow:
+			inset 0 0 24px rgba(95, 184, 216, 0.9),
+			0 0 30px rgba(45, 146, 184, 0.75);
+	}
+}
+.ch-source-mark {
+	font-size: 24px;
+	color: #f0fbff;
+	text-shadow:
+		0 0 8px rgba(95, 184, 216, 0.9),
+		0 1px 2px rgba(0, 0, 0, 0.5);
+	letter-spacing: 0.1em;
+	font-weight: 700;
+	pointer-events: none;
+}
+
+/* ── 大海格（蓝绿波纹） ── */
+.ch-cell.ch-type-sea {
+	background: linear-gradient(180deg, #3aa8a0 0%, #2e8b8b 50%, #1f6868 100%);
+	box-shadow: inset 0 0 16px rgba(120, 220, 210, 0.4);
+}
+.ch-cell.ch-type-sea::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: repeating-linear-gradient(
+		90deg,
+		transparent 0,
+		transparent 6px,
+		rgba(255, 255, 255, 0.1) 6px,
+		rgba(255, 255, 255, 0.1) 12px
+	);
+	animation: chWave 3s linear infinite;
+	pointer-events: none;
+}
+@keyframes chWave {
+	from { transform: translateX(0); }
+	to { transform: translateX(-12px); }
+}
+/* 水流到达大海：更亮、更强光晕 */
+.ch-cell.ch-sea-active {
+	background: linear-gradient(180deg, #5fd8d0 0%, #3ac8b8 50%, #2a9888 100%);
+	box-shadow:
+		inset 0 0 24px rgba(180, 255, 245, 0.6),
+		0 0 28px rgba(90, 216, 208, 0.65);
+}
+.ch-sea-mark {
+	font-size: 24px;
+	color: #f0fffc;
+	text-shadow:
+		0 0 8px rgba(120, 220, 210, 0.9),
+		0 1px 2px rgba(0, 0, 0, 0.5);
+	letter-spacing: 0.1em;
+	font-weight: 700;
+	position: relative;
+	z-index: 2;
+	pointer-events: none;
+}
+
+/* ── 山石障碍格 ── */
+.ch-cell.ch-type-rock {
+	background: radial-gradient(circle at 30% 30%, #6a6358 0%, #4a443c 60%, #2e2a24 100%);
+	box-shadow:
+		inset 0 2px 4px rgba(255, 255, 255, 0.1),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.5);
+}
+.ch-rock-mark {
+	width: 62%;
+	height: 62%;
+	border-radius: 40% 60% 50% 50% / 50% 40% 60% 50%;
+	background: radial-gradient(circle at 35% 30%, #7a7368 0%, #4a443c 70%, #2e2a24 100%);
+	box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.4);
+	display: block;
+	pointer-events: none;
+}
+
+/* ── 空地块（泥土，略暗） ── */
+.ch-cell.ch-type-empty {
+	opacity: 0.55;
+}
+
+/* ── 图例 ── */
+.ch-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 14px;
+	justify-content: center;
+	max-width: 380px;
+}
+.ch-legend-item {
+	display: inline-flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 11px;
+	color: var(--color-rice-dim);
+	letter-spacing: 0.08em;
+}
+.ch-legend-swatch {
+	width: 14px;
+	height: 14px;
+	border-radius: 3px;
+	display: inline-block;
+	border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.ch-legend-source {
+	background: radial-gradient(circle, #2d92b8, #1a6b8a);
+}
+.ch-legend-sea {
+	background: linear-gradient(180deg, #3aa8a0, #2e8b8b);
+}
+.ch-legend-pipe {
+	background: var(--ch-bronze);
+}
+.ch-legend-water {
+	background: var(--ch-water);
+}
+
+/* ── 操作区 ── */
+.ch-actions {
+	display: flex;
+	gap: var(--space-2);
+}
+
+/* ── 结果遮罩 ── */
+.ch-result {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	background: rgba(0, 0, 0, 0.85);
+	border-radius: var(--radius-lg);
+	color: var(--color-rice);
+	animation: chFadeIn 0.3s ease-out;
+	z-index: 5;
+}
+@keyframes chFadeIn {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+.ch-result.ch-win {
+	color: var(--color-gold-light, #d4af5a);
+}
+.ch-result.ch-lose {
+	color: var(--color-rice-dim);
+}
+.ch-result-title {
+	font-family: var(--font-serif);
+	font-size: 26px;
+	letter-spacing: 0.25em;
+	font-weight: 600;
+}
+.ch-result-sub {
+	font-size: 13px;
+	letter-spacing: 0.1em;
+	opacity: 0.8;
+}
+
+/* ── 响应式 ── */
+@media (max-width: 480px) {
+	.ch-root { --ch-cell: 52px; }
+	.ch-source-mark,
+	.ch-sea-mark { font-size: 20px; }
+	.ch-title { font-size: 16px; }
+}
+@media (max-width: 380px) {
+	.ch-root { --ch-cell: 44px; }
+	.ch-source-mark,
+	.ch-sea-mark { font-size: 17px; }
+}

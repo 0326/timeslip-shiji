@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 帝尧 · 尧舜禅让 · 传贤不传子
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
@@ -7,7 +7,7 @@
 -> c_open
 
 === c_open ===
-#bg:yao_court
+#bg:yao_court_alt2
 #bgm:solemn
 #show:qingyue:solemn:float
 「呐……你见过要落山的太阳吗？」 #speaker:青月
@@ -37,6 +37,8 @@
 
 * #correct #hint:令舜摄行天子之政，荐之于天——先让他代行政事、观其成败，再问天命。 [使舜代行天子之政，遍历庶务、深入山林，以观其能、以卜天命]
 	-> c_test_pass
+* #correct [问舜：摄政三事，你觉最难的是哪一桩？]
+	-> c_explore_test_hardest
 * [他名声既好，何须再试——直接下诏，立舜为嗣]
 	-> c_rush
 
@@ -70,12 +72,58 @@
 
 * #correct #hint:终不以天下之病而利一人——宁负一子，不负天下。 [「终究不能让天下受害，而只让一个人得利。」——你亲手负了自己的骨肉，把天下授予舜]
 	-> c_hand_shun
+* #correct [召丹朱与舜同殿，当面比较——最后看一眼，再定]
+	-> c_explore_choice_compare
 * [「他到底是我的骨血。」——立丹朱为嗣，名正言顺，父子团圆，谁又能真说个不字？]
 	-> c_hand_danzhu
 * [父子天下两难，你迟迟不定，把册立之事一再拖延]
 	-> c_waver
-* [授舜天下，却也厚封丹朱一方——让贤子共处，你想两全]
+* #correct [授舜天下，却也厚封丹朱一方——让贤子共处，你想两全]
 	-> if_bingfeng_1
+
+// ═══ 探索节点 · 尧舜禅让 ═══
+
+=== c_explore_test_hardest ===
+#bg:yao_court
+#bgm:court
+#show:shun:calm:center
+#show:qingyue:calm:float
+你没有直接让他摄政，先问了他一个问题：「五典、百官、四门——这三样，你觉得最难的是哪一桩？」 #speaker:尧
+舜想了想，答道：「四门。」 #speaker:舜
+「五典是治家，家是熟的——再难，也不过是自家人的心。百官是治事，事有规矩——只要法子对，总能理顺。」 #speaker:舜
+「可四门不一样。四方来的人，各有各的心思，各有各的诉求。你让他们满意了这边，那边又不服。开门容易，让进来的人都觉得被听见了——难。」 #speaker:舜
+#show:qingyue:tease:float
+「你看——他不是在说官话。他真想过这些事。」 #speaker:青月
+「一个从历山走出来的农夫，能把天下的难处看到这个份上——你觉得，他还用再试吗？」 #speaker:青月
+
+* #correct [问：那大麓呢？你怕不怕？]
+	#show:qingyue:solemn:float
+	「舜说：『怕。山林川泽里的风雨，不是人能抗的。可臣想——天子之位，不就是在风雨里走直路吗？走不直，就别坐那个位子。』」 #speaker:青月
+	「你看——他不是不怕，是怕了还肯走。这就叫『暴风雷雨不迷』——迷的不是路，是心。心不迷，路就不会迷。」 #speaker:青月
+	-> c_test
+* #correct [问明白了，回去决断]
+	-> c_test
+
+=== c_explore_choice_compare ===
+#bg:yao_court
+#bgm:court
+#show:qingyue:calm:float
+你做了一个出人意料的决定——召丹朱与舜同殿，当着群臣的面，让他们各自说一句治天下的想法。 #speaker:青月
+丹朱先开口，语气轻佻：「治天下？让诸侯交粮、交人，谁不听话就打。天下还不简单？」 #speaker:丹朱
+舜沉默了一会儿，才缓缓道：「臣不知治天下该怎么做。臣只知道——历山的人争地，臣让了，他们就不争了。雷泽的人争渔，臣让了，他们也不争了。天下也许也是一样：让得够多，争的就少了。」 #speaker:舜
+#show:qingyue:tease:float
+「你看——一个说打，一个说让。这就是丹朱和舜的差别。」 #speaker:青月
+「不是聪明不聪明，是看天下的眼光不一样。一个往下看，看到的是人；一个往上看，看到的是棋子。」 #speaker:青月
+
+* #correct [再问丹朱：你觉得舜说得对吗？]
+	#show:qingyue:calm:float
+	「丹朱嗤笑：『让？让到什么时候？天下是让出来的，那还要天子做什么？』」 #speaker:青月
+	「舜没有反驳，只是看了丹朱一眼，轻声说：『天子不是来拿的，是来给的。』」 #speaker:青月
+	#show:qingyue:solemn:float
+	「一句话，就把两个人的高下分出来了。你心里，已经有答案了吧？」 #speaker:青月
+	-> c_choice
+* #correct [看清楚了，回去决断]
+	-> c_choice
 
 === if_bingfeng_1 ===
 #bg:yao_court
@@ -111,9 +159,10 @@
 
 === c_hand_shun ===
 #bg:yao_court
+#bgm:court
 #show:shun:calm:center
 「授舜。」你只说了两个字，像放下了一副挑了七十年的担子。 #speaker:尧
-「终不以天下之病，而利一人。」 #speaker:尧 #hint:尧曰：终不以天下之病而利一人。
+「终不以天下之病，而利一人。」 #speaker:尧 #hint:尧曰：终不以天下之病而利一人。 #impact:impact_shanrang_tianxiaweigong #quiz:quiz_shanrang_tianxiaweigong
 你越过了为父的私心。你举舜于上天，令他摄行天子之政，二十八载而后你崩。 #speaker:青月 #hint:尧辟位凡二十八年而崩。
 #show:qingyue:sad:float
 你去世那日，百姓悲哀，如丧父母。三年之中，四方莫举乐，人人思念着你这位放勋。 #speaker:青月 #hint:百姓悲哀，如丧父母。三年，四方莫举乐，以思尧。
@@ -122,6 +171,7 @@
 
 === c_avoid ===
 #bg:nanhe
+#bgm:peaceful
 你的魂魄尚在人间，看着接下来发生的事。三年丧毕，舜做了一件出人意料的事—— #speaker:青月
 他没有径直登位，反而把帝位让给了你的儿子丹朱，自己避居到南河之南。 #speaker:青月 #hint:舜让辟丹朱于南河之南。
 #show:qingyue:worry:float
@@ -130,7 +180,7 @@
 
 * #correct #hint:诸侯朝觐者不之丹朱而之舜——天与之，人与之。 [你盼天下自择其主：谁得人心，谁承天命]
 	-> c_end_shanrang
-* [你到底盼着骨血承嗣：愿人心念着旧恩，重归丹朱]
+* #correct [你到底盼着骨血承嗣：愿人心念着旧恩，重归丹朱]
 	-> if_siqing_1
 
 === if_siqing_1 ===

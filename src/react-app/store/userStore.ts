@@ -64,6 +64,10 @@ interface UserStore {
 	unlockDeathEntry: (storyId: string, charId: string, deathId: string) => boolean;
 	/** 解锁一个具名结局（结局收集）；返回是否是首次解锁 */
 	unlockEnding: (storyId: string, charId: string, endingId: string) => boolean;
+	/** 解锁一个史识碎片（#impact:ID / #correct / 死亡解锁 / 测验解锁）；返回是否是首次解锁 */
+	unlockKnowledge: (storyId: string, charId: string, knowledgeId: string) => boolean;
+	/** 标记史识图谱节点已查看 */
+	markKnowledgeGraphSeen: (storyId: string, charId: string, nodeId: string) => void;
 
 	// 原文阅读
 	markSourceRead: (storyId: string) => boolean;
@@ -226,16 +230,34 @@ export const useUserStore = create<UserStore>()(
 				return true;
 			},
 			unlockEnding: (storyId, charId, endingId) => {
-				const prev = get().getPerspective(storyId, charId);
-				const list = prev.unlockedEndings ?? [];
-				if (list.includes(endingId)) return false;
-				set((s) =>
-					upsert(s.progress, storyId, charId, { unlockedEndings: [...list, endingId] }),
-				);
-				return true;
-			},
+			const prev = get().getPerspective(storyId, charId);
+			const list = prev.unlockedEndings ?? [];
+			if (list.includes(endingId)) return false;
+			set((s) =>
+				upsert(s.progress, storyId, charId, { unlockedEndings: [...list, endingId] }),
+			);
+			return true;
+		},
+		unlockKnowledge: (storyId, charId, knowledgeId) => {
+			const prev = get().getPerspective(storyId, charId);
+			const list = prev.unlockedKnowledge ?? [];
+			if (list.includes(knowledgeId)) return false;
+			set((s) =>
+				upsert(s.progress, storyId, charId, { unlockedKnowledge: [...list, knowledgeId] }),
+			);
+			toast("info", "史识碎片", `已收录「${knowledgeId}」`, "📜");
+			return true;
+		},
+		markKnowledgeGraphSeen: (storyId, charId, nodeId) => {
+			const prev = get().getPerspective(storyId, charId);
+			const list = prev.knowledgeGraphSeen ?? [];
+			if (list.includes(nodeId)) return;
+			set((s) =>
+				upsert(s.progress, storyId, charId, { knowledgeGraphSeen: [...list, nodeId] }),
+			);
+		},
 
-			// ── 原文 ──
+		// ── 原文 ──
 			markSourceRead: (storyId) => {
 				if (get().progress.readSources.includes(storyId)) return false;
 				set((s) => ({ progress: { ...s.progress, readSources: [...s.progress.readSources, storyId] } }));

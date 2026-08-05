@@ -1,6 +1,8 @@
 import { useMemo, useState, type CSSProperties } from "react";
-import { Skull, Lock, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Skull, Lock, BookOpen, Compass, Map } from "lucide-react";
 import "./DeathsCodex.css";
+import "./EndingsCodex.css";
 import { inkStories } from "../../data/stories/inkStories";
 import { SERIES } from "../../data/series";
 import { CHARACTERS } from "../../data/characters";
@@ -210,6 +212,7 @@ function buildCodex(unlockedMap: Record<string, Record<string, PerspectiveProgre
 }
 
 export function DeathsCodexPage() {
+	const navigate = useNavigate();
 	const storylines = useUserStore((s) => s.progress.storylines);
 	const groups = useMemo(() => buildCodex(storylines), [storylines]);
 	const totalUnlocked = groups.reduce((n, g) => n + g.unlocked, 0);
@@ -224,7 +227,25 @@ export function DeathsCodexPage() {
 	};
 
 	return (
-		<div className="codex-page">
+		<div className="codex-page deaths-codex">
+			{/* 顶部 tab 切换：死亡图鉴 / 结局图鉴 */}
+			<div className="codex-tabs">
+				<button className="codex-tab active">
+					<Skull size={14} /> 死法图鉴
+				</button>
+				<button
+				className="codex-tab"
+				onClick={() => navigate("/codex/endings")}
+			>
+				<Compass size={14} /> 结局图鉴
+			</button>
+			<button
+				className="codex-tab"
+				onClick={() => navigate(`/codex/knowledge/${encodeURIComponent("huangdi:banquan")}`)}
+			>
+				<Map size={14} /> 史识图谱
+			</button>
+		</div>
 			<div className="codex-stats">
 				<span className="panel-stat">
 					<b>

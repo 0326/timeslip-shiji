@@ -37,7 +37,7 @@ export function DeathScreen({ reason, classical, analysis, onRetry, onReadSource
 					<button className="btn btn-ghost" onClick={onReadSource}>
 						<ScrollText size={16} /> 细读原文
 					</button>
-					<button className="btn btn-ghost" onClick={() => navigate("/codex/deaths")}>
+					<button className="btn btn-ghost" onClick={() => navigate("/codex")}>
 						<BookOpen size={16} /> 查看史鉴
 					</button>
 				</div>

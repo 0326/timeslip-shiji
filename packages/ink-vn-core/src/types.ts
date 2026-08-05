@@ -6,7 +6,7 @@
 export type TagMeta = Record<string, string | true>;
 
 /** Horizontal position for character sprites */
-export type Position = "left" | "center-left" | "center" | "center-right" | "right";
+export type Position = "left" | "center-left" | "center" | "center-right" | "right" | "float";
 
 /** A character sprite to show on stage (multi-character support) */
 export interface SpriteShow {
@@ -127,4 +127,10 @@ export interface NarrativeRunner {
 	setVar(name: string, value: number | boolean | string): void;
 	/** Subscribe to variable changes; returns unsubscribe function. */
 	subscribeVar(name: string, cb: (oldValue: unknown, newValue: unknown) => void): () => void;
+	/**
+	 * 收集当前暂停点的选项（不推进剧情）。
+	 * 用于恢复到抉择点快照后重新获取选项列表。
+	 * 返回空数组表示当前无选项（可能已结束或在文本中途）。
+	 */
+	getCurrentChoices(): RunnerChoice[];
 }

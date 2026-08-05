@@ -33,7 +33,7 @@ VAR mg_score = 0
 * #correct #hint:书足以记名姓而已。剑一人敌，不足学，学万人敌。 [「书能记名姓就够了，剑只敌一人——我要学，就学万人敌！」]
 	~ gangbi = gangbi + 1
 	-> act1_bingfa
-* [「叔父说得是，我这就静下心来，把书剑一样样学到底。」]
+* #correct [「叔父说得是，我这就静下心来，把书剑一样样学到底。」]
 	-> act1_bookish
 
 === act1_bookish ===
@@ -50,6 +50,7 @@ VAR mg_score = 0
 项梁一愣，随即眼里亮起来——这小子，不凡。他不再逼你识字，转而教你兵法。 #speaker:青月 #hint:于是项梁乃教籍兵法，籍大喜。
 你大喜过望，可略懂其意，便又不肯学到底了。 #speaker:青月
 #bg:riverside
+#bgm:peaceful
 #show:xiangyu:default:center
 这一年，秦始皇巡游会稽，车驾如龙。你隔江望着那金舆华盖，脱口而出——
 「彼可取而代也！」 #speaker:项羽 #hint:籍曰：彼可取而代也。
@@ -79,6 +80,7 @@ VAR mg_score = 0
 
 === act2_dingtao ===
 #bg:riverside
+#bgm:peaceful
 #show:xiangyu:default:center
 东阿、定陶，连战连捷。你又亲手斩了秦将李由。楚军上下，越发轻视秦兵，人人面带骄色。 #speaker:青月 #hint:项羽等又斩李由，益轻秦，有骄色。
 #show:songyi:default:left
@@ -89,7 +91,7 @@ VAR mg_score = 0
 * #correct #hint:战胜而将骄卒惰者败。 [「叔父，宋义说得对。连胜易骄，秦若倾国来援，我军危矣——当持重设防。」]
 	~ yi = yi + 1
 	-> act2_survive
-* [「怕什么！秦兵败军之余，一鼓可平。乘胜进击，何须持重！」]
+* #correct [「怕什么！秦兵败军之余，一鼓可平。乘胜进击，何须持重！」]
 	~ gangbi = gangbi + 1
 	-> act2_reckless
 
@@ -131,7 +133,7 @@ VAR mg_score = 0
 * #correct #hint:今不恤士卒而徇其私，非社稷之臣。 [晨入宋义帐中，一剑斩其头，出令三军：「宋义与齐谋反，楚王密令我诛之！」]
 	~ gangbi = gangbi + 1
 	-> act3_posfu
-* [「他是上将军，怀王亲拜。我纵不满，也不能擅杀主帅，坏了法度。」]
+* #correct [「他是上将军，怀王亲拜。我纵不满，也不能擅杀主帅，坏了法度。」]
 	-> act3_wait
 
 === act3_wait ===
@@ -176,6 +178,7 @@ VAR mg_score = 0
 
 === act4_feast ===
 #bg:tent_feast
+#bgm:court
 #show:fanzeng:default:left
 亚父范增看得最透：「刘邦入关，财物不取，妇女不幸——此人志不在小。我望其气，成五采龙虎，是天子气。急击勿失！」 #speaker:范增 #hint:此天子气也。急击勿失。
 #show:qingyue:solemn:float
@@ -188,15 +191,17 @@ VAR mg_score = 0
 #show:qingyue:worry:float
 「一个已经服软认错、对你行礼谢罪的人……你，杀，还是不杀？这一刀，考的是你到底是谁。」 #speaker:青月
 
-* #hint:此后夺项王天下者，必沛公也。 [「范亚父说得对。此人是心腹大患，趁今日在座——杀！」]
+* #correct #hint:此后夺项王天下者，必沛公也。 [「范亚父说得对。此人是心腹大患，趁今日在座——杀！」]
 	~ renxin = renxin + 1
 	-> act4_kill
 * #correct #hint:项王默然不应——为人不忍。 [你默然不应。他已服软认错，此时杀他，天下人会怎么看我项羽？]
 	~ gangbi = gangbi + 1
 	-> act4_release
-* [不杀，也不放——「留客数日。沛公远来辛苦，且在营中歇息，你那十万人马，本王替你整肃整肃。」]
+* #correct [不杀，也不放——「留客数日。沛公远来辛苦，且在营中歇息，你那十万人马，本王替你整肃整肃。」]
 	~ gangbi = gangbi + 1
 	-> if_kouliu_1
+* #correct [追问：范增三举玉玦，你为何默然不应？]
+	-> c_explore_fanzeng_yujue
 
 === act4_kill ===
 #show:qingyue:tease:float
@@ -237,7 +242,7 @@ VAR mg_score = 0
 * #correct #hint:关中阻山河四塞，地肥饶，可都以霸。 [「此言有理。定都关中，扼天下之要——纵有万般思乡，霸业为重。」]
 	~ yi = yi + 1
 	-> act5_dumidst
-* [「富贵不归故乡，如衣绣夜行，谁知之者！我要衣锦还乡，都彭城！」]
+* #correct [「富贵不归故乡，如衣绣夜行，谁知之者！我要衣锦还乡，都彭城！」]
 	~ gangbi = gangbi + 1
 	-> act5_yijin
 
@@ -256,6 +261,7 @@ VAR mg_score = 0
 
 === act5_yidi ===
 #bg:camp_chu
+#bgm:march
 #show:xiangyu:default:center
 你自立为西楚霸王，分封十八诸侯——论亲疏、酬私恩，而非论功。把刘邦封去偏远的巴蜀，又以三秦降将堵其东出。 #speaker:青月 #hint:三分关中，王秦降将以距塞汉王。
 #show:qingyue:worry:float
@@ -264,7 +270,7 @@ VAR mg_score = 0
 * #correct #hint:项羽以立楚起家。放杀义帝，则授人以讨逆之柄。 [「义帝虽虚，是我复楚的大义所系。徙其居可也，杀之则失天下之信——留他。」]
 	~ yi = yi + 1
 	-> act5_clear
-* [「一个放羊的傀儡，留着碍眼。密令衡山、临江王，江中……了结了他。」]
+* #correct [「一个放羊的傀儡，留着碍眼。密令衡山、临江王，江中……了结了他。」]
 	~ yi = yi - 1
 	~ renxin = renxin + 1
 	-> act5_regicide
@@ -286,6 +292,17 @@ VAR mg_score = 0
 #actclear:xiangyu_act5
 #show:qingyue:solemn:float
 「分封已定，天下重又暗流汹涌。刚愎埋祸、失义树敌——你亲手栽下的因，就要结成众叛的果了。」 #speaker:青月
+#show:qingyue:calm:float
+「彭城巷里，有个开煎饼铺的寡妇，人人叫她项大娘——巧了，跟你同姓。」 #speaker:青月
+「你衣锦还乡、烹说者、屠咸阳、弑义帝的消息，一路传到彭城。」 #speaker:青月
+#show:qingyue:sad:float
+「那天午后，项大娘正揭着煎饼，忽然听见巷口有妇人压低声音说：『西楚霸王把人家说客给烹了，还屠了咸阳……』」 #speaker:青月
+「她手一抖，煎饼鏊子上的饼糊了半边。她赶紧把门板关上，顶了根木棍。」 #speaker:青月
+#show:qingyue:solemn:float
+「隔壁张婶来借烙饼的铁勺，敲了三下门，项大娘不敢应。她把粮缸从灶台底下拖出来，倒进布袋，藏进后院柴堆里。」 #speaker:青月
+「她跟街坊说：『楚军来抢粮，咱们可怎么办啊？』——她怕的不是秦军，是你带的楚军。」 #speaker:青月
+#show:qingyue:sigh:float
+「你在咸阳烧秦宫、在彭城衣锦还乡，威风是威风。可彭城巷的妇人，把门板关上的那一刻——人心，就已经悄悄关在你门外了。」 #speaker:青月
 -> act6_pengcheng
 
 // ═══════════════════════════════════════════════
@@ -304,6 +321,7 @@ VAR mg_score = 0
 
 === act6_fanjian ===
 #bg:camp_chu
+#bgm:march
 #show:fanzeng:default:left
 荥阳城下，你与范增急围刘邦，眼看就要成功。刘邦用陈平之计：故意慢待你的使者，佯称『以为是亚父的使者』。 #speaker:青月 #hint:项王乃疑范增与汉有私，稍夺之权。
 一席伪装的饭食，一句挑拨的话——你心里，起了疑。 #speaker:青月
@@ -313,7 +331,7 @@ VAR mg_score = 0
 * #correct #hint:陈平反间，其计甚拙。 [「陈平惯用诡计，此必是离间之谋。亚父忠心，我岂能因一饭而疑之？急攻荥阳！」]
 	~ yi = yi + 1
 	-> act6_keepfan
-* [「使者失礼，亚父竟与汉私通？夺其权，看他还如何专断！」]
+* #correct [「使者失礼，亚父竟与汉私通？夺其权，看他还如何专断！」]
 	~ gangbi = gangbi + 1
 	~ renxin = renxin + 1
 	-> act6_losefan
@@ -375,7 +393,7 @@ VAR mg_score = 0
 * #correct #hint:令诸君知天亡我，非战之罪也。 [「今日固决死！愿为诸君快战，三胜之，溃围斩将刈旗——让你们知道，是天亡我，非战之罪！」]
 	~ gangbi = gangbi + 1
 	-> act7_kuaizhan
-* [「不必逞强了。趁乱突围，能活一个是一个，留得性命再图后计——是我错，非天亡我。」]
+* #correct [「不必逞强了。趁乱突围，能活一个是一个，留得性命再图后计——是我错，非天亡我。」]
 	~ yi = yi + 1
 	-> act7_wake
 
@@ -394,6 +412,8 @@ VAR mg_score = 0
 #show:qingyue:sad:float
 「勇冠三军，你做到了。可你证明的，只是自己能打；证明不了的，是这败亡究竟因谁。」 #speaker:青月
 #actclear:xiangyu_act7
+#show:qingyue:tease:float
+「呐——二十八骑冲阵，你还能再杀出一条路来吗？来，试试这一局——前方就是乌江，杀出去！」 #speaker:青月
 #minigame:klotski:hard
 { mg_result == "win":
 	#show:qingyue:sad:float
@@ -421,9 +441,9 @@ VAR mg_score = 0
 
 * #correct #hint:纵江东父兄怜而王我，我何面目见之？ [「天之亡我，我何渡为！我与江东子弟八千人渡江，今无一人还，我有何面目见江东父老？」]
 	-> act8_ending_router
-* [「留得青山在。渡江东，重整旗鼓，未必没有再来一次的机会——先活下去！」]
+* #correct [「留得青山在。渡江东，重整旗鼓，未必没有再来一次的机会——先活下去！」]
 	-> act8_cross
-* [「江东子弟还在，父老还在。我项羽这一败，不算完！」——你登船，志在卷土重来]
+* #correct [「江东子弟还在，父老还在。我项羽这一败，不算完！」——你登船，志在卷土重来]
 	-> if_dujiang_1
 
 === act8_cross ===
@@ -483,6 +503,7 @@ VAR mg_score = 0
 
 === if_kouliu_1 ===
 #bg:tent_feast
+#bgm:court
 #show:qingyue:worry:float
 「欸？！第三条路——你既不落刀，也不放人，你要把他……扣下来？」 #speaker:青月
 你按住剑，却对刘邦一笑：「沛公远来辛苦。鸿门风大，且在营中安歇几日；你那十万人马，本王替你整肃整肃。」
@@ -495,6 +516,7 @@ VAR mg_score = 0
 
 === if_kouliu_2 ===
 #bg:camp_chu
+#bgm:march
 #show:xiangyu:default:center
 你收了刘邦的兵符，遣项伯监其军。汉军群龙无首，萧何、张良在关中急得团团转，士卒一夜逃散大半。
 你独大了。四十万楚军，天下再无人敢撄其锋。
@@ -522,6 +544,7 @@ VAR mg_score = 0
 
 === if_dujiang_2 ===
 #bg:camp_chu
+#bgm:march
 #show:xiangyu:default:center
 你回到江东，登高一呼。可应者，寥寥。
 当年随你出征的八千子弟，一个都没能回来。他们的父母兄长站在田埂上望着你，眼里没有恨，只有一种更让你难受的东西——沉默。
@@ -535,3 +558,37 @@ VAR mg_score = 0
 「卷土重来未可知——『未可知』三个字，是杜牧的偏爱，也是历史最诚实的答案：谁也不知道。也许你能再搏一次，也许，你只是把江东最后的血，也一并流干了。」 #speaker:青月
 你握着剑，站在江东的春天里。身后是愿意再信你一次的父老，面前是整个已经归汉的天下。这一次，你想清楚『为什么而战』了吗？ #ending:if_dujiang #speaker:青月
 -> END
+
+// ═══════════════════════════════════════════════
+// 探索 · 范增三举玉玦 —— 项羽为何默然不应？
+// ═══════════════════════════════════════════════
+
+=== c_explore_fanzeng_yujue ===
+#show:qingyue:default:float
+「范增那三次举玉玦，你都看见了——对吧？」 #speaker:青月
+「他不是要你杀刘邦一个人，是要你杀『先入关者王之』这个约，杀那个让你心里不安的『义』字。」 #speaker:青月
+
+* #correct [你当时心里是怎么想的？真的是「不忍」吗？]
+	#show:qingyue:tease:float
+	你当时心里转过的念头：刘邦已经服软了，杀他，诸侯会怎么看？天下人会怎么说？ #speaker:青月
+	「你要的是『霸王』——靠力与义服人，不是靠暗杀。可你忘了，在鸿门宴上，『义』和『力』只能选一个。」 #speaker:青月
+	-> act4_feast_return
+
+* #correct [范增的玉玦是什么意思？他为何不直说？]
+	#show:qingyue:calm:float
+	「玉玦，『玦』者，决也。范增三次举玦，是要你下决心——决断，而不是犹豫。」 #speaker:青月
+	「他不直说，是因为『杀沛公』这三个字，说出来就是『不义』。他要你自己意会，自己动手。可你偏不意会。」 #speaker:青月
+	-> act4_feast_return
+
+* #correct [如果当时你应了那玉玦，历史会怎样？]
+	#show:qingyue:solemn:float
+	「如果当时你应了，刘邦死在鸿门，汉初三杰散了，关中归你，天下诸侯不敢再动——短期看，你赢了。」 #speaker:青月
+	「可那样的项羽，便成了『用暗杀取天下』的项羽。你分得清『杀降』和『锄奸』的区别，天下人也分得清。」 #speaker:青月
+	「你用一次『不忍』，保住了自己的『义』——却失去了天下。可青月觉得，这才是你。」 #speaker:青月
+	-> act4_feast_return
+
+=== act4_feast_return ===
+#show:qingyue:calm:float
+「想明白了？鸿门那一夜，没有十全十美的路可走。」 #speaker:青月
+「亚父的玉玦，举得再急，也架不住项羽心里那杆秤——称的不是输赢，是他自己。」 #speaker:青月
+-> act4_feast

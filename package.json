@@ -16,6 +16,10 @@
     "node": ">=20"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
+    "@react-three/postprocessing": "^3.0.4",
+    "@types/three": "^0.185.1",
     "d3": "^7.9.0",
     "framer-motion": "^12.42.2",
     "hono": "4.11.1",
@@ -24,6 +28,7 @@
     "react": "19.2.1",
     "react-dom": "19.2.1",
     "react-router-dom": "^7.18.0",
+    "three": "^0.169.0",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
@@ -46,8 +51,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "pnpm run build && vite preview",
-    "check": "tsc --noEmit -p tsconfig.json",
+    "preview": "npm run build && vite preview",
+    "audio:match": "node scripts/match-bgm.mjs",
+    "check": "tsc && vite build && wrangler deploy --dry-run",
     "lint": "eslint .",
     "deploy": "wrangler deploy",
     "cf-typegen": "wrangler types",

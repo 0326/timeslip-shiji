@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 大将军 · 卫青 · 骑奴到元帅 · 汉武盛世
 // 史源：《史记·卫将军骠骑列传》（卷一百一十一）
 // 母题：从骑奴到大将军——谦抑自保的生存智慧｜致命特质：仁善退让、和柔自媚于上、不养士
@@ -32,6 +32,7 @@ VAR weiji = 0
 
 === act1_jianzhang ===
 #bg:chang_an_street
+#bgm:peaceful
 你的姐姐卫子夫被武帝看中，带入宫中。大长公主（陈皇后之母）嫉妒，派人把你抓了要杀——你的好友公孙敖率壮士把你劫了出来。 #speaker:青月 #hint:大长公主闻卫子夫幸，有身，妒之，乃使人捕青。青时给事建章，未知名。
 武帝听说后，非但没怪罪，反而召你为建章监、侍中——他要给你撑腰。
 #show:qingyue:smile:float
@@ -56,6 +57,7 @@ VAR weiji = 0
 
 === act2_hexi ===
 #bg:northern_frontier
+#bgm:march
 元朔二年，你出云中，西至高阙，收复河南地（河套平原），置朔方郡。这一战，汉朝有了对抗匈奴的前沿基地。你以功封长平侯。 #speaker:青月 #hint:令车骑将军青出云中以西至高阙，遂略河南地，至于陇西，捕首虏数千，畜数十万，走白羊、楼烦王。
 #show:qingyue:smile:float
 「封侯啦！那个当年说『得毋笞骂即足矣』的牧羊奴，现在是万户侯了。」 #speaker:青月
@@ -69,13 +71,31 @@ VAR weiji = 0
     -> act2_guci
 * [谢陛下恩典！替三个儿子谢恩！]
     -> death_jiaogong
+* #correct [问公孙敖：你随我出征，觉得我该不该辞？] -> c_explore_guci
 
 === death_jiaogong ===
 你坦然接受了三子封侯。从此你功高震主、不知谦退，武帝开始忌惮你。一个外戚骑奴出身的人，功劳越大越要低头，可你忘了这个道理。卫青得以善终，全靠一个「退」字——你不退，就成了下一个韩信。 #death:jiaogong #speaker:青月
 -> END
 
+=== c_explore_guci ===
+#bg:northern_frontier
+#bgm:march
+#show:qingyue:default:float
+你找到公孙敖，低声问道：「你随我出征多年，觉得我该不该替儿子辞了这个封？」 #speaker:青月
+公孙敖沉吟片刻，低声道：「大将军，您是外戚起家，朝野多少人盯着卫家。三子封侯——看似恩宠，实则是天子在看您知不知退。」 #speaker:青月 #hint:公孙敖曾劫狱救卫青，是生死之交，也是少有敢说真话的人。
+他顿了顿，又说：「您若受了，朝中会怎么说？只会说卫家一人得道。可您若辞了——诸将反而念您的德，天子也安心。功归于上、赏分于下，这不一直是您的路吗？」 #speaker:青月
+#show:qingyue:worry:float
+「公孙敖把利害摊开了——接是贪，辞是忠。你现在怎么选？」 #speaker:青月
+
+* #correct [公孙敖说得对，我固辞]
+    ~ qianbei = qianbei + 1
+    -> act2_guci
+* #correct [不，还是要替儿子谢恩]
+    -> death_jiaogong
+
 === act2_guci ===
 #bg:longcheng_raid
+#bgm:battle
 你坚决辞封，归功诸将。武帝于是封公孙敖、韩说等为侯——你手下的将领们都得了赏，人人感激你。 #speaker:青月 #hint:青固谢曰：臣幸得待罪行间……皆诸校尉力战之功也。
 #show:qingyue:smile:float
 「这就是你的处世之道呀——功归于上、赏分于下，自己什么都不要。这不是虚伪，是你从骑奴时代就刻在骨子里的生存智慧。」 #speaker:青月
@@ -100,18 +120,43 @@ VAR weiji = 0
     -> act3_zhuanquan
 * [苏建弃军当斩！推出去斩了，以明军法]
     -> death_zhuanzhu
-* [不擅杀——但当众请斩、再奏归天子，借这一立威把军心收在自己麾下]
+* #correct [不擅杀——但当众请斩、再奏归天子，借这一立威把军心收在自己麾下]
     -> if_lizhan_1
+* #correct [先问苏建本人，到底发生了什么] -> c_explore_sujian
 
 === death_zhuanzhu ===
 你斩了苏建。虽有军法之名，但在外擅杀大将，犯了人臣大忌。武帝最忌的就是武将在外专权——韩信请封假齐王、彭越称病不朝，都是前车之鉴。你斩了苏建，也把自己的退路斩断了。史上的卫青不专诛，不是仁慈，是清醒。 #death:zhuanzhu #speaker:青月
 -> END
 
+=== c_explore_sujian ===
+#bg:mobei_desert
+#bgm:epic
+#show:qingyue:default:float
+你召苏建前来。苏建满身尘土、铠甲破碎，跪伏于地。 #speaker:青月
+苏建抬起头，眼中满是血丝：「大将军……赵信先降了匈奴，引胡骑来攻。末将力战三日，部下万骑尽没，只身突围来归——末将该死！」 #speaker:青月 #hint:苏建尽亡其军，独身来归。
+#show:qingyue:worry:float
+「苏建的话摆在这儿了——赵信先叛、众寡悬殊、力战三日而败。他虽失军，却非怯战。」 #speaker:青月
+「可军法就是军法，弃军当斩是铁律。你听完他的话，怎么定？」 #speaker:青月
+
+* #correct [不专诛于境外——归天子裁决]
+    ~ qianbei = qianbei + 1
+    -> act3_zhuanquan
+* #correct [苏建弃军当斩]
+    -> death_zhuanzhu
+
 === act3_zhuanquan ===
 #bg:mobei_desert
+#bgm:epic
 你囚苏建归天子裁决。武帝果然赦了苏建，对你更加信任。战后你与霍去病并为大司马——你是大司马大将军，他是大司马骠骑将军，秩禄相等。 #speaker:青月 #hint:乃益置大司马位，大将军、骠骑将军皆为大司马。
 #show:qingyue:default:float
 「可是呐——从这时候起，你的故人门下多去事骠骑，往往得官爵。霍去病越来越亲贵，你日日退谦。」 #speaker:青月 #hint:自是之后，大将军青日退，而骠骑日益贵。举大将军故人门下多去事骠骑，辄得官爵。
+#show:qingyue:sad:float
+「我有时候会想起一个叫阿朔的边郡戍卒。他家在朔方，本是种田的——兄长征入骑卒，跟着大将军去了漠北，再没回来。」 #speaker:青月
+「田荒了两季，老母无人奉养，阿朔又被征去补缺。那一年他才十七，握戈的手还生了茧，远不如握锄头熟练。」 #speaker:青月
+「他在军中远远见过大将军一次——不像霍骠骑那般意气飞扬，只是安安静静地听斥候回报，然后下令扎营。」 #speaker:青月
+「后来匈奴远遁，边关终于安了几年。阿朔回了乡，虽然兄长回不来了，可至少——孩子不用再怕半夜的马蹄声了。」 #speaker:青月
+「可阿朔的田，终究没能再种回来。朔方的风沙大，荒了两年的地，一两年里翻不过来。」 #speaker:青月
+「这就是代价啊。大将军的谦退、朝廷的征伐——落到阿朔身上，是空了一半的家。可若不打这一仗，整个朔方都保不住。」 #speaker:青月
 #actclear:weiqing_act3
 -> act4_shanzhong
 
@@ -130,11 +175,12 @@ VAR weiji = 0
 * #correct #hint:人臣奉法遵职而已，何与招士——谢绝养士 [你摇头：「人臣奉法遵职而已，何与招士！招贤黜不肖，是天子的权柄，我怎么能碰？」]
     ~ qianbei = qianbei + 1
     -> act4_shanzhong_end
-* [苏建说得对，养士自重——广纳门客，把军中故旧、朝中贤士都收到麾下]
+* #correct [苏建说得对，养士自重——广纳门客，把军中故旧、朝中贤士都收到麾下]
     -> if_yangshi_1
 
 === act4_shanzhong_end ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:solemn:float
 你此后再不招士、不养客——那句「何与招士」，成了你一生为臣的分寸。 #speaker:青月
 你娶了当年的主人平阳公主——那个你做骑奴时侍奉的公主。元封五年，你病逝，谥烈侯，与平阳公主合葬。你的墓像庐山——那是你征战过的阴山。 #speaker:青月 #hint:大将军青卒，谥为烈侯。与主合葬，起冢象卢山云。
@@ -152,6 +198,7 @@ VAR weiji = 0
 
 === if_yangshi_1 ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:worry:float
 「欸？这一步……史书上没有哦。史书里的他，一口回绝了苏建。」 #speaker:青月
 你纳了苏建之言。大将军府门下渐渐宾客盈门——军中故旧、失意文士、想攀附卫氏的郎官，都投到你的名下。你举荐他们做官，他们为你造势养望。 #speaker:青月
@@ -160,6 +207,7 @@ VAR weiji = 0
 
 === if_yangshi_2 ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:solemn:float
 可你忘了你是谁：你是外戚，是皇后的弟弟，手握天下之半的兵。 #speaker:青月
 你门下越盛，未央宫里那个人看你的眼神就越冷。武帝一生最忌的，就是臣子在他之外自养一套人心——从窦婴、田蚡到日后的公孙贺，凡是养望结党的外戚，没有一个善终。 #speaker:青月
@@ -177,6 +225,7 @@ VAR weiji = 0
 
 === if_lizhan_1 ===
 #bg:mobei_desert
+#bgm:epic
 #show:qingyue:worry:float
 「欸？这一步……很微妙哦。」 #speaker:青月
 你没有擅杀苏建——那是死路，你比谁都清楚。可你也没有只是默默囚送。你把三军将士召到辕门前，当众数苏建弃军之罪，慷慨陈词：「军法在此，非我一人之威！」然后才说：以臣之尊宠不敢专诛，具归天子。 #speaker:青月
@@ -185,6 +234,7 @@ VAR weiji = 0
 
 === if_lizhan_2 ===
 #bg:weiyang_palace
+#bgm:court
 #show:qingyue:default:float
 武帝赦了苏建，对你的「恭顺」也很满意——表面上，一切如常。 #speaker:青月
 可你借这一案立了威、收了心，军中只知有大将军，不知有天子。这本是史书里没有的一步。 #speaker:青月

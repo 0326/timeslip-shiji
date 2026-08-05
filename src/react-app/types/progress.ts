@@ -13,6 +13,10 @@ export interface PerspectiveProgress {
 	unlockedDeaths?: string[];
 	/** 解锁的结局 id 列表（#ending:ID，结局收集） */
 	unlockedEndings?: string[];
+	/** 解锁的史识碎片 id 列表（#impact:ID / #correct / 死亡解锁 / 测验解锁） */
+	unlockedKnowledge?: string[];
+	/** 已查看的史识图谱节点 id 列表 */
+	knowledgeGraphSeen?: string[];
 	/** 该视角是否已达成正史通关 */
 	isCanonCleared?: boolean;
 }

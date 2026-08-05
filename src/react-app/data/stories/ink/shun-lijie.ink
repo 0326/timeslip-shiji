@@ -1,4 +1,4 @@
-// ═══════════════════════════════════════════════
+﻿// ═══════════════════════════════════════════════
 // 虞舜 · 焚廪穿井 · 历劫不死
 // 史源：《史记·五帝本纪》
 // ═══════════════════════════════════════════════
@@ -8,7 +8,7 @@ VAR alerted = false
 -> c_open
 
 === c_open ===
-#bg:gui_river
+#bg:gui_river_alt1
 #bgm:solemn
 #show:qingyue:tease:float
 「嘘——先别睁眼。听见了吗？妫水边，有人在弹琴呢。」 #speaker:青月
@@ -22,6 +22,7 @@ VAR alerted = false
 
 === c_granary ===
 #bg:granary_exterior
+#bgm:peaceful
 #show:gusou:smile:left
 父亲忽然和颜悦色，唤你去修补粮仓的顶：「重华啊，仓顶漏了，你上去涂一涂。」 #speaker:瞽叟
 你放下琴，应得没有半分迟疑：「诺。爹，孩儿这就去。」 #speaker:舜
@@ -61,6 +62,7 @@ VAR alerted = false
 
 === c_after_fire ===
 #bg:gui_river
+#bgm:peaceful
 #show:shun:relieved:center
 #show:ehuang:worry:left
 #show:nvying:worry:right
@@ -75,6 +77,7 @@ VAR alerted = false
 
 === c_well ===
 #bg:well_yard
+#bgm:sad
 #show:gusou:cold:left
 父亲又唤你去掏井。你低头应下——你知道，他还会再来一次。 #speaker:青月
 #show:qingyue:worry:float
@@ -103,6 +106,7 @@ VAR alerted = false
 
 === c_return ===
 #bg:shun_house
+#bgm:court
 #show:xiang:startled:center
 #show:shun:calm:left
 你回到家。象正坐在你的屋里，弹着你的琴——他和父母早已分了你的家产，以为你死定了。琴归他，连尧的两个女儿也归他。 #speaker:青月 #hint:象乃止舜宫居，鼓其琴。舜往见之。
@@ -140,7 +144,7 @@ VAR alerted = false
 「烧他、埋他、抢他东西的人，他抬手就能报复。可他没有——把疼都咽下去了呀。」 #speaker:青月
 不久，尧把五教百官都交给你去试，你样样治得井井有条。天下，正朝你走来。 #speaker:青月 #hint:于是尧乃试舜五典百官，皆治。
 #show:qingyue:smile:float
-「呼——你走完了他这一劫。看懂了吗？孝与智，缺一，都到不了这里。」 #speaker:青月 #ending:canon
+「呼——你走完了他这一劫。看懂了吗？孝与智，缺一，都到不了这里。」 #speaker:青月 #impact:impact_lijie_xiaozhi #ending:canon #quiz:quiz_lijie_xiaozhi
 -> END
 
 // ═══ IF线 · 告尧（自由模式歧路：把家事诉到帝庭）═══

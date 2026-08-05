@@ -180,6 +180,22 @@ export class InkRunner implements NarrativeRunner {
 		this.snapshotVars();
 	}
 
+	/** 收集当前暂停点的选项（不推进剧情） */
+	getCurrentChoices(): RunnerChoice[] {
+		const choices: RunnerChoice[] = [];
+		for (let i = 0; i < this.story.currentChoices.length; i++) {
+			const c = this.story.currentChoices[i];
+			const choiceTags = c.tags ?? [];
+			const meta: TagMeta = this.tagsToMeta(choiceTags);
+			choices.push({
+				text: c.text,
+				meta,
+				_index: c.index,
+			});
+		}
+		return choices;
+	}
+
 	/** Get the checkpoint snapshot (paragraph start — restoring here replays content) */
 	getCheckpoint(): string {
 		return this.checkpointSnapshot;

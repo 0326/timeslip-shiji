@@ -69,6 +69,7 @@ const KNOWN_POSITIONS: Position[] = [
 	"center",
 	"center-right",
 	"right",
+	"float",
 ];
 
 function isPosition(s: string): s is Position {

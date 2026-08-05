@@ -29,6 +29,7 @@ VAR mg_score = 0
 
 === act1_wenli ===
 #bg:shizhou_li
+#bgm:peaceful
 #show:laozi:default:left
 老子须发皆白，缓缓开口，那是临别赠你的话：「吾闻富贵者送人以财，仁人者送人以言。」 #speaker:老子 #hint:富贵者送人以财，仁人者送人以言。
 「聪明深察而近于死者，好议人者也。博辩广大危其身者，发人之恶者也。」 #speaker:老子 #hint:聪明深察而近于死者，好议人者也。博辩广大危其身者，发人之恶者也。
@@ -342,6 +343,16 @@ VAR mg_score = 0
 #show:qingyue:smile:float
 「这,就是你和那些高人最深的分野呀。他们避世自全，你入世救世。你没有更聪明,你只是更不肯放下。」 #speaker:青月
 本幕通关。 #actclear:kongzi_act6 #speaker:青月
+#show:qingyue:tease:float
+「呐——你走遍了列国，见了隐者、碰了壁，可这些原文，你记全了吗？来，把这些竹简缀回去——知其不可而为之，都在里头哦。」 #speaker:青月
+#minigame:bamboo
+{ mg_result == "win":
+	#show:qingyue:smile:float
+	「{mg_score} 分，竹简归序，你一生的原文，全记下了。」 #speaker:青月
+- else:
+	#show:qingyue:sigh:float
+	「简牍散乱，你也不忙着缀了——也罢，大化流行，自有后来人替你整理。」 #speaker:青月
+}
 -> act7_huolin
 
 // ═══════════════════════════════════════════════
@@ -354,14 +365,6 @@ VAR mg_score = 0
 你归鲁了。去鲁凡十四岁，一路「累累若丧家之狗」，终于回来。鲁终不能用你，你也不再求仕。 #speaker:青月 #hint:孔子之去鲁凡十四岁而反乎鲁。然鲁终不能用孔子，孔子亦不求仕。
 你把最后的岁月，都给了另一件事——删《诗》《书》，订礼乐，序《易》传，作《春秋》。 #speaker:青月 #hint:孔子以诗书礼乐教，弟子盖三千焉，身通六艺者七十有二人。
 读《易》，韦编三绝；弟子三千，身通六艺者七十有二人。 #speaker:青月 #hint:读易，韦编三绝。
-#minigame:bamboo
-{ mg_result == "win":
-	#show:qingyue:smile:float
-	「{mg_score} 分，韦编断了三回，你耐心把竹简一一缀回正序——正是这些断简残编，托起了此后两千年的文脉。」 #speaker:青月
-- else:
-	#show:qingyue:sigh:float
-	「简牍散乱，你也不忙着缀了——也罢，大化流行，自有后来人替你整理。」 #speaker:青月
-}
 #show:qingyue:sad:float
 鲁哀公十四年春，西狩于大野，叔孙氏之车获一兽，人以为不祥。你去看，说：「麟也。」 #speaker:青月 #hint:仲尼视之，曰：麟也。
 麒麟本是太平祥瑞，却现于乱世而见获。你怆然道：「吾道穷矣！」又叹：「莫知我夫！」 #speaker:青月 #hint:及西狩见麟，曰：吾道穷矣！喟然叹曰：莫知我夫！
