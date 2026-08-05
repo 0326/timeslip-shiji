@@ -14,7 +14,7 @@ import { CodexPage } from "./pages/Codex/CodexPage";
 import { KnowledgeCodexPage } from "./pages/Codex/KnowledgeCodexPage";
 import { useAuthStore } from "./store/authStore";
 
-// 重页面代码分割（D3 / VN 引擎 / 长篇原文）
+// 重页面代码分割（D3 / VN 引擎 / 长篇原文 / 对决模式）
 const PlayPage = lazy(() => import("./pages/Play/PlayPage"));
 const PanoramaPage = lazy(() => import("./pages/Panorama/PanoramaPage"));
 const ClassicReaderPage = lazy(
@@ -23,6 +23,10 @@ const ClassicReaderPage = lazy(
 const ArchiveDetailPage = lazy(
   () => import("./pages/Archive/ArchiveDetailPage"),
 );
+const DuelLobby = lazy(() => import("./pages/Duel/DuelLobby"));
+const DuelRoom = lazy(() => import("./pages/Duel/DuelRoom"));
+const DuelPlay = lazy(() => import("./pages/Duel/DuelPlay"));
+const DuelResult = lazy(() => import("./pages/Duel/DuelResult"));
 
 function lazyEl(node: React.ReactNode) {
   return <Suspense fallback={<LoadingScreen />}>{node}</Suspense>;
@@ -42,14 +46,20 @@ const router = createBrowserRouter([
       { path: "archive/:id", element: lazyEl(<ArchiveDetailPage />) },
       { path: "achieve", element: <AchievementPage /> },
       { path: "codex", element: <CodexPage /> },
+      { path: "codex/knowledge", element: <KnowledgeCodexPage /> },
       { path: "codex/knowledge/:storyKey", element: <KnowledgeCodexPage /> },
       { path: "classics", element: <ClassicsPage /> },
       { path: "classics/:juan", element: lazyEl(<ClassicReaderPage />) },
       { path: "panorama/:storyId", element: lazyEl(<PanoramaPage />) },
+      { path: "duel", element: lazyEl(<DuelLobby />) },
     ],
   },
   // 游戏主界面：全屏，无导航
   { path: "/play/:storyId/:charId", element: lazyEl(<PlayPage />) },
+  // 对决模式：全屏（房间/对战/结算）
+  { path: "/duel/:playerId/vs/:opponentId", element: lazyEl(<DuelRoom />) },
+  { path: "/duel/:playerId/vs/:opponentId/play", element: lazyEl(<DuelPlay />) },
+  { path: "/duel/:playerId/vs/:opponentId/result", element: lazyEl(<DuelResult />) },
 ]);
 
 function AuthInitializer() {

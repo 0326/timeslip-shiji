@@ -1,0 +1,312 @@
+/* ═════════════════════ 对决结算页 ═════════════════════ */
+.dr-result {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.drr-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--color-ink);
+  background-image:
+    radial-gradient(ellipse at 50% 30%, rgba(184, 151, 58, 0.08), transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(13, 11, 8, 0.9), transparent 50%);
+}
+.drr-empty {
+  position: relative;
+  z-index: 2;
+  margin-top: 160px;
+  text-align: center;
+  color: var(--color-rice-dim);
+}
+.drr-empty h2 {
+  margin-bottom: 16px;
+}
+
+.drr-nav {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+}
+.drr-back {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--color-rice-dim);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.drr-back:hover {
+  color: var(--color-rice);
+  background: var(--color-ink-soft);
+}
+
+/* ── 内容 ── */
+.drr-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 24px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── 标题 ── */
+.drr-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.drr-title {
+  font-size: 64px;
+  margin: 0;
+  letter-spacing: 0.15em;
+}
+.drr-title.win {
+  color: var(--color-gold);
+  text-shadow: 0 0 30px rgba(184, 151, 58, 0.4);
+}
+.drr-title.lose {
+  color: var(--color-vermilion);
+  text-shadow: 0 0 30px rgba(192, 57, 43, 0.3);
+}
+.drr-subtitle {
+  font-size: 15px;
+  color: var(--color-rice-dim);
+  margin: 6px 0 0;
+  letter-spacing: 0.06em;
+}
+
+/* ── 角色对峙 ── */
+.drr-fighters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-bottom: 32px;
+}
+.drr-fighter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.drr-fighter.loser {
+  opacity: 0.55;
+  filter: grayscale(0.3);
+}
+.drr-fighter-img {
+  width: 120px;
+  height: 160px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center top;
+  border: 2px solid var(--color-ink-mid);
+}
+.drr-fighter-name {
+  font-size: 16px;
+  color: var(--color-rice);
+  letter-spacing: 0.06em;
+}
+.drr-crown {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  color: var(--color-gold);
+  filter: drop-shadow(0 0 4px rgba(184, 151, 58, 0.5));
+}
+.drr-vs-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.drr-vs-score {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--color-gold-light);
+  letter-spacing: 0.04em;
+}
+.drr-vs-colon {
+  color: var(--color-muted);
+  margin: 0 2px;
+}
+.drr-vs-label {
+  font-size: 13px;
+  color: var(--color-muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── 对局详情 ── */
+.drr-rounds {
+  width: 100%;
+  margin-bottom: 24px;
+}
+.drr-rounds-title {
+  font-size: 16px;
+  color: var(--color-gold-light);
+  margin: 0 0 12px;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.drr-rounds-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.drr-round-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--color-ink-soft);
+  border-radius: 8px;
+  border: 1px solid var(--color-ink-mid);
+}
+.drr-round-item.win {
+  border-color: rgba(184, 151, 58, 0.25);
+}
+.drr-round-item.lose {
+  border-color: rgba(192, 57, 43, 0.2);
+}
+.drr-round-num {
+  font-size: 13px;
+  color: var(--color-muted);
+  width: 42px;
+  flex-shrink: 0;
+}
+.drr-round-game {
+  flex: 1;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--color-rice);
+  letter-spacing: 0.04em;
+}
+.drr-round-result {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 2px 12px;
+  border-radius: 4px;
+}
+.drr-round-item.win .drr-round-result {
+  color: var(--color-gold);
+  background: rgba(184, 151, 58, 0.1);
+}
+.drr-round-item.lose .drr-round-result {
+  color: var(--color-vermilion-light);
+  background: rgba(192, 57, 43, 0.1);
+}
+.drr-round-item.draw .drr-round-result {
+  color: var(--color-muted);
+  background: rgba(122, 110, 92, 0.1);
+}
+
+/* ── 段位 ── */
+.drr-rank-section {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.drr-rank-current {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.drr-rank-label-text {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+.drr-rank-value {
+  font-size: 24px;
+  color: var(--color-gold-light);
+  letter-spacing: 0.08em;
+}
+.drr-rank-wins {
+  font-size: 13px;
+  color: var(--color-rice-dim);
+}
+.drr-rank-next {
+  font-size: 13px;
+  color: var(--color-muted);
+}
+
+/* ── 操作 ── */
+.drr-actions {
+  display: flex;
+  gap: 14px;
+}
+.drr-btn-rematch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--color-ink-soft);
+  border: 1px solid var(--color-ink-mid);
+  border-radius: 10px;
+  color: var(--color-rice);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.drr-btn-rematch:hover {
+  border-color: var(--color-gold-dim);
+  background: var(--color-ink-light);
+}
+.drr-btn-next {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: linear-gradient(135deg, var(--color-gold), #7a6426);
+  border: none;
+  border-radius: 10px;
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(184, 151, 58, 0.3);
+}
+.drr-btn-next:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 18px rgba(184, 151, 58, 0.45);
+}
+
+@media (max-width: 600px) {
+  .drr-title {
+    font-size: 48px;
+  }
+  .drr-fighter-img {
+    width: 90px;
+    height: 120px;
+  }
+  .drr-vs-score {
+    font-size: 28px;
+  }
+  .drr-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

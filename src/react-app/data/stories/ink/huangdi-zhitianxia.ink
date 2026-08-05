@@ -448,7 +448,7 @@ VAR mg_score = 0
 - else:
 	#show:qingyue:sigh:float
 	「简序暂乱也无妨，垂衣治天下的道理，你心里已经明白了。」 #speaker:青月
-}
+} #speaker:青月
 #show:qingyue:smile:float
 「呼——你走完了黄帝这一程。下一世，我们去看高阳如何『依鬼神以制义』，好不好呀？」 #speaker:青月 #ending:canon #quiz:quiz_zhitianxia_tianshi
 -> END

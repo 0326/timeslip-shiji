@@ -56,7 +56,7 @@ VAR lengku = 0
 #bg:longcheng_raid
 #bgm:battle
 你率八百骁骑狂飙突进，直弃大军数百里，斩单于祖父、俘单于叔父罗姑比，斩首二千二十八级——这是你舅舅卫青龙城首功的数倍！ #speaker:青月 #hint:剽姚校尉斩首虏二千二十八级……封去病为冠军侯。
-武帝大喜，封你为冠军侯——「冠军」者，功冠全军也。这一年你才十八岁。
+武帝大喜，封你为冠军侯——「冠军」者，功冠全军也。这一年你才十八岁。 #speaker:青月
 #show:qingyue:smile:float
 「十八岁！冠军侯！呐，你是天生为战争而生的人。」 #speaker:青月
 #actclear:huoqibing_act1
@@ -80,7 +80,7 @@ VAR lengku = 0
 #bg:northern_frontier
 #bgm:march
 武帝要你学孙吴兵法，你回答：「顾方略何如耳，不至学古兵法。」 #speaker:青月 #hint:天子尝欲教之孙吴兵法，对曰：顾方略何如耳，不至学古兵法。
-天子为你治府第，你看完说了一句千古豪言——
+天子为你治府第，你看完说了一句千古豪言—— #speaker:青月
 * #correct #hint:匈奴未灭，无以家为也！——少年壮志 [「匈奴未灭，无以家为也！」]
     ~ guoqu = guoqu + 1
     -> act2_hunxie

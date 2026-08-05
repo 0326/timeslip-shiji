@@ -58,7 +58,7 @@ VAR alerted = false
 - else:
 	你四顾无门，火舌舔上衣角。没有梯子，没有遮挡，什么都没有。烈火吞没了仓顶。 #death:burn #speaker:青月
 	-> END
-}
+} #speaker:青月
 
 === c_after_fire ===
 #bg:gui_river
@@ -102,7 +102,7 @@ VAR alerted = false
 - else:
 	泥土倾泻而下，压住你的肩、你的头。井口那点光，一点点没了。你被活埋在了井底。 #death:bury #speaker:青月
 	-> END
-}
+} #speaker:青月
 
 === c_return ===
 #bg:shun_house
