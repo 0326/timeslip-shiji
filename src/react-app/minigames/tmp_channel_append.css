@@ -1,0 +1,242 @@
+
+
+/* ============================================================
+   漕渠 · 追加古风强化（基于真实className：ch-cell/ch-filled/ch-source-mark/ch-sea-mark/ch-rock-mark/ch-win/ch-lose）
+   ============================================================ */
+
+/* ── 根容器：河渠流动感背景叠加层 ── */
+.ch-root::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg,
+      transparent 0px,
+      transparent 18px,
+      rgba(70, 130, 180, 0.04) 18px,
+      rgba(70, 130, 180, 0.04) 20px,
+      transparent 20px,
+      transparent 48px,
+      rgba(47, 79, 79, 0.035) 48px,
+      rgba(47, 79, 79, 0.035) 50px
+    );
+  animation: chCanalFlow 14s linear infinite;
+  z-index: 0;
+  opacity: 0.85;
+}
+.ch-root > * { position: relative; z-index: 1; }
+@keyframes chCanalFlow {
+  from { background-position: 0 0; }
+  to   { background-position: 200px 0; }
+}
+
+/* ── 堤坝/河床单元：青灰渐变 + 石块纹理 repeating 斜纹 ── */
+.ch-cell.ch-type-empty,
+.ch-cell.ch-type-rock {
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(119, 136, 153, 0.18) 0px,
+      rgba(119, 136, 153, 0.18) 2px,
+      transparent 2px,
+      transparent 6px,
+      rgba(47, 79, 79, 0.22) 6px,
+      rgba(47, 79, 79, 0.22) 7px,
+      transparent 7px,
+      transparent 13px
+    ),
+    linear-gradient(180deg, #3a4a52 0%, #2c3a42 50%, #1f2a30 100%) !important;
+  border: 1px solid rgba(95, 158, 160, 0.55) !important;
+  box-shadow:
+    inset 0 2px 0 rgba(176, 196, 222, 0.18),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.55),
+    0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+.ch-cell.ch-clickable:hover {
+  box-shadow:
+    inset 0 0 0 2px rgba(95, 158, 160, 0.9),
+    inset 0 2px 0 rgba(176, 196, 222, 0.25),
+    inset 0 -2px 3px rgba(0, 0, 0, 0.55),
+    0 0 14px rgba(70, 130, 180, 0.55) !important;
+}
+
+/* ── 石块障碍：更粗的斜纹 + 棱角高光 ── */
+.ch-rock-mark {
+  position: relative;
+  background:
+    repeating-linear-gradient(45deg,
+      rgba(105, 105, 105, 0.5) 0px,
+      rgba(105, 105, 105, 0.5) 3px,
+      rgba(47, 79, 79, 0.45) 3px,
+      rgba(47, 79, 79, 0.45) 5px
+    ),
+    radial-gradient(circle at 30% 25%, #a8b0b8 0%, #778899 45%, #3d4a52 100%) !important;
+  border: 1px solid rgba(169, 169, 169, 0.55);
+  box-shadow:
+    inset 0 3px 5px rgba(255, 255, 255, 0.15),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.55) !important;
+}
+.ch-rock-mark::after {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 18%;
+  width: 22%;
+  height: 18%;
+  background: rgba(240, 248, 255, 0.22);
+  border-radius: 50%;
+  filter: blur(1.5px);
+}
+
+/* ── 节点元素：牙白帆 + 朱红船身 + 水波涟漪 ── */
+.ch-source-mark,
+.ch-sea-mark {
+  position: relative;
+  border-radius: 8px !important;
+  overflow: visible !important;
+}
+.ch-source-mark::before,
+.ch-sea-mark::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -14px;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-bottom: 18px solid #fdfaf0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+  z-index: 3;
+}
+.ch-source-mark::after,
+.ch-sea-mark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -12px;
+  transform: translateX(-50%);
+  width: 110%;
+  height: 9px;
+  background: linear-gradient(180deg, #c23a2a 0%, #8a1f12 100%);
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  box-shadow:
+    0 2px 0 rgba(139, 0, 0, 0.6),
+    0 0 10px rgba(194, 58, 42, 0.5);
+  z-index: 3;
+}
+/* 船身 + 帆的涟漪扩散 */
+.ch-cell.ch-type-source,
+.ch-cell.ch-type-sea {
+  position: relative;
+  overflow: visible;
+}
+.ch-cell.ch-type-source::after,
+.ch-cell.ch-type-sea::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(135, 206, 235, 0.45);
+  animation: chRipple 2.8s ease-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.ch-cell.ch-type-sea::after {
+  border-color: rgba(90, 216, 208, 0.5);
+  animation-delay: 1.4s;
+}
+@keyframes chRipple {
+  0%   { transform: scale(0.6); opacity: 0.95; }
+  70%  { opacity: 0.25; }
+  100% { transform: scale(1.35); opacity: 0; }
+}
+
+/* ── 水流充盈格：牙白浪尖高光 ── */
+.ch-cell.ch-filled .ch-pipe-rotate::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 16%;
+  height: 10%;
+  background: rgba(240, 248, 255, 0.55);
+  border-radius: 50%;
+  filter: blur(1px);
+  animation: chSparkle 1.8s ease-in-out infinite;
+}
+@keyframes chSparkle {
+  0%, 100% { opacity: 0.35; transform: translateX(-4px); }
+  50%      { opacity: 0.85; transform: translateX(4px); }
+}
+
+/* ── 通关成功：朱砂金光高亮 ── */
+.ch-result.ch-win {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(194, 58, 42, 0.32) 0%, rgba(0, 0, 0, 0.92) 72%) !important;
+  border: 2px solid rgba(212, 175, 90, 0.85) !important;
+  box-shadow:
+    inset 0 0 40px rgba(194, 58, 42, 0.35),
+    0 0 36px rgba(212, 175, 90, 0.55) !important;
+}
+.ch-result.ch-win::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  border-radius: inherit;
+  pointer-events: none;
+  animation: chVermilionGlow 2s ease-in-out infinite;
+}
+@keyframes chVermilionGlow {
+  0%, 100% { opacity: 0.5; box-shadow: inset 0 0 18px rgba(255, 215, 0, 0.25); }
+  50%      { opacity: 1;   box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.55); }
+}
+.ch-result.ch-win .ch-result-title {
+  color: #ffd98a !important;
+  text-shadow:
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 22px rgba(194, 58, 42, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.6) !important;
+  letter-spacing: 0.3em;
+}
+
+/* ── 失败：雾灰氤氲 ── */
+.ch-result.ch-lose {
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(128, 128, 128, 0.25) 0%, rgba(20, 20, 20, 0.94) 75%) !important;
+  border: 1.5px solid rgba(128, 128, 128, 0.55) !important;
+  backdrop-filter: blur(6px);
+}
+.ch-result.ch-lose::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 25% 30%, rgba(200, 200, 200, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 75% 70%, rgba(170, 170, 170, 0.07) 0%, transparent 45%);
+  animation: chFogDrift 6s ease-in-out infinite alternate;
+  pointer-events: none;
+  border-radius: inherit;
+}
+@keyframes chFogDrift {
+  from { transform: translateX(-8px); opacity: 0.7; }
+  to   { transform: translateX(8px);  opacity: 1; }
+}
+.ch-result.ch-lose .ch-result-title {
+  color: #c8c8c8 !important;
+  text-shadow: 0 0 8px rgba(160, 160, 160, 0.5), 0 2px 4px rgba(0, 0, 0, 0.6);
+  filter: grayscale(0.4);
+}
+
+/* ── 图例：牙白/朱红描边强化 ── */
+.ch-legend-swatch {
+  position: relative;
+  border: 1px solid rgba(212, 175, 90, 0.6) !important;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+.ch-legend-item {
+  color: #e8ddc0 !important;
+  letter-spacing: 0.12em;
+}

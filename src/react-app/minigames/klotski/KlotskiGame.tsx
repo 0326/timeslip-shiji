@@ -160,7 +160,7 @@ export function KlotskiGame({ param, storyKey, onComplete, onSkip }: MinigamePro
 			let score = 60;
 			if (moves <= par) score = 100;
 			else if (moves <= Math.ceil(par * 1.5)) score = 80;
-			const t = setTimeout(() => onComplete({ result: "win", score }), 900);
+			const t = setTimeout(() => onComplete({ result: "win", score }), 2500);
 			return () => clearTimeout(t);
 		}
 	}, [won, moves, level, onComplete]);

@@ -1,4 +1,4 @@
-﻿// 系列 zhanguo · 战国（变法+纵横主角线）立绘/背景。
+// 系列 zhanguo · 战国（变法+纵横主角线）立绘/背景。
 // base 已有 qingyue 可复用；本文件新增战国线人物与场景。
 // 预留：四公子/白起/屈原/乐毅/田单（后续包追加）
 import type { SpriteInfo, BgStyle } from "./base";
@@ -53,6 +53,38 @@ export const zhanguoSprites: Record<string, SpriteInfo> = {
 	zhuhai: { name: "朱亥", glyph: "亥", accent: "#5a5a6b", full: "/assets/figures/zhuhai/classical/portrait/full-default.png" },
 	liyuan: { name: "李园", glyph: "园", accent: "#6a3a3a", full: "/assets/figures/liyuan/classical/portrait/full-default.png" },
 	zhuying: { name: "朱英", glyph: "英", accent: "#4a6a4a", full: "/assets/figures/zhuying/classical/portrait/full-default.png" },
+	// 四公子聚合（群像）
+	sigongzi: { name: "战国四公子", glyph: "四", accent: "#b8873a", full: "/assets/figures/sigongzi/classical/portrait/full-default.png" },
+	// 兵家·孙膑
+	sunbin: { name: "孙膑", glyph: "膑", accent: "#5a8ac9", full: "/assets/figures/sunbin/classical/portrait/full-default.png" },
+	// 魏国·庞涓
+	pangjuan: { name: "庞涓", glyph: "涓", accent: "#7a5c3a", full: "/assets/figures/pangjuan/classical/portrait/full-default.png" },
+	// 医家·扁鹊
+	bianque: { name: "扁鹊", glyph: "鹊", accent: "#5a8f6b", full: "/assets/figures/bianque/classical/portrait/full-default.png" },
+	// 秦国·樗里疾
+	chuliji: { name: "樗里疾", glyph: "樗", accent: "#6b7a5c", full: "/assets/figures/chuliji/classical/portrait/full-default.png" },
+	// 秦国·甘茂
+	ganmao: { name: "甘茂", glyph: "茂", accent: "#5a7a5c", full: "/assets/figures/ganmao/classical/portrait/full-default.png" },
+	// 秦国·甘罗
+	ganluo: { name: "甘罗", glyph: "罗", accent: "#b8873a", full: "/assets/figures/ganluo/classical/portrait/full-default.png" },
+	// 名家·公孙龙
+	gongsunlong: { name: "公孙龙", glyph: "龙", accent: "#5a7a9c", full: "/assets/figures/gongsunlong/classical/portrait/full-default.png" },
+	// 名家·惠施（与惠子 huizi 互补）
+	huishi: { name: "惠施", glyph: "施", accent: "#5a7a9c", full: "/assets/figures/huishi/classical/portrait/full-default.png" },
+	// 法家·李悝
+	"likui-zg": { name: "李悝", glyph: "悝", accent: "#8a6f4a", full: "/assets/figures/likui-zg/classical/portrait/full-default.png" },
+	// 刺客副使·秦舞阳
+	qinwuyang: { name: "秦舞阳", glyph: "舞", accent: "#a85d3a", full: "/assets/figures/qinwuyang/classical/portrait/full-default.png" },
+	// 法家·申不害
+	shenbuhai: { name: "申不害", glyph: "申", accent: "#5a7a8c", full: "/assets/figures/shenbuhai/classical/portrait/full-default.png" },
+	// 楚辞·宋玉
+	songyu: { name: "宋玉", glyph: "玉", accent: "#8a6fb0", full: "/assets/figures/songyu/classical/portrait/full-default.png" },
+	// 策士·唐雎
+	tangju: { name: "唐雎", glyph: "雎", accent: "#4a6b8a", full: "/assets/figures/tangju/classical/portrait/full-default.png" },
+	// 燕国·田光
+	tianguang: { name: "田光", glyph: "光", accent: "#b8973a", full: "/assets/figures/tianguang/classical/portrait/full-default.png" },
+	// 赵国·虞卿
+	yuqing: { name: "虞卿", glyph: "卿", accent: "#5a8a7a", full: "/assets/figures/yuqing/classical/portrait/full-default.png" },
 };
 
 export const zhanguoBackgrounds: Record<string, BgStyle> = {

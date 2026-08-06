@@ -27,6 +27,7 @@ const DuelLobby = lazy(() => import("./pages/Duel/DuelLobby"));
 const DuelRoom = lazy(() => import("./pages/Duel/DuelRoom"));
 const DuelPlay = lazy(() => import("./pages/Duel/DuelPlay"));
 const DuelResult = lazy(() => import("./pages/Duel/DuelResult"));
+const MinigamePreview = lazy(() => import("./pages/MinigamePreview/MinigamePreviewPage"));
 
 function lazyEl(node: React.ReactNode) {
   return <Suspense fallback={<LoadingScreen />}>{node}</Suspense>;
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "classics/:juan", element: lazyEl(<ClassicReaderPage />) },
       { path: "panorama/:storyId", element: lazyEl(<PanoramaPage />) },
       { path: "duel", element: lazyEl(<DuelLobby />) },
+      { path: "minigames", element: lazyEl(<MinigamePreview />) },
     ],
   },
   // 游戏主界面：全屏，无导航

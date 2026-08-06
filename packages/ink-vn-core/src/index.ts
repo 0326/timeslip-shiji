@@ -4,16 +4,12 @@
 export type {
 	TagMeta,
 	Segment,
-	SegmentKind,
 	RunnerChoice,
 	RunnerState,
 	RunnerOutput,
 	StageCallbacks,
-	StageEffectPayload,
 	NarrativeRunner,
 	Position,
-	SpriteShow,
-	MinigameInterrupt,
 } from "./types";
 
 export { InkRunner, type InkRunnerOptions } from "./inkRunner";
