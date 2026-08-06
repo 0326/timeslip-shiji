@@ -65,7 +65,7 @@ const _BASE_DYNASTY_OVERRIDES: Record<string, string> = {
 	yu: "夏", qi: "夏", jie: "夏", tushan: "夏", yi: "夏",
 	shangjun: "夏", youhu: "夏",
 	// 商朝（base 中散落的）
-	guanlongpang: "商", xizhong: "商",
+	guanlongpang: "商", xizhong: "商", shuqi: "商",
 	// 楚汉散落（base 中）
 	long: "楚汉", chui: "楚汉", kuaitong: "楚汉", piaomu: "楚汉",
 	limu: "楚汉", fangqi: "楚汉", boyi: "楚汉",

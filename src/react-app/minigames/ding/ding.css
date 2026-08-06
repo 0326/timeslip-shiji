@@ -1,5 +1,5 @@
 /* ============================================================
-   铸鼎定鼎（Ding Forge）—— 青铜鼎碎片拼图样式
+   铸鼎定鼎（Ding Forge）—— 拼图组装小游戏样式
    青铜美学：墨黑底 · 青铜绿锈 · 品牌金 · 朱砂警示
    类前缀：dg- (ding)
    ============================================================ */
@@ -21,7 +21,11 @@
 	gap: var(--space-3);
 	flex-wrap: wrap;
 }
-.dg-title-wrap { display: flex; flex-direction: column; gap: 2px; }
+.dg-title-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
 .dg-title {
 	font-size: 22px;
 	letter-spacing: 0.2em;
@@ -47,33 +51,36 @@
 	gap: 6px;
 	padding: 5px 10px;
 	background: rgba(0, 0, 0, 0.35);
-	border: 1px solid var(--color-ink-mid);
+	border: 1px solid var(--color-ink-mid, #2d2a24);
 	border-radius: var(--radius, 6px);
-	color: var(--color-rice);
+	color: var(--color-rice, #f2ecd8);
 	font-family: var(--font-serif);
 	transition: color 0.2s, border-color 0.2s;
 }
 .dg-timer.low {
-	color: var(--color-vermilion-light);
-	border-color: var(--color-vermilion);
+	color: var(--color-vermilion-light, #e05a4a);
+	border-color: var(--color-vermilion, #c0392b);
 	animation: dgPulse 0.6s ease-in-out infinite alternate;
 }
 @keyframes dgPulse {
 	from { box-shadow: 0 0 0 rgba(192, 57, 43, 0); }
-	to { box-shadow: 0 0 14px rgba(192, 57, 43, 0.6); }
+	to   { box-shadow: 0 0 14px rgba(192, 57, 43, 0.6); }
 }
-.dg-stat { display: inline-flex; align-items: center; }
+.dg-stat {
+	display: inline-flex;
+	align-items: center;
+}
 
 /* ── 提示条 ── */
 .dg-hint {
 	font-size: 13px;
-	color: var(--color-rice-dim);
+	color: var(--color-rice-dim, rgba(242, 236, 216, 0.55));
 	letter-spacing: 0.05em;
 	margin: 0;
 	line-height: 1.8;
 	padding: 8px 12px;
 	background: rgba(0, 0, 0, 0.22);
-	border-left: 3px solid var(--color-gold);
+	border-left: 3px solid var(--color-gold, #b8973a);
 	border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
 }
 
@@ -83,216 +90,158 @@
 	display: flex;
 	justify-content: center;
 	padding: var(--space-3);
-	background: radial-gradient(ellipse at 50% 50%, rgba(60, 50, 30, 0.45), rgba(0, 0, 0, 0.7) 70%);
-	border: 1px solid var(--color-ink-mid);
+	background:
+		radial-gradient(ellipse at 50% 50%, rgba(60, 50, 30, 0.35), rgba(0, 0, 0, 0.55) 70%);
+	border: 1px solid var(--color-ink-mid, #2d2a24);
 	border-radius: var(--radius-lg, 12px);
 	transition: box-shadow 0.5s ease-out;
 }
 .dg-board-wrap.complete {
-	box-shadow: 0 0 48px rgba(184, 151, 58, 0.7), inset 0 0 36px rgba(184, 151, 58, 0.25);
+	box-shadow:
+		0 0 36px rgba(184, 151, 58, 0.6),
+		inset 0 0 28px rgba(184, 151, 58, 0.28);
 }
 .dg-board {
 	display: grid;
-	gap: 3px;
+	gap: 2px;
 	width: 100%;
-	max-width: 440px;
+	max-width: 420px;
 	aspect-ratio: 1;
 }
 
-/* ═══════════════════ 拼图块：青铜鼎碎片 ═══════════════════ */
-
+/* ── 拼图块基础（青铜底） ── */
 .dg-piece {
 	position: relative;
-	border: none;
-	border-radius: 4px;
+	border: 1px solid #1a1408;
+	border-radius: 2px;
 	cursor: pointer;
-	transition: all 0.2s ease-out;
+	transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, outline-color 0.18s;
 	padding: 0;
 	overflow: hidden;
 	font-family: var(--font-serif);
 	background:
-		radial-gradient(ellipse at 35% 25%, rgba(190, 210, 140, 0.22), transparent 50%),
-		radial-gradient(ellipse at 65% 70%, rgba(130, 105, 60, 0.18), transparent 50%),
-		linear-gradient(170deg, #5c724c 0%, #405434 28%, #2c3e20 58%, #1e2e14 85%, #162010 100%);
+		radial-gradient(ellipse at 30% 20%, rgba(212, 175, 90, 0.25), transparent 60%),
+		linear-gradient(160deg, #5a6a48 0%, #3a4a30 35%, #28341c 70%, #1a200f 100%);
 	box-shadow:
-		inset 0 1px 0 rgba(215, 235, 170, 0.16),
-		inset 0 -2px 3px rgba(0, 0, 0, 0.5),
-		0 2px 5px rgba(0, 0, 0, 0.4),
-		0 0 0 1px rgba(0, 0, 0, 0.3);
+		inset 0 1px 0 rgba(255, 230, 170, 0.2),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.4);
 }
-.dg-piece:disabled { cursor: default; }
-
-/* 金属光泽层 */
-.dg-piece-sheen {
-	position: absolute;
-	inset: 0;
-	z-index: 3;
-	pointer-events: none;
-	background:
-		linear-gradient(135deg, rgba(255, 240, 200, 0.1) 0%, transparent 40%),
-		linear-gradient(225deg, transparent 50%, rgba(0, 0, 0, 0.12) 100%);
-	border-radius: 4px;
+.dg-piece:disabled {
+	cursor: default;
 }
-
-/* 编号标记 */
 .dg-piece-num {
 	position: absolute;
-	top: 2px;
-	left: 2px;
-	z-index: 4;
+	top: 4px;
+	left: 4px;
+	z-index: 2;
 	width: 18px;
 	height: 18px;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 10px;
-	font-weight: 700;
-	color: rgba(220, 200, 130, 0.75);
-	background: rgba(0, 0, 0, 0.55);
-	border: 1px solid rgba(184, 151, 58, 0.35);
-	border-radius: 3px;
+	font-size: 11px;
+	color: rgba(255, 235, 180, 0.9);
+	background: rgba(0, 0, 0, 0.4);
+	border: 1px solid rgba(184, 151, 58, 0.45);
+	border-radius: 50%;
 	letter-spacing: 0;
-	font-family: var(--font-serif);
+	font-weight: 600;
 }
-
-/* 回位徽记 */
-.dg-piece-ding {
-	position: absolute;
-	inset: 0;
-	z-index: 2;
-	pointer-events: none;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.dg-piece-ding::after {
-	content: "鼎";
-	font-family: var(--font-serif);
-	font-size: 24px;
-	color: rgba(212, 175, 90, 0.4);
-	letter-spacing: 0;
-	text-shadow: 0 0 14px rgba(184, 151, 58, 0.25);
-	transition: all 0.3s;
-}
-
-/* 青铜纹饰层 */
 .dg-piece-pattern {
 	position: absolute;
 	inset: 0;
 	z-index: 1;
 	pointer-events: none;
 	background-image:
-		repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 10px),
-		repeating-linear-gradient(45deg, rgba(200, 170, 100, 0.04) 0 1px, transparent 1px 14px);
+		repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 8px),
+		repeating-linear-gradient(-45deg, rgba(255, 220, 150, 0.06) 0 2px, transparent 2px 10px);
 }
 
-/* ═══════════════════ 部位专项 ═══════════════════ */
-
-/* 鼎身 — 主青铜色 */
+/* ── 鼎身（腹部·青铜主色，纹路更密） ── */
 .dg-body {
 	background:
-		radial-gradient(ellipse at 35% 25%, rgba(210, 230, 170, 0.26), transparent 50%),
-		radial-gradient(ellipse at 60% 80%, rgba(140, 115, 70, 0.2), transparent 55%),
-		linear-gradient(170deg, #688550 0%, #4a6438 30%, #324624 60%, #1e3014 100%);
+		radial-gradient(ellipse at 30% 20%, rgba(212, 175, 90, 0.32), transparent 60%),
+		linear-gradient(160deg, #6b7a52 0%, #46543a 40%, #2e3a24 70%, #1e2614 100%);
 }
 .dg-body .dg-piece-pattern {
 	background-image:
-		repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 14px),
-		repeating-linear-gradient(45deg, rgba(220, 190, 120, 0.06) 0 1px, transparent 1px 10px);
+		repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 14px),
+		repeating-linear-gradient(45deg, rgba(255, 220, 150, 0.08) 0 1px, transparent 1px 8px);
 }
 
-/* 鼎耳 — 暗青铜 */
+/* ── 鼎耳（立耳·暗青铜，底部衔接口沿） ── */
 .dg-ear {
 	background:
-		radial-gradient(ellipse at 50% 80%, rgba(184, 151, 58, 0.22), transparent 65%),
-		linear-gradient(180deg, #555540 0%, #363622 40%, #1e1e12 100%);
+		radial-gradient(ellipse at 50% 85%, rgba(184, 151, 58, 0.32), transparent 70%),
+		linear-gradient(180deg, #4a4a38 0%, #2e2e1e 55%, #181810 100%);
 }
 .dg-ear .dg-piece-pattern {
 	background-image:
-		radial-gradient(ellipse at 50% 72%, transparent 32%, rgba(0, 0, 0, 0.35) 50%, transparent 67%),
-		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0 1px, transparent 1px 12px);
+		radial-gradient(ellipse at 50% 70%, transparent 38%, rgba(0, 0, 0, 0.45) 50%, transparent 62%),
+		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.15) 0 1px, transparent 1px 12px);
 }
 
-/* 鼎口 — 金黄口沿，金属光泽最强 */
+/* ── 鼎口（口沿·金黄带，最强金属光泽） ── */
 .dg-mouth {
 	background:
-		linear-gradient(180deg, #a89650 0%, #867532 28%, #5a4e1e 58%, #322812 100%);
+		linear-gradient(180deg, #9a8a44 0%, #7a6a30 28%, #54461a 65%, #2e2410 100%);
 	box-shadow:
-		inset 0 2px 0 rgba(255, 240, 170, 0.4),
-		inset 0 -2px 4px rgba(0, 0, 0, 0.5),
-		0 2px 5px rgba(0, 0, 0, 0.4),
-		0 0 0 1px rgba(0, 0, 0, 0.3);
+		inset 0 2px 0 rgba(255, 230, 160, 0.4),
+		inset 0 -2px 4px rgba(0, 0, 0, 0.45);
 }
 .dg-mouth .dg-piece-pattern {
 	background-image:
-		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 8px),
-		repeating-linear-gradient(0deg, rgba(255, 220, 150, 0.06) 0 1px, transparent 1px 14px);
+		repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 10px),
+		repeating-linear-gradient(0deg, rgba(255, 220, 150, 0.05) 0 1px, transparent 1px 14px);
 }
 
-/* 鼎足 — 上粗下细 */
+/* ── 鼎足（三足·上粗下细，足尖渐暗） ── */
 .dg-foot {
 	background:
-		radial-gradient(ellipse at 50% 12%, rgba(184, 151, 58, 0.2), transparent 68%),
-		linear-gradient(180deg, #4e6040 0%, #304020 35%, #1a280e 70%, #0c1406 100%);
+		radial-gradient(ellipse at 50% 18%, rgba(184, 151, 58, 0.22), transparent 70%),
+		linear-gradient(180deg, #4a5a3a 0%, #2e3a20 38%, #1a200e 78%, #0c1006 100%);
 }
 .dg-foot .dg-piece-pattern {
 	background-image:
-		linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.5) 100%),
-		repeating-linear-gradient(0deg, rgba(220, 200, 140, 0.05) 0 1px, transparent 1px 6px);
+		linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.45) 100%),
+		repeating-linear-gradient(0deg, rgba(255, 220, 150, 0.06) 0 1px, transparent 1px 6px);
 }
 
-/* ═══════════════════ 交互状态 ═══════════════════ */
-
+/* ── 悬浮 & 选中 & 复位 ── */
 .dg-piece:not(:disabled):hover {
-	transform: translateY(-3px) scale(1.03);
+	transform: translateY(-2px);
 	box-shadow:
-		inset 0 1px 0 rgba(215, 245, 175, 0.22),
-		inset 0 -2px 4px rgba(0, 0, 0, 0.6),
-		0 6px 16px rgba(0, 0, 0, 0.5),
-		0 0 12px rgba(184, 151, 58, 0.3);
-	z-index: 5;
+		inset 0 1px 0 rgba(255, 230, 170, 0.3),
+		0 4px 14px rgba(0, 0, 0, 0.5);
+	z-index: 2;
 }
-
 .dg-piece.selected {
-	transform: translateY(-2px) scale(1.05);
+	outline: 2px solid var(--color-gold, #b8973a);
+	outline-offset: -2px;
 	box-shadow:
-		inset 0 0 0 2px var(--color-gold),
-		inset 0 1px 0 rgba(255, 245, 185, 0.3),
-		0 0 24px rgba(184, 151, 58, 0.65),
-		0 6px 16px rgba(0, 0, 0, 0.5);
-	z-index: 6;
+		inset 0 0 0 1px var(--color-gold-light, #d4af5a),
+		0 0 18px rgba(184, 151, 58, 0.65);
+	z-index: 3;
 }
-
 .dg-piece.correct {
-	box-shadow:
-		inset 0 0 0 1px rgba(184, 151, 58, 0.45),
-		inset 0 1px 0 rgba(215, 245, 175, 0.18),
-		0 0 10px rgba(184, 151, 58, 0.3),
-		0 2px 4px rgba(0, 0, 0, 0.3);
-}
-.dg-piece.correct .dg-piece-sheen {
-	background:
-		linear-gradient(135deg, rgba(255, 240, 180, 0.15) 0%, transparent 40%),
-		linear-gradient(225deg, transparent 50%, rgba(0, 0, 0, 0.08) 100%);
+	outline: 1px solid rgba(184, 151, 58, 0.45);
 }
 
-/* ═══════════════════ 完成 ═══════════════════ */
-
+/* ── 完成时整鼎发光层 ── */
 .dg-glow {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
 	border-radius: var(--radius-lg, 12px);
-	background: radial-gradient(ellipse at 50% 55%, rgba(212, 175, 90, 0.28), transparent 70%);
-	animation: dgGlow 1.2s ease-in-out infinite alternate;
+	background: radial-gradient(ellipse at 50% 55%, rgba(212, 175, 90, 0.22), transparent 70%);
+	animation: dgGlow 1.4s ease-in-out infinite alternate;
 }
 @keyframes dgGlow {
-	from { opacity: 0.4; }
-	to { opacity: 1; }
+	from { opacity: 0.5; }
+	to   { opacity: 1; }
 }
 
-/* ═══════════════════ 图例 ═══════════════════ */
-
+/* ── 部位图例 ── */
 .dg-legend {
 	display: flex;
 	justify-content: center;
@@ -300,31 +249,34 @@
 	flex-wrap: wrap;
 	font-size: 12px;
 	letter-spacing: 0.1em;
-	color: var(--color-rice-dim);
+	color: var(--color-rice-dim, rgba(242, 236, 216, 0.55));
 }
-.dg-leg { display: inline-flex; align-items: center; gap: 6px; }
+.dg-leg {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
 .dg-leg::before {
 	content: "";
-	width: 14px;
-	height: 14px;
-	border-radius: 3px;
+	width: 12px;
+	height: 12px;
+	border-radius: 2px;
 	border: 1px solid rgba(0, 0, 0, 0.4);
+	box-shadow: inset 0 1px 0 rgba(255, 230, 170, 0.2);
 }
-.dg-leg-ear::before   { background: linear-gradient(180deg, #555540, #1e1e12); }
-.dg-leg-mouth::before { background: linear-gradient(180deg, #a89650, #322812); }
-.dg-leg-body::before  { background: linear-gradient(170deg, #688550, #1e3014); }
-.dg-leg-foot::before  { background: linear-gradient(180deg, #4e6040, #0c1406); }
+.dg-leg-ear::before   { background: linear-gradient(180deg, #4a4a38, #181810); }
+.dg-leg-mouth::before { background: linear-gradient(180deg, #9a8a44, #2e2410); }
+.dg-leg-body::before  { background: linear-gradient(160deg, #6b7a52, #1e2614); }
+.dg-leg-foot::before  { background: linear-gradient(180deg, #4a5a3a, #0c1006); }
 
-/* ═══════════════════ 操作 ═══════════════════ */
-
+/* ── 操作区 ── */
 .dg-actions {
 	display: flex;
 	gap: var(--space-2);
 	justify-content: center;
 }
 
-/* ═══════════════════ 结果 ═══════════════════ */
-
+/* ── 结果遮罩 ── */
 .dg-result {
 	position: absolute;
 	inset: 0;
@@ -337,9 +289,11 @@
 	backdrop-filter: blur(4px);
 	border-radius: var(--radius-lg, 12px);
 	animation: dgScaleIn 0.4s ease-out;
-	color: var(--color-gold);
+	color: var(--color-gold, #b8973a);
 }
-.dg-result.lose { color: var(--color-vermilion-light); }
+.dg-result.lose {
+	color: var(--color-vermilion-light, #e05a4a);
+}
 .dg-result-title {
 	font-family: var(--font-serif);
 	font-size: 26px;
@@ -350,17 +304,17 @@
 .dg-result-sub {
 	font-size: 13px;
 	letter-spacing: 0.1em;
-	color: var(--color-rice-dim);
+	color: var(--color-rice-dim, rgba(242, 236, 216, 0.55));
 }
 @keyframes dgScaleIn {
 	from { opacity: 0; transform: scale(0.85); }
-	to { opacity: 1; transform: scale(1); }
+	to   { opacity: 1; transform: scale(1); }
 }
 
+/* ── 响应式 ── */
 @media (max-width: 480px) {
 	.dg-board { max-width: 300px; }
 	.dg-title { font-size: 18px; }
-	.dg-piece-num { width: 14px; height: 14px; font-size: 8px; }
-	.dg-piece-ding::after { font-size: 16px; }
+	.dg-piece-num { width: 14px; height: 14px; font-size: 9px; top: 3px; left: 3px; }
 	.dg-result-title { font-size: 22px; }
 }

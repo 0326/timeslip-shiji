@@ -522,5 +522,10 @@ export const baseSprites: Record<string, SpriteInfo> = {
 	// NPC
 	tuzhong: { name: "屠中少年", glyph: "屠", accent: "#6b5a48", full: "/assets/figures/tuzhong/classical/portrait/full-default.png" },
 	piaomu: { name: "漂母", glyph: "漂", accent: "#5a8f6b", full: "/assets/figures/piaomu/classical/portrait/full-default.png" },
-	kuaitong: { name: "蒯通", glyph: "蒯", accent: "#8a6f4a", full: "/assets/figures/kuaitong/classical/portrait/full-default.png" }};
+	kuaitong: { name: "蒯通", glyph: "蒯", accent: "#8a6f4a", full: "/assets/figures/kuaitong/classical/portrait/full-default.png" },
+	// 夏末·妹喜
+	meixi: { name: "妹喜", glyph: "喜", accent: "#b8557a", full: "/assets/figures/meixi/classical/portrait/full-default.png" },
+	// 商末·叔齐（与伯夷同列）
+	shuqi: { name: "叔齐", glyph: "齐", accent: "#5a7a8a", full: "/assets/figures/shuqi/classical/portrait/full-default.png" },
+};
 

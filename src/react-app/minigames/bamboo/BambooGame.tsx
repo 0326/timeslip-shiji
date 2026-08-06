@@ -119,6 +119,8 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 	onCompleteRef.current = onComplete;
 	// 用户是否已实际交互（swap/拖拽）。初始化或重洗时不检测胜利，防止挂载即通关
 	const userInteractedRef = useRef(false);
+	// 防止胜利后重复回调
+	const wonRef = useRef(false);
 
 	useEffect(() => {
 		if (original.length === 0) return;
@@ -129,6 +131,7 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 		setSelected(null);
 		// 初始化/重洗后重置交互标志
 		userInteractedRef.current = false;
+		wonRef.current = false;
 	}, [original]);
 
 	useEffect(() => {
@@ -138,13 +141,15 @@ export function BambooGame({ param, storyKey, onComplete, onSkip }: MinigameProp
 		if (!userInteractedRef.current) return;
 		const ok = strips.every((s, i) => s.id === i);
 		if (ok && !won) {
+			wonRef.current = true;
 			setWon(true);
 			sfx.play("win");
 			const score = moves <= Math.ceil(count * 1.5) ? 100 : moves <= count * 3 ? 80 : 60;
-			const t = setTimeout(() => onCompleteRef.current({ result: "win", score }), 900);
-			return () => clearTimeout(t);
+			setTimeout(() => onCompleteRef.current({ result: "win", score }), 900);
 		}
-	}, [strips, won, moves, count]);
+		// 不在 deps 中包含 won，避免 won 更新导致 effect 清理掉 timeout
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [strips, moves, count]);
 
 	function swap(i: number, j: number) {
 		if (i === j || i < 0 || j < 0 || i >= strips.length || j >= strips.length) return;

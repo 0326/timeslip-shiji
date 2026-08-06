@@ -200,6 +200,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 		if (!state) return;
 		if (state === prevStateRef.current) return;
 		prevStateRef.current = state;
+		console.warn("[VNEngine] state changed: nodeId=", state.nodeId, "actClear=", !!state.actClear, "minigame=", state.minigame?.id ?? null, "ended=", state.ended, "death=", !!state.death);
 		impactDismissedRef.current = null;
 		setTurnSeq(s => s + 1);
 		const done = state.segments.length === 0;
@@ -337,6 +338,8 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 
 	function handleActClearClose() {
 		setActClearVisible(null);
+		// 如果有未完成的小游戏，关闭幕间后进入游戏，不推进故事
+		if (state!.minigame) return;
 		advance();
 		setDialogueDone(false);
 	}

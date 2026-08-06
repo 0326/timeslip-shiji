@@ -1,4 +1,4 @@
-﻿import type { BgStyle, SpriteInfo } from "./base";
+import type { BgStyle, SpriteInfo } from "./base";
 
 export const zhuziSprites: Record<string, SpriteInfo> = {
 	mengzi: { name: "孟轲", glyph: "孟", accent: "#5a8ac9", full: "/assets/figures/mengzi/classical/portrait/full-default.png" },
@@ -22,6 +22,8 @@ export const zhuziSprites: Record<string, SpriteInfo> = {
 	zilu: { name: "子路", glyph: "路", accent: "#a85d3a", full: "/assets/figures/zilu/classical/portrait/full-default.png" },
 	yanhui: { name: "颜回", glyph: "回", accent: "#5a8f6b", full: "/assets/figures/yanhui/classical/portrait/full-default.png" },
 	jihuanzi: { name: "季桓子", glyph: "季", accent: "#7a6e5c", full: "/assets/figures/jihuanzi/classical/portrait/full-default.png" },
+	// 孔门·曾子
+	zengzi: { name: "曾参", glyph: "曾", accent: "#7a8a5c", full: "/assets/figures/zengzi/classical/portrait/full-default.png" },
 };
 
 export const zhuziBackgrounds: Record<string, BgStyle> = {

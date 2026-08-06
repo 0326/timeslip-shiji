@@ -25,6 +25,10 @@ export const shangSprites: Record<string, SpriteInfo> = {
 	zuyi: { name: "祖伊", glyph: "祖", accent: "#4a6b8a", full: "/assets/figures/zuyi/classical/portrait/full-default.png" },
 	chonghou: { name: "崇侯虎", glyph: "崇", accent: "#7a2f2f", full: "/assets/figures/chonghou/classical/portrait/full-default.png" },
 	feizhong: { name: "费中", glyph: "费", accent: "#8a6f4a", full: "/assets/figures/feizhong/classical/portrait/full-default.png" },
+	// 商代中兴·盘庚迁殷
+	pangeng: { name: "盘庚", glyph: "盘", accent: "#5a8f6b", full: "/assets/figures/pangeng/classical/portrait/full-default.png" },
+	// 武丁王后·妇好
+	fuhao: { name: "妇好", glyph: "妇", accent: "#c96f8a", full: "/assets/figures/fuhao/classical/portrait/full-default.png" },
 };
 
 export const shangBackgrounds: Record<string, BgStyle> = {
