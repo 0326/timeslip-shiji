@@ -500,12 +500,25 @@
 	transform: none !important;
 }
 .vn-system-char .vn-sprite-image {
-	height: 200px;
-	width: auto;
+	/* 青月：裁剪到上半身（头像/肩膀），去掉水墨卡牌套层 */
+	width: 120px;
+	height: 160px;
+	object-fit: cover;
+	object-position: 50% 18%;
+	background: none !important;
+	border: none !important;
+	border-radius: 0 !important;
+	padding: 0 !important;
+	box-shadow:
+		drop-shadow(0 0 24px rgba(127, 214, 224, 0.35)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
 	filter: drop-shadow(0 0 24px rgba(127, 214, 224, 0.35)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
 	animation: systemFloat 4s ease-in-out infinite;
+	box-sizing: border-box;
 }
 .vn-system-char .vn-sprite.speaking .vn-sprite-image {
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
 	filter: drop-shadow(0 0 32px rgba(127, 214, 224, 0.55)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
 	animation: systemFloat 4s ease-in-out infinite, systemGlow 2s ease-in-out infinite;
 }
@@ -529,11 +542,17 @@
 	.vn-system-char {
 		bottom: 20px;
 		left: 20px;
-		width: 100px;
-		height: 140px;
+		width: 84px;
+		height: 112px;
 	}
 	.vn-system-char .vn-sprite-image {
-		height: 140px;
+		width: 84px;
+		height: 112px;
+		object-fit: cover;
+		object-position: 50% 18%;
+		background: none !important;
+		border: none !important;
+		padding: 0 !important;
 	}
 }
 .dialogue-box {
