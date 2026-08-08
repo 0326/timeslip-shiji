@@ -8,6 +8,8 @@
 
 === c_open ===
 
+#bg:weiyang_palace
+#bgm:calm
 #speaker:青月
 #show:qingyue:smile:float
 东宫的书房里，阳光透过窗棂洒进来，落在案几摊开的《尚书》上。晁错先生坐在上首，手里拿着一卷竹简，正在给太子刘启讲「慎乃出令，令出惟行」的道理。

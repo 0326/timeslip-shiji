@@ -8,6 +8,8 @@
 -> c_open
 
 === c_open ===
+#bg:qingmian_xing
+#bgm:solemn
 #speaker:青月
 #show:qingyue:sad:float
 我叫阿黥，不是因为我姓黥，是因为我脸上也被刺了字。

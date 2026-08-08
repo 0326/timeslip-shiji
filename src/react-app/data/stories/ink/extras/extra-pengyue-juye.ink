@@ -8,6 +8,8 @@
 -> c_open
 
 === c_open ===
+#bg:juye_ze
+#bgm:calm
 #speaker:青月
 #show:qingyue:thinking:float
 我叫阿渔，在钜野泽里打了十几年鱼。

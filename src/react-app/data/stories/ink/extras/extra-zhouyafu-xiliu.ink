@@ -8,6 +8,8 @@
 
 === c_open ===
 
+#bg:xiliu_camp
+#bgm:solemn
 #speaker:青月
 #show:qingyue:solemn:float
 文帝后元六年，匈奴大举犯边，三万骑兵入上郡，三万骑兵入云中，烽火一直照到了甘泉宫。文帝急调三路大军守长安——宗正刘礼驻霸上，祝兹侯徐厉驻棘门，河内守周亚夫驻细柳。
