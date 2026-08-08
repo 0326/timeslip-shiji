@@ -500,26 +500,38 @@
 	transform: none !important;
 }
 .vn-system-char .vn-sprite-image {
-	/* 青月：裁剪到上半身（头像/肩膀），去掉水墨卡牌套层 */
-	width: 120px;
-	height: 160px;
-	object-fit: cover;
-	object-position: 50% 18%;
+	/* 青月：沿透明边缘贴合显示，不套任何方形/卡牌外框 */
+	width: auto;
+	height: 220px;           /* 显示高度：约到胸部/上半身 */
+	max-width: none;
+	max-height: none;
+	object-fit: contain;     /* 保持 PNG 原比例 + 透明区域原样 */
+	object-position: 50% 0%; /* 顶部对齐，自然露出头部到上半身 */
 	background: none !important;
-	border: none !important;
+	background-image: none !important;
+	background-color: transparent !important;
+	border: 0 !important;
+	border-style: none !important;
 	border-radius: 0 !important;
 	padding: 0 !important;
-	box-shadow:
-		drop-shadow(0 0 24px rgba(127, 214, 224, 0.35)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
-	filter: drop-shadow(0 0 24px rgba(127, 214, 224, 0.35)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+	margin: 0 !important;
+	outline: none !important;
+	box-shadow: none !important;
+	/* 外发光只围绕青月实际像素边缘（透明处不会出光），不会出方形外框 */
+	filter: drop-shadow(0 0 16px rgba(127, 214, 224, 0.45)) drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55));
 	animation: systemFloat 4s ease-in-out infinite;
-	box-sizing: border-box;
+	box-sizing: content-box;
 }
 .vn-system-char .vn-sprite.speaking .vn-sprite-image {
 	background: none !important;
-	border: none !important;
+	background-image: none !important;
+	background-color: transparent !important;
+	border: 0 !important;
+	border-style: none !important;
 	padding: 0 !important;
-	filter: drop-shadow(0 0 32px rgba(127, 214, 224, 0.55)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+	outline: none !important;
+	box-shadow: none !important;
+	filter: drop-shadow(0 0 28px rgba(127, 214, 224, 0.7)) drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55));
 	animation: systemFloat 4s ease-in-out infinite, systemGlow 2s ease-in-out infinite;
 }
 .vn-system-char .vn-sprite-name {
@@ -535,24 +547,32 @@
 	50% { transform: translateY(-8px); }
 }
 @keyframes systemGlow {
-	0%, 100% { filter: drop-shadow(0 0 24px rgba(127, 214, 224, 0.35)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5)); }
-	50% { filter: drop-shadow(0 0 40px rgba(127, 214, 224, 0.6)) drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5)); }
+	0%, 100% { filter: drop-shadow(0 0 28px rgba(127, 214, 224, 0.7)) drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55)); }
+	50%      { filter: drop-shadow(0 0 44px rgba(127, 214, 224, 0.85)) drop-shadow(0 6px 18px rgba(0, 0, 0, 0.55)); }
 }
 @media (max-width: 720px) {
 	.vn-system-char {
 		bottom: 20px;
 		left: 20px;
-		width: 84px;
-		height: 112px;
+		width: auto;
+		height: auto;
 	}
 	.vn-system-char .vn-sprite-image {
-		width: 84px;
-		height: 112px;
-		object-fit: cover;
-		object-position: 50% 18%;
+		width: auto;
+		height: 156px;
+		object-fit: contain;
+		object-position: 50% 0%;
 		background: none !important;
-		border: none !important;
+		background-image: none !important;
+		background-color: transparent !important;
+		border: 0 !important;
+		border-style: none !important;
+		border-radius: 0 !important;
 		padding: 0 !important;
+		margin: 0 !important;
+		outline: none !important;
+		box-shadow: none !important;
+		filter: drop-shadow(0 0 14px rgba(127, 214, 224, 0.45)) drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
 	}
 }
 .dialogue-box {
