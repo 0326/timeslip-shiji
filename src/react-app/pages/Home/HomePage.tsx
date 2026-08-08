@@ -9,12 +9,9 @@ import {
   ChevronRight,
 } from "lucide-react";
 import "./Home.css";
-import { useAuthGate } from "../../hooks/useAuthGate";
-import { resolveBgm } from "../../data/bgm";
 import { AppNav } from "../../components/Layout/AppNav";
-
-/** 首页专用 BGM — 千里江山图，区别于各章节场景 BGM */
-const HOME_BGM_TRACK = "epic_6";
+import { useBgmPlayer } from "../../hooks/useBgmPlayer";
+import { useUiStore } from "../../store/uiStore";
 
 /* ───────────── KV 图片基础路径 ───────────── */
 const KV_BASE = import.meta.env.VITE_KV_BASE_URL || "/images/kv";
@@ -31,14 +28,14 @@ const GAME_MODES = [
   {
     id: "free",
     title: "自由模式",
-    desc: "穿越歧路 · 探索历史的另一种可能",
+    desc: "随心穿越，自由探索",
     icon: Compass,
     color: "#5a9fb5",
   },
   {
     id: "duel",
     title: "对决模式",
-    desc: "宿命对决 · 与历史人物一决高下",
+    desc: "史家对决，一争高下",
     icon: Swords,
     color: "#d4503c",
   },
@@ -46,35 +43,25 @@ const GAME_MODES = [
 
 export function HomePage() {
   const navigate = useNavigate();
-  const requireAuth = useAuthGate();
   const [mounted, setMounted] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  /* ── 首页 BGM（古风 · 千里江山图，默认开启，离开即停） ── */
-  const bgmAudioRef = useRef<HTMLAudioElement | null>(null);
-
-  useEffect(() => {
-    const track = resolveBgm(HOME_BGM_TRACK);
-    if (!track.url) return;
-
-    const audio = new Audio(track.url);
-    audio.loop = true;
-    audio.volume = 0.35;
-    audio.play().catch(() => {});
-    bgmAudioRef.current = audio;
-
-    return () => {
-      audio.pause();
-      audio.src = "";
-      audio.load();
-      bgmAudioRef.current = null;
-    };
-  }, []);
+  const bgmEnabled = useUiStore((s) => s.bgmEnabled);
+  const { playTrack, stop } = useBgmPlayer({ enabled: bgmEnabled });
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 首页 BGM：史诗庄重风格，进入页面即播放（若用户开启了音效）
+  useEffect(() => {
+    if (mounted && bgmEnabled) {
+      playTrack("epic_1");
+    }
+    return () => {
+      stop();
+    };
+  }, [mounted, bgmEnabled, playTrack, stop]);
 
   const handleVideoError = useCallback(() => {
     setVideoFailed(true);
@@ -82,11 +69,10 @@ export function HomePage() {
 
   const handleModeClick = (mode: (typeof GAME_MODES)[number]) => {
     if (mode.locked) return;
-    // 开始游戏前拦截：未注册/登录则弹出注册框
     if (mode.id === "duel") {
-      requireAuth(() => navigate("/duel"));
+      navigate("/duel");
     } else {
-      requireAuth(() => navigate(`/story?mode=${mode.id}`));
+      navigate(`/story?mode=${mode.id}`);
     }
   };
 
@@ -149,7 +135,7 @@ export function HomePage() {
             {GAME_MODES.map((mode, i) => (
               <motion.button
                 key={mode.id}
-                className={`kv-mode-btn ${mode.locked ? "locked" : ""}`}
+                className={`kv-mode-btn ${mode.locked ? "locked" : ""} ${mode.storyLocked ? "story-locked" : ""}`}
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: mounted ? 1 : 0, x: mounted ? 0 : 40 }}
                 transition={{ duration: 0.6, delay: 0.3 + i * 0.12 }}
@@ -166,7 +152,7 @@ export function HomePage() {
                     <span className="kv-mode-title">{mode.title}</span>
                     <span className="kv-mode-desc">{mode.desc}</span>
                   </div>
-                  {mode.locked ? (
+                  {mode.locked || mode.storyLocked ? (
                     <Lock size={16} className="kv-mode-lock" />
                   ) : (
                     <ChevronRight size={16} className="kv-mode-arrow" />

@@ -292,7 +292,7 @@ export const useUserStore = create<UserStore>()(
 		}),
 		{
 			name: "shiji-user-progress",
-			version: 1,
+			version: 99, // 预览模式：高版本号强制重置
 		},
 	),
 );
