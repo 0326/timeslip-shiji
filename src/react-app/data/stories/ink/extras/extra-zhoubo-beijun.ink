@@ -8,6 +8,8 @@
 
 === c_open ===
 
+#bg:camp_chu_alt1
+#bgm:solemn
 #speaker:青月
 #show:qingyue:solemn:float
 吕后崩的那年七月，长安城的空气里全是山雨欲来的味道。阿北在北军的营门口值哨，看见长乐宫那边的传令兵一匹接一匹地跑，马蹄子踏得长安城的青石板地都在发颤。

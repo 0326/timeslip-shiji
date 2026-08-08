@@ -8,6 +8,8 @@
 
 === c_open ===
 
+#bg:dai_wangfu
+#bgm:solemn
 #speaker:青月
 #show:qingyue:solemn:float
 代国的王府在中都，紧挨着匈奴的边境，风比长安大，雪比长安厚。那天阿代正在校场上看士兵操练，远远看见驿站的快马卷起一路尘土，直奔王府而来。

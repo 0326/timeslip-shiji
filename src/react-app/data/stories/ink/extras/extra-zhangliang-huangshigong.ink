@@ -7,6 +7,8 @@
 -> c_open
 
 === c_open ===
+#bg:huaiyin_river
+#bgm:calm
 #speaker:青月
 #show:qingyue:smile:float
 我是黄石公。

@@ -8,6 +8,8 @@
 -> c_open
 
 === c_open ===
+#bg:daze_rain
+#bgm:sad
 #speaker:青月
 #show:qingyue:sad:float
 我叫阿涉，不是那个带头造反的陈涉，是和他一起被征发的900人里，最不起眼的一个。

@@ -8,6 +8,8 @@
 
 === c_open ===
 
+#bg:yongxiang
+#bgm:sad
 #speaker:青月
 #show:qingyue:sad:float
 永巷的秋天，墙根的青苔一年比一年厚。阿永蹲在井边搓衣裳，指尖冻得通红。廊下传来铁链拖地的声响——那是夫人，被铐在舂米的石臼旁，已经三天了。
