@@ -13,7 +13,7 @@ export interface PassageWithRelations extends MainFigurePassage {
 }
 
 function mk(
-	id: string,
+	_id: string,
 	pid: string,
 	ch: string,
 	chname: string,

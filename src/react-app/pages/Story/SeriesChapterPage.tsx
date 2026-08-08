@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import {
 	ArrowLeft,
@@ -12,6 +12,7 @@ import {
 import "./StorySelect.css";
 import { getSeriesStorylines } from "../../data/storylines";
 import { inkStories } from "../../data/stories/inkStories";
+import { loadInkSource } from "../../data/stories/inkSourceLoader";
 import { SERIES } from "../../data/series";
 import { useUserStore } from "../../store/userStore";
 import { useUiStore } from "../../store/uiStore";
@@ -29,8 +30,7 @@ function getCharacterName(id: string) {
 
 /** 取一条故事线的题图：从 ink 的 #bg 中挑一张有代表性的场景图。
  *  优先"场景型"背景，跳过青月开场的轩辕丘 / 议事厅(*_court)这类通用底；回退到首图或封面渐变。 */
-function heroBgFor(storyKey: string): { image?: string; css: string } {
-	const src = inkStories[storyKey]?.source ?? "";
+function heroBgFromSource(src: string): { image?: string; css: string } {
 	const distinct = [
 		...new Set([...src.matchAll(/#bg:([a-z0-9_]+)/gi)].map((m) => m[1])),
 	];
@@ -74,6 +74,34 @@ export function SeriesChapterPage() {
 		}
 		return result;
 	}, [seriesId, getPerspective]);
+
+	// 异步预加载各故事线的 ink 源码，用于题图 #bg 提取
+	const [heroSources, setHeroSources] = useState<Record<string, string>>({});
+	useEffect(() => {
+		let cancelled = false;
+		const storyKeys = chapters
+			.map((c) => c.perspective?.storyKey)
+			.filter((k): k is string => !!k);
+		Promise.all(
+			storyKeys.map(async (key) => {
+				const cfg = inkStories[key];
+				if (cfg?.source) return [key, cfg.source] as const;
+				if (cfg?.inkFile) {
+					try {
+						const src = await loadInkSource(cfg.inkFile);
+						return [key, src] as const;
+					} catch { return null; }
+				}
+				return null;
+			}),
+		).then((entries) => {
+			if (cancelled) return;
+			const map: Record<string, string> = {};
+			for (const e of entries) if (e) map[e[0]] = e[1];
+			setHeroSources(map);
+		});
+		return () => { cancelled = true; };
+	}, [chapters]);
 
 	if (!series) {
 		return (
@@ -156,7 +184,9 @@ export function SeriesChapterPage() {
 						const charName = perspective
 							? getCharacterName(perspective.characterId)
 							: "";
-						const hero = perspective ? heroBgFor(perspective.storyKey) : null;
+						const hero = perspective
+							? heroBgFromSource(heroSources[perspective.storyKey] ?? "")
+							: null;
 
 						return (
 							<button

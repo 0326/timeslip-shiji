@@ -73,10 +73,6 @@ export default function DuelPlay() {
     [currentGame, gameDef],
   );
 
-  const handleSkip = useCallback(() => {
-    handleComplete({ result: "lose", score: 0 });
-  }, [handleComplete]);
-
   const goNext = useCallback(() => {
     setRoundResult(null);
     setShowIntro(true);
@@ -186,7 +182,7 @@ export default function DuelPlay() {
         {!done && roundResult && (
           <div className="dp-between" style={{ zIndex: 99999 }}>
             <div className="dp-between-rounds">
-              {games.map((g, i) => (
+              {games.map((_g, i) => (
                 <div key={i} className={`dp-round-dot ${results[i] ? (results[i] === "win" ? "win" : results[i] === "lose" ? "lose" : "draw") : i === round ? "current" : ""}`}>
                   {results[i] ? (
                     results[i] === "win" ? <CheckCircle2 size={18} /> : results[i] === "lose" ? <XCircle size={18} /> : <MinusCircle size={18} />

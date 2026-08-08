@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { MinigameProps } from "../types";
 import { Target, RotateCcw, CheckCircle2, SkipForward, AlertTriangle } from "lucide-react";
 import { sfx } from "../../lib/sfx";

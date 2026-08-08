@@ -108,7 +108,7 @@ const NAMES: Record<string,string> = {
   zhuanxu:"颛顼",
   // 群英/其他
   niezheng:"聂政",jumeng:"剧孟",zhuke:"朱家",guojie:"郭解",
-  yuli:"狱吏",bianque:"扁鹊",meixi:"妹喜",fuhao:"妇好",pangeng:"盘庚",
+  yuli:"狱吏",bianque:"扁鹊",fuhao:"妇好",pangeng:"盘庚",
   meixi:"妺喜",tuangujia:"团古甲",sigongzi:"嗣公子",
 };
 

@@ -1,19 +1,11 @@
 // 系列 chunqiu · 春秋（越王勾践世家，卷四十一）。死亡/照见文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import goujianChunqiuSource from "../ink/goujian-chunqiu.ink?raw";
-import chongerChunqiuSource from "../ink/chonger-chunqiu.ink?raw";
-import wuzixuChunqiuSource from "../ink/wuzixu-chunqiu.ink?raw";
-import qihuanChunqiuSource from "../ink/qihuan-chunqiu.ink?raw";
-import qinmuChunqiuSource from "../ink/qinmu-chunqiu.ink?raw";
-import sunwuChunqiuSource from "../ink/sunwu-chunqiu.ink?raw";
-import fuchaiChunqiuSource from "../ink/fuchai-chunqiu.ink?raw";
 
 export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"goujian:chunqiu": {
 		key: "goujian:chunqiu",
 		title: "越王勾践 · 卧薪尝胆",
-		source: goujianChunqiuSource,
-		precompiled: false,
+		inkFile: "goujian-chunqiu",
 		deaths: {
 			yingzhan: {
 				reason: "不施诡谲、堂堂正正列阵，越之锐难当吴之精，檇李一战即溃，退守会稽再无颜言勇",
@@ -74,8 +66,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"chonger:chunqiu": {
 		key: "chonger:chunqiu",
 		title: "晋文公重耳 · 退避三舍",
-		source: chongerChunqiuSource,
-		precompiled: false,
+		inkFile: "chonger-chunqiu",
 		deaths: {
 			zhigeng: {
 				reason: "疑忌介子推割股之心、从者离散，饿毙流亡半道",
@@ -141,8 +132,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"wuzixu:chunqiu": {
 		key: "wuzixu:chunqiu",
 		title: "伍子胥 · 日暮途远",
-		source: wuzixuChunqiuSource,
-		precompiled: false,
+		inkFile: "wuzixu-chunqiu",
 		deaths: {
 			yiyu: {
 				reason: "疑杀江上渔父、恩将仇报，绝己生路被擒",
@@ -204,8 +194,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"qihuan:chunqiu": {
 		key: "qihuan:chunqiu",
 		title: "齐桓公 · 九合诸侯",
-		source: qihuanChunqiuSource,
-		precompiled: false,
+		inkFile: "qihuan-chunqiu",
 		deaths: {
 			zhengwei: {
 				reason: "不用诈死权变、与公子纠正面慢争，鲁军护纠先入立君，你失国身死",
@@ -253,8 +242,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"qinmu:chunqiu": {
 		key: "qinmu:chunqiu",
 		title: "秦穆公 · 霸西戎",
-		source: qinmuChunqiuSource,
-		precompiled: false,
+		inkFile: "qinmu-chunqiu",
 		deaths: {
 			shixian: {
 				reason: "以重礼隆重求百里傒，楚人觉其贤而留之不予，失贤",
@@ -296,8 +284,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"sunwu:chunqiu": {
 		key: "sunwu:chunqiu",
 		title: "孙武 · 三令五申",
-		source: sunwuChunqiuSource,
-		precompiled: false,
+		inkFile: "sunwu-chunqiu",
 		deaths: {
 			cangzhuo: {
 				reason: "谦退藏拙、不敢当场勒兵，兵法沦为纸上空谈，孙武埋没无名",
@@ -345,8 +332,7 @@ export const chunqiuInkStories: Record<string, InkStoryConfig> = {
 	"fuchai:chunqiu": {
 		key: "fuchai:chunqiu",
 		title: "吴王夫差 · 无面见子胥",
-		source: fuchaiChunqiuSource,
-		precompiled: false,
+		inkFile: "fuchai-chunqiu",
 		// 镜像勾践：act1/act2 为真致命；act3–act6 的照见分支是"另一种没走的吴"。
 		deaths: {
 			wangchou: {

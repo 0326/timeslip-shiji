@@ -264,7 +264,6 @@ export default function MindMap({ graph, onNodeClick }: MindMapProps) {
 								style={{ cursor: "pointer", transition: "transform 160ms ease" }}
 								onMouseEnter={(e) => {
 									setHoverId(n.id);
-									const rect = (e.currentTarget.ownerSVGElement as SVGSVGElement).getBoundingClientRect();
 									const wrapRect = wrapRef.current?.getBoundingClientRect();
 									if (wrapRect) {
 										setTooltip({

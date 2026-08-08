@@ -4,7 +4,7 @@ import { BookOpen, Map,  ChevronDown, ChevronRight } from "lucide-react";
 import "./DeathsCodex.css";
 import "./EndingsCodex.css";
 import "./KnowledgeCodex.css";
-import { getStoryFlow, type FlowNode } from "../../data/storyFlow";
+import { getStoryFlow } from "../../data/storyFlow";
 import { inkStories } from "../../data/stories/inkStories";
 import { SERIES } from "../../data/series";
 import { STORYLINES } from "../../data/storylines";

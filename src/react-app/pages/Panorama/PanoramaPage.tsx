@@ -69,9 +69,9 @@ function buildFallbackCharacter(focusId: string, storyId: string): Character {
 
 	let counter = 0;
 	const typesPool: Array<{ type: RelationType; prefix: string }> = [
-		{ type: "colleague", prefix: "同朝之人" },
+		{ type: "peer", prefix: "同朝之人" },
 		{ type: "friend", prefix: "故事同僚" },
-		{ type: "rival", prefix: "剧情人物" },
+		{ type: "sovereign", prefix: "君臣之交" },
 		{ type: "enemy", prefix: "剧情对立" },
 		{ type: "family", prefix: "同篇人物" },
 	];
@@ -95,7 +95,7 @@ function buildFallbackCharacter(focusId: string, storyId: string): Character {
 			used.add(tid);
 			maxRels.push({
 				targetId: tid,
-				type: "colleague",
+				type: "peer",
 				label: `故事线同篇·${nameOf(tid)}`,
 			});
 		}

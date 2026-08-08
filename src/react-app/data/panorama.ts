@@ -363,18 +363,13 @@ export function getPanorama(storyId: string): PanoramaData | undefined {
 		const persp = sl.perspectives[i];
 		const cfg = inkStories[persp.storyKey];
 		const title = cfg?.title ?? `${persp.characterId}·视角`;
-		const characterName =
-			cfg?.protagonist?.name ??
-			(persp.storyKey.split(":")[0] ?? persp.characterId);
+		const characterName = persp.storyKey.split(":")[0] ?? persp.characterId;
 
 		// 内心独白（生成有区分度的通用文案）
 		const thoughts: PanoramaPerspective[] = [
 			{
 				characterId: persp.characterId,
-				thought:
-					(cfg?.tagline && cfg.tagline.length > 0
-						? cfg.tagline
-						: `此一卷，以我${characterName}之眼，重历${seriesName}风云。`),
+				thought: `此一卷，以我${characterName}之眼，重历${seriesName}风云。`,
 			},
 		];
 
@@ -383,14 +378,12 @@ export function getPanorama(storyId: string): PanoramaData | undefined {
 			time: `${seriesName} · 第${i + 1}视角`,
 			title: title,
 			summary:
-				cfg?.description ??
-				`以${characterName}的视角走入《${sl.storyTitle}》，亲历其间每一次抉择、每一次生死。`,
+				sl.description ??
+				`以${characterName}的视角走入《${sl.title}》，亲历其间每一次抉择、每一次生死。`,
 			perspectives: thoughts,
 			classical:
-				cfg?.sourceExcerpts?.[0]?.original ??
-				`《史记·${seriesName || sl.storyTitle}》所载：此卷记${characterName}生平事迹，详其本末，见其终始。`,
+				`《史记·${seriesName || sl.title}》所载：此卷记${characterName}生平事迹，详其本末，见其终始。`,
 			analysis:
-				cfg?.sourceExcerpts?.[0]?.translation ??
 				`司马迁作《史记》，以本纪、世家、列传列序人物。${characterName}之事迹，或载入本纪，或归入列传，合而观之，方见太史公笔法之妙。`,
 		});
 
@@ -403,8 +396,8 @@ export function getPanorama(storyId: string): PanoramaData | undefined {
 		events.push({
 			id: "evt_overview",
 			time: seriesName || "上古至今",
-			title: sl.storyTitle,
-			summary: sl.tagline || `本卷讲述${sl.storyTitle}的故事。`,
+			title: sl.title,
+			summary: sl.subtitle || `本卷讲述${sl.title}的故事。`,
 			perspectives: [
 				{
 					characterId: sl.perspectives?.[0]?.characterId ?? "narrator",
@@ -417,25 +410,17 @@ export function getPanorama(storyId: string): PanoramaData | undefined {
 		});
 	}
 
-	// 原文典籍：取 inkStories 第一条配文，或通用史记序
-	const firstPersp = sl.perspectives[0];
-	const firstCfg = firstPersp ? inkStories[firstPersp.storyKey] : undefined;
+	// 原文典籍：通用史记序（ink 配置未提供原文摘录字段）
 	const source: SourceText = {
-		title: `《史记·${seriesName || sl.storyTitle}》节选 · ${sl.storyTitle}`,
-		passages:
-			firstCfg?.sourceExcerpts?.length
-				? firstCfg.sourceExcerpts.map((e) => ({
-						original: e.original,
-						translation: e.translation ?? "",
-					}))
-				: [
-						{
-							original:
-								"太史公曰：先人有言，自周公卒五百岁而有孔子。孔子卒后至于今五百岁，有能绍明世，正《易传》，继《春秋》，本《诗》《书》《礼》《乐》之际？意在斯乎！意在斯乎！小子何敢让焉。",
-							translation:
-								"太史公说：先父有言，自周公去世五百年而有孔子。孔子去世至今又五百年，有人能够继承清明盛世，正定《易传》，接续《春秋》，推原《诗》《书》《礼》《乐》之本？其意在此啊！其意在此啊！我小子怎敢推辞呢。",
-						},
-					],
+		title: `《史记·${seriesName || sl.title}》节选 · ${sl.title}`,
+		passages: [
+			{
+				original:
+					"太史公曰：先人有言，自周公卒五百岁而有孔子。孔子卒后至于今五百岁，有能绍明世，正《易传》，继《春秋》，本《诗》《书》《礼》《乐》之际？意在斯乎！意在斯乎！小子何敢让焉。",
+				translation:
+					"太史公说：先父有言，自周公去世五百年而有孔子。孔子去世至今又五百年，有人能够继承清明盛世，正定《易传》，接续《春秋》，推原《诗》《书》《礼》《乐》之本？其意在此啊！其意在此啊！我小子怎敢推辞呢。",
+			},
+		],
 	};
 
 	return { events, source };

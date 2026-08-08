@@ -1,18 +1,11 @@
 // 系列 hanwu · 汉武盛世。死亡文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import hanwudiHanwuSource from "../ink/hanwudi-hanwu.ink?raw";
-import liguangHanwuSource from "../ink/liguang-hanwu.ink?raw";
-import weiqingHanwuSource from "../ink/weiqing-hanwu.ink?raw";
-import huoqibingHanwuSource from "../ink/huoqibing-hanwu.ink?raw";
-import zhangqianHanwuSource from "../ink/zhangqian-hanwu.ink?raw";
-import zhufuyanHanwuSource from "../ink/zhufuyan-hanwu.ink?raw";
 
 export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"hanwudi:hanwu": {
 		key: "hanwudi:hanwu",
 		title: "汉武大帝 · 功罪",
-		source: hanwudiHanwuSource,
-		precompiled: false,
+		inkFile: "hanwudi-hanwu",
 		deaths: {
 			zaojin: {
 				reason: "新政操切，触怒窦太后，赵绾王臧自杀、皇位动摇",
@@ -66,8 +59,7 @@ export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"liguang:hanwu": {
 		key: "liguang:hanwu",
 		title: "飞将军 · 李广难封",
-		source: liguangHanwuSource,
-		precompiled: false,
+		inkFile: "liguang-hanwu",
 		deaths: {
 			taohui: {
 				reason: "百骑遇数千骑，掉头逃跑被追杀尽没",
@@ -115,8 +107,7 @@ export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"weiqing:hanwu": {
 		key: "weiqing:hanwu",
 		title: "大将军 · 卫青",
-		source: weiqingHanwuSource,
-		precompiled: false,
+		inkFile: "weiqing-hanwu",
 		deaths: {
 			jiaogong: {
 				reason: "功高不谦退，受封三子，引起武帝猜忌",
@@ -152,8 +143,7 @@ export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"huoqibing:hanwu": {
 		key: "huoqibing:hanwu",
 		title: "骠骑将军 · 霍去病",
-		source: huoqibingHanwuSource,
-		precompiled: false,
+		inkFile: "huoqibing-hanwu",
 		deaths: {
 			wending: {
 				reason: "首战不敢深入，无功而返，埋没了冠军侯的锋芒",
@@ -201,8 +191,7 @@ export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"zhangqian:hanwu": {
 		key: "zhangqian:hanwu",
 		title: "博望侯 · 张骞凿空",
-		source: zhangqianHanwuSource,
-		precompiled: false,
+		inkFile: "zhangqian-hanwu",
 		deaths: {
 			buying: {
 				reason: "不敢应募，汉与西域的通道要晚开几十年",
@@ -244,8 +233,7 @@ export const hanwuInkStories: Record<string, InkStoryConfig> = {
 	"zhufuyan:hanwu": {
 		key: "zhufuyan:hanwu",
 		title: "主父偃 · 五鼎烹",
-		source: zhufuyanHanwuSource,
-		precompiled: false,
+		inkFile: "zhufuyan-hanwu",
 		deaths: {
 			dengdai: {
 				reason: "困厄长安饥寒交迫而死，推恩令无人再献",

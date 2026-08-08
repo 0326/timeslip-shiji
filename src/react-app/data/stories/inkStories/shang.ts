@@ -1,16 +1,11 @@
 // 系列 shang · 商（殷本纪，卷三）。死亡/照见文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import tangShangSource from "../ink/tang-shang.ink?raw";
-import yiyinShangSource from "../ink/yiyin-shang.ink?raw";
-import wudingShangSource from "../ink/wuding-shang.ink?raw";
-import zhouShangSource from "../ink/zhou-shang.ink?raw";
 
 export const shangInkStories: Record<string, InkStoryConfig> = {
 	"tang:shang": {
 		key: "tang:shang",
 		title: "成汤 · 网开三面",
-		source: tangShangSource,
-		precompiled: false,
+		inkFile: "tang-shang",
 		deaths: {
 			lanren: {
 				reason: "尽撤四面之网、一兽不取，仁而无度、令不能行",
@@ -60,8 +55,7 @@ export const shangInkStories: Record<string, InkStoryConfig> = {
 	"yiyin:shang": {
 		key: "yiyin:shang",
 		title: "伊尹 · 放太甲",
-		source: yiyinShangSource,
-		precompiled: false,
+		inkFile: "yiyin-shang",
 		deaths: {
 			banhuan: {
 				reason: "假还政真擅权、君臣相忌，两头落空祸及子孙",
@@ -127,8 +121,7 @@ export const shangInkStories: Record<string, InkStoryConfig> = {
 	"wuding:shang": {
 		key: "wuding:shang",
 		title: "武丁 · 版筑举贤",
-		source: wudingShangSource,
-		precompiled: false,
+		inkFile: "wuding-shang",
 		deaths: {
 			jizheng: {
 				reason: "无贤佐而急亲政，政令纷乱，殷不复兴",
@@ -176,8 +169,7 @@ export const shangInkStories: Record<string, InkStoryConfig> = {
 	"zhou:shang": {
 		key: "zhou:shang",
 		title: "帝辛 · 殷鉴不远",
-		source: zhouShangSource,
-		precompiled: false,
+		inkFile: "zhou-shang",
 		// 反向弧线：以下六条并非物理死亡，而是"纳谏修德"的反事实——照见另一种没走的历史。
 		deaths: {
 			zixing: {

@@ -1,22 +1,11 @@
 // 系列 zhanguo · 战国（变法+纵横+七雄主角线）。死亡/照见文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import shangyangZhanguoSource from "../ink/shangyang-zhanguo.ink?raw";
-import suqinZhanguoSource from "../ink/suqin-zhanguo.ink?raw";
-import zhangyiZhanguoSource from "../ink/zhangyi-zhanguo.ink?raw";
-import fanjuZhanguoSource from "../ink/fanju-zhanguo.ink?raw";
-import linxiangruZhanguoSource from "../ink/linxiangru-zhanguo.ink?raw";
-import baiqiZhanguoSource from "../ink/baiqi-zhanguo.ink?raw";
-import quyuanZhanguoSource from "../ink/quyuan-zhanguo.ink?raw";
-import yueyiZhanguoSource from "../ink/yueyi-zhanguo.ink?raw";
-import tiandanZhanguoSource from "../ink/tiandan-zhanguo.ink?raw";
-import sigongziZhanguoSource from "../ink/sigongzi-zhanguo.ink?raw";
 
 export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"shangyang:zhanguo": {
 		key: "shangyang:zhanguo",
 		title: "商鞅 · 作法自毙",
-		source: shangyangZhanguoSource,
-		precompiled: false,
+		inkFile: "shangyang-zhanguo",
 		deaths: {
 			bujingjian: {
 				reason: "说孝公以帝道王道，迂阔不切实际，终不为用，黯然离秦",
@@ -65,8 +54,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"suqin:zhanguo": {
 		key: "suqin:zhanguo",
 		title: "苏秦 · 六国相印",
-		source: suqinZhanguoSource,
-		precompiled: false,
+		inkFile: "suqin-zhanguo",
 		deaths: {
 			bu_fafen: {
 				reason: "出游数岁大困而归，受妻嫂耻笑而不自省，终老死牖下无人知",
@@ -110,8 +98,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"zhangyi:zhanguo": {
 		key: "zhangyi:zhanguo",
 		title: "张仪 · 连横破纵",
-		source: zhangyiZhanguoSource,
-		precompiled: false,
+		inkFile: "zhangyi-zhanguo",
 		deaths: {
 			daobi: {
 				reason: "被楚相掠笞数百，怒而不改其志却无颜出山，含羞忍辱终老",
@@ -155,8 +142,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"fanju:zhanguo": {
 		key: "fanju:zhanguo",
 		title: "范雎 · 远交近攻",
-		source: fanjuZhanguoSource,
-		precompiled: false,
+		inkFile: "fanju-zhanguo",
 		deaths: {
 			cezhong_si: {
 				reason: "被魏齐笞击折胁摺齿，即死于厕中无人知",
@@ -205,8 +191,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"linxiangru:zhanguo": {
 		key: "linxiangru:zhanguo",
 		title: "廉颇蔺相如 · 将相和",
-		source: linxiangruZhanguoSource,
-		precompiled: false,
+		inkFile: "linxiangru-zhanguo",
 		deaths: {
 			wanbi_shensi: {
 				reason: "持璧却立欲击柱时为秦王左右所杀，璧留秦而赵失使",
@@ -250,8 +235,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"baiqi:zhanguo": {
 		key: "baiqi:zhanguo",
 		title: "战神 · 白起",
-		source: baiqiZhanguoSource,
-		precompiled: false,
+		inkFile: "baiqi-zhanguo",
 		deaths: {
 			yiquezhengmian: {
 				reason: "伊阙之战硬撼韩阵正面，韩魏相援两面夹击，秦军大败",
@@ -300,8 +284,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"quyuan:zhanguo": {
 		key: "quyuan:zhanguo",
 		title: "孤忠 · 屈原",
-		source: quyuanZhanguoSource,
-		precompiled: false,
+		inkFile: "quyuan-zhanguo",
 		deaths: {
 			gegao: {
 				reason: "将宪令稿给上官大夫看，法被篡改变法胎死腹中",
@@ -345,8 +328,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"yueyi:zhanguo": {
 		key: "yueyi:zhanguo",
 		title: "去国 · 乐毅",
-		source: yueyiZhanguoSource,
-		precompiled: false,
+		inkFile: "yueyi-zhanguo",
 		deaths: {
 			dugong: {
 				reason: "不纳合纵之策，独将燕军攻齐，济西大败身死乱军",
@@ -385,8 +367,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"tiandan:zhanguo": {
 		key: "tiandan:zhanguo",
 		title: "复国 · 田单",
-		source: tiandanZhanguoSource,
-		precompiled: false,
+		inkFile: "tiandan-zhanguo",
 		deaths: {
 			zhezhou: {
 				reason: "不肯锯轴傅铁，安平城破争路轴折车败，举族为燕所虏",
@@ -430,8 +411,7 @@ export const zhanguoInkStories: Record<string, InkStoryConfig> = {
 	"sigongzi:zhanguo": {
 		key: "sigongzi:zhanguo",
 		title: "养士 · 战国四公子",
-		source: sigongziZhanguoSource,
-		precompiled: false,
+		inkFile: "sigongzi-zhanguo",
 		deaths: {
 			mengchang_buyongdao: {
 				reason: "嫌狗盗之徒辱没名声不用，无狐白裘幸姬不救，被秦昭王所杀",

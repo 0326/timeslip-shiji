@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Position, StoryState } from "../engine/types";
-import { createRunner } from "../engine/createRunner";
+import { createRunnerAsync } from "../engine/createRunner";
 import type { IStoryRunner } from "../engine/IStoryRunner";
 import { useUserStore } from "../store/userStore";
 import { useUiStore } from "../store/uiStore";
@@ -21,7 +21,7 @@ export interface UseStoryResult {
 	retry: () => void;
 	restart: () => void;
 	completeMinigame: (result: "win" | "lose" | "skip", score?: number) => void;
-t/** 手动触发小游戏（从学练测收面板），返回小游戏状态 */
+	/** 手动触发小游戏（从学练测收面板），返回小游戏状态 */
 	triggerMinigame: (gameId: string, param?: string) => StoryState | null;
 	/** 回到上一个抉择点（不推进剧情），返回 false 表示无快照可恢复 */
 	revertToChoice: () => boolean;
@@ -101,11 +101,11 @@ export function useStory(
 	}, []);
 
 	const buildRunner = useCallback(
-		(fresh: boolean) => {
+		async (fresh: boolean) => {
 			resetScene();
 			let runner: IStoryRunner;
 			try {
-				runner = createRunner(storyKey, {
+				runner = await createRunnerAsync(storyKey, {
 					onAchievement: (id) => store.getState().unlockAchievement(id),
 					onUnlockKnowledge: (id) => store.getState().unlockKnowledge(storyId, charId, id),
 					// 切换背景 = 进入新场景：清空上一幕的立绘，由本幕的 show 重新登场
@@ -171,17 +171,21 @@ export function useStory(
 	useEffect(() => {
 		setLoading(true);
 		setNotFound(false);
-		const runner = buildRunner(false);
-		runnerRef.current = runner;
-		if (runner) {
-			store.getState().startPerspective(storyId, charId);
-			const next = runner.advance();
-			setState(next);
-			checkpointScene(next);
-			if (next.ended) handleEnded(runner, next);
-			else if (!next.death) persist();
-		}
-		setLoading(false);
+		let cancelled = false;
+		buildRunner(false).then((runner) => {
+			if (cancelled) return;
+			runnerRef.current = runner;
+			if (runner) {
+				store.getState().startPerspective(storyId, charId);
+				const next = runner.advance();
+				setState(next);
+				checkpointScene(next);
+				if (next.ended) handleEnded(runner, next);
+				else if (!next.death) persist();
+			}
+			setLoading(false);
+		});
+		return () => { cancelled = true; };
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [storyKey, storyId, charId]);
 

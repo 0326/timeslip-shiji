@@ -14,7 +14,6 @@ import { xizhouSprites, xizhouBackgrounds } from "./xizhou";
 import { zhuziSprites, zhuziBackgrounds } from "./zhuzi";
 import { qunxiangSprites, qunxiangBackgrounds } from "./qunxiang";
 import { getArchiveCGUrl } from "./archivePortraits";
-import { SPRITE_IDENTITY_MAP } from "./archiveIdentities";
 export { SPRITE_IDENTITY_MAP } from "./archiveIdentities";
 
 export type { BgStyle, SpriteInfo } from "./base";

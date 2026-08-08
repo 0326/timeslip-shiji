@@ -24,6 +24,8 @@ const GAME_MODES = [
     desc: "循史记，亲历历史",
     icon: BookOpen,
     color: "#d4a847",
+    locked: false,
+    storyLocked: false,
   },
   {
     id: "free",
@@ -31,6 +33,8 @@ const GAME_MODES = [
     desc: "随心穿越，自由探索",
     icon: Compass,
     color: "#5a9fb5",
+    locked: false,
+    storyLocked: false,
   },
   {
     id: "duel",
@@ -38,6 +42,8 @@ const GAME_MODES = [
     desc: "史家对决，一争高下",
     icon: Swords,
     color: "#d4503c",
+    locked: false,
+    storyLocked: false,
   },
 ];
 

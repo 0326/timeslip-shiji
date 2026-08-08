@@ -212,7 +212,7 @@ export function Match3Game({ param, storyKey, onComplete, onSkip }: MinigameProp
 
 	// 检查胜利条件
 	const checkWin = useCallback(
-		(b: Board, cleared: number[], combo: number) => {
+		(_b: Board, cleared: number[], combo: number) => {
 			let ok = true;
 			if (level.clearTarget) {
 				if (cleared[level.clearTarget.type] < level.clearTarget.count) ok = false;

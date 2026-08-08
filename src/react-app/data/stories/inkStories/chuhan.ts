@@ -1,27 +1,13 @@
 // 系列 chuhan · 楚汉相争。死亡文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import hanxinChuhanSource from "../ink/hanxin-chuhan.ink?raw";
-import xiangyuChuhanSource from "../ink/xiangyu-chuhan.ink?raw";
-import liubangChuhanSource from "../ink/liubang-chuhan.ink?raw";
-import zhangliangChuhanSource from "../ink/zhangliang-chuhan.ink?raw";
-import chenshengChuhanSource from "../ink/chensheng-chuhan.ink?raw";
-import pengyueChuhanSource from "../ink/pengyue-chuhan.ink?raw";
-import yingbuChuhanSource from "../ink/yingbu-chuhan.ink?raw";
+
 // 番外 · 上帝视角
-import extraXiangyuGaixiaSource from "../ink/extras/extra-xiangyu-gaixia.ink?raw";
-import extraLiubangPeixiangSource from "../ink/extras/extra-liubang-peixiang.ink?raw";
-import extraHanxinPiaomuSource from "../ink/extras/extra-hanxin-piaomu.ink?raw";
-import extraZhangliangHuangshigongSource from "../ink/extras/extra-zhangliang-huangshigong.ink?raw";
-import extraChenshengDazexiangSource from "../ink/extras/extra-chensheng-dazexiang.ink?raw";
-import extraPengyueJuyeSource from "../ink/extras/extra-pengyue-juye.ink?raw";
-import extraYingbuLishanSource from "../ink/extras/extra-yingbu-lishan.ink?raw";
 
 export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"hanxin:chuhan": {
 		key: "hanxin:chuhan",
 		title: "兵仙韩信 · 一生",
-		source: hanxinChuhanSource,
-		precompiled: false,
+		inkFile: "hanxin-chuhan",
 		deaths: {
 			kuaxia: {
 				reason: "一怒拔剑杀屠中少年，亡命而兵仙夭折",
@@ -81,8 +67,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"xiangyu:chuhan": {
 		key: "xiangyu:chuhan",
 		title: "西楚霸王 · 项羽",
-		source: xiangyuChuhanSource,
-		precompiled: false,
+		inkFile: "xiangyu-chuhan",
 		deaths: {
 			overtame: {
 				reason: "苦学安分、磨去豪气，不复项羽",
@@ -142,8 +127,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"liubang:chuhan": {
 		key: "liubang:chuhan",
 		title: "汉高祖 · 刘邦",
-		source: liubangChuhanSource,
-		precompiled: false,
+		inkFile: "liubang-chuhan",
 		deaths: {
 			yajie: {
 				reason: "押解不成、失徒当死",
@@ -214,8 +198,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"zhangliang:chuhan": {
 		key: "zhangliang:chuhan",
 		title: "谋圣张良",
-		source: zhangliangChuhanSource,
-		precompiled: false,
+		inkFile: "zhangliang-chuhan",
 		deaths: {
 			sizang: {
 				reason: "厚葬弟弟耽于私情，复仇之志泯灭",
@@ -341,8 +324,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"chensheng:chuhan": {
 		key: "chensheng:chuhan",
 		title: "首义陈胜",
-		source: chenshengChuhanSource,
-		precompiled: false,
+		inkFile: "chensheng-chuhan",
 		deaths: {
 			renming: {
 				reason: "认命佣耕，埋葬鸿鹄之志",
@@ -384,8 +366,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"pengyue:chuhan": {
 		key: "pengyue:chuhan",
 		title: "梁王彭越 · 游击断粮",
-		source: pengyueChuhanSource,
-		precompiled: false,
+		inkFile: "pengyue-chuhan",
 		deaths: {
 			bulwei: {
 				reason: "钜野立长时姑息不斩后期者，众不畏令、盗伙散不成军",
@@ -433,8 +414,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"yingbu:chuhan": {
 		key: "yingbu:chuhan",
 		title: "淮南王英布 · 当刑而王",
-		source: yingbuChuhanSource,
-		precompiled: false,
+		inkFile: "yingbu-chuhan",
 		deaths: {
 			chenlun: {
 				reason: "黥面自弃、消沉认命，谶命终成空话",
@@ -489,8 +469,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:xiangyu-gaixia": {
 		key: "extra:xiangyu-gaixia",
 		title: "上帝视角 · 垓下的楚卒",
-		source: extraXiangyuGaixiaSource,
-		precompiled: false,
+		inkFile: "extras/extra-xiangyu-gaixia",
 		deaths: {},
 		endings: {
 			canon: { title: "楚卒的那杆断戈", kind: "canon", epigraph: "本纪写英雄的败，侧面写小兵的活。正侧合看，历史才是热的。" },
@@ -499,8 +478,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:liubang-peixiang": {
 		key: "extra:liubang-peixiang",
 		title: "上帝视角 · 沛县的老兄弟",
-		source: extraLiubangPeixiangSource,
-		precompiled: false,
+		inkFile: "extras/extra-liubang-peixiang",
 		deaths: {},
 		endings: {
 			canon: { title: "大风歌的酒和泪", kind: "canon", epigraph: "威加海内的背后，是安得猛士的空——大风起，云飞扬，吹不散沛县那一夜的酒和泪。" },
@@ -509,8 +487,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:hanxin-piaomu": {
 		key: "extra:hanxin-piaomu",
 		title: "上帝视角 · 淮阴的漂母",
-		source: extraHanxinPiaomuSource,
-		precompiled: false,
+		inkFile: "extras/extra-hanxin-piaomu",
 		deaths: {},
 		endings: {
 			canon: { title: "漂母的千金不换", kind: "canon", epigraph: "大人物的传记里写着王侯将相的功；市井的那些小人物，藏着历史的温度。" },
@@ -519,8 +496,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:zhangliang-huangshigong": {
 		key: "extra:zhangliang-huangshigong",
 		title: "上帝视角 · 圯上的老人",
-		source: extraZhangliangHuangshigongSource,
-		precompiled: false,
+		inkFile: "extras/extra-zhangliang-huangshigong",
 		deaths: {},
 		endings: {
 			canon: { title: "三十年等一把帝王师", kind: "canon", epigraph: "没有扔鞋的人等了三十年，捡鞋的人——就永远捡不到那卷书。" },
@@ -529,8 +505,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:chensheng-dazexiang": {
 		key: "extra:chensheng-dazexiang",
 		title: "上帝视角 · 大泽乡的戍卒",
-		source: extraChenshengDazexiangSource,
-		precompiled: false,
+		inkFile: "extras/extra-chensheng-dazexiang",
 		deaths: {},
 		endings: {
 			canon: { title: "九百戍卒的那一声喊", kind: "canon", epigraph: "燎原之火，从九百个冻得发抖的戍卒脚下烧起来——那句口号，先在他们心里喊了一千遍。" },
@@ -539,8 +514,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:pengyue-juye": {
 		key: "extra:pengyue-juye",
 		title: "上帝视角 · 钜野泽的渔盗",
-		source: extraPengyueJuyeSource,
-		precompiled: false,
+		inkFile: "extras/extra-pengyue-juye",
 		deaths: {},
 		endings: {
 			canon: { title: "一颗人头立起的军纪", kind: "canon", epigraph: "慈不掌兵四个字，落到底，是泽中老渔盗眼睁睁看着同乡兄弟被推出去斩的那一刀。" },
@@ -549,8 +523,7 @@ export const chuhanInkStories: Record<string, InkStoryConfig> = {
 	"extra:yingbu-lishan": {
 		key: "extra:yingbu-lishan",
 		title: "上帝视角 · 骊山的刑徒",
-		source: extraYingbuLishanSource,
-		precompiled: false,
+		inkFile: "extras/extra-yingbu-lishan",
 		deaths: {},
 		endings: {
 			canon: { title: "黥面笑着说出的那句谶", kind: "canon", epigraph: "骊山几十万刑徒，只有一个笑着受了那一刀、又笑着冲出来——当刑而王四个字，是闯出来的。" },

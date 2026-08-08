@@ -58,8 +58,12 @@ export interface InkStoryConfig {
 	key: string;
 	/** Story title */
 	title: string;
-	/** Ink source code (.ink text) or pre-compiled JSON */
-	source: string;
+	/** Ink source code (.ink text) or pre-compiled JSON.
+	 *  动态加载时为空，由 loadInkSource() 在运行时填充。 */
+	source?: string;
+	/** Ink 文件路径（相对于 ink/ 目录，不含 .ink 后缀）。
+	 *  用于按需加载源码，避免 2.3MB ink 文本内联进主包。 */
+	inkFile?: string;
 	/** If true, source is pre-compiled JSON; default false (compile at runtime) */
 	precompiled?: boolean;
 	/** Initial ink variables (VAR declarations in ink take precedence; this is for extra vars) */
@@ -201,7 +205,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 
 		// Create the underlying ink runner
 		const runnerOptions: InkRunnerOptions = {
-			source: config.source,
+			source: config.source ?? "",
 			precompiled: config.precompiled,
 			callbacks: inkCallbacks,
 		};

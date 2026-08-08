@@ -1,18 +1,10 @@
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import mengziZhuziSource from "../ink/mengzi-zhuzi.ink?raw";
-import xunziZhuziSource from "../ink/xunzi-zhuzi.ink?raw";
-import zhuangziZhuziSource from "../ink/zhuangzi-zhuzi.ink?raw";
-import hanfeiZhuziSource from "../ink/hanfei-zhuzi.ink?raw";
-import zouyanZhuziSource from "../ink/zouyan-zhuzi.ink?raw";
-import mozhaiZhuziSource from "../ink/mozhai-zhuzi.ink?raw";
-import kongziZhuziSource from "../ink/kongzi-zhuzi.ink?raw";
 
 export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"mengzi:zhuzi": {
 		key: "mengzi:zhuzi",
 		title: "亚圣 · 孟轲",
-		source: mengziZhuziSource,
-		precompiled: false,
+		inkFile: "mengzi-zhuzi",
 		deaths: {
 			gongzhao: {
 				reason: "为惠王筹攻伐之役，听其计而不听其道",
@@ -66,8 +58,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"xunzi:zhuzi": {
 		key: "xunzi:zhuzi",
 		title: "稷下祭酒 · 荀况",
-		source: xunziZhuziSource,
-		precompiled: false,
+		inkFile: "xunzi-zhuzi",
 		deaths: {
 			liuqi: {
 				reason: "留稷下争位护席，从此不复著书",
@@ -121,8 +112,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"zhuangzi:zhuzi": {
 		key: "zhuangzi:zhuzi",
 		title: "逍遥 · 庄周",
-		source: zhuangziZhuziSource,
-		precompiled: false,
+		inkFile: "zhuangzi-zhuzi",
 		deaths: {
 			xiniu: {
 				reason: "受楚厚聘养如牺牛，失逍遥之身",
@@ -182,8 +172,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"hanfei:zhuzi": {
 		key: "hanfei:zhuzi",
 		title: "孤愤 · 韩非",
-		source: hanfeiZhuziSource,
-		precompiled: false,
+		inkFile: "hanfei-zhuzi",
 		deaths: {
 			hengshuo: {
 				reason: "口吃却不擅当面辩说，又放弃著书去横说人主，说错话触怒韩王被放逐，集法家大成的《韩非子》不复存在",
@@ -231,8 +220,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"zouyan:zhuzi": {
 		key: "zouyan:zhuzi",
 		title: "谈天衍 · 邹衍",
-		source: zouyanZhuziSource,
-		precompiled: false,
+		inkFile: "zouyan-zhuzi",
 		deaths: {
 			butan: {
 				reason: "放弃谈天改讲治国之术，和商鞅吴起孟子荀子争短长，没有了独特学说，变成平庸的稷下先生",
@@ -280,8 +268,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"mozhai:zhuzi": {
 		key: "mozhai:zhuzi",
 		title: "钜子 · 墨翟",
-		source: mozhaiZhuziSource,
-		precompiled: false,
+		inkFile: "mozhai-zhuzi",
 		deaths: {
 			buguan: {
 				reason: "闻楚攻宋却不往救，非攻成了空话，墨家失去了赴火蹈刃的侠气，没多久就失传了",
@@ -341,8 +328,7 @@ export const zhuziInkStories: Record<string, InkStoryConfig> = {
 	"kongzi:zhuzi": {
 		key: "kongzi:zhuzi",
 		title: "孔子 · 斯文在兹",
-		source: kongziZhuziSource,
-		precompiled: false,
+		inkFile: "kongzi-zhuzi",
 		// 求道弧线：以下六条并非物理死亡，而是"从俗/避世"的反事实——照见"那便不是孔子了"。
 		deaths: {
 			jiao: {

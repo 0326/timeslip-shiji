@@ -1,7 +1,7 @@
 import { useMemo, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Swords, Crown, RotateCcw, ChevronRight } from "lucide-react";
+import { ArrowLeft, Crown, RotateCcw, ChevronRight } from "lucide-react";
 import "./DuelResult.css";
 import {
   DUEL_CHARACTER_MAP,

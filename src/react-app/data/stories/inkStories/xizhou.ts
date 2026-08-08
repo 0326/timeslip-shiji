@@ -1,21 +1,10 @@
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import jiangshangXizhouSource from "../ink/jiangshang-xizhou.ink?raw";
-import wenwangXizhouSource from "../ink/wenwang-xizhou.ink?raw";
-import wuwangXizhouSource from "../ink/wuwang-xizhou.ink?raw";
-import zhougongXizhouSource from "../ink/zhougong-xizhou.ink?raw";
-import xuanwangXizhouSource from "../ink/xuanwang-xizhou.ink?raw";
-import youwangXizhouSource from "../ink/youwang-xizhou.ink?raw";
-import taiboXizhouSource from "../ink/taibo-xizhou.ink?raw";
-import extraTaiboJiliSource from "../ink/extras/extra-taibo-jili.ink?raw";
-import extraTaiboTaijiangSource from "../ink/extras/extra-taibo-taijiang.ink?raw";
-import extraTaiboFarmerSource from "../ink/extras/extra-taibo-farmer.ink?raw";
 
 export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"jiangshang:xizhou": {
 		key: "jiangshang:xizhou",
 		title: "太公望姜尚 · 待时之渔",
-		source: jiangshangXizhouSource,
-		precompiled: false,
+		inkFile: "jiangshang-xizhou",
 		deaths: {
 			guiyu: {
 				reason: "枯坐渭滨、错失出仕之机，终不遇文王而老死溪畔",
@@ -81,8 +70,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"wenwang:xizhou": {
 		key: "wenwang:xizhou",
 		title: "周文王姬昌 · 羑里之忍",
-		source: wenwangXizhouSource,
-		precompiled: false,
+		inkFile: "wenwang-xizhou",
 		deaths: {
 			mingyuan: {
 				reason: "羑里困厄中自弃，无《周易》无渭水无周",
@@ -130,8 +118,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"wuwang:xizhou": {
 		key: "wuwang:xizhou",
 		title: "周武王姬发 · 孟津之决",
-		source: wuwangXizhouSource,
-		precompiled: false,
+		inkFile: "wuwang-xizhou",
 		deaths: {
 			zhuyin: {
 				reason: "以暴易暴、纵杀无度，与纣无别使倒戈之众寒心",
@@ -185,8 +172,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"zhougong:xizhou": {
 		key: "zhougong:xizhou",
 		title: "周公旦 · 摄政之诚",
-		source: zhougongXizhouSource,
-		precompiled: false,
+		inkFile: "zhougong-xizhou",
 		deaths: {
 			bingjian: {
 				reason: "流言之下举兵自证，金縢焚毁忠心永埋",
@@ -240,8 +226,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"xuanwang:xizhou": {
 		key: "xuanwang:xizhou",
 		title: "周宣王姬静 · 中兴之殇",
-		source: xuanwangXizhouSource,
-		precompiled: false,
+		inkFile: "xuanwang-xizhou",
 		deaths: {
 			fuchou: {
 				reason: "即位即清算国人暴动参与者，再起暴动",
@@ -276,8 +261,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"youwang:xizhou": {
 		key: "youwang:xizhou",
 		title: "周幽王宫涅 · 烽火之笑",
-		source: youwangXizhouSource,
-		precompiled: false,
+		inkFile: "youwang-xizhou",
 		deaths: {
 			chuzhan: {
 				reason: "犬戎犯境亲率军出战，战死阵前镐京陷落",
@@ -312,8 +296,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"taibo:xizhou": {
 		key: "taibo:xizhou",
 		title: "古公亶父 · 岐山之仁",
-		source: taiboXizhouSource,
-		precompiled: false,
+		inkFile: "taibo-xizhou",
 		deaths: {
 			zhan: {
 				reason: "不忍土地为敌而让百姓为战而死，周人战败国亡",
@@ -344,8 +327,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"extra:taibo-jili": {
 		key: "extra:taibo-jili",
 		title: "番外 · 季历承志",
-		source: extraTaiboJiliSource,
-		precompiled: false,
+		inkFile: "extras/extra-taibo-jili",
 		deaths: {},
 		endings: {
 			canon: { title: "困而死", kind: "canon", epigraph: "太伯让的，季历还了——拿命还的。" },
@@ -354,8 +336,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"extra:taibo-taijiang": {
 		key: "extra:taibo-taijiang",
 		title: "番外 · 太姜之贤",
-		source: extraTaiboTaijiangSource,
-		precompiled: false,
+		inkFile: "extras/extra-taibo-taijiang",
 		deaths: {},
 		endings: {
 			canon: { title: "三太之始", kind: "canon", epigraph: "古公打下的根基，有一半是太姜撑的。" },
@@ -364,8 +345,7 @@ export const xizhouInkStories: Record<string, InkStoryConfig> = {
 	"extra:taibo-farmer": {
 		key: "extra:taibo-farmer",
 		title: "番外 · 岐下老农",
-		source: extraTaiboFarmerSource,
-		precompiled: false,
+		inkFile: "extras/extra-taibo-farmer",
 		deaths: {},
 		endings: {
 			canon: { title: "一袋黍种", kind: "canon", epigraph: "八百年天下，从一袋黍种子开始。" },

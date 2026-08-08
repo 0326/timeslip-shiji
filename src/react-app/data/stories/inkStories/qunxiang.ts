@@ -1,19 +1,11 @@
 // 系列 qunxiang · 群英传·游侠刺客·市井百态。死亡文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import guojieQunxiangSource from "../ink/guojie-qunxiang.ink?raw";
-import zhukeQunxiangSource from "../ink/zhuke-qunxiang.ink?raw";
-import zhuanzhuQunxiangSource from "../ink/zhuanzhu-qunxiang.ink?raw";
-import yurangQunxiangSource from "../ink/yurang-qunxiang.ink?raw";
-import niezhengQunxiangSource from "../ink/niezheng-qunxiang.ink?raw";
-import jingkeQunxiangSource from "../ink/jingke-qunxiang.ink?raw";
-import jumengQunxiangSource from "../ink/jumeng-qunxiang.ink?raw";
 
 export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"guojie:qunxiang": {
 		key: "guojie:qunxiang",
 		title: "郭解 · 游侠",
-		source: guojieQunxiangSource,
-		precompiled: false,
+		inkFile: "guojie-qunxiang",
 		deaths: {
 			xiongxia: {
 				reason: "少年凶侠不改，继续以暴制暴，最终被擒获处死",
@@ -55,8 +47,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"zhuke:qunxiang": {
 		key: "zhuke:qunxiang",
 		title: "朱家 · 侠义之首",
-		source: zhukeQunxiangSource,
-		precompiled: false,
+		inkFile: "zhuke-qunxiang",
 		deaths: {
 			xianlu: {
 				reason: "暴露藏匿季布之事，交出亡将，侠名尽毁",
@@ -98,8 +89,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"zhuanzhu:qunxiang": {
 		key: "zhuanzhu:qunxiang",
 		title: "专诸 · 鱼肠剑",
-		source: zhuanzhuQunxiangSource,
-		precompiled: false,
+		inkFile: "zhuanzhu-qunxiang",
 		deaths: {
 			tuixie: {
 				reason: "推辞刺杀之命，活了命却死了名，再无人提起",
@@ -141,8 +131,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"yurang:qunxiang": {
 		key: "yurang:qunxiang",
 		title: "豫让 · 吞炭漆身",
-		source: yurangQunxiangSource,
-		precompiled: false,
+		inkFile: "yurang-qunxiang",
 		deaths: {
 			tuixie: {
 				reason: "隐姓埋名放弃复仇，辜负知遇之恩，湮没无闻",
@@ -190,8 +179,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"niezheng:qunxiang": {
 		key: "niezheng:qunxiang",
 		title: "聂政 · 刺侠累",
-		source: niezhengQunxiangSource,
-		precompiled: false,
+		inkFile: "niezheng-qunxiang",
 		deaths: {
 			decline: {
 				reason: "拒严仲子之托，母死后方知错过义之所托",
@@ -227,8 +215,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"jingke:qunxiang": {
 		key: "jingke:qunxiang",
 		title: "荆轲 · 刺秦王",
-		source: jingkeQunxiangSource,
-		precompiled: false,
+		inkFile: "jingke-qunxiang",
 		deaths: {
 			zaojin: {
 				reason: "操之过急，未经周密谋划便仓促上路",
@@ -264,8 +251,7 @@ export const qunxiangInkStories: Record<string, InkStoryConfig> = {
 	"jumeng:qunxiang": {
 		key: "jumeng:qunxiang",
 		title: "剧孟 · 以任侠显",
-		source: jumengQunxiangSource,
-		precompiled: false,
+		inkFile: "jumeng-qunxiang",
 		deaths: {
 			panluan: {
 				reason: "暗助吴王，七国兵败后受株连",

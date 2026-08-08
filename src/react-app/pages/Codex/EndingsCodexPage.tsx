@@ -1,6 +1,6 @@
 ﻿import { useMemo, useState, type CSSProperties } from "react";
 import { useNavigate } from "react-router-dom";
-import { Lock, BookOpen, Map, ChevronDown, ChevronRight } from "lucide-react";
+import { Lock, BookOpen, Map, Compass, ChevronDown, ChevronRight } from "lucide-react";
 import "./DeathsCodex.css";
 import "./EndingsCodex.css";
 import { inkStories } from "../../data/stories/inkStories";

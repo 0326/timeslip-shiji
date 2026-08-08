@@ -321,7 +321,7 @@ export function ArchivePage() {
     // Step 1: 从本地 SPRITES 构建基础列表（ID 唯一，排除系统角色）
     const localItems: MainFigure[] = ARCHIVE_SPRITE_IDS
       .filter((id) => !EXCLUDED_SPRITE_IDS.has(id))
-      .map((id) => {
+      .map((id): MainFigure | null => {
       const sp = SPRITES[id];
       // 资源清单可能比精灵注册表更新得更快；跳过缺少注册项的 ID，
       // 避免单个立绘缺失导致整个史鉴页面无法渲染。

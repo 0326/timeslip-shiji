@@ -174,7 +174,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "huangdi", type: "family", label: "轩辕之后", description: "帝喾之子，黄帝五世孙" },
 			{ targetId: "shun", type: "sovereign", label: "禅让于舜", description: "察舜贤德，以二女妻之，终授天下" },
-			{ targetId: "yu", type: "colleague", label: "洪荒治水", description: "尧时洪水滔天，命禹父鲧治水" },
+			{ targetId: "yu", type: "peer", label: "洪荒治水", description: "尧时洪水滔天，命禹父鲧治水" },
 		],
 	},
 	shun: {
@@ -203,7 +203,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "shun", type: "sovereign", label: "受舜禅让", description: "治水功成，舜禅天下" },
-			{ targetId: "yao", type: "colleague", label: "奉尧命治水", description: "继父鲧之业，改堵为疏" },
+			{ targetId: "yao", type: "peer", label: "奉尧命治水", description: "继父鲧之业，改堵为疏" },
 			{ targetId: "huangdi", type: "family", label: "黄帝玄孙", description: "颛顼之孙，鲧之子" },
 		],
 	},
@@ -233,7 +233,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "tang", type: "sovereign", label: "负鼎干汤", description: "以烹调之道喻治国，助汤灭夏" },
-			{ targetId: "wuding", type: "colleague", label: "伊傅之比", description: "伊尹与傅说（武丁相）并称商之名相" },
+			{ targetId: "wuding", type: "peer", label: "伊傅之比", description: "伊尹与傅说（武丁相）并称商之名相" },
 			{ targetId: "zhou", type: "enemy", label: "太甲放桐宫", description: "放逐太甲悔过，开伊霍之举先河" },
 		],
 	},
@@ -248,7 +248,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "tang", type: "family", label: "成汤之后", description: "商朝第二十二君，盘庚之侄" },
-			{ targetId: "yiyin", type: "colleague", label: "武丁得傅说", description: "举傅说于版筑之间，如汤得伊尹" },
+			{ targetId: "yiyin", type: "peer", label: "武丁得傅说", description: "举傅说于版筑之间，如汤得伊尹" },
 			{ targetId: "zhou", type: "family", label: "殷道兴衰", description: "武丁中兴之后，商室渐衰至纣而亡" },
 		],
 	},
@@ -312,7 +312,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "wenwang", type: "family", label: "文王之子", description: "文王第四子，姬旦" },
 			{ targetId: "wuwang", type: "family", label: "武王之弟", description: "辅武王伐纣，佐成王摄政" },
-			{ targetId: "jiangshang", type: "colleague", label: "周召共和", description: "与太公望、召公奭共辅周室" },
+			{ targetId: "jiangshang", type: "peer", label: "周召共和", description: "与太公望、召公奭共辅周室" },
 			{ targetId: "youwang", type: "family", label: "制礼作乐", description: "周公定礼乐，幽王坏之而西周亡" },
 		],
 	},
@@ -328,7 +328,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "wenwang", type: "sovereign", label: "渭水垂钓", description: "文王访贤，载与俱归，立为师" },
 			{ targetId: "wuwang", type: "sovereign", label: "牧野鹰扬", description: "辅佐武王，于牧野率师伐纣" },
-			{ targetId: "zhougong", type: "colleague", label: "齐太公", description: "封于齐，与周公鲁分治东方" },
+			{ targetId: "zhougong", type: "peer", label: "齐太公", description: "封于齐，与周公鲁分治东方" },
 		],
 	},
 	youwang: {
@@ -358,7 +358,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "guanzhong", type: "sovereign", label: "管鲍之交·拜仲为相", description: "不记射钩之仇，拜管仲为相" },
 			{ targetId: "chonger", type: "friend", label: "诸侯伯主", description: "齐桓晋文，春秋五霸之首" },
-			{ targetId: "chuzy", type: "rival", label: "召陵之盟", description: "齐楚对峙，不战而屈楚" },
+			{ targetId: "chuzy", type: "enemy", label: "召陵之盟", description: "齐楚对峙，不战而屈楚" },
 		],
 	},
 	guanzhong: {
@@ -372,7 +372,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "qihuan", type: "sovereign", label: "管鲍荐相", description: "鲍叔牙力荐，管仲相齐" },
-			{ targetId: "sunwu", type: "colleague", label: "齐之贤才", description: "孙武亦齐人，同出齐稷下之风" },
+			{ targetId: "sunwu", type: "peer", label: "齐之贤才", description: "孙武亦齐人，同出齐稷下之风" },
 			{ targetId: "chonger", type: "friend", label: "赠马之谊", description: "管仲助齐桓善待流亡之晋公子" },
 		],
 	},
@@ -402,8 +402,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "chonger", type: "friend", label: "割股奉君", description: "从亡十九年，功成不言禄" },
-			{ targetId: "qihuan", type: "colleague", label: "流亡随主", description: "随重耳遍历诸侯" },
-			{ targetId: "chuzy", type: "colleague", label: "避三舍之诺", description: "亲历晋楚城濮之战" },
+			{ targetId: "qihuan", type: "peer", label: "流亡随主", description: "随重耳遍历诸侯" },
+			{ targetId: "chuzy", type: "peer", label: "避三舍之诺", description: "亲历晋楚城濮之战" },
 		],
 	},
 	chuzy: {
@@ -417,7 +417,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "chonger", type: "enemy", label: "城濮之败", description: "晋文退避三舍，败楚于城濮" },
-			{ targetId: "qihuan", type: "rival", label: "召陵受盟", description: "楚与齐桓对峙，终为盟誓" },
+			{ targetId: "qihuan", type: "enemy", label: "召陵受盟", description: "楚与齐桓对峙，终为盟誓" },
 			{ targetId: "sunwu", type: "enemy", label: "吴楚交兵", description: "孙武率吴师入郢，楚几亡国" },
 		],
 	},
@@ -433,7 +433,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "fuchai", type: "enemy", label: "卧薪尝胆", description: "十年生聚，十年教训，终灭吴" },
 			{ targetId: "wuzixu", type: "enemy", label: "吴越恩仇", description: "夫差信嚭疏胥，勾践得以复国" },
-			{ targetId: "sunwu", type: "colleague", label: "吴越争霸", description: "孙武助吴破楚，后吴越继起" },
+			{ targetId: "sunwu", type: "peer", label: "吴越争霸", description: "孙武助吴破楚，后吴越继起" },
 		],
 	},
 	fuchai: {
@@ -491,9 +491,9 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·商君列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "qinshihuang", type: "colleague", label: "商君法基", description: "商鞅变法为始皇一统奠基" },
-			{ targetId: "baiqi", type: "colleague", label: "军功爵制", description: "商君之法造就白起等名将" },
-			{ targetId: "zhangyi", type: "colleague", label: "耕战与连横", description: "商鞅耕战，张仪连横，秦两翼齐飞" },
+			{ targetId: "qinshihuang", type: "peer", label: "商君法基", description: "商鞅变法为始皇一统奠基" },
+			{ targetId: "baiqi", type: "peer", label: "军功爵制", description: "商君之法造就白起等名将" },
+			{ targetId: "zhangyi", type: "peer", label: "耕战与连横", description: "商鞅耕战，张仪连横，秦两翼齐飞" },
 		],
 	},
 	qinshihuang: {
@@ -510,7 +510,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 			{ targetId: "wangjian", type: "sovereign", label: "王翦灭楚", description: "用王翦六十万众，平楚而定南方" },
 			{ targetId: "mengtian", type: "sovereign", label: "蒙恬北筑长城", description: "使蒙恬北逐匈奴，筑万里长城" },
 			{ targetId: "lvbuwei", type: "enemy", label: "仲父之死", description: "免吕不韦相，迁之蜀，不韦饮鸩" },
-			{ targetId: "baiqi", type: "colleague", label: "武安遗烈", description: "白起破赵四十万，始皇继其功业" },
+			{ targetId: "baiqi", type: "peer", label: "武安遗烈", description: "白起破赵四十万，始皇继其功业" },
 		],
 	},
 	baiqi: {
@@ -523,8 +523,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·白起王翦列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "qinshihuang", type: "colleague", label: "武安遗烈", description: "白起奠基，始皇终并天下" },
-			{ targetId: "wangjian", type: "colleague", label: "秦国双璧", description: "白起王翦，前后相继，皆秦名将" },
+			{ targetId: "qinshihuang", type: "peer", label: "武安遗烈", description: "白起奠基，始皇终并天下" },
+			{ targetId: "wangjian", type: "peer", label: "秦国双璧", description: "白起王翦，前后相继，皆秦名将" },
 			{ targetId: "lianpo", type: "enemy", label: "长平对峙", description: "廉颇固守，白起代将破赵" },
 		],
 	},
@@ -538,7 +538,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·苏秦列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "zhangyi", type: "rival", label: "合纵连横", description: "苏秦合纵，张仪连横，战国双杰" },
+			{ targetId: "zhangyi", type: "enemy", label: "合纵连横", description: "苏秦合纵，张仪连横，战国双杰" },
 			{ targetId: "baiqi", type: "enemy", label: "纵约抗秦", description: "佩六国相印以拒秦，阻白起东出" },
 			{ targetId: "qinshihuang", type: "enemy", label: "合纵之谋", description: "苏秦合纵之策，为秦统一之大障" },
 		],
@@ -553,8 +553,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·张仪列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "suqin", type: "rival", label: "连横破纵", description: "以连横之策破苏秦合纵" },
-			{ targetId: "qinshihuang", type: "colleague", label: "远交近攻", description: "张仪连横为秦一统铺路" },
+			{ targetId: "suqin", type: "enemy", label: "连横破纵", description: "以连横之策破苏秦合纵" },
+			{ targetId: "qinshihuang", type: "peer", label: "远交近攻", description: "张仪连横为秦一统铺路" },
 			{ targetId: "linxiangru", type: "enemy", label: "欺楚六百里", description: "张仪诈楚，商於六里之事" },
 		],
 	},
@@ -599,8 +599,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "qinshihuang", type: "sovereign", label: "六十万灭楚", description: "始皇举国之兵授王翦，平楚" },
-			{ targetId: "baiqi", type: "colleague", label: "秦之二将", description: "白起王翦，秦并天下之二柱" },
-			{ targetId: "lianpo", type: "rival", label: "战国双璧", description: "王翦为秦，廉颇为赵，一时瑜亮" },
+			{ targetId: "baiqi", type: "peer", label: "秦之二将", description: "白起王翦，秦并天下之二柱" },
+			{ targetId: "lianpo", type: "enemy", label: "战国双璧", description: "王翦为秦，廉颇为赵，一时瑜亮" },
 		],
 	},
 	lvbuwei: {
@@ -614,8 +614,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "qinshihuang", type: "family", label: "奇货可居", description: "立子楚为嗣，以姬献之，生始皇" },
-			{ targetId: "lisi", type: "colleague", label: "吕氏春秋", description: "不韦集宾客作《吕览》，李斯亦客卿" },
-			{ targetId: "mengtian", type: "colleague", label: "秦廷元老", description: "不韦当权时蒙氏亦为秦将" },
+			{ targetId: "lisi", type: "peer", label: "吕氏春秋", description: "不韦集宾客作《吕览》，李斯亦客卿" },
+			{ targetId: "mengtian", type: "peer", label: "秦廷元老", description: "不韦当权时蒙氏亦为秦将" },
 		],
 	},
 	mengtian: {
@@ -630,7 +630,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "qinshihuang", type: "sovereign", label: "北筑长城", description: "将三十万众北逐匈奴，修万里长城" },
 			{ targetId: "lisi", type: "enemy", label: "沙丘之变", description: "赵高李斯矫诏，赐蒙恬死" },
-			{ targetId: "lvbuwei", type: "colleague", label: "蒙氏三世", description: "蒙骜蒙武蒙恬，三世为秦将" },
+			{ targetId: "lvbuwei", type: "peer", label: "蒙氏三世", description: "蒙骜蒙武蒙恬，三世为秦将" },
 		],
 	},
 	lisi: {
@@ -645,7 +645,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "qinshihuang", type: "sovereign", label: "谏逐客书", description: "上《谏逐客书》，始皇复其官" },
 			{ targetId: "mengtian", type: "enemy", label: "沙丘矫诏", description: "与赵高谋，赐扶苏蒙恬死" },
-			{ targetId: "lvbuwei", type: "colleague", label: "吕门故吏", description: "李斯曾为吕不韦舍人" },
+			{ targetId: "lvbuwei", type: "peer", label: "吕门故吏", description: "李斯曾为吕不韦舍人" },
 		],
 	},
 	jingke: {
@@ -660,8 +660,8 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "qinshihuang", type: "enemy", label: "图穷匕见", description: "刺秦王于咸阳宫，不中而死" },
 			{ targetId: "gaojianli", type: "friend", label: "击筑和歌", description: "高渐离击筑，荆轲和而歌于易水" },
-			{ targetId: "niezheng", type: "colleague", label: "四大刺客", description: "荆轲聂政专诸豫让，并称四大刺客" },
-			{ targetId: "yurang", type: "colleague", label: "燕赵悲歌", description: "皆为义士，以命酬知己" },
+			{ targetId: "niezheng", type: "peer", label: "四大刺客", description: "荆轲聂政专诸豫让，并称四大刺客" },
+			{ targetId: "yurang", type: "peer", label: "燕赵悲歌", description: "皆为义士，以命酬知己" },
 		],
 	},
 	niezheng: {
@@ -674,9 +674,9 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·刺客列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "jingke", type: "colleague", label: "刺客列传", description: "聂政荆轲，史迁同传" },
-			{ targetId: "zhuanzhu", type: "colleague", label: "四大刺客", description: "聂政刺韩傀，专诸刺王僚" },
-			{ targetId: "yurang", type: "colleague", label: "士为知己者死", description: "聂政姊荣死之，千古义烈" },
+			{ targetId: "jingke", type: "peer", label: "刺客列传", description: "聂政荆轲，史迁同传" },
+			{ targetId: "zhuanzhu", type: "peer", label: "四大刺客", description: "聂政刺韩傀，专诸刺王僚" },
+			{ targetId: "yurang", type: "peer", label: "士为知己者死", description: "聂政姊荣死之，千古义烈" },
 		],
 	},
 	zhuanzhu: {
@@ -691,7 +691,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "fuchai", type: "family", label: "鱼腹藏剑", description: "刺吴王僚，公子光立，是为阖闾，夫差之父" },
 			{ targetId: "wuzixu", type: "friend", label: "伍员荐贤", description: "伍子胥知专诸之能，荐于公子光" },
-			{ targetId: "jingke", type: "colleague", label: "四大刺客", description: "专诸刺王僚，鱼肠剑出匣" },
+			{ targetId: "jingke", type: "peer", label: "四大刺客", description: "专诸刺王僚，鱼肠剑出匣" },
 		],
 	},
 	yurang: {
@@ -704,9 +704,9 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		historicalSource: "《史记·刺客列传》",
 		relatedStorylines: [],
 		gameRelations: [
-			{ targetId: "jingke", type: "colleague", label: "刺客义烈", description: "豫让荆轲，以义闻名" },
-			{ targetId: "niezheng", type: "colleague", label: "漆身吞炭", description: "豫让漆身为厉，吞炭为哑，三刺赵襄子" },
-			{ targetId: "zhuanzhu", type: "colleague", label: "四大刺客", description: "智伯之臣，为君报仇" },
+			{ targetId: "jingke", type: "peer", label: "刺客义烈", description: "豫让荆轲，以义闻名" },
+			{ targetId: "niezheng", type: "peer", label: "漆身吞炭", description: "豫让漆身为厉，吞炭为哑，三刺赵襄子" },
+			{ targetId: "zhuanzhu", type: "peer", label: "四大刺客", description: "智伯之臣，为君报仇" },
 		],
 	},
 	gaojianli: {
@@ -735,7 +735,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		relatedStorylines: [],
 		gameRelations: [
 			{ targetId: "hanwen", type: "sovereign", label: "文景之世", description: "郭解活动于文景武之世" },
-			{ targetId: "zhouyafu", type: "colleague", label: "汉初豪侠", description: "与周亚夫同为汉武时人物" },
+			{ targetId: "zhouyafu", type: "peer", label: "汉初豪侠", description: "与周亚夫同为汉武时人物" },
 			{ targetId: "jingke", type: "friend", label: "游侠之流", description: "史迁《游侠》《刺客》两传并列" },
 			{ targetId: "gaojianli", type: "friend", label: "布衣之侠", description: "郭解为游侠之魁首，高渐离为荆轲之侣" },
 		],
@@ -782,7 +782,7 @@ export const CHARACTER_GAME_META: Record<string, CharacterGameMeta> = {
 		gameRelations: [
 			{ targetId: "zhoubo", type: "family", label: "绛侯之子", description: "周勃次子，袭封条侯" },
 			{ targetId: "hanwen", type: "sovereign", label: "细柳劳军", description: "文帝赞曰：真将军也！" },
-			{ targetId: "guojie", type: "colleague", label: "文景武三朝", description: "亚夫平七国之乱，郭解为游侠之雄" },
+			{ targetId: "guojie", type: "peer", label: "文景武三朝", description: "亚夫平七国之乱，郭解为游侠之雄" },
 		],
 	},
 	lvhou: {

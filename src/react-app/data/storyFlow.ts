@@ -8287,8 +8287,8 @@ export const SUQIN_ZHANGUO_FLOW: FlowNode[] = [
 		{ text: "「臣靠口舌取卿相，也因口舌招杀身之祸……」", target: "end_gongming" },
 	] },
 	{ id: "end_canon", type: "ending", title: "正史结局：车裂报仇", description: "你用自己被车裂的尸体当诱饵，抓到了刺客。悬梁刺股、六国相印——秦兵不敢窥函谷关十五年", endingKind: "canon" },
-	{ id: "end_gongming", type: "ending", title: "IF结局：功名醒", description: "你照见了口舌招祸，照见了功名最虚无的样子——不是苏秦选的路，却是他最后一刻闪过的悔意", endingKind: "if_kousheng" },
-	{ id: "if_guiyin", type: "ending", title: "IF结局：归隐洛阳", description: "你买了城郊两顷负郭之田，老死田庄。安稳也寂寞——悬梁刺股换来的功名，与那两顷田，你终究只能要一样", endingKind: "if_guiyin" },
+	{ id: "end_gongming", type: "ending", title: "IF结局：功名醒", description: "你照见了口舌招祸，照见了功名最虚无的样子——不是苏秦选的路，却是他最后一刻闪过的悔意", endingKind: "if" },
+	{ id: "if_guiyin", type: "ending", title: "IF结局：归隐洛阳", description: "你买了城郊两顷负郭之田，老死田庄。安稳也寂寞——悬梁刺股换来的功名，与那两顷田，你终究只能要一样", endingKind: "if" },
 ];
 
 export const ZHANGYI_ZHANGUO_FLOW: FlowNode[] = [
@@ -8320,8 +8320,8 @@ export const ZHANGYI_ZHANGUO_FLOW: FlowNode[] = [
 	{ id: "d_buhui_weizhi", type: "death", title: "死亡：贪恋权位", description: "你被安了个卖国的罪名，腰斩于市——步商鞅后尘", deathReason: "buhui_weizhi" },
 	{ id: "e_ruwei", type: "event", title: "相魏一岁卒", description: "你走了，在魏国做了一年太平相国，善终", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：善终于魏", description: "商鞅车裂、苏秦车裂——你知道什么时候该走。舌尚在，足矣；命还在，更足矣", endingKind: "canon" },
-	{ id: "if_xiangchu", type: "ending", title: "IF结局：相楚", description: "你成了事楚的张仪——可一把用惯了拆的刀，拿来补，总是不趁手", endingKind: "if_xiangchu" },
-	{ id: "if_bashu", type: "ending", title: "IF结局：巴蜀远臣", description: "你修都江的堰、通褒斜的道——倾危之士也能做一回默默垒石的人", endingKind: "if_bashu" },
+	{ id: "if_xiangchu", type: "ending", title: "IF结局：相楚", description: "你成了事楚的张仪——可一把用惯了拆的刀，拿来补，总是不趁手", endingKind: "if" },
+	{ id: "if_bashu", type: "ending", title: "IF结局：巴蜀远臣", description: "你修都江的堰、通褒斜的道——倾危之士也能做一回默默垒石的人", endingKind: "if" },
 ];
 
 export const YUEYI_ZHANGUO_FLOW: FlowNode[] = [
@@ -8348,8 +8348,8 @@ export const YUEYI_ZHANGUO_FLOW: FlowNode[] = [
 	{ id: "d_ema", type: "death", title: "死亡：出恶声", description: "你逞一时口舌之快，害了在燕的族人。君子交绝不出恶声", deathReason: "ema" },
 	{ id: "e_chenmo", type: "event", title: "沉默半年后回信", description: "沉默在君王眼里就是怨望。你终究还是研墨铺帛，写下了《报燕惠王书》", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：君子不出恶声", description: "善作者不必善成，善始者不必善终——济上那杯酒，你用一生还清了", endingKind: "canon" },
-	{ id: "if_wangqi", type: "ending", title: "IF结局：据齐称王", description: "你把谎言变成了真的，可济上那杯酒，从此再没人替你温着了", endingKind: "if_wangqi" },
-	{ id: "if_fayan", type: "ending", title: "IF结局：以赵伐燕", description: "你兵临蓟城却终究没攻——出了这口气，也永远把自己钉在了「以赵伐燕」上", endingKind: "if_fayan" },
+	{ id: "if_wangqi", type: "ending", title: "IF结局：据齐称王", description: "你把谎言变成了真的，可济上那杯酒，从此再没人替你温着了", endingKind: "if" },
+	{ id: "if_fayan", type: "ending", title: "IF结局：以赵伐燕", description: "你兵临蓟城却终究没攻——出了这口气，也永远把自己钉在了「以赵伐燕」上", endingKind: "if" },
 ];
 
 export const TIANDAN_ZHANGUO_FLOW: FlowNode[] = [
@@ -8383,8 +8383,8 @@ export const TIANDAN_ZHANGUO_FLOW: FlowNode[] = [
 		{ text: "功成而惧，辞去兵权封邑，泛舟而去", target: "if_guiyin" },
 	] },
 	{ id: "end_canon", type: "ending", title: "正史结局：始如处女后如脱兔", description: "铁笼、神师、劓卒、掘墓、火牛——环环相扣，一步没错", endingKind: "canon" },
-	{ id: "if_zili", type: "ending", title: "IF结局：自立齐王", description: "复国的是英雄，篡国的是权臣——火牛冲得破燕军，冲不破功成之后那道最难的坎", endingKind: "if_zili" },
-	{ id: "if_guiyin", type: "ending", title: "IF结局：急流勇退", description: "你走得干净，保全了名声，也退掉了你本还能为齐做的许多事", endingKind: "if_guiyin" },
+	{ id: "if_zili", type: "ending", title: "IF结局：自立齐王", description: "复国的是英雄，篡国的是权臣——火牛冲得破燕军，冲不破功成之后那道最难的坎", endingKind: "if" },
+	{ id: "if_guiyin", type: "ending", title: "IF结局：急流勇退", description: "你走得干净，保全了名声，也退掉了你本还能为齐做的许多事", endingKind: "if" },
 ];
 
 export const SHANGYANG_ZHANGUO_FLOW: FlowNode[] = [
@@ -8425,8 +8425,8 @@ export const SHANGYANG_ZHANGUO_FLOW: FlowNode[] = [
 	] },
 	{ id: "e_fankang", type: "event", title: "车裂族灭", description: "魏国不收留你，你被送回秦地。秦惠王车裂商君以徇，灭家", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：作法自毙", description: "嗟乎，为法之敝一至此哉——法存而身死，秦因你而强，你因法而死", endingKind: "canon" },
-	{ id: "end_tuishen", type: "ending", title: "IF结局：退隐照见", description: "你照见了另一种可能——功成身退，法留人走。日中则移，月满则亏", endingKind: "if_guiyin" },
-	{ id: "if_benchu", type: "ending", title: "IF结局：奔楚", description: "你逃出了自己织的法网，却到死没再找到一片能种法的土", endingKind: "if_benchu" },
+	{ id: "end_tuishen", type: "ending", title: "IF结局：退隐照见", description: "你照见了另一种可能——功成身退，法留人走。日中则移，月满则亏", endingKind: "if" },
+	{ id: "if_benchu", type: "ending", title: "IF结局：奔楚", description: "你逃出了自己织的法网，却到死没再找到一片能种法的土", endingKind: "if" },
 ];
 
 export const QUYUAN_ZHANGUO_FLOW: FlowNode[] = [
@@ -8459,8 +8459,8 @@ export const QUYUAN_ZHANGUO_FLOW: FlowNode[] = [
 	{ id: "d_tuixie", type: "death", title: "死亡：妥协", description: "你开始学着妥协、沉默——可那个举世皆浊我独清的屈原，已经死了", deathReason: "tuixie" },
 	{ id: "e_zhouye", type: "event", title: "一夜之惠", description: "你在渔父船上过了一夜——安稳，可安稳里没有楚国。天明你渡回泽畔", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：清者自清", description: "你抱着石头走向汨罗江——「虽九死其犹未悔」。两千多年，年年五月初五，人们记得的是你", endingKind: "canon" },
-	{ id: "if_quguo", type: "ending", title: "IF结局：去国适齐", description: "你活下来了——可汨罗江畔那个让后世记了两千年的背影，不是你的", endingKind: "if_quguo" },
-	{ id: "if_tuiyin", type: "ending", title: "IF结局：与世推移", description: "你学会了濯吾足——可《怀沙》没有了，汨罗江畔那个背影也没有了", endingKind: "if_tuiyin" },
+	{ id: "if_quguo", type: "ending", title: "IF结局：去国适齐", description: "你活下来了——可汨罗江畔那个让后世记了两千年的背影，不是你的", endingKind: "if" },
+	{ id: "if_tuiyin", type: "ending", title: "IF结局：与世推移", description: "你学会了濯吾足——可《怀沙》没有了，汨罗江畔那个背影也没有了", endingKind: "if" },
 ];
 
 export const LINXIANGRU_ZHANGUO_FLOW: FlowNode[] = [
@@ -8497,8 +8497,8 @@ export const LINXIANGRU_ZHANGUO_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_yu_lianpo_zheng", type: "death", title: "死亡：将相争", description: "两虎相争，秦国趁机攻赵——你们都成了亡国的罪臣", deathReason: "yu_lianpo_zheng" },
 	{ id: "end_canon", type: "ending", title: "正史结局：将相和·刎颈之交", description: "廉颇肉袒负荆，登门请罪——卒相与欢，为刎颈之交。两千年后的戏台，还在演你们的故事", endingKind: "canon" },
-	{ id: "if_lianqin", type: "ending", title: "IF结局：结秦赵之好", description: "你把夺璧僵局走成了结盟买卖——可虎狼面前，再高明的盟约也只是把刀架脖子上的那天往后推了几年", endingKind: "if_lianqin" },
-	{ id: "if_rangxian", type: "ending", title: "IF结局：让贤归隐", description: "你退得干净——可赵国从此少了一个敢在秦廷拼命的人", endingKind: "if_rangxian" },
+	{ id: "if_lianqin", type: "ending", title: "IF结局：结秦赵之好", description: "你把夺璧僵局走成了结盟买卖——可虎狼面前，再高明的盟约也只是把刀架脖子上的那天往后推了几年", endingKind: "if" },
+	{ id: "if_rangxian", type: "ending", title: "IF结局：让贤归隐", description: "你退得干净——可赵国从此少了一个敢在秦廷拼命的人", endingKind: "if" },
 ];
 
 export const FANJU_ZHANGUO_FLOW: FlowNode[] = [
@@ -8536,8 +8536,8 @@ export const FANJU_ZHANGUO_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_butingcaize", type: "death", title: "死亡：不听蔡泽", description: "你和商鞅、白起走了同一条路——日中则移，月满则亏", deathReason: "butingcaize" },
 	{ id: "end_canon", type: "ending", title: "正史结局：功成身退", description: "欲而不知足失其所以欲，有而不知止失其所以有——你做到了", endingKind: "canon" },
-	{ id: "if_gongzhao", type: "ending", title: "IF结局：将相协力", description: "你避开了谗杀白起的污点，也交出了那个恩怨必分明的自己", endingKind: "if_gongzhao" },
-	{ id: "if_guiwei", type: "ending", title: "IF结局：归魏故里", description: "你回到羞辱你的地方，以衣锦还乡的姿态——报完恩怨你就走了，走得比谁都干净", endingKind: "if_guiwei" },
+	{ id: "if_gongzhao", type: "ending", title: "IF结局：将相协力", description: "你避开了谗杀白起的污点，也交出了那个恩怨必分明的自己", endingKind: "if" },
+	{ id: "if_guiwei", type: "ending", title: "IF结局：归魏故里", description: "你回到羞辱你的地方，以衣锦还乡的姿态——报完恩怨你就走了，走得比谁都干净", endingKind: "if" },
 ];
 
 export const BAIQI_ZHANGUO_FLOW: FlowNode[] = [
@@ -8580,8 +8580,8 @@ export const BAIQI_ZHANGUO_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_buzui", type: "death", title: "死亡：不认罪", description: "你临死都不肯认那一坑之罪——夷三族", deathReason: "buzui" },
 	{ id: "end_canon", type: "ending", title: "正史结局：战神不战", description: "善战者死于兵——百战百胜的战神，因不战而亡。宁折的剑，终究折在了自己手里", endingKind: "canon" },
-	{ id: "if_dulazhao", type: "ending", title: "IF结局：不奉诏灭赵", description: "你赢了那场史书里没打成的仗——可从此天下再无战神白起", endingKind: "if_dulazhao" },
-	{ id: "if_jiaojian", type: "ending", title: "IF结局：奉剑归郿", description: "你弯了一次——不是弯给必败之仗，是弯给那个还肯登门的君王。杜邮那柄赐剑，这一世没有来", endingKind: "if_guijun" },
+	{ id: "if_dulazhao", type: "ending", title: "IF结局：不奉诏灭赵", description: "你赢了那场史书里没打成的仗——可从此天下再无战神白起", endingKind: "if" },
+	{ id: "if_jiaojian", type: "ending", title: "IF结局：奉剑归郿", description: "你弯了一次——不是弯给必败之仗，是弯给那个还肯登门的君王。杜邮那柄赐剑，这一世没有来", endingKind: "if" },
 ];
 
 export const SIGONGZI_ZHANGUO_FLOW: FlowNode[] = [
@@ -8644,8 +8644,8 @@ export const SIGONGZI_ZHANGUO_FLOW: FlowNode[] = [
 	{ id: "d_chunshen_xianshou", type: "death", title: "死亡：先下手", description: "李园已有防备——你反被其所杀", deathReason: "chunshen_xianshou" },
 	{ id: "e_epilogue", type: "event", title: "青月点评", description: "四公子的故事到此为止——养士三千，结局各殊", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：四公子评说", description: "孟尝绝嗣、平原善终、信陵病酒、春申身死人手——同样养士三千，结局为何如此不同？", endingKind: "canon" },
-	{ id: "if_menghexi", type: "ending", title: "IF结局：孟尝伐齐", description: "容得下小人，却容不下母国的一次轻慢——这一步值不值呢？", endingKind: "if_menghexi" },
-	{ id: "if_chunshen_tuiquan", type: "ending", title: "IF结局：春申退权", description: "当断不断者反受其乱——你断了，断的是自己的荣华", endingKind: "if_chunshen_tuiquan" },
+	{ id: "if_menghexi", type: "ending", title: "IF结局：孟尝伐齐", description: "容得下小人，却容不下母国的一次轻慢——这一步值不值呢？", endingKind: "if" },
+	{ id: "if_chunshen_tuiquan", type: "ending", title: "IF结局：春申退权", description: "当断不断者反受其乱——你断了，断的是自己的荣华", endingKind: "if" },
 ];
 
 export const KONGZI_ZHUZI_FLOW: FlowNode[] = [
@@ -8695,8 +8695,8 @@ export const KONGZI_ZHUZI_FLOW: FlowNode[] = [
 		{ text: "「我这一生究竟为了什么……」——怨怼作结", target: "end_shaodao" },
 	] },
 	{ id: "end_canon", type: "ending", title: "正史结局：万世素王", description: "知其不可而为之——从少而好礼到获麟绝笔，你用一生回答了那个问题", endingKind: "canon" },
-	{ id: "end_shaodao", type: "ending", title: "IF结局：少道", description: "你意难平——可道穷处见的，恰是孔子最后的从容", endingKind: "if_shaodao" },
-	{ id: "if_dongzhou", type: "ending", title: "IF结局：入费", description: "史书会多出一行小字：孔丘，尝入费——可那个守正的孔子，从此走了样", endingKind: "if_dongzhou" },
+	{ id: "end_shaodao", type: "ending", title: "IF结局：少道", description: "你意难平——可道穷处见的，恰是孔子最后的从容", endingKind: "if" },
+	{ id: "if_dongzhou", type: "ending", title: "IF结局：入费", description: "史书会多出一行小字：孔丘，尝入费——可那个守正的孔子，从此走了样", endingKind: "if" },
 ];
 
 export const MENGZI_ZHUZI_FLOW: FlowNode[] = [
@@ -8728,8 +8728,8 @@ export const MENGZI_ZHUZI_FLOW: FlowNode[] = [
 	{ id: "d_wangchi", type: "death", title: "死亡：枉尺直寻", description: "你降志辱身以合世主——可那还是孟子吗？", deathReason: "wangchi" },
 	{ id: "e_end", type: "event", title: "大丈夫", description: "「富贵不能淫，贫贱不能移，威武不能屈——此之谓大丈夫」", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：大丈夫", description: "迂阔，有时候是最深刻的伟大", endingKind: "canon" },
-	{ id: "if_quwei", type: "ending", title: "IF结局：曲说留魏", description: "你省下了魏国几年赋税，省不回义利之间那道分明的界线", endingKind: "if_quwei" },
-	{ id: "if_wanzhong", type: "ending", title: "IF结局：万钟养士", description: "万钟养得起三千弟子，养不起「不召之臣」的那一点气", endingKind: "if_wanzhong" },
+	{ id: "if_quwei", type: "ending", title: "IF结局：曲说留魏", description: "你省下了魏国几年赋税，省不回义利之间那道分明的界线", endingKind: "if" },
+	{ id: "if_wanzhong", type: "ending", title: "IF结局：万钟养士", description: "万钟养得起三千弟子，养不起「不召之臣」的那一点气", endingKind: "if" },
 ];
 
 export const XUNZI_ZHUZI_FLOW: FlowNode[] = [
@@ -8759,8 +8759,8 @@ export const XUNZI_ZHUZI_FLOW: FlowNode[] = [
 	{ id: "d_pianfa", type: "death", title: "死亡：偏法", description: "你否定了自己的礼——法没有礼的约束，就是秦国的刻薄", deathReason: "pianfa" },
 	{ id: "e_end", type: "event", title: "天行有常", description: "「天行有常，不为尧存不为桀亡」——你走完了他的一生", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：隆礼重法", description: "既看得见人心里的恶，也相信教化可以让人变好——这就是礼法并重的道理", endingKind: "canon" },
-	{ id: "if_liuqi", type: "ending", title: "IF结局：留齐", description: "你把敢说性恶的刀在自己手里磨钝了——后世找不到一部《荀子》", endingKind: "if_liuqi" },
-	{ id: "if_ruqin", type: "ending", title: "IF结局：入秦", description: "你拂衣出函谷——是你入了秦，还是秦收了你？", endingKind: "if_ruqin" },
+	{ id: "if_liuqi", type: "ending", title: "IF结局：留齐", description: "你把敢说性恶的刀在自己手里磨钝了——后世找不到一部《荀子》", endingKind: "if" },
+	{ id: "if_ruqin", type: "ending", title: "IF结局：入秦", description: "你拂衣出函谷——是你入了秦，还是秦收了你？", endingKind: "if" },
 ];
 
 export const ZHUANGZI_ZHUZI_FLOW: FlowNode[] = [
@@ -8801,8 +8801,8 @@ export const ZHUANGZI_ZHUZI_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_zhuiyong", type: "death", title: "死亡：追用", description: "你追求有用——可有用之木先被砍，有用之人先被用", deathReason: "zhuiyong" },
 	{ id: "end_canon", type: "ending", title: "正史结局：至人无己", description: "无用之用方为大用——至人无己，神人无功，圣人无名", endingKind: "canon" },
-	{ id: "if_yingru", type: "ending", title: "IF结局：入朝为相", description: "曳尾涂中的自在再没回来——那只神龟终究把尾巴从泥里抽出来过一次", endingKind: "if_yingru" },
-	{ id: "if_fenshu", type: "ending", title: "IF结局：焚书入山", description: "你得到了最纯粹的无待——代价是我再也没办法把你的故事讲给后人听了", endingKind: "if_fenshu" },
+	{ id: "if_yingru", type: "ending", title: "IF结局：入朝为相", description: "曳尾涂中的自在再没回来——那只神龟终究把尾巴从泥里抽出来过一次", endingKind: "if" },
+	{ id: "if_fenshu", type: "ending", title: "IF结局：焚书入山", description: "你得到了最纯粹的无待——代价是我再也没办法把你的故事讲给后人听了", endingKind: "if" },
 ];
 
 export const MOZHAI_ZHUZI_FLOW: FlowNode[] = [
@@ -8832,8 +8832,8 @@ export const MOZHAI_ZHUZI_FLOW: FlowNode[] = [
 	] },
 	{ id: "e_end", type: "event", title: "兼爱非攻", description: "「兴天下之利，除天下之害」", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：墨者之义", description: "真正的和平不是空谈，是你有能力制止战争却不发动战争；真正的爱不是嘴上说说，是摩顶放踵真的去做", endingKind: "canon" },
-	{ id: "if_shousong", type: "ending", title: "IF结局：血守宋城", description: "你止了楚攻宋，却也第一次尝到——兼爱非攻若要用血来守，那血先是自己人的", endingKind: "if_shousong" },
-	{ id: "if_fengshang", type: "ending", title: "IF结局：受封楚国", description: "你止过几场战，也固过一国之防——只是那个走了十天十夜去救素不相识之宋的墨翟，留在了郢都城外", endingKind: "if_fengshang" },
+	{ id: "if_shousong", type: "ending", title: "IF结局：血守宋城", description: "你止了楚攻宋，却也第一次尝到——兼爱非攻若要用血来守，那血先是自己人的", endingKind: "if" },
+	{ id: "if_fengshang", type: "ending", title: "IF结局：受封楚国", description: "你止过几场战，也固过一国之防——只是那个走了十天十夜去救素不相识之宋的墨翟，留在了郢都城外", endingKind: "if" },
 ];
 
 export const HANFEI_ZHUZI_FLOW: FlowNode[] = [
@@ -8864,8 +8864,8 @@ export const HANFEI_ZHUZI_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_dengdai", type: "death", title: "死亡：等待", description: "秦王没后悔——你等来的是毒酒而不是赦令", deathReason: "dengdai" },
 	{ id: "end_canon", type: "ending", title: "正史结局：说难", description: "最懂游戏规则的人反而死在游戏里——这就是韩非的悲剧，也是千古说客的悲剧", endingKind: "canon" },
-	{ id: "if_jianyong", type: "ending", title: "IF结局：见用", description: "你做了秦廷第一等的谋臣——只是每当有人称你「韩子」，你都会顿一顿", endingKind: "if_jianyong" },
-	{ id: "if_liuhan", type: "ending", title: "IF结局：留韩", description: "你逃过了那杯药，也逃过了那个悲剧——只是天下再无人知道曾有一个口吃的韩国公子把君术写到极致", endingKind: "if_liuhan" },
+	{ id: "if_jianyong", type: "ending", title: "IF结局：见用", description: "你做了秦廷第一等的谋臣——只是每当有人称你「韩子」，你都会顿一顿", endingKind: "if" },
+	{ id: "if_liuhan", type: "ending", title: "IF结局：留韩", description: "你逃过了那杯药，也逃过了那个悲剧——只是天下再无人知道曾有一个口吃的韩国公子把君术写到极致", endingKind: "if" },
 ];
 
 export const ZOUYAN_ZHUZI_FLOW: FlowNode[] = [
@@ -8896,8 +8896,8 @@ export const ZOUYAN_ZHUZI_FLOW: FlowNode[] = [
 	] },
 	{ id: "d_ronghua", type: "death", title: "死亡：荣华", description: "你追求荣华——可谈天衍之所以不朽，不是因为荣华", deathReason: "ronghua" },
 	{ id: "end_canon", type: "ending", title: "正史结局：推而大之", description: "思想的价值不在于当时能不能被用上，而在于它能不能打开人的眼界，让人看到更大的世界", endingKind: "canon" },
-	{ id: "if_zhiguo", type: "ending", title: "IF结局：治国之术", description: "你显达了也务实了——只是赤县神州那片天，你再没打开过", endingKind: "if_zhiguo" },
-	{ id: "if_burong", type: "ending", title: "IF结局：不容则去", description: "你在山泽间终老，无人郊迎无宫可居——只有夜夜的星空还听你谈那片天", endingKind: "if_burong" },
+	{ id: "if_zhiguo", type: "ending", title: "IF结局：治国之术", description: "你显达了也务实了——只是赤县神州那片天，你再没打开过", endingKind: "if" },
+	{ id: "if_burong", type: "ending", title: "IF结局：不容则去", description: "你在山泽间终老，无人郊迎无宫可居——只有夜夜的星空还听你谈那片天", endingKind: "if" },
 ];
 
 export const ZHOU_SHANG_FLOW: FlowNode[] = [
@@ -8941,8 +8941,8 @@ export const ZHOU_SHANG_FLOW: FlowNode[] = [
 	{ id: "d_naxin", type: "death", title: "照见：纳心", description: "你把「以死争」三个字接住了——可史书里的纣从不接", deathReason: "naxin" },
 	{ id: "e_muye", type: "event", title: "牧野亡国", description: "周兵至牧野，殷师倒戈——你登鹿台，衣宝玉衣，赴火而死", next: "end_canon" },
 	{ id: "end_canon", type: "ending", title: "正史结局：殷鉴", description: "烧死你的不是周兵，是那颗从不肯认错的绝顶聪明——一枚殷鉴，愿后来的人记得", endingKind: "canon" },
-	{ id: "if_xizheng", type: "ending", title: "IF结局：亲征西土", description: "你死在东征的车上甲胄未解——殷随你的战鼓一起慢慢流尽了血", endingKind: "if_xizheng" },
-	{ id: "if_xunwei", type: "ending", title: "IF结局：逊位微子", description: "你成了殷史上一个说不清的名字——不是明君，不是亡国之君，是一个及时走开的人", endingKind: "if_xunwei" },
+	{ id: "if_xizheng", type: "ending", title: "IF结局：亲征西土", description: "你死在东征的车上甲胄未解——殷随你的战鼓一起慢慢流尽了血", endingKind: "if" },
+	{ id: "if_xunwei", type: "ending", title: "IF结局：逊位微子", description: "你成了殷史上一个说不清的名字——不是明君，不是亡国之君，是一个及时走开的人", endingKind: "if" },
 ];
 
 export const WENWANG_XIZHOU_FLOW: FlowNode[] = [
@@ -9314,9 +9314,7 @@ export function getStoryFlow(storyKey: string): FlowNode[] | undefined {
 
 	const nodes: FlowNode[] = [];
 
-	const protagonistName =
-		cfg?.protagonist?.name ??
-		(storyKey.includes(":") ? storyKey.split(":")[0] : storyKey);
+	const protagonistName = storyKey.includes(":") ? storyKey.split(":")[0] : storyKey;
 	const storyTitle = cfg?.title ?? `${protagonistName}·故事线`;
 
 	// 1) 起始节点
@@ -9324,7 +9322,7 @@ export function getStoryFlow(storyKey: string): FlowNode[] | undefined {
 		id: "start",
 		type: "start",
 		title: storyTitle,
-		description: cfg?.description ?? cfg?.tagline ?? `以${protagonistName}的视角，重历这段故事。`,
+		description: `以${protagonistName}的视角，重历这段故事。`,
 		next: "choice_root",
 	});
 
@@ -9337,7 +9335,7 @@ export function getStoryFlow(storyKey: string): FlowNode[] | undefined {
 			type: "ending",
 			endingKind: "canon",
 			title: `${storyTitle}·正史结局`,
-			description: cfg?.description ?? "完成此视角后，归于正史结局。",
+			description: `完成此视角后，归于正史结局。`,
 		});
 		// 修正 start 的 next 直接指向结局
 		nodes[0].next = "end_canon";

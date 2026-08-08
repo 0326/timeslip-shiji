@@ -24,7 +24,7 @@ export function GameHost({ gameId, param, storyKey, mode, onComplete }: GameHost
 	const doneRef = useRef(false);
 	const [outcomeState, setOutcomeState] = useState<MinigameOutcome | null>(null);
 	const pendingOutcomeRef = useRef<MinigameOutcome | null>(null);
-	const [retryKey, setRetryKey] = useState(0);
+	const [retryKey] = useState(0);
 	const playingSinceRef = useRef<number>(0);
 	const onCompleteRef = useRef(onComplete);
 	onCompleteRef.current = onComplete;

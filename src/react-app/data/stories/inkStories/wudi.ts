@@ -1,49 +1,12 @@
 // inkStories — Registry of ink-backed stories.
 // Each entry is an InkStoryConfig that ShijiInkAdapter consumes.
-// Ink source files are imported as raw text via Vite's ?raw suffix.
+// Ink source files are loaded on-demand via inkSourceLoader (P0-1 optimization).
 
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
 
-// Static import of .ink source files (Vite ?raw returns the file content as string)
-import shunLijieSource from "../ink/shun-lijie.ink?raw";
-import huangdiQiyuanSource from "../ink/huangdi-qiyuan.ink?raw";
-import huangdiBanquanSource from "../ink/huangdi-banquan.ink?raw";
-import huangdiZhuoluSource from "../ink/huangdi-zhuolu.ink?raw";
-import huangdiZhitianxiaSource from "../ink/huangdi-zhitianxia.ink?raw";
-import zhuanxuDikuSource from "../ink/zhuanxu-diku.ink?raw";
-import yaoShoushiSource from "../ink/yao-shoushi.ink?raw";
-import yaoQiuxianSource from "../ink/yao-qiuxian.ink?raw";
-import yaoJuxianSource from "../ink/yao-juxian.ink?raw";
-import yaoShanrangSource from "../ink/yao-shanrang.ink?raw";
-import shunLiuxiongSource from "../ink/shun-liuxiong.ink?raw";
-import shunXingfaSource from "../ink/shun-xingfa.ink?raw";
-import shunJiuguanSource from "../ink/shun-jiuguan.ink?raw";
-import shunChanyuSource from "../ink/shun-chanyu.ink?raw";
-import yuZhishuiSource from "../ink/yu-zhishui.ink?raw";
-import yuShouchanSource from "../ink/yu-shouchan.ink?raw";
-import qiGanzhizhanSource from "../ink/qi-ganzhizhan.ink?raw";
-import jieWangguoSource from "../ink/jie-wangguo.ink?raw";
-
 // 番外 · NPC视角
-import extraLeizuSource from "../ink/extras/extra-leizu.ink?raw";
-import extraCangjieSource from "../ink/extras/extra-cangjie.ink?raw";
-import extraXuyouSource from "../ink/extras/extra-xuyou.ink?raw";
-import extraChongliSource from "../ink/extras/extra-chongli.ink?raw";
-import extraKuoboShishenSource from "../ink/extras/extra-kuobo-shishen.ink?raw";
-import extraGaoyaoSource from "../ink/extras/extra-gaoyao.ink?raw";
-import extraTushanSource from "../ink/extras/extra-tushan.ink?raw";
 
 // 番外 · 上帝视角（NPC/百姓视角）
-import extraBanquanFarmerSource from "../ink/extras/extra-banquan-farmer.ink?raw";
-import extraZhuoluJiuliSource from "../ink/extras/extra-zhuolu-jiuli.ink?raw";
-import extraZhitianxiaBorderSource from "../ink/extras/extra-zhitianxia-border.ink?raw";
-import extraZhitianxiaPeasantSource from "../ink/extras/extra-zhitianxia-peasant.ink?raw";
-import extraZhuanxuShamanSource from "../ink/extras/extra-zhuanxu-shaman.ink?raw";
-import extraDikuWeaverSource from "../ink/extras/extra-diku-weaver.ink?raw";
-import extraYaoFarmerSource from "../ink/extras/extra-yao-farmer.ink?raw";
-import extraYaoFloodSource from "../ink/extras/extra-yao-flood.ink?raw";
-import extraYaoDanzhuServantSource from "../ink/extras/extra-yao-danzhu-servant.ink?raw";
-import extraYaoEhuangNvyingSource from "../ink/extras/extra-yao-ehuang-nvying.ink?raw";
 
 /**
  * Ink story registry.
@@ -55,8 +18,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"shun:lijie": {
 		key: "shun:lijie",
 		title: "虞舜 · 焚廪穿井",
-		source: shunLijieSource,
-		precompiled: false,
+		inkFile: "shun-lijie",
 		deaths: {
 			burn: {
 				reason: "空手登上仓顶，被烈火吞没",
@@ -105,8 +67,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"huangdi:qiyuan": {
 		key: "huangdi:qiyuan",
 		title: "起源 · 穿越轩辕",
-		source: huangdiQiyuanSource,
-		precompiled: false,
+		inkFile: "huangdi-qiyuan",
 		deaths: {},
 		endings: {
 			canon: {
@@ -126,8 +87,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"huangdi:banquan": {
 		key: "huangdi:banquan",
 		title: "黄帝 · 阪泉之战",
-		source: huangdiBanquanSource,
-		precompiled: false,
+		inkFile: "huangdi-banquan",
 		deaths: {
 			conquer: {
 				reason: "恃力强征、暴虐百姓，众叛身危",
@@ -170,8 +130,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"huangdi:zhuolu": {
 		key: "huangdi:zhuolu",
 		title: "黄帝 · 涿鹿擒蚩尤",
-		source: huangdiZhuoluSource,
-		precompiled: false,
+		inkFile: "huangdi-zhuolu",
 		deaths: {
 			lone: {
 				reason: "不征诸侯，孤军东进，被蚩尤合围于涿鹿之野，力尽而亡",
@@ -220,8 +179,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"huangdi:zhitianxia": {
 		key: "huangdi:zhitianxia",
 		title: "黄帝 · 垂衣治天下",
-		source: huangdiZhitianxiaSource,
-		precompiled: false,
+		inkFile: "huangdi-zhitianxia",
 		deaths: {
 			indulge: {
 				reason: "骄纵失德，安居深宫坐受朝贡，德不及远，众叛离心",
@@ -264,8 +222,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"zhuanxu:diku": {
 		key: "zhuanxu:diku",
 		title: "颛顼帝喾 · 承天执中",
-		source: zhuanxuDikuSource,
-		precompiled: false,
+		inkFile: "zhuanxu-diku",
 		deaths: {
 			zaojin: {
 				reason: "新君躁进失静，仓促发兵四方，号令自乱、政先崩坏",
@@ -308,8 +265,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yao:shoushi": {
 		key: "yao:shoushi",
 		title: "尧 · 敬授民时",
-		source: yaoShoushiSource,
-		precompiled: false,
+		inkFile: "yao-shoushi",
 		deaths: {
 			arrogance: {
 				reason: "富贵而骄纵自纵，失德致九族怨、百姓离、万国不朝",
@@ -364,8 +320,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yao:qiuxian": {
 		key: "yao:qiuxian",
 		title: "尧 · 咨岳求贤",
-		source: yaoQiuxianSource,
-		precompiled: false,
+		inkFile: "yao-qiuxian",
 		deaths: {
 			danzhu: {
 				reason: "徇私传位顽凶之子丹朱，天下不服",
@@ -414,8 +369,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yao:juxian": {
 		key: "yao:juxian",
 		title: "尧 · 举舜试女",
-		source: yaoJuxianSource,
-		precompiled: false,
+		inkFile: "yao-juxian",
 		deaths: {
 			qishi: {
 				reason: "因舜家父顽母嚚弟傲的恶名而弃贤，终以天下权授不肖的丹朱",
@@ -458,8 +412,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yao:shanrang": {
 		key: "yao:shanrang",
 		title: "尧舜禅让",
-		source: yaoShanrangSource,
-		precompiled: false,
+		inkFile: "yao-shanrang",
 		deaths: {
 			rush: {
 				reason: "未加考较，凭传闻径授天下，名不副实、群臣不服",
@@ -508,8 +461,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"shun:liuxiong": {
 		key: "shun:liuxiong",
 		title: "舜 · 流放四凶",
-		source: shunLiuxiongSource,
-		precompiled: false,
+		inkFile: "shun-liuxiong",
 		deaths: {
 			solo: {
 				reason: "不举贤才、事事亲裁，独木难支终致天下不治",
@@ -558,8 +510,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"shun:xingfa": {
 		key: "shun:xingfa",
 		title: "舜 · 皋陶作刑",
-		source: shunXingfaSource,
-		precompiled: false,
+		inkFile: "shun-xingfa",
 		deaths: {
 			tyranny: {
 				reason: "一味严刑峻法、以杀立威，民怨沸腾而失德",
@@ -607,8 +558,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"shun:jiuguan": {
 		key: "shun:jiuguan",
 		title: "舜 · 命九官组阁",
-		source: shunJiuguanSource,
-		precompiled: false,
+		inkFile: "shun-jiuguan",
 		deaths: {
 			biseng: {
 				reason: "闭四门、独断立威，未先明通四方耳目即失庙堂之心",
@@ -663,8 +613,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"shun:chanyu": {
 		key: "shun:chanyu",
 		title: "舜禅于禹 · 二妃泣竹",
-		source: shunChanyuSource,
-		precompiled: false,
+		inkFile: "shun-chanyu",
 		deaths: {
 			passson: {
 				reason: "传位不肖之子商均，天下不服、太平散尽",
@@ -707,8 +656,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yu:zhishui": {
 		key: "yu:zhishui",
 		title: "大禹治水",
-		source: yuZhishuiSource,
-		precompiled: false,
+		inkFile: "yu-zhishui",
 		deaths: {
 			tang: {
 				reason: "重蹈父鲧以土堙堵之覆辙，堤溃洪水复滔天而受诛",
@@ -751,8 +699,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"yu:shouchan": {
 		key: "yu:shouchan",
 		title: "禹会涂山 · 受禅即位",
-		source: yuShouchanSource,
-		precompiled: false,
+		inkFile: "yu-shouchan",
 		deaths: {
 			disdain: {
 				reason: "轻推皋陶之谋，不肯知人安民，庶政隳坏",
@@ -801,8 +748,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"qi:ganzhizhan": {
 		key: "qi:ganzhizhan",
 		title: "启 · 家天下与甘之战",
-		source: qiGanzhizhanSource,
-		precompiled: false,
+		inkFile: "qi-ganzhizhan",
 		deaths: {
 			jiao: {
 				reason: "恃『禹之子』骄纵抢位，德未孚而无以服众",
@@ -845,8 +791,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"jie:wangguo": {
 		key: "jie:wangguo",
 		title: "夏桀亡国",
-		source: jieWangguoSource,
-		precompiled: false,
+		inkFile: "jie-wangguo",
 		deaths: {
 			shatang: {
 				reason: "夜遣人弑汤于夏台，招致天下共讨，未至鸣条即身死国灭",
@@ -890,8 +835,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:leizu": {
 		key: "extra:leizu",
 		title: "番外 · 嫘祖养蚕",
-		source: extraLeizuSource,
-		precompiled: false,
+		inkFile: "extras/extra-leizu",
 		deaths: {},
 		endings: {
 			canon: { title: "丝暖天下", kind: "canon", epigraph: "轩辕打天下，嫘祖暖天下。" },
@@ -900,8 +844,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:cangjie": {
 		key: "extra:cangjie",
 		title: "番外 · 仓颉造字",
-		source: extraCangjieSource,
-		precompiled: false,
+		inkFile: "extras/extra-cangjie",
 		deaths: {},
 		endings: {
 			canon: { title: "天雨粟，鬼夜哭", kind: "canon", epigraph: "有了字，人就能记事——记下善，也记下恶。" },
@@ -910,8 +853,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:xuyou": {
 		key: "extra:xuyou",
 		title: "番外 · 许由洗耳",
-		source: extraXuyouSource,
-		precompiled: false,
+		inkFile: "extras/extra-xuyou",
 		deaths: {},
 		endings: {
 			canon: { title: "出尘高士", kind: "canon", epigraph: "有人求天下不得，有人避天下如避祸。" },
@@ -920,8 +862,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:chongli": {
 		key: "extra:chongli",
 		title: "番外 · 重黎观象",
-		source: extraChongliSource,
-		precompiled: false,
+		inkFile: "extras/extra-chongli",
 		deaths: {},
 		endings: {
 			canon: { title: "四时有序", kind: "canon", epigraph: "南正观天，火正治地——从此四时有序，人神各归其位。" },
@@ -930,8 +871,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:kuobo-shishen": {
 		key: "extra:kuobo-shishen",
 		title: "番外 · 阙伯实沈",
-		source: extraKuoboShishenSource,
-		precompiled: false,
+		inkFile: "extras/extra-kuobo-shishen",
 		deaths: {},
 		endings: {
 			canon: { title: "参商永隔", kind: "canon", epigraph: "人生不相见，动如参与商——帝喾的两个儿子，化作了天上永不相逢的两颗星。" },
@@ -940,8 +880,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:gaoyao": {
 		key: "extra:gaoyao",
 		title: "番外 · 皋陶断狱",
-		source: extraGaoyaoSource,
-		precompiled: false,
+		inkFile: "extras/extra-gaoyao",
 		deaths: {},
 		endings: {
 			canon: { title: "平如水", kind: "canon", epigraph: "法字旁边是水——平如水。" },
@@ -950,8 +889,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:tushan": {
 		key: "extra:tushan",
 		title: "番外 · 涂山氏望夫",
-		source: extraTushanSource,
-		precompiled: false,
+		inkFile: "extras/extra-tushan",
 		deaths: {},
 		endings: {
 			canon: { title: "十三年等", kind: "canon", epigraph: "她嫁的，就是那个肯把命填进水里的人。" },
@@ -961,8 +899,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:banquan-farmer": {
 		key: "extra:banquan-farmer",
 		title: "上帝视角 · 阪泉之后的农夫",
-		source: extraBanquanFarmerSource,
-		precompiled: false,
+		inkFile: "extras/extra-banquan-farmer",
 		deaths: {},
 		endings: {
 			canon: { title: "修德落在田埂上", kind: "canon", epigraph: "政策的每一个字，底下都压着一个人的日子。" },
@@ -971,8 +908,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:zhuolu-jiuli": {
 		key: "extra:zhuolu-jiuli",
 		title: "上帝视角 · 涿鹿之后的九黎人",
-		source: extraZhuoluJiuliSource,
-		precompiled: false,
+		inkFile: "extras/extra-zhuolu-jiuli",
 		deaths: {},
 		endings: {
 			canon: { title: "铸刀变铸锄", kind: "canon", epigraph: "杀一个首领只要一刀，安一族的百姓却要一辈子的功夫。" },
@@ -981,8 +917,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:zhitianxia-border": {
 		key: "extra:zhitianxia-border",
 		title: "上帝视角 · 东海边的渔翁",
-		source: extraZhitianxiaBorderSource,
-		precompiled: false,
+		inkFile: "extras/extra-zhitianxia-border",
 		deaths: {},
 		endings: {
 			canon: { title: "德落到海边", kind: "canon", epigraph: "德这东西，不走出去，就只在竹简上。" },
@@ -991,8 +926,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:zhitianxia-peasant": {
 		key: "extra:zhitianxia-peasant",
 		title: "上帝视角 · 顺天时的农人",
-		source: extraZhitianxiaPeasantSource,
-		precompiled: false,
+		inkFile: "extras/extra-zhitianxia-peasant",
 		deaths: {},
 		endings: {
 			canon: { title: "碗里多了一口粮", kind: "canon", epigraph: "治国治到百姓碗里多了一口粮，这才算落了地。" },
@@ -1002,8 +936,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:zhuanxu-shaman": {
 		key: "extra:zhuanxu-shaman",
 		title: "上帝视角 · 颛顼治下的祝祷人",
-		source: extraZhuanxuShamanSource,
-		precompiled: false,
+		inkFile: "extras/extra-zhuanxu-shaman",
 		deaths: {},
 		endings: {
 			canon: { title: "香火归了礼义", kind: "canon", epigraph: "依鬼神以制义——制的是鬼神，更是人心。" },
@@ -1012,8 +945,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:diku-weaver": {
 		key: "extra:diku-weaver",
 		title: "上帝视角 · 帝喾治下的织女",
-		source: extraDikuWeaverSource,
-		precompiled: false,
+		inkFile: "extras/extra-diku-weaver",
 		deaths: {},
 		endings: {
 			canon: { title: "布帛匀到了百姓身上", kind: "canon", epigraph: "执中二字，落到底，就是让每张嘴都有一口粮、每个人都有一件衣。" },
@@ -1022,8 +954,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:yao-farmer": {
 		key: "extra:yao-farmer",
 		title: "上帝视角 · 敬授民时的老农",
-		source: extraYaoFarmerSource,
-		precompiled: false,
+		inkFile: "extras/extra-yao-farmer",
 		deaths: {},
 		endings: {
 			canon: { title: "历法落到田里", kind: "canon", epigraph: "授民时三个字，落到底，就是让老农不必再猜天。" },
@@ -1032,8 +963,7 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
 	"extra:yao-flood": {
 		key: "extra:yao-flood",
 		title: "上帝视角 · 洪水边上的村民",
-		source: extraYaoFloodSource,
-		precompiled: false,
+		inkFile: "extras/extra-yao-flood",
 		deaths: {},
 		endings: {
 			canon: { title: "堙水九年淹的是家", kind: "canon", epigraph: "功用不成四个字，落到底，是阿水被淹了三回的家。" },
@@ -1042,9 +972,8 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
   "extra:yao-danzhu-servant": {
     key: "extra:yao-danzhu-servant",
     title: "上帝视角 · 丹朱的近侍阿禾",
-    source: extraYaoDanzhuServantSource,
-    precompiled: false,
-    deaths: {},
+    inkFile: "extras/extra-yao-danzhu-servant",
+        deaths: {},
     endings: {
       canon: { title: "一声『吁』碎十年从龙梦", kind: "canon", epigraph: "不以天下之病而利一人——落在亲儿近侍身上，是十几年从龙梦碎的一声轻响。" },
     },
@@ -1052,9 +981,8 @@ export const wudiInkStories: Record<string, InkStoryConfig> = {
   "extra:yao-ehuang-nvying": {
     key: "extra:yao-ehuang-nvying",
     title: "上帝视角 · 妫汭二妃",
-    source: extraYaoEhuangNvyingSource,
-    precompiled: false,
-    deaths: {},
+    inkFile: "extras/extra-yao-ehuang-nvying",
+        deaths: {},
     endings: {
       canon: { title: "帝女下嫁看的是德", kind: "canon", epigraph: "连自己的女儿都舍得放进去赌的人，才真的把天下看得比自己重。" },
     },

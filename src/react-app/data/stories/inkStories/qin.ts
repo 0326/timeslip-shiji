@@ -1,21 +1,11 @@
 // 系列 qin · 大秦帝国。死亡文案单一数据源。
 import type { InkStoryConfig } from "../../../engine/shijiInkAdapter";
-import qshihuangQinSource from "../ink/qshihuang-qin.ink?raw";
-import lisiQinSource from "../ink/lisi-qin.ink?raw";
-import jingkeQinSource from "../ink/jingke-qin.ink?raw";
-import lvbuweiQinSource from "../ink/lvbuwei-qin.ink?raw";
-import mengtianQinSource from "../ink/mengtian-qin.ink?raw";
-import miaogongQinSource from "../ink/miaogong-qin.ink?raw";
-import extraQinmuBailixiSource from "../ink/extras/extra-qinmu-bailixi.ink?raw";
-import extraQinmuShimaSource from "../ink/extras/extra-qinmu-shima.ink?raw";
-import extraQinmuYouyuSource from "../ink/extras/extra-qinmu-youyu.ink?raw";
 
 export const qinInkStories: Record<string, InkStoryConfig> = {
 	"qshihuang:qin": {
 		key: "qshihuang:qin",
 		title: "千古一帝 · 秦始皇",
-		source: qshihuangQinSource,
-		precompiled: false,
+		inkFile: "qshihuang-qin",
 		deaths: {
 			zhulv: {
 				reason: "尽逐客卿、诛相失士，扫六合无人可用",
@@ -75,8 +65,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"lisi:qin": {
 		key: "lisi:qin",
 		title: "仓中鼠 · 李斯",
-		source: lisiQinSource,
-		precompiled: false,
+		inkFile: "lisi-qin",
 		deaths: {
 			huixiang: {
 				reason: "逐客令下认命回乡，仓鼠之梦碎于半途",
@@ -112,8 +101,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"jingke:qin": {
 		key: "jingke:qin",
 		title: "易水寒 · 荆轲",
-		source: jingkeQinSource,
-		precompiled: false,
+		inkFile: "jingke-qin",
 		deaths: {
 			chuaiji: {
 				reason: "仓促入秦无信物无利刃，宫门被擒",
@@ -167,8 +155,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"lvbuwei:qin": {
 		key: "lvbuwei:qin",
 		title: "奇货可居 · 吕不韦",
-		source: lvbuweiQinSource,
-		precompiled: false,
+		inkFile: "lvbuwei-qin",
 		deaths: {
 			lianvin: {
 				reason: "以联姻替代游说华阳夫人，路线全错",
@@ -228,8 +215,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"mengtian:qin": {
 		key: "mengtian:qin",
 		title: "长城将魂 · 蒙恬",
-		source: mengtianQinSource,
-		precompiled: false,
+		inkFile: "mengtian-qin",
 		deaths: {
 			qibing: {
 				reason: "阳周囚中起兵清君侧，北边失守匈奴南侵",
@@ -265,8 +251,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"qinmu:qin": {
 		key: "qinmu:qin",
 		title: "秦缪公任好 · 霸西戎",
-		source: miaogongQinSource,
-		precompiled: false,
+		inkFile: "miaogong-qin",
 		deaths: {
 			ying_bailixi: {
 				reason: "弃百里傒而不用，秦终为西陲小国",
@@ -314,8 +299,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"extra:qinmu-bailixi": {
 		key: "extra:qinmu-bailixi",
 		title: "番外 · 五羖之前",
-		source: extraQinmuBailixiSource,
-		precompiled: false,
+		inkFile: "extras/extra-qinmu-bailixi",
 		deaths: {},
 		endings: {
 			canon: { title: "五羊皮换一个天下", kind: "canon", epigraph: "亡国奴、贩牛叟、五张羊皮——换来了秦国霸业的起点。" },
@@ -324,8 +308,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"extra:qinmu-shima": {
 		key: "extra:qinmu-shima",
 		title: "番外 · 三百食马者",
-		source: extraQinmuShimaSource,
-		precompiled: false,
+		inkFile: "extras/extra-qinmu-shima",
 		deaths: {},
 		endings: {
 			canon: { title: "一碗酒换三百命", kind: "canon", epigraph: "仁德不是交易——可它就是会回来。" },
@@ -334,8 +317,7 @@ export const qinInkStories: Record<string, InkStoryConfig> = {
 	"extra:qinmu-youyu": {
 		key: "extra:qinmu-youyu",
 		title: "番外 · 由余使秦",
-		source: extraQinmuYouyuSource,
-		precompiled: false,
+		inkFile: "extras/extra-qinmu-youyu",
 		deaths: {},
 		endings: {
 			canon: { title: "戎狄来投", kind: "canon", epigraph: "一个给舞台，一个给本事——君臣相遇，不过如此。" },

@@ -23,7 +23,6 @@ interface LayoutLink {
 }
 
 const NODE_W = 200;
-const NODE_H = 72;
 const LEVEL_GAP = 200;
 const NODE_GAP = 32;
 const END_W = 180;
@@ -275,30 +274,6 @@ export function StoryFlow({ nodes, title }: Props) {
 			y: (viewportH - viewboxH * newScale) / 2,
 		});
 	}, [viewportW, viewportH, viewboxW, viewboxH]);
-
-	const getNodeCenter = (ln: LayoutNode) => ({
-		x: ln.x + ln.width / 2,
-		y: ln.y + ln.height / 2,
-	});
-
-	const getNodeEdgePoint = (ln: LayoutNode, side: "left" | "right") => {
-		const cx = ln.x + ln.width / 2;
-		const cy = ln.y + ln.height / 2;
-
-		if (ln.data.type === "choice") {
-			const hw = ln.width / 2;
-			const hh = ln.height / 2;
-			if (side === "right") {
-				const t = 0.5;
-				return { x: cx + hw * t, y: cy + hh * (1 - Math.abs(2 * t - 1)) * 0 + hh * (2 * t - 1) * 0 };
-			} else {
-				return { x: ln.x, y: cy };
-			}
-		}
-
-		if (side === "right") return { x: ln.x + ln.width, y: cy };
-		return { x: ln.x, y: cy };
-	};
 
 	function getNodeStyle(d: FlowNode) {
 		let fill = "var(--color-ink-soft)";
@@ -620,7 +595,6 @@ export function StoryFlow({ nodes, title }: Props) {
 						const st = getNodeStyle(d);
 						const isSelected = selectedNode === ln.id;
 						const isHovered = hoveredNode === ln.id;
-						const interactive = d.type !== "death" || true;
 
 						const filterStr = isSelected
 							? d.type === "ending" && d.endingKind === "canon"
