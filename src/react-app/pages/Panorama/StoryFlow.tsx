@@ -75,6 +75,9 @@ export function StoryFlow({ nodes, title }: Props) {
 	}, []);
 
 	const { layoutNodes, layoutLinks, viewboxW, viewboxH } = useMemo(() => {
+		if (!nodes || nodes.length === 0) {
+			return { layoutNodes: [] as LayoutNode[], layoutLinks: [] as LayoutLink[], viewboxW: viewportW, viewboxH: viewportH };
+		}
 		const nodeMap = new Map<string, FlowNode>();
 		nodes.forEach((n) => nodeMap.set(n.id, n));
 

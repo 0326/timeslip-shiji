@@ -78,7 +78,7 @@ export function RelationGraph({ focus }: Props) {
 
     // 尝试用主项目 ego 子图（异步已在本 hook 外完成合并，relations 已含主项目数据）
     // mergedFocus.relations 在 getCharacterMerged 中已用主项目覆写（若有）
-    for (const r of mergedFocus.relations) {
+    for (const r of (mergedFocus.relations ?? [])) {
       if (!seen.has(r.targetId)) {
         seen.add(r.targetId);
         const ga = getGlyphAccent(r.targetId);
@@ -256,7 +256,7 @@ export function RelationGraph({ focus }: Props) {
   }, [mergedFocus, loading]);
 
   const usedTypes = Array.from(
-    new Set(mergedFocus.relations.map((r) => r.type)),
+    new Set((mergedFocus.relations ?? []).map((r) => r.type)),
   );
 
   return (

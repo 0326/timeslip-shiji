@@ -287,14 +287,14 @@ const RIVALRIES: Record<string,string[]> = {
 /* ═════════════════════ 角色黑名单（远程API补充/风格不一致/用户不认可） ═════════════════════ */
 
 const BLOCKLIST = new Set([
-  "sunbin","luban","helu","zhuanzhu","yaoli","yurang","niezheng",
-  "songxianggong","chuzhuangwang","chuchengwang","chupingwang",
+  "yaoli","yurang","niezheng",
+  "chuzhuangwang","chuchengwang","chupingwang",
   "caomo","liuxiahui","gongsunchujiu","chengying","zichan",
-  "huizi","zouyan","sigongzi","tuangujia","meixi","pangeng","fuhao",
-  "qinmu","wushe","yanying","qijie","simarangju","chuliji","ganluo","ganmao",
-  "songyu","gongsunlong","yuqing","likui_zg","zhuying","shenbuhai",
+  "zouyan","sigongzi","tuangujia","meixi","pangeng","fuhao",
+  "wushe","qijie","simarangju","chuliji","ganluo","ganmao",
+  "gongsunlong","yuqing","zhuying","shenbuhai",
   "bianque","qinwuyang","tianguang","huangshigong","baishe",
-  "fengtong","shenshizu","songchang",
+  "shenshizu","songchang",
 ]);
 
 /* ═════════════════════ 构建角色列表 ═════════════════════ */
