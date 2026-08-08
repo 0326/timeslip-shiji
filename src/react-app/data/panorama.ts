@@ -1,5 +1,8 @@
 // 全景视角数据：事件时间轴（多视角内心 + 原文 + 史学解读）与原文典籍。
 // 史源：《史记·项羽本纪》《史记·淮阴侯列传》。
+import { STORYLINES } from "./storylines";
+import { inkStories } from "./stories/inkStories";
+import { SERIES } from "./series";
 
 export interface PanoramaPerspective {
 	characterId: string;
@@ -341,5 +344,99 @@ export const PANORAMA: Record<string, PanoramaData> = {
 };
 
 export function getPanorama(storyId: string): PanoramaData | undefined {
-	return PANORAMA[storyId];
+	const explicit = PANORAMA[storyId];
+	if (explicit) return explicit;
+
+	/** ⭐ 兜底：未配置全景数据的故事线，从 STORYLINES + inkStories 生成最小可用全景，
+	 *  保证「史记全景」按钮点进去永远有内容，不会白屏或锁死。 */
+	const sl = STORYLINES.find((s) => s.id === storyId);
+	if (!sl) return undefined;
+
+	const series = SERIES.find((s) => s.id === sl.series);
+	const seriesName = series?.name ?? "";
+
+	// 从该故事线的所有视角（perspectives）生成 events
+	const events: PanoramaEvent[] = [];
+
+	// 通用生成：每个视角一条「视角启程」事件
+	for (let i = 0; i < sl.perspectives.length; i++) {
+		const persp = sl.perspectives[i];
+		const cfg = inkStories[persp.storyKey];
+		const title = cfg?.title ?? `${persp.characterId}·视角`;
+		const characterName =
+			cfg?.protagonist?.name ??
+			(persp.storyKey.split(":")[0] ?? persp.characterId);
+
+		// 内心独白（生成有区分度的通用文案）
+		const thoughts: PanoramaPerspective[] = [
+			{
+				characterId: persp.characterId,
+				thought:
+					(cfg?.tagline && cfg.tagline.length > 0
+						? cfg.tagline
+						: `此一卷，以我${characterName}之眼，重历${seriesName}风云。`),
+			},
+		];
+
+		events.push({
+			id: `evt_${persp.characterId}_${i}`,
+			time: `${seriesName} · 第${i + 1}视角`,
+			title: title,
+			summary:
+				cfg?.description ??
+				`以${characterName}的视角走入《${sl.storyTitle}》，亲历其间每一次抉择、每一次生死。`,
+			perspectives: thoughts,
+			classical:
+				cfg?.sourceExcerpts?.[0]?.original ??
+				`《史记·${seriesName || sl.storyTitle}》所载：此卷记${characterName}生平事迹，详其本末，见其终始。`,
+			analysis:
+				cfg?.sourceExcerpts?.[0]?.translation ??
+				`司马迁作《史记》，以本纪、世家、列传列序人物。${characterName}之事迹，或载入本纪，或归入列传，合而观之，方见太史公笔法之妙。`,
+		});
+
+		// 最多放 5 条，避免过多
+		if (events.length >= 5) break;
+	}
+
+	// 如果一个视角都没有（理论上不会），至少加一条「故事概览」
+	if (events.length === 0) {
+		events.push({
+			id: "evt_overview",
+			time: seriesName || "上古至今",
+			title: sl.storyTitle,
+			summary: sl.tagline || `本卷讲述${sl.storyTitle}的故事。`,
+			perspectives: [
+				{
+					characterId: sl.perspectives?.[0]?.characterId ?? "narrator",
+					thought: "太史公曰：居今之世，志古之道，所以自镜也。",
+				},
+			],
+			classical: "究天人之际，通古今之变，成一家之言。——《太史公自序》",
+			analysis:
+				"此为《史记》全书之总纲。凡一百三十篇，五十二万六千五百言，上起轩辕，下迄汉武，网罗天下放失旧闻，考之行事，稽其成败兴坏之纪。",
+		});
+	}
+
+	// 原文典籍：取 inkStories 第一条配文，或通用史记序
+	const firstPersp = sl.perspectives[0];
+	const firstCfg = firstPersp ? inkStories[firstPersp.storyKey] : undefined;
+	const source: SourceText = {
+		title: `《史记·${seriesName || sl.storyTitle}》节选 · ${sl.storyTitle}`,
+		passages:
+			firstCfg?.sourceExcerpts?.length
+				? firstCfg.sourceExcerpts.map((e) => ({
+						original: e.original,
+						translation: e.translation ?? "",
+					}))
+				: [
+						{
+							original:
+								"太史公曰：先人有言，自周公卒五百岁而有孔子。孔子卒后至于今五百岁，有能绍明世，正《易传》，继《春秋》，本《诗》《书》《礼》《乐》之际？意在斯乎！意在斯乎！小子何敢让焉。",
+							translation:
+								"太史公说：先父有言，自周公去世五百年而有孔子。孔子去世至今又五百年，有人能够继承清明盛世，正定《易传》，接续《春秋》，推原《诗》《书》《礼》《乐》之本？其意在此啊！其意在此啊！我小子怎敢推辞呢。",
+						},
+					],
+	};
+
+	return { events, source };
 }

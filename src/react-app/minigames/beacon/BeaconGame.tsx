@@ -88,6 +88,7 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 	notesRef.current = notes;
 	// 用户是否已实际交互。未交互前不推进音符/不自动 miss，防止挂载后自动判负
 	const userInteractedRef = useRef(false);
+	const pauseOffsetRef = useRef(0); // 首次交互时的时间偏移
 
 	useEffect(() => {
 		if (gameEnded) return;
@@ -101,7 +102,7 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 				let missDelta = 0;
 				const next = prev.map((n) => {
 					if (n.judged) return n;
-					const elapsed = t - startTime;
+					const elapsed = t - startTime - pauseOffsetRef.current;
 					const x = ((elapsed - n.time + NOTE_TRAVEL_MS) / NOTE_TRAVEL_MS) * 100;
 					if (x > MISS_THRESHOLD) {
 						changed = true;
@@ -171,7 +172,7 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 	const triggerJudge = useCallback(
 		(track: number) => {
 			if (gameEnded) return;
-			const elapsed = performance.now() - startTime;
+			const elapsed = performance.now() - startTime - pauseOffsetRef.current;
 			let targetId: number | null = null;
 			let minDist = Infinity;
 			for (const n of notesRef.current) {
@@ -282,7 +283,7 @@ export function BeaconGame({ param, onComplete, onSkip }: MinigameProps) {
 		};
 	}, [onTrackPress, onTrackRelease]);
 
-	const elapsed = now - startTime;
+	const elapsed = now - startTime - pauseOffsetRef.current;
 
 	return (
 		<div className="bc-root">

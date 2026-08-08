@@ -162,6 +162,25 @@
 /* ── 人物分组 ── */
 .codex-char {
 	margin-bottom: var(--space-5);
+	transition: box-shadow 0.4s ease, transform 0.4s ease, border-color 0.4s ease;
+	border-radius: 14px;
+	border: 1px solid transparent;
+}
+/** ⭐ 锚点跳转后高亮闪烁3.5秒 */
+.codex-char--anchor {
+	border-color: var(--color-vermilion, #e74c3c);
+	box-shadow:
+		0 0 0 2px rgba(231, 76, 60, 0.15),
+		0 0 40px -10px rgba(231, 76, 60, 0.45),
+		inset 0 0 30px -10px rgba(245, 215, 110, 0.12);
+	animation: codexAnchorGlow 1.4s ease-in-out 2;
+}
+@keyframes codexAnchorGlow {
+	0%, 100% { transform: translateY(0); }
+	50% { transform: translateY(-2px); box-shadow:
+		0 0 0 3px rgba(245, 215, 110, 0.25),
+		0 10px 50px -10px rgba(231, 76, 60, 0.55),
+		inset 0 0 40px -10px rgba(245, 215, 110, 0.22); }
 }
 .codex-char-head {
 	display: flex;

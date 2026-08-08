@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { BookOpen, Gamepad2, Map, X, Scroll, Trophy } from "lucide-react";
 import "./LearnPanel.css";
+import { hasMinigame } from "../../minigames/registry";
 
 interface KnowledgeSnippet {
 	id: string;
@@ -217,7 +218,7 @@ export function LearnPanel({
 											if (game.onClick) {
 												game.onClick();
 											} else if (onPlayMinigame) {
-												onPlayMinigame(game.id);
+												onPlayMinigame(hasMinigame(game.id) ? game.id : "bamboo");
 											}
 										}}
 									>

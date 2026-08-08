@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect } from "react";
+﻿import { Suspense, lazy, useEffect } from "react";
 import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import { sfx } from "./lib/sfx";
 import { Layout } from "./components/Layout/Layout";
@@ -11,6 +11,8 @@ import { ArchivePage } from "./pages/Archive/ArchivePage";
 import { AchievementPage } from "./pages/Achievement/AchievementPage";
 import { ClassicsPage } from "./pages/Classics/ClassicsPage";
 import { CodexPage } from "./pages/Codex/CodexPage";
+import { DeathsCodexPage } from "./pages/Codex/DeathsCodexPage";
+import { EndingsCodexPage } from "./pages/Codex/EndingsCodexPage";
 import { KnowledgeCodexPage } from "./pages/Codex/KnowledgeCodexPage";
 import { useAuthStore } from "./store/authStore";
 
@@ -47,6 +49,8 @@ const router = createBrowserRouter([
       { path: "archive/:id", element: lazyEl(<ArchiveDetailPage />) },
       { path: "achieve", element: <AchievementPage /> },
       { path: "codex", element: <CodexPage /> },
+      { path: "codex/endings", element: <EndingsCodexPage /> },
+      { path: "codex/deaths", element: <DeathsCodexPage /> },
       { path: "codex/knowledge", element: <KnowledgeCodexPage /> },
       { path: "codex/knowledge/:storyKey", element: <KnowledgeCodexPage /> },
       { path: "classics", element: <ClassicsPage /> },

@@ -7,7 +7,7 @@
 //   3. 九州疏渠（5×5，有山石障碍）
 // param 可传 "1"/"2"/"3" 或 "channel_1"/"channel_2"/"channel_3"，默认第 1 关。
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { MinigameProps } from "../types";
 import { CheckCircle2, RotateCcw, Clock } from "lucide-react";
 import { sfx } from "../../lib/sfx";

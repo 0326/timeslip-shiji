@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CHARACTER_MAP, getCharacterMerged } from "../../data/characters";
 import { RELATION_COLORS, RELATION_LABELS } from "../../data/relationColors";
+import { getSprite } from "../../data/sceneAssets";
 import type { Character, RelationType } from "../../types/character";
 
 interface GraphNode extends d3.SimulationNodeDatum {
@@ -28,6 +29,15 @@ function getGlyphAccent(id: string): { glyph: string; accent: string } {
   return c
     ? { glyph: c.glyph, accent: c.accent }
     : { glyph: id.charAt(0), accent: "#7a6e5c" };
+}
+
+/** ⭐ 同步中文名解析：用 CHARACTER_MAP（已含 LOCAL_NAMES 的 242 条中文映射）兜底，
+ *  不要等 fetchFigure 异步回来才显示中文——异步失败或被过滤时会一直显示拼音。*/
+function resolveName(id: string): string {
+  const c = CHARACTER_MAP[id];
+  if (c && c.name && c.name !== id) return c.name;
+  const sprite = getSprite(id);
+  return sprite.name && sprite.name !== id ? sprite.name : id;
 }
 
 /**
@@ -78,13 +88,14 @@ export function RelationGraph({ focus }: Props) {
 
     // 尝试用主项目 ego 子图（异步已在本 hook 外完成合并，relations 已含主项目数据）
     // mergedFocus.relations 在 getCharacterMerged 中已用主项目覆写（若有）
-    for (const r of mergedFocus.relations) {
+    for (const r of (mergedFocus.relations ?? [])) {
       if (!seen.has(r.targetId)) {
         seen.add(r.targetId);
         const ga = getGlyphAccent(r.targetId);
         nodes.push({
           id: r.targetId,
-          name: r.targetId, // 主项目未拉名字时用 id 占位
+          /** ⭐ 直接同步填中文，不等异步 fetchFigure——异步失败/被过滤时不会再显示拼音 */
+          name: resolveName(r.targetId),
           glyph: ga.glyph,
           accent: ga.accent,
           isMain: false,
@@ -99,7 +110,7 @@ export function RelationGraph({ focus }: Props) {
       });
     }
 
-    // 异步补全邻居节点的 name（从主项目批量拉）
+    // 异步补全邻居节点的 name（从主项目批量拉），仅对 CHARACTER_MAP 缺数据的 id
     const neighborIds = nodes
       .filter((n) => !n.isMain)
       .map((n) => n.id)
@@ -114,12 +125,13 @@ export function RelationGraph({ focus }: Props) {
           const fig = await import("../../services/mainProjectApi").then((m) =>
             m.fetchFigure(id),
           );
-          return { id, name: fig?.name ?? id };
+          /** ⭐ 主项目拿不到时用本地 resolveName 兜底，杜绝最终仍是拼音 id */
+          return { id, name: fig?.name ?? resolveName(id) };
         }),
       ).then((results) => {
         for (const { id, name } of results) {
           const node = nodes.find((n) => n.id === id);
-          if (node) node.name = name;
+          if (node && name && name !== id) node.name = name;
         }
         // 触发重绘：更新文字
         d3.select(svgEl)
@@ -256,7 +268,7 @@ export function RelationGraph({ focus }: Props) {
   }, [mergedFocus, loading]);
 
   const usedTypes = Array.from(
-    new Set(mergedFocus.relations.map((r) => r.type)),
+    new Set((mergedFocus.relations ?? []).map((r) => r.type)),
   );
 
   return (

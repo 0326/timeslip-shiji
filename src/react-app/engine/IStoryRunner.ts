@@ -38,5 +38,10 @@ export interface IStoryRunner {
 	 * 玩家在 GameHost 内完成（或跳过）小游戏后由 UI 调用。
 	 */
 	completeMinigame(result: "win" | "lose" | "skip", score?: number): StoryState;
+	/**
+	 * 手动触发小游戏（从学练测收面板等 UI 触发）
+	 * 与 ink 标签触发的区别：不写入 ink 变量，直接返回小游戏状态
+	 */
+	triggerMinigame?(gameId: string, param?: string): StoryState;
 }
 

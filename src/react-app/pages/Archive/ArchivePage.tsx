@@ -323,8 +323,11 @@ export function ArchivePage() {
       .filter((id) => !EXCLUDED_SPRITE_IDS.has(id))
       .map((id) => {
       const sp = SPRITES[id];
-      const localDynasty = SPRITE_DYNASTY_MAP[id] || "";
-      const localIdentity = SPRITE_IDENTITY_MAP[id] || "";
+      // 资源清单可能比精灵注册表更新得更快；跳过缺少注册项的 ID，
+      // 避免单个立绘缺失导致整个史鉴页面无法渲染。
+      if (!sp) return null;
+      const localDynasty = SPRITE_DYNASTY_MAP[id] || "其他";
+      const localIdentity = SPRITE_IDENTITY_MAP[id] || "其他";
       return {
         id,
         name: sp.name,
@@ -344,7 +347,8 @@ export function ArchivePage() {
         src_juan: null,
         src_chapter: null,
       };
-    });
+    })
+      .filter((item): item is MainFigure => item !== null);
 
     // Step 2: 拉取远程 API 数据进行合并
     fetchFigureList({

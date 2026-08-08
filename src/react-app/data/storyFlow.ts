@@ -1,3 +1,5 @@
+import { inkStories } from "./stories/inkStories";
+
 export type FlowNodeType = "start" | "choice" | "event" | "ending" | "death" | "continue" | "story";
 
 export interface FlowNode {
@@ -9302,5 +9304,95 @@ export const STORY_FLOWS: Record<string, FlowNode[]> = {
 };
 
 export function getStoryFlow(storyKey: string): FlowNode[] | undefined {
-	return STORY_FLOWS[storyKey];
+	const explicit = STORY_FLOWS[storyKey];
+	if (explicit && explicit.length > 0) return explicit;
+
+	/** ⭐ 兜底：缺失 Flow 数据时（如 zhouyafu:hanchu、7 个群豪侠视角等），
+	 *  从 inkStories[storyKey].endings + deaths 动态生成最小可用思维导图，
+	 *  保证史识图谱点进去永远有图，不会白屏或被过滤掉。 */
+	const cfg = inkStories?.[storyKey];
+
+	const nodes: FlowNode[] = [];
+
+	const protagonistName =
+		cfg?.protagonist?.name ??
+		(storyKey.includes(":") ? storyKey.split(":")[0] : storyKey);
+	const storyTitle = cfg?.title ?? `${protagonistName}·故事线`;
+
+	// 1) 起始节点
+	nodes.push({
+		id: "start",
+		type: "start",
+		title: storyTitle,
+		description: cfg?.description ?? cfg?.tagline ?? `以${protagonistName}的视角，重历这段故事。`,
+		next: "choice_root",
+	});
+
+	const endingEntries = Object.entries(cfg?.endings ?? {});
+	const deathEntries = Object.entries(cfg?.deaths ?? {});
+	// 2) 如果有结局或死法 → 走 choice → 分支；否则直接 start → canon 结局
+	if (endingEntries.length === 0 && deathEntries.length === 0) {
+		nodes.push({
+			id: "end_canon",
+			type: "ending",
+			endingKind: "canon",
+			title: `${storyTitle}·正史结局`,
+			description: cfg?.description ?? "完成此视角后，归于正史结局。",
+		});
+		// 修正 start 的 next 直接指向结局
+		nodes[0].next = "end_canon";
+		return nodes;
+	}
+
+	// 3) 中间分叉节点（choice）
+	const choiceTexts: string[] = [];
+	const choices: FlowChoice[] = [];
+
+	// 先加 canon 结局
+	for (const [key, end] of endingEntries) {
+		const endAny = end as any;
+		const isCanon =
+			endAny.kind === "canon" ||
+			key.includes("canon") ||
+			key.includes("zhengshi") ||
+			key.includes("zheng");
+		const title = endAny.title ?? endAny.name ?? (isCanon ? "正史结局" : "分支结局");
+		const nodeId = `end_${key}`;
+		nodes.push({
+			id: nodeId,
+			type: "ending",
+			endingKind: isCanon ? "canon" : "if",
+			title: title,
+			description: endAny.description ?? "",
+		});
+		choiceTexts.push(title);
+		choices.push({ text: title, target: nodeId, isCorrect: isCanon });
+	}
+
+	// 再加死法（death）
+	for (const [key, death] of deathEntries) {
+		const dAny = death as any;
+		const title = dAny.title ?? dAny.name ?? `身亡·${key}`;
+		const nodeId = `death_${key}`;
+		nodes.push({
+			id: nodeId,
+			type: "death",
+			title: title,
+			deathReason: dAny.reason ?? dAny.description ?? "",
+			description: dAny.description ?? "",
+		});
+		choiceTexts.push(title);
+		choices.push({ text: title, target: nodeId });
+	}
+
+	// 4) 插入 choice_root 节点在 start 之后
+	nodes.splice(1, 0, {
+		id: "choice_root",
+		type: "choice",
+		title: "人生·抉择",
+		description: `此去山高水远，${protagonistName}每一次抉择，都将引向不同的结局。`,
+		choices,
+	});
+
+	return nodes;
 }

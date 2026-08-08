@@ -2,6 +2,25 @@
 	max-width: 1200px;
 }
 
+/* 史识图谱沿用“史记全景”的页面骨架：同一宽度、留白、入场节奏与金色信息层级。 */
+.panorama-page.knowledge-codex {
+	margin: 0 auto;
+	padding: var(--space-6) var(--space-6) var(--space-20);
+	min-height: 100vh;
+}
+
+.knowledge-codex .codex-tabs {
+	margin: 0 0 var(--space-6);
+	padding-bottom: var(--space-5);
+	border-bottom: 1px solid var(--color-ink-mid);
+	animation: fadeUp var(--duration-slow) var(--ease-out) both;
+}
+
+.knowledge-codex .codex-stats,
+.knowledge-codex .codex-layout {
+	animation: fadeIn var(--duration-normal) var(--ease-out) both;
+}
+
 .knowledge-head {
 	display: flex;
 	align-items: center;

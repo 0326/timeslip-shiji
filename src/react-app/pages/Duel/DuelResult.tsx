@@ -45,26 +45,10 @@ export default function DuelResult() {
     return null;
   }, [rank]);
 
-  const gameName = (g: string) => DUEL_GAME_MAP[g]?.name || g;
-
-  if (!player || !opponent || !record) {
-    return (
-      <div className="dr-result">
-        <div className="drr-empty">
-          <h2 className="serif">暂无对战记录</h2>
-          <button className="btn btn-primary" onClick={() => navigate("/duel")}>
-            返回角色选择
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  const isWin = record.finalResult === "win";
-
-  /* ── 结算 BGM（胜凯旋/败悲壮，离开即停） ── */
+  const gameName = (g: string) => DUEL_GAME_MAP[g]?.name || g;  // Hook 必须在条件返回之前调用；否则记录从无到有切换时会改变 Hook 顺序。
   useEffect(() => {
-    const trackId = isWin ? WIN_BGM_TRACK : LOSE_BGM_TRACK;
+    if (!record) return;
+    const trackId = record.finalResult === "win" ? WIN_BGM_TRACK : LOSE_BGM_TRACK;
     const track = resolveBgm(trackId);
     if (!track.url) return;
     const audio = new Audio(track.url);
@@ -76,9 +60,23 @@ export default function DuelResult() {
       audio.src = "";
       audio.load();
     };
-  }, [isWin]);
+  }, [record]);
 
-  return (
+  if (!player || !opponent || !record) {
+    return (
+      <div className="dr-result">
+        <div className="drr-empty">
+          <h2 className="serif">鏆傛棤瀵规垬璁板綍</h2>
+          <button className="btn btn-primary" onClick={() => navigate("/duel")}>
+            杩斿洖閫夎
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const isWin = record.finalResult === "win";/* ── 结算 BGM（胜凯旋/败悲壮，离开即停） ── */
+return (
     <div className="dr-result">
       <div className="drr-bg" />
 

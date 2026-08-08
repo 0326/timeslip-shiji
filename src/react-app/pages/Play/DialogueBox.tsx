@@ -70,13 +70,13 @@ export function DialogueBox({ segments, onComplete, onActiveSpeaker, onOpenHint,
 	}
 
 	if (!seg) return null;
-	const isNarration = !seg.speaker || seg.speaker === "旁白";
+	const isNarration = !seg.speaker || seg.speaker === "青月";
 
 	return (
 		<div className="vn-dialogue">
 			<div className="dialogue-box" onClick={next}>
 				<div className={`dialogue-speaker${isNarration ? " narration" : ""}`}>
-					{seg.speaker || "旁白"}
+					{seg.speaker || "青月"}
 				</div>
 				<div className="dialogue-text">
 					{shown}
