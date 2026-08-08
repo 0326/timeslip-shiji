@@ -288,13 +288,12 @@ export function Match3Game({ param, storyKey, onComplete, onSkip }: MinigameProp
 			const { board: finalBoard, cleared, combo } = await resolveBoard(swapped, [
 				...clearedByType,
 			]);
-			// 累加本次连锁消除的 cleared
-			const totalCleared = clearedByType.map((v, i) => v + cleared[i]);
-			setClearedByType(totalCleared);
+			// resolveBoard 内部为动画已更新 clearedByType，此处以返回值覆盖确保精确
+			setClearedByType(cleared);
 			if (combo > 0) setMaxComboHit((prev) => Math.max(prev, combo));
 
 			// 胜利判定
-			if (checkWin(finalBoard, totalCleared, combo)) {
+			if (checkWin(finalBoard, cleared, combo)) {
 				setWon(true);
 				sfx.play("win");
 				swapLockRef.current = false;

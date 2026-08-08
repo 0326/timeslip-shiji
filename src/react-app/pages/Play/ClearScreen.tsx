@@ -4,6 +4,8 @@ import { getStoryline, getNextStoryline } from "../../data/storylines";
 
 interface Props {
 	storyId: string;
+	/** 该视角对应的 storyKey（codex锚点跳转用）*/
+	storyKey?: string;
 	storyTitle: string;
 	deaths: number;
 	choiceRate: number;
@@ -28,12 +30,12 @@ function gradeFor(deaths: number, isCanon: boolean): { grade: string; label: str
 	return { grade: "C", label: "百折而成", sub: "死亡也是阅读", color: "#a08050" };
 }
 
-export function ClearScreen({ storyId, storyTitle, deaths, choiceRate, isCanon, isCanonEnding, ending, endingsUnlocked = 0, endingsTotal = 0, onRestart }: Props) {
+export function ClearScreen({ storyId, storyKey, storyTitle, deaths, choiceRate, isCanon, isCanonEnding, ending, endingsUnlocked = 0, endingsTotal = 0, onRestart }: Props) {
 	const navigate = useNavigate();
 	const gradeInfo = gradeFor(deaths, isCanon);
 	const endingType = isCanonEnding ? "史实终局" : "历史的歧路";
 	const perfect = deaths === 0 && choiceRate >= 1;
-	const showCollection = endingsTotal >= 2;
+	const showCollection = endingsTotal > 0;
 
 	// 篇章导航：回到当前篇章 / 进入下一条故事线（通关后已解锁）
 	const mode = isCanon ? "canon" : "free";
@@ -75,7 +77,8 @@ export function ClearScreen({ storyId, storyTitle, deaths, choiceRate, isCanon, 
 						)}
 						<button
 							className="clear-ending-goto"
-							onClick={() => navigate("/codex")}
+							/** ⭐ 携带 storyKey 作为锚点，CodexPage 接收后自动滚动定位到该人物卡 */
+							onClick={() => navigate(storyKey ? `/codex?storyKey=${encodeURIComponent(storyKey)}` : "/codex")}
 						>
 							<Compass size={13} /> 查看结局图鉴
 						</button>

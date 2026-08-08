@@ -1,5 +1,5 @@
-import { useMemo, useState, type CSSProperties } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Skull, Lock, BookOpen, Compass, Map } from "lucide-react";
 import "./DeathsCodex.css";
 import "./EndingsCodex.css";
@@ -155,24 +155,6 @@ function buildUnifiedCodex(
 			CHARACTERS.map((c) => [c.id, c]),
 		);
 
-		const storyKeyToProgress = new Map<
-			string,
-			Array<{ storylineId: string; charId: string }>
-		>();
-		try {
-			for (const sl of STORYLINES) {
-				if (!sl?.perspectives) continue;
-				for (const persp of sl.perspectives) {
-					if (!persp?.storyKey || !persp?.characterId) continue;
-					const arr = storyKeyToProgress.get(persp.storyKey) ?? [];
-					arr.push({ storylineId: sl.id, charId: persp.characterId });
-					storyKeyToProgress.set(persp.storyKey, arr);
-				}
-			}
-		} catch (_) {
-			/* ignore STORYLINES parse errors */
-		}
-
 		const bySeries: Record<string, UnifiedSeriesGroup> = {};
 		for (const s of SERIES) {
 			bySeries[s.id] = {
@@ -185,75 +167,76 @@ function buildUnifiedCodex(
 			};
 		}
 
-		for (const [storyKey, cfg] of Object.entries(inkStories || {})) {
-			if (!storyKey || !cfg) continue;
-			const parts = storyKey.split(":");
-			const charId = parts[0] ?? "unknown";
-			const seriesId = parts[1] ?? "unknown";
-			const s = bySeries[seriesId];
-			if (!s) continue;
+		/** ⭐ 关键修复：改用 STORYLINES 遍历，sl.series 才是正确的 seriesId（不再用 storyKey.split 瞎猜）*/
+		for (const sl of STORYLINES) {
+			if (!sl?.perspectives) continue;
+			const series = bySeries[sl.series];
+			if (!series) continue;
 
-			const progressRefs = storyKeyToProgress.get(storyKey) ?? [];
-			const unlockedDeaths = new Set<string>();
-			const unlockedEndings = new Set<string>();
-			for (const ref of progressRefs) {
-				try {
-					const prog = storylines?.[ref.storylineId]?.[ref.charId];
+			for (const persp of sl.perspectives) {
+				if (!persp?.storyKey || !persp?.characterId) continue;
+				const cfg = inkStories[persp.storyKey];
+				if (!cfg) continue;
+
+				/** ⭐ 双 key 兼容查询 unlockedDeaths / unlockedEndings（storylineId / storyKey 两种都查）*/
+				const progById = storylines?.[sl.id]?.[persp.characterId];
+				const progByKey = storylines?.[persp.storyKey]?.[persp.characterId];
+				const unlockedDeaths = new Set<string>();
+				const unlockedEndings = new Set<string>();
+				for (const prog of [progById, progByKey]) {
 					if (prog?.unlockedDeaths && Array.isArray(prog.unlockedDeaths)) {
 						for (const d of prog.unlockedDeaths) unlockedDeaths.add(String(d));
 					}
 					if (prog?.unlockedEndings && Array.isArray(prog.unlockedEndings)) {
 						for (const e of prog.unlockedEndings) unlockedEndings.add(String(e));
 					}
-				} catch (_) {
-					/* ignore individual progress lookup errors */
 				}
+
+				const deathsRaw = cfg.deaths ?? {};
+				const deaths =
+					deathsRaw && typeof deathsRaw === "object" ? deathsRaw : ({} as Record<string, DeathEntry>);
+				const deathEntries: UnifiedDeathEntry[] = Object.entries(deaths)
+					.filter(([_did, d]) => d && typeof d === "object")
+					.map(([did, d]) => ({
+						deathId: did,
+						reason: d.reason ?? "死因不明",
+						classical: d.classical ?? "",
+						analysis: d.analysis ?? "",
+						unlocked: unlockedDeaths.has(did),
+					}));
+
+				const endingsRaw = cfg.endings;
+				let endingEntries: UnifiedEndingEntry[] = [];
+				if (endingsRaw && typeof endingsRaw === "object") {
+					const orderedIds = Object.keys(endingsRaw)
+						.filter((eid) => endingsRaw[eid] && typeof endingsRaw[eid] === "object")
+						.sort((a, b) => {
+							const ka = endingsRaw[a].kind;
+							const kb = endingsRaw[b].kind;
+							if (ka === kb) return 0;
+							return ka === "canon" ? -1 : 1;
+						});
+					endingEntries = orderedIds.map((eid, idx) => ({
+						endingId: eid,
+						title: endingsRaw[eid].title ?? eid,
+						kind: endingsRaw[eid].kind === "if" ? "if" : "canon",
+						epigraph: endingsRaw[eid].epigraph,
+						index: idx + 1,
+						unlocked: unlockedEndings.has(eid),
+					}));
+				}
+
+				if (deathEntries.length === 0 && endingEntries.length === 0) continue;
+
+				series.chars.push({
+					storyKey: persp.storyKey,
+					charId: persp.characterId,
+					charName: resolveCharName(persp.characterId, charMap),
+					storyTitle: cfg.title ?? persp.storyKey,
+					endings: endingEntries,
+					deaths: deathEntries,
+				});
 			}
-
-			const deathsRaw = cfg.deaths ?? {};
-			const deaths =
-				deathsRaw && typeof deathsRaw === "object" ? deathsRaw : ({} as Record<string, DeathEntry>);
-			const deathEntries: UnifiedDeathEntry[] = Object.entries(deaths)
-				.filter(([_did, d]) => d && typeof d === "object")
-				.map(([did, d]) => ({
-					deathId: did,
-					reason: d.reason ?? "死因不明",
-					classical: d.classical ?? "",
-					analysis: d.analysis ?? "",
-					unlocked: unlockedDeaths.has(did),
-				}));
-
-			const endingsRaw = cfg.endings;
-			let endingEntries: UnifiedEndingEntry[] = [];
-			if (endingsRaw && typeof endingsRaw === "object") {
-				const orderedIds = Object.keys(endingsRaw)
-					.filter((eid) => endingsRaw[eid] && typeof endingsRaw[eid] === "object")
-					.sort((a, b) => {
-						const ka = endingsRaw[a].kind;
-						const kb = endingsRaw[b].kind;
-						if (ka === kb) return 0;
-						return ka === "canon" ? -1 : 1;
-					});
-				endingEntries = orderedIds.map((eid, idx) => ({
-					endingId: eid,
-					title: endingsRaw[eid].title ?? eid,
-					kind: endingsRaw[eid].kind === "if" ? "if" : "canon",
-					epigraph: endingsRaw[eid].epigraph,
-					index: idx + 1,
-					unlocked: unlockedEndings.has(eid),
-				}));
-			}
-
-			if (deathEntries.length === 0 && endingEntries.length === 0) continue;
-
-			s.chars.push({
-				storyKey,
-				charId,
-				charName: resolveCharName(charId, charMap),
-				storyTitle: cfg.title ?? storyKey,
-				endings: endingEntries,
-				deaths: deathEntries,
-			});
 		}
 
 		return Object.values(bySeries)
@@ -267,11 +250,37 @@ function buildUnifiedCodex(
 
 export function CodexPage() {
 	const navigate = useNavigate();
+	/** ⭐ 接收从 ClearScreen/其他入口传来的 storyKey 锚点，用于自动定位人物卡片 */
+	const [searchParams] = useSearchParams();
+	const anchorStoryKey = searchParams.get("storyKey") ?? undefined;
+
 	const storylines = useUserStore(
 		(s) => (s.progress && s.progress.storylines) || ({} as Record<string, Record<string, PerspectiveProgress>>),
 	);
 	const groups = useMemo(() => buildUnifiedCodex(storylines), [storylines]);
 	const [activeSeries, setActiveSeries] = useState<string | null>(null);
+
+	/** ⭐ URL带storyKey锚点时：自动激活对应系列 + 滚动到该人物卡片并高亮 */
+	useEffect(() => {
+		if (!anchorStoryKey) return;
+		let matchedSeries: string | null = null;
+		for (const g of groups) {
+			if (g.chars.some((c) => c.storyKey === anchorStoryKey)) {
+				matchedSeries = g.seriesId;
+				break;
+			}
+		}
+		if (matchedSeries) setActiveSeries(matchedSeries);
+		// 等 DOM 渲染完成再滚动+高亮
+		const raf = window.requestAnimationFrame(() => {
+			const el = document.getElementById(`codex-char-${encodeURIComponent(anchorStoryKey)}`);
+			if (!el) return;
+			el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+			el.classList.add("codex-char--anchor");
+			setTimeout(() => el.classList.remove("codex-char--anchor"), 3500);
+		});
+		return () => window.cancelAnimationFrame(raf);
+	}, [anchorStoryKey, groups]);
 
 	const totalEndingsUnlocked = groups.reduce(
 		(n, g) => n + g.chars.reduce((m, c) => m + c.endings.filter((e) => e.unlocked).length, 0),
@@ -397,7 +406,12 @@ export function CodexPage() {
 										c.deaths.filter((d) => d.unlocked).length;
 
 									return (
-										<article key={c.storyKey} className="codex-char">
+										<article
+											key={c.storyKey}
+											/** ⭐ 锚点id：从ClearScreen跳转后定位+高亮闪烁 */
+											id={`codex-char-${encodeURIComponent(c.storyKey)}`}
+											className="codex-char"
+										>
 											<div className="codex-char-head">
 												<div className="codex-char-name">
 													<BookOpen size={14} /> {c.charName}

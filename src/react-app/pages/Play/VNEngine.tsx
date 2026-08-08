@@ -68,7 +68,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 	const setBgmEnabled = useUiStore((s) => s.setBgmEnabled);
 	const bgmDucked = useUiStore((s) => s.bgmDucked);
 	const isCanon = mode !== "free";
-	const { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, revertToChoice } = useStory(
+	const { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, triggerMinigame, revertToChoice } = useStory(
 		storyId,
 		charId,
 		storyKey,
@@ -586,6 +586,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 			{showClear && (
 				<ClearScreen
 					storyId={storyId}
+					storyKey={storyKey}
 					storyTitle={storyTitle}
 					deaths={persp.deathCount}
 					choiceRate={persp.bestChoiceRate}
@@ -709,7 +710,7 @@ export function VNEngine({ storyId, charId, storyKey, storyTitle, charName, mode
 						// 手动触发小游戏（从学练测收面板）
 						// 通过 StoryAdapter 的手动小游戏触发方法
 						// eslint-disable-next-line @typescript-eslint/no-explicit-any
-						(adapter as any).triggerMinigame?.(gameId);
+						triggerMinigame(gameId);
 					}}
 					onOpenKnowledgeGraph={() => {
 						navigate(`/codex/knowledge/${encodeURIComponent(storyKey)}`);

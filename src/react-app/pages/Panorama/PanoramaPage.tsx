@@ -7,11 +7,12 @@ import { getCharacter } from "../../data/characters";
 import { getPanorama } from "../../data/panorama";
 import { getStoryFlow } from "../../data/storyFlow";
 import { getButterflyEffects } from "../../data/butterfly";
+import { inkStories } from "../../data/stories/inkStories";
 import { useUserStore } from "../../store/userStore";
 import { useAuthGate } from "../../hooks/useAuthGate";
 import { storylineProgress } from "../../store/selectors";
 import { Badge, Button } from "../../components/ui";
-import { ERA_LABELS } from "../../types/character";
+import { ERA_LABELS, type Character, type CharacterRelation, type Era, type RelationType } from "../../types/character";
 import { EventTimeline } from "./EventTimeline";
 import { RelationGraph } from "./RelationGraph";
 import { SourceLibrary } from "./SourceLibrary";
@@ -19,6 +20,106 @@ import { StoryFlow } from "./StoryFlow";
 import { ButterflyTimeline } from "./ButterflyTimeline";
 
 type Tab = "timeline" | "relation" | "source" | "flow" | "butterfly";
+
+const LOCAL_CHARACTER_NAMES: Record<string, string> = {
+	huangdi: "黄帝", yao: "帝尧", shun: "帝舜", yu: "大禹",
+	tang: "成汤", yiyin: "伊尹", wuding: "武丁", zhou: "商纣王",
+	wenwang: "周文王", wuwang: "周武王", zhougong: "周公旦", jiangshang: "姜太公", youwang: "周幽王",
+	qihuan: "齐桓公", guanzhong: "管仲", chonger: "晋文公", jiezitui: "介子推", chuzy: "楚庄王",
+	goujian: "越王勾践", fuchai: "吴王夫差", wuzixu: "伍子胥", sunwu: "孙武子",
+	shangyang: "商鞅", qinshihuang: "秦始皇", baiqi: "白起", suqin: "苏秦", zhangyi: "张仪",
+	linxiangru: "蔺相如", lianpo: "廉颇", wangjian: "王翦", lvbuwei: "吕不韦", mengtian: "蒙恬", lisi: "李斯",
+	jingke: "荆轲", niezheng: "聂政", zhuanzhu: "专诸", yurang: "豫让", gaojianli: "高渐离", guojie: "郭解",
+	hanwen: "汉文帝", zhoubo: "周勃", zhouyafu: "周亚夫", lvhou: "吕后",
+	hanxin: "韩信", xiangyu: "项羽", zhangliang: "张良", liubang: "刘邦",
+	xiaohe: "萧何", fanzeng: "范增", fankuai: "樊哙", yuji: "虞姬",
+};
+
+function resolveName(id: string): string {
+	return LOCAL_CHARACTER_NAMES[id] || id;
+}
+
+function buildFallbackCharacter(focusId: string, storyId: string): Character {
+	const story = getStoryline(storyId);
+	const perspectiveIds = story?.perspectives?.map((p) => p.characterId) || [];
+	const perspectiveStoryKeys = story?.perspectives?.map((p) => p.storyKey) || [];
+	const relatedIds = new Set<string>();
+	if (focusId) relatedIds.add(focusId);
+	perspectiveIds.forEach((id) => relatedIds.add(id));
+	(story?.relatedCharacters || []).forEach((id) => relatedIds.add(id));
+
+	const sideNames: Record<string, string> = {};
+	for (const sk of perspectiveStoryKeys) {
+		const cfg = inkStories[sk];
+		if (cfg) {
+			const p = (cfg as unknown as { protagonist?: { id?: string; name?: string } })?.protagonist;
+			if (p?.id && p?.name) sideNames[p.id] = p.name;
+			const sides = (cfg as unknown as { sideCharacters?: Array<{ id?: string; name?: string }> })?.sideCharacters || [];
+			sides.forEach((sc) => {
+				if (sc?.id && sc?.name) sideNames[sc.id] = sc.name;
+			});
+		}
+	}
+
+	const nameOf = (id: string): string => sideNames[id] || resolveName(id);
+
+	const candidates = Array.from(relatedIds).filter((id) => id && id !== focusId);
+	const maxRels: Array<{ targetId: string; type: RelationType; label: string }> = [];
+	const used = new Set<string>();
+
+	let counter = 0;
+	const typesPool: Array<{ type: RelationType; prefix: string }> = [
+		{ type: "colleague", prefix: "同朝之人" },
+		{ type: "friend", prefix: "故事同僚" },
+		{ type: "rival", prefix: "剧情人物" },
+		{ type: "enemy", prefix: "剧情对立" },
+		{ type: "family", prefix: "同篇人物" },
+	];
+	for (const tid of candidates) {
+		if (maxRels.length >= 8) break;
+		if (used.has(tid)) continue;
+		used.add(tid);
+		const pool = typesPool[counter % typesPool.length];
+		maxRels.push({
+			targetId: tid,
+			type: pool.type,
+			label: `${pool.prefix}·${nameOf(tid)}`,
+		});
+		counter++;
+	}
+
+	if (maxRels.length < 3) {
+		const filler = perspectiveIds.filter((id) => id !== focusId).slice(0, 3 - maxRels.length);
+		for (const tid of filler) {
+			if (used.has(tid)) continue;
+			used.add(tid);
+			maxRels.push({
+				targetId: tid,
+				type: "colleague",
+				label: `故事线同篇·${nameOf(tid)}`,
+			});
+		}
+	}
+
+	const accentColors = ["#8b6914", "#5a7a8f", "#7a5a8f", "#8f5a5a", "#5a8f7a", "#6b8f5a"];
+	const era: Era = (story?.era as Era) || "mixed";
+
+	return {
+		id: focusId || "unknown",
+		name: nameOf(focusId),
+		title: `${nameOf(focusId)} · ${story?.title || ""}`,
+		era,
+		accent: accentColors[(focusId || "").length % accentColors.length],
+		glyph: (nameOf(focusId) || "?").slice(0, 1),
+		description: `以${nameOf(focusId)}为中心的本篇人物关系（兜底合成）`,
+		classicalQuote: "—",
+		historicalSource: "《史记全景·本篇》",
+		relatedStorylines: storyId ? [storyId] : [],
+		relations: maxRels as CharacterRelation[],
+		avatarUrl: null,
+		bioSummary: null,
+	};
+}
 
 export default function PanoramaPage() {
 	const { storyId = "" } = useParams();
@@ -29,13 +130,19 @@ export default function PanoramaPage() {
 
 	const story = getStoryline(storyId);
 	const panorama = getPanorama(storyId);
-	const focus = story ? getCharacter(story.focusCharacter) : undefined;
+	let focus = story ? getCharacter(story.focusCharacter) : undefined;
 	const { done } = storylineProgress(progress, storyId);
 	const flow = story?.perspectives[0] ? getStoryFlow(story.perspectives[0].storyKey) : undefined;
 	const butterfly = getButterflyEffects(storyId);
 
+	const focusEmpty = !focus || !focus.relations || focus.relations.length === 0;
+	const fallbackFocus = story && (focusEmpty)
+		? buildFallbackCharacter(story?.focusCharacter ?? "", storyId)
+		: undefined;
+	const effectiveFocus = (focusEmpty ? fallbackFocus : focus) as Character | undefined;
+
 	// 无效故事线
-	if (!story || !panorama || !focus) {
+	if (!story || !panorama || !effectiveFocus) {
 		return (
 			<div className="panorama-page">
 				<div className="empty-state" style={{ paddingTop: 120 }}>
@@ -131,16 +238,19 @@ export default function PanoramaPage() {
 				{tab === "relation" && (
 					<div className="pano-relation-wrap">
 						<div className="pano-relation-intro">
-							以 <span className="gold serif">{focus.name}</span> 为中心，看这段历史中人与人的恩怨亲疏。
+							以 <span className="gold serif">{effectiveFocus.name}</span> 为中心，看这段历史中人与人的恩怨亲疏。
+							{fallbackFocus && (
+								<span style={{ fontSize: 12, opacity: 0.6, marginLeft: 8 }}>（关系网由本篇剧情自动合成）</span>
+							)}
 						</div>
-						<RelationGraph focus={focus} />
+						<RelationGraph focus={effectiveFocus} />
 					</div>
 				)}
 				{tab === "source" && <SourceLibrary storyId={story.id} source={panorama.source} />}
 				{tab === "flow" && flow && (
 					<div className="pano-flow-wrap">
 						<div className="pano-flow-intro">
-							以 <span className="gold serif">{focus.name}</span> 为主角，看这段历史中每一个选择如何铺就不同的命运。
+							以 <span className="gold serif">{effectiveFocus.name}</span> 为主角，看这段历史中每一个选择如何铺就不同的命运。
 						</div>
 						<StoryFlow nodes={flow} title={story.subtitle} />
 					</div>

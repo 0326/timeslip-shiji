@@ -130,13 +130,11 @@ export function AstroGame({ onComplete, onSkip }: MinigameProps) {
 				setBusy(true);
 				if (cardA.pairId === cardB.pairId) {
 					sfx.play("match");
-					// 配对成功：短暂展示后保持翻开
-					setTimeout(() => {
-						setMatchedPairIds((prev) => new Set(prev).add(cardA.pairId));
-						setFlipped([]);
-						lockRef.current = false;
-						setBusy(false);
-					}, 480);
+					// 配对成功：立即标记为已配对
+					setMatchedPairIds((prev) => new Set(prev).add(cardA.pairId));
+					setFlipped([]);
+					lockRef.current = false;
+					setBusy(false);
 				} else {
 					// 不配对：1.5s 后翻回
 					sfx.play("wrong");

@@ -4,7 +4,7 @@ import { ArrowLeft, CheckCircle2, XCircle, MinusCircle } from "lucide-react";
 import "./DuelPlay.css";
 import { GameHost } from "../../minigames/GameHost";
 import type { MinigameOutcome } from "../../minigames/types";
-import { DUEL_CHARACTER_MAP, saveDuelRecord, DUEL_GAME_MAP } from "../../data/duel";
+import { DUEL_CHARACTER_MAP, saveDuelRecord, DUEL_GAME_MAP, DUEL_GAME_IDS } from "../../data/duel";
 import type { DuelRecord } from "../../data/duel";
 import { resolveBgm } from "../../data/bgm";
 
@@ -20,8 +20,12 @@ export default function DuelPlay() {
   const opponent = DUEL_CHARACTER_MAP[opponentId];
 
   const games = useMemo(() => {
-    const raw = searchParams.get("games");
-    return raw ? raw.split(",") : ["card", "zongheng", "zhuhou", "match3", "bamboo"];
+    const raw = searchParams.get('games');
+    const parsed = raw
+      ? raw.split(',').map((id) => id.trim()).filter((id) => DUEL_GAME_MAP[id])
+      : [];
+    // 对决模式固定为最多三局；非法/空参数回退到已注册游戏。
+    return (parsed.length > 0 ? parsed : DUEL_GAME_IDS).slice(0, 3);
   }, [searchParams]);
 
   const [round, setRound] = useState(0);

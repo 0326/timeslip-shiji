@@ -64,15 +64,8 @@ export function GameHost({ gameId, param, storyKey, mode, onComplete }: GameHost
 			setPhase("done");
 			return;
 		}
-		// 1.5 秒保护：如果是刚进入 playing 就完成，防止竞态自动通过
-		const elapsed = Date.now() - playingSinceRef.current;
-		if (phase === "playing" && playingSinceRef.current > 0 && elapsed < 1500) {
-			console.warn(`[GameHost] "${gameId}" completed in ${elapsed}ms — remount (retry=${retryKey})`);
-			playingSinceRef.current = Date.now();
-			setRetryKey((k) => k + 1);
-			return;
-		}
-		safeComplete(outcome);
+		// 完成结果直接交给宿主，避免快速完成的小游戏被误判并强制重开。
+	safeComplete(outcome);
 	}, [gameId, phase, retryKey, safeComplete]);
 
 	// ── 跳过（二次确认给主区按钮用） ──

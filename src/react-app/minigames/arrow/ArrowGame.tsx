@@ -206,7 +206,8 @@ export function ArrowGame({ param, onComplete, onSkip }: MinigameProps) {
 		sfx.resetCombo();
 		const initQueue = makeInitialQueue(level);
 		setQueue(initQueue);
-		setOffsetPx(0);
+		const safeOffset = DANGER_X - START_X - level.totalBalls * BALL_SIZE - 2 * BALL_SIZE;
+		setOffsetPx(safeOffset);
 		setCurrentArrow(pickArrowColor(level, initQueue));
 		setNextArrow(pickArrowColor(level, initQueue));
 		setRemovedTotal(0);

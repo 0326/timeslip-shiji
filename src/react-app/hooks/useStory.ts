@@ -21,6 +21,8 @@ export interface UseStoryResult {
 	retry: () => void;
 	restart: () => void;
 	completeMinigame: (result: "win" | "lose" | "skip", score?: number) => void;
+t/** 手动触发小游戏（从学练测收面板），返回小游戏状态 */
+	triggerMinigame: (gameId: string, param?: string) => StoryState | null;
 	/** 回到上一个抉择点（不推进剧情），返回 false 表示无快照可恢复 */
 	revertToChoice: () => boolean;
 }
@@ -152,10 +154,15 @@ export function useStory(
 	}, [storyId, charId, store]);
 
 	const handleEnded = useCallback(
-		(r: IStoryRunner) => {
+		(r: IStoryRunner, endedState?: StoryState) => {
 			store
 				.getState()
 				.completePerspective(storyId, charId, r.getChoiceRate(), r.getCompletedNodes());
+			if (endedState?.ending?.id) {
+				store.getState().unlockEnding(storyId, charId, endedState.ending.id);
+			} else if (endedState?.endingAchievement) {
+				store.getState().unlockEnding(storyId, charId, endedState.endingAchievement);
+			}
 		},
 		[storyId, charId, store],
 	);
@@ -171,7 +178,7 @@ export function useStory(
 			const next = runner.advance();
 			setState(next);
 			checkpointScene(next);
-			if (next.ended) handleEnded(runner);
+			if (next.ended) handleEnded(runner, next);
 			else if (!next.death) persist();
 		}
 		setLoading(false);
@@ -188,7 +195,7 @@ export function useStory(
 			if (next.death) {
 				onDeath(next.death);
 			} else if (next.ended) {
-				handleEnded(r);
+				handleEnded(r, next);
 			} else {
 				persist();
 			}
@@ -205,7 +212,7 @@ export function useStory(
 		if (next.death) {
 			onDeath(next.death);
 		} else if (next.ended) {
-			handleEnded(r);
+			handleEnded(r, next);
 		} else {
 			persist();
 		}
@@ -246,13 +253,21 @@ export function useStory(
 			if (next.death) {
 				onDeath(next.death);
 			} else if (next.ended) {
-				handleEnded(r);
+				handleEnded(r, next);
 			} else {
 				persist();
 			}
 		},
 		[onDeath, persist, handleEnded, checkpointScene],
 	);
+	const triggerMinigame = useCallback((gameId: string, param?: string): StoryState | null => {
+		const r = runnerRef.current;
+		if (!r || !r.triggerMinigame) return null;
+		const next = r.triggerMinigame(gameId, param);
+		setState(next);
+		checkpointScene(next);
+		return next;
+	}, [checkpointScene]);
 
 	const revertToChoice = useCallback(() => {
 		const r = runnerRef.current;
@@ -267,5 +282,5 @@ export function useStory(
 		return true;
 	}, [checkpointScene]);
 
-	return { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, revertToChoice };
+	return { state, scene, loading, notFound, makeChoice, advance, retry, restart, completeMinigame, triggerMinigame, revertToChoice };
 }

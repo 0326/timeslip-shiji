@@ -86,7 +86,9 @@ export function StoryFlow({ nodes, title }: Props) {
 
 		const assignLevel = (id: string, level: number) => {
 			const existing = levels.get(id);
-			if (existing !== undefined && existing >= level) return;
+			// 图谱允许回环/重复引用；节点一旦访问过就不再递归，
+			// 否则循环边会不断增加 level，最终耗尽调用栈。
+			if (existing !== undefined) return;
 			levels.set(id, level);
 			const node = nodeMap.get(id);
 			if (!node) return;
@@ -102,7 +104,13 @@ export function StoryFlow({ nodes, title }: Props) {
 				assignLevel(node.next, level + 1);
 			}
 		};
-		assignLevel("start", 0);
+		// 旧图谱数据并不都以 `start` 为根节点。缺少该节点时从首个节点
+		// 开始布局，避免空布局进入 Math.max(...[]) 而使整个页面崩溃。
+		const rootId = nodeMap.has("start") ? "start" : nodes[0]?.id;
+		if (rootId) assignLevel(rootId, 0);
+		if (levels.size === 0) {
+			return { layoutNodes: [], layoutLinks: [], viewboxW: 1200, viewboxH: 640 };
+		}
 
 		const maxLevel = Math.max(...Array.from(levels.values()));
 		const byLevel: string[][] = Array.from({ length: maxLevel + 1 }, () => []);

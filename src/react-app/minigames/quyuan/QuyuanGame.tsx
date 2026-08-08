@@ -115,7 +115,8 @@ export function QuyuanGame({ onComplete, onSkip }: MinigameProps) {
 			sfx.play("correct");
 			setOptionState("correct");
 			setRevealing(true);
-			const nextScore = score + 1;
+			// 只有第一次就答对才加分；之前点错过任何选项则算答错
+			const nextScore = wrongSet.size === 0 ? score + 1 : score;
 			setScore(nextScore);
 			// 1.6s 后切下一题（让玩家读完注解）
 			const t = setTimeout(() => advance(nextScore, qIndex + 1), 1600);

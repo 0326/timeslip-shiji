@@ -4,6 +4,7 @@
  * 所有角色严格过滤：仅包含已生成图鉴 CG 的角色。
  */
 import { getArchiveCGUrl } from "./sceneAssets/archivePortraits";
+import { ARCHIVE_SPRITE_IDS } from "./sceneAssets/index";
 
 /* ═════════════════════ 类型 ═════════════════════ */
 
@@ -302,7 +303,10 @@ const BLOCKLIST = new Set([
 function buildDuelCharacters(): DuelCharacter[] {
   const allIds = [...new Set([...Object.keys(RIVALRIES), ...Object.values(RIVALRIES).flat()])];
 
+  const archiveIds = new Set(ARCHIVE_SPRITE_IDS);
+
   return allIds
+    .filter(id => archiveIds.has(id))
     .filter(id => !BLOCKLIST.has(id))
     .map(id => ({ id, url: getArchiveCGUrl(id) }))
     .filter(({ url }) => url !== null)
