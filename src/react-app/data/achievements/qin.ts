@@ -19,6 +19,15 @@ export const qinAchievements: Record<string, Achievement> = {
 		points: 250,
 		icon: "🐕",
 	},
+	qinmu_baxi: {
+		id: "qinmu_baxi",
+		name: "缪公 · 霸西戎",
+		description: "走完秦缪公任好的一生——五羖赎贤、救灾恤邻、用由余霸西戎，济河焚舟复殽耻",
+		classicalQuote: "济河焚舟，遂霸西戎。",
+		type: "story",
+		points: 250,
+		icon: "🏹",
+	},
 	jingke_yishui: {
 		id: "jingke_yishui",
 		name: "易水寒",

@@ -185,7 +185,7 @@ export function ArchivePage() {
   const [dynasty, setDynasty] = useState<string>("");
   const [identity, setIdentity] = useState<string>("");
   const [q, setQ] = useState("");
-  const [sort, setSort] = useState<"era" | "star">("era");
+  const [sort, setSort] = useState<"era" | "star">("star");
 
   // 客户端分页
   const [page, setPage] = useState(1);

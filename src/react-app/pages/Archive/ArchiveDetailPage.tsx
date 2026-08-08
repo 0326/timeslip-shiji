@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { motion, useSpring } from "framer-motion";
-import { BookOpen, GitBranch, List, X } from "lucide-react";
+import { BookOpen, GitBranch, X } from "lucide-react";
 import "./Archive.css";
 import { Drawer } from "../../components/ui";
 import {
@@ -115,30 +115,16 @@ function Portrait({
 	);
 }
 
-/** 生平历程抽屉：容器收编为 components/ui 的 <Drawer>（自带 Esc + 音效 + 右滑入） */
+/** 生平历程抽屉：仅时间线 */
 function QuestDrawer({
 	open,
 	onClose,
 	figure,
-	onNodeClick,
 }: {
 	open: boolean;
 	onClose: () => void;
 	figure: MainFigureDetail;
-	onNodeClick: (id: string) => void;
 }) {
-	const [tab, setTab] = useState<"timeline" | "mindmap">("timeline");
-	const mindMapGraph = useMemo(
-		() => buildMindMapGraph(figure.id),
-		[figure.id],
-	);
-	const hasRelations = mindMapGraph.links.length > 0 || mindMapGraph.nodes.length > 1;
-
-	useEffect(() => {
-		// 人物切换时，若没有关联人物就默认 timeline；切回 timeline 防止空的思维导图
-		if (!hasRelations) setTab("timeline");
-	}, [figure.id, hasRelations]);
-
 	return (
 		<Drawer open={open} onClose={onClose}>
 			<div className="ad-drawer-head">
@@ -147,29 +133,6 @@ function QuestDrawer({
 						生平历程 · {figure.passages.length} 事
 					</div>
 					<div className="ad-drawer-title">{figure.name}</div>
-				</div>
-				<div className="ad-drawer-tabs">
-					<button
-						type="button"
-						className={`ad-drawer-tab ${tab === "timeline" ? "is-active" : ""}`}
-						onClick={() => setTab("timeline")}
-						aria-label="时间线"
-						title="时间线视图"
-					>
-						<List size={14} />
-						<span>时间线</span>
-					</button>
-					<button
-						type="button"
-						className={`ad-drawer-tab ${tab === "mindmap" ? "is-active" : ""}`}
-						onClick={() => setTab("mindmap")}
-						aria-label="关系思维导图"
-						title={hasRelations ? "事件关联思维导图" : "暂无关联人物"}
-						disabled={!hasRelations}
-					>
-						<GitBranch size={14} />
-						<span>关联人物</span>
-					</button>
 				</div>
 				<button
 					className="ad-drawer-close"
@@ -180,58 +143,81 @@ function QuestDrawer({
 				</button>
 			</div>
 			<div className="ad-drawer-body">
-				{tab === "timeline" ? (
-					figure.passages.length === 0 ? (
-						<div
-							style={{
-								textAlign: "center",
-								color: "var(--color-muted)",
-								padding: "var(--space-8)",
-							}}
-						>
-							此人物史料待补录
-						</div>
-					) : (
-						<ol className="ad-timeline">
-							{figure.passages.map((p, idx) => (
-								<li className="ad-quest" key={p.passage_id || idx}>
-									<div className="ad-quest-rail">
-										<span className="ad-node" />
-									</div>
-									<div className="ad-quest-card">
-										<span className="ad-quest-year">
-											{yearFull(p.year)}
-											{p.location && (
-												<span className="ad-quest-loc">· {p.location}</span>
-											)}
-										</span>
-										<h3 className="ad-quest-title">
-											{p.title || p.chapter_name}
-										</h3>
-										<p className="ad-quest-text">{p.content}</p>
-										<span className="ad-quest-link">
-											出自《{p.book_name}》· 第{p.volume_no}卷 · {p.chapter_name}
-										</span>
-									</div>
-								</li>
-							))}
-						</ol>
-					)
+				{figure.passages.length === 0 ? (
+					<div
+						style={{
+							textAlign: "center",
+							color: "var(--color-muted)",
+							padding: "var(--space-8)",
+						}}
+					>
+						此人物史料待补录
+					</div>
 				) : (
-					hasRelations ? (
-						<MindMap graph={mindMapGraph} onNodeClick={onNodeClick} />
-					) : (
-						<div
-							style={{
-								textAlign: "center",
-								color: "var(--color-muted)",
-								padding: "var(--space-8)",
-							}}
-						>
-							暂无关联人物可展示
-						</div>
-					)
+					<ol className="ad-timeline">
+						{figure.passages.map((p, idx) => (
+							<li className="ad-quest" key={p.passage_id || idx}>
+								<div className="ad-quest-rail">
+									<span className="ad-node" />
+								</div>
+								<div className="ad-quest-card">
+									<span className="ad-quest-year">
+										{yearFull(p.year)}
+										{p.location && (
+											<span className="ad-quest-loc">· {p.location}</span>
+										)}
+									</span>
+									<h3 className="ad-quest-title">
+										{p.title || p.chapter_name}
+									</h3>
+									<p className="ad-quest-text">{p.content}</p>
+									<span className="ad-quest-link">
+										出自《{p.book_name}》· 第{p.volume_no}卷 · {p.chapter_name}
+									</span>
+								</div>
+							</li>
+						))}
+					</ol>
 				)}
+			</div>
+		</Drawer>
+	);
+}
+
+/** 关联人物抽屉：思维导图 */
+function MindMapDrawer({
+	open,
+	onClose,
+	figure,
+	onNodeClick,
+}: {
+	open: boolean;
+	onClose: () => void;
+	figure: MainFigureDetail;
+	onNodeClick: (id: string) => void;
+}) {
+	const mindMapGraph = useMemo(
+		() => buildMindMapGraph(figure.id),
+		[figure.id],
+	);
+
+	return (
+		<Drawer open={open} onClose={onClose}>
+			<div className="ad-drawer-head">
+				<div>
+					<div className="ad-drawer-eyebrow">关联人物</div>
+					<div className="ad-drawer-title">{figure.name}</div>
+				</div>
+				<button
+					className="ad-drawer-close"
+					onClick={onClose}
+					aria-label="关闭"
+				>
+					<X size={14} />
+				</button>
+			</div>
+			<div className="ad-drawer-body">
+				<MindMap graph={mindMapGraph} onNodeClick={onNodeClick} />
 			</div>
 		</Drawer>
 	);
@@ -248,6 +234,7 @@ export default function ArchiveDetailPage() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [questOpen, setQuestOpen] = useState(false);
+	const [mindMapOpen, setMindMapOpen] = useState(false);
 	const [navIds, setNavIds] = useState<string[]>(
 		(location.state as { ids?: string[] })?.ids ?? [],
 	);
@@ -259,6 +246,7 @@ export default function ArchiveDetailPage() {
 		setLoading(true);
 		setError(null);
 		setQuestOpen(false);
+		setMindMapOpen(false);
 		setAssetBundle(null);
 		Promise.all([fetchFigureDetail(id), fetchFigureBundle(id)])
 			.then(([fig, bundle]) => {
@@ -360,9 +348,9 @@ export default function ArchiveDetailPage() {
 			navigate(`/archive/${nodeId}`, {
 				state: { ids: navIds, from: backFrom },
 			});
-			// 路由切换后会重新 mount；用 sessionStorage 标记"新页面打开抽屉"
+			// 路由切换后会重新 mount；用 sessionStorage 标记"新页面打开关联人物抽屉"
 			try {
-				sessionStorage.setItem("timeslip.archive.questOpen", "1");
+				sessionStorage.setItem("timeslip.archive.mindMapOpen", "1");
 			} catch {
 				/* ignore */
 			}
@@ -370,24 +358,24 @@ export default function ArchiveDetailPage() {
 		[figure?.id, navigate, navIds, backFrom],
 	);
 
-	// 从 sessionStorage 恢复"跳转后继续打开抽屉"的状态
+	// 从 sessionStorage 恢复"跳转后继续打开关联人物抽屉"的状态
 	useEffect(() => {
 		let v: string | null = null;
 		try {
-			v = sessionStorage.getItem("timeslip.archive.questOpen");
-			sessionStorage.removeItem("timeslip.archive.questOpen");
+			v = sessionStorage.getItem("timeslip.archive.mindMapOpen");
+			sessionStorage.removeItem("timeslip.archive.mindMapOpen");
 		} catch {
 			/* ignore */
 		}
 		if (v === "1" && figure) {
-			setQuestOpen(true);
+			setMindMapOpen(true);
 		}
 	}, [figure]);
 
 	// 键盘左右方向键
 	useEffect(() => {
 		const onKey = (e: KeyboardEvent) => {
-			if (questOpen) return;
+			if (questOpen || mindMapOpen) return;
 			const tag = (e.target as HTMLElement)?.tagName;
 			if (tag === "INPUT" || tag === "TEXTAREA") return;
 			if (e.key === "ArrowLeft") {
@@ -400,7 +388,7 @@ export default function ArchiveDetailPage() {
 		};
 		window.addEventListener("keydown", onKey);
 		return () => window.removeEventListener("keydown", onKey);
-	}, [goPrev, goNext, questOpen]);
+	}, [goPrev, goNext, questOpen, mindMapOpen]);
 
 	// 本地游戏化元数据（穿越按钮用）
 	const gameChar = id ? getCharacter(id) : undefined;
@@ -411,6 +399,12 @@ export default function ArchiveDetailPage() {
 		const styleId = assetBundle.defaultStyle;
 		return styleId ? assetBundle.assets[styleId] ?? null : null;
 	}, [assetBundle]);
+
+	// 关联人物思维导图（必须在早返回之前，保证 hooks 顺序稳定）
+	const mindMapGraph = useMemo(
+		() => figure ? buildMindMapGraph(figure.id) : { nodes: [] as any[], links: [] as any[] },
+		[figure?.id],
+	);
 
 	if (loading) {
 		return <div className="ad-loading">正在加载史册…</div>;
@@ -436,6 +430,7 @@ export default function ArchiveDetailPage() {
 	const titlePlates =
 		figure.aliases?.filter((a) => a.length > 1).slice(0, 4) || [];
 	const hasQuests = figure.passages.length > 0;
+	const hasRelations = mindMapGraph.links.length > 0 || mindMapGraph.nodes.length > 1;
 	// 本地图鉴CG立绘优先，有本地立绘才算 fullscene（不再检查远程API全身图）
 	const hasLocalArchive = !!getArchivePortrait(figure.id);
 	const hasFullScene = hasLocalArchive;
@@ -542,6 +537,16 @@ export default function ArchiveDetailPage() {
 						)}
 					</button>
 
+					{hasRelations && (
+						<button
+							className="ad-act"
+							onClick={() => setMindMapOpen(true)}
+						>
+							<GitBranch size={14} />
+							关联人物
+						</button>
+					)}
+
 					{playableStorylines.map((st) => (
 							<button
 								key={st.id}
@@ -592,7 +597,8 @@ export default function ArchiveDetailPage() {
 			</button>
 		</div>
 
-		<QuestDrawer open={questOpen} onClose={() => setQuestOpen(false)} figure={figure} onNodeClick={handleNodeClick} />
+		<QuestDrawer open={questOpen} onClose={() => setQuestOpen(false)} figure={figure} />
+		<MindMapDrawer open={mindMapOpen} onClose={() => setMindMapOpen(false)} figure={figure} onNodeClick={handleNodeClick} />
 	</div>
 );
 }

@@ -101,11 +101,15 @@
 「你怎么处置他？」 #speaker:青月
 
 * #correct #hint:桀杀关龙逄——不听直谏，杀之。这是最后一位敢言的大臣，杀了他，再无人敢谏。 [你大怒：「朕的天下，朕说了算。」你杀了关龙逄。]
-	-> c_death_shatang
+	-> c_mingtiao
 * [「你说得对。可你说得太晚了。」你没有杀他，但也没有听——只是沉默]
 	-> c_death_silent
 * [你把关龙逄打了一顿，赶了出去。既没杀，也没听]
 	-> c_death_exile
+* [你终于醒悟——可天下已乱难平，你愿让贤，保夏祀不绝]
+	-> if_rangxian_1
+* [你痛定思痛，废酒池、释功臣、修德安民——要中兴夏室]
+	-> if_zhongxing_1
 
 === c_death_shatang ===
 #bg:xia_terrace
@@ -192,7 +196,7 @@
 #show:qingyue:sad:float
 「全没了。不是一朝一夕没的——是一寸一寸，被傲慢吃掉的。」 #speaker:青月
 #show:qingyue:smile:float
-「呼——你走完了桀的这一程。最后想问你一个问题：如果你早知道结局，你还会不会说那句『朕不在乎』？」 #speaker:青月 #ending:canon #impact:impact_wangguo_shangde #quiz:quiz_wangguo_shangde
+「呼——你走完了桀的这一程。最后想问你一个问题：如果你早知道结局，你还会不会说那句『朕不在乎』？」 #speaker:青月 #ending:canon #achieve:xia_yinjian #impact:impact_wangguo_shangde #quiz:quiz_wangguo_shangde
 -> END
 
 === c_end_wangguo ===
@@ -212,4 +216,50 @@
 #show:qingyue:smile:float
 「天命从来不是谁天生就有的——它是每一个天子每一天都要去挣的东西。你父亲挣了一辈子，你却连一天都不想挣。」 #speaker:青月 #ending:canon
 #hide:jie
+-> END
+
+// ═══════════════════════════════════════════════
+// IF 支线一 · 让贤存祀 —— 若桀主动禅让，保夏祀不绝
+// ═══════════════════════════════════════════════
+
+=== if_rangxian_1 ===
+#bg:xia_terrace
+#bgm:solemn
+#show:qingyue:tease:float
+「欸？这一步……史书上没有哦。可你想看看的话——」 #speaker:青月
+关龙逄的话，你终于听进去了。你看着自己造下的酒池肉林，看着朝堂上战栗的大臣，忽然觉得这一切荒唐得像一场大梦。 #speaker:青月
+你做了史上桀绝不会做的决定——你不当这个天子了。 #speaker:青月
+-> if_rangxian_2
+
+=== if_rangxian_2 ===
+#bg:xia_terrace
+#bgm:solemn
+你召来诸侯，当众宣布：夏德已衰，朕不配再居天子之位，愿效尧舜之让，禅位于贤者。 #speaker:青月
+诸侯们惊愕地看着你——他们以为你疯了。可你脸上没有疯癫，只有一种迟来的清明。 #speaker:青月
+#show:qingyue:solemn:float
+「你让出了位子。夏后氏的宗庙没有塌——你保住了祖先四百年的血脉，却再也没有了一个叫『桀』的天子。后人不会记得你的荒淫，也不会记得你的让贤——你成了被史书轻轻带过的一个名字。」 #speaker:青月
+「让贤存祀——你替刚愎的桀走完了他不肯走的最后一步：知过，能改。只是那把钥匙，握得太晚了。天下已经交给了商，你交出的，只是夏室最后的体面。」 #ending:if_rangxian #speaker:青月
+-> END
+
+// ═══════════════════════════════════════════════
+// IF 支线二 · 痛改中兴 —— 若桀临危振作，重振夏室
+// ═══════════════════════════════════════════════
+
+=== if_zhongxing_1 ===
+#bg:xia_terrace
+#bgm:solemn
+#show:qingyue:tease:float
+「欸？这一步……史书上没有哦。可你想看看的话——」 #speaker:青月
+关龙逄的话，像一记惊雷劈进你脑子里。你怔怔地站着，忽然想起曾祖父禹当年治水累死的背影。 #speaker:青月
+你下了旨：废酒池、焚肉林、释善臣、减赋税。你亲自耕于田垄，以安民心。 #speaker:青月
+-> if_zhongxing_2
+
+=== if_zhongxing_2 ===
+#bg:xia_terrace
+#bgm:peaceful
+你开始修德。你不再看妺喜跳舞，而是听老臣讲禹治水的旧事；你不再征重税，而是开仓放粮。诸侯们半信半疑地看着你——他们不知道眼前这个桀，是不是真的变了。 #speaker:青月
+#show:qingyue:solemn:float
+「你变了。可商已经太大了——汤修德多年，诸侯多已归商。你觉醒得太晚，商汤之师已经压到了鸣条之野。」 #speaker:青月
+「可这一回，你没有坐以待毙。你以夏室最后的余威，与商汤在鸣条对峙——胜负未分。」 #speaker:青月
+「你把一个必亡的残局，重新走成了一个悬而未决的开局——禹的江山没有断在你手里，这一次。可史书没有写这个结局，因为史书里的桀，从没有踏出这一步。」 #ending:if_zhongxing #speaker:青月
 -> END

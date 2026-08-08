@@ -168,6 +168,15 @@ export const baseAchievements: Record<string, Achievement> = {
 		points: 200,
 		icon: "🪞",
 	},
+	huangdi_qiyuan: {
+		id: "huangdi_qiyuan",
+		name: "穿越轩辕",
+		description: "完成起源·楔子——随青月穿越到史册源头，落定轩辕黄帝的降世",
+		classicalQuote: "生而神灵，弱而能言，幼而徇齐，长而敦敏，成而聪明。",
+		type: "story",
+		points: 100,
+		icon: "🌅",
+	},
 	// ── 死亡里程碑 ──
 	nine_deaths: {
 		id: "nine_deaths",

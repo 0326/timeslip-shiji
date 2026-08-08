@@ -107,6 +107,17 @@ export const WUDI_KNOWLEDGE: KnowledgeFragment[] = [
 		requires: ["impact_zhitianxia_xunfang"],
 	},
 
+	// ═══ 黄帝 · 起源穿越轩辕 ═══
+	{
+		id: "impact_qiyuan_xuanyuan",
+		title: "轩辕之源",
+		content:
+			"你落进史册的第一页，成了那个叫轩辕的婴孩。生而神灵，弱而能言，幼而徇齐，长而敦敏——华夏的起点，从你睁开眼睛这一刻起，有了名姓。",
+		storyKey: "huangdi:qiyuan",
+		kind: "impact",
+		graphPos: { x: 120, y: 200 },
+	},
+
 	// ═══ 黄帝章系图谱总纲 ═══
 	{
 		id: "graph_huangdi_xianding",

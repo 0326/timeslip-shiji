@@ -36,6 +36,8 @@ VAR yong = 0
     -> c_explore_mother
 ﻿* #correct [追问专诸杀人前的内心——探听一下他对母亲和公子光的真实想法]
     -> c_explore_zhuanzhu_sharen
+* [我放不下母亲，也放不下公子光的知遇之恩——我选了活着]
+    -> if_buwei_1
 
 === c_explore_zhuanzhu_sharen ===
 #show:qingyue:calm:float
@@ -135,6 +137,8 @@ VAR yong = 0
     -> act4_siwang
 * [我犹豫了……]
     -> c_death_youyi
+* [拔剑，却搏一条生路——一击之后，杀出重围]
+    -> if_cunhuo_1
 
 === c_death_youyi ===
 你犹豫了一瞬。就这一瞬，吴王僚的亲卫察觉了异样——他们的手已经按上了刀柄。你拔剑的动作慢了半拍，匕首刚出鱼腹，两柄长刀已经贯穿了你的胸膛。你倒在殿上，鱼肠剑跌落，吴王僚毫发无伤。 #death:youyi #speaker:青月
@@ -156,7 +160,7 @@ VAR yong = 0
 #show:qingyue:solemn:float
 「阖闾即位后，封你的儿子为上卿——他说：『专诸之子，当与吴国同享。』你的母亲此后衣食无忧，你的儿子前程似锦。可你……你用命换来了这一切。」 #speaker:青月 #hint:阖闾乃封专诸之子为上卿。
 「太史公说：『非然，故名之所以成也。』——你若不是这样死法，你便不会有这样的名。」 #speaker:青月
-「鱼肠千古——最短的剑，最近的路，最决绝的人。专诸，你把一条命交给了义字，义字把千古之名还给了你。」 #ending:canon #speaker:青月
+「鱼肠千古——最短的剑，最近的路，最决绝的人。专诸，你把一条命交给了义字，义字把千古之名还给了你。」 #ending:canon #achieve:zhuanzhu_yuchang #speaker:青月
 #actclear:zhuanzhu_qunxiang
 -> END
 

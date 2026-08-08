@@ -24,20 +24,15 @@ for (const f of readdirSync(inkStoriesDir).filter((f) => f.endsWith(".ts") && f 
 	inkStoriesSrc += readFileSync(join(inkStoriesDir, f), "utf8") + "\n";
 }
 // 建立 ink 文件名 → 注册 ending id 集合的映射：
-// 每个 story 条目里有 `source: <var>Source` 与 import <var>Source from "../ink/<file>.ink?raw"
-const importMap = new Map(); // varName -> ink file name
-for (const m of inkStoriesSrc.matchAll(/import\s+(\w+)\s+from\s+"\.\.\/ink\/([\w-]+\.ink)\?raw"/g)) {
-	importMap.set(m[1], m[2]);
-}
-// 解析每个条目块：从 `"key": {` 到平衡大括号太重；用启发式——按 `source: xxxSource` 切块
+// 每个 story 条目里有 `inkFile: "xxx"`（动态加载）与 endings registry。
+// 线性序章（仅注册 canon、无 if_* 反事实结局）豁免"≥3 结局"要求。
 const REGISTERED = new Map(); // ink file -> Set(endingIds)
 {
 	const blocks = inkStoriesSrc.split(/\n\t"[^"]+": \{/).slice(1);
 	for (const block of blocks) {
-		const srcM = block.match(/source:\s*(\w+)/);
-		if (!srcM) continue;
-		const file = importMap.get(srcM[1]);
-		if (!file) continue;
+		const fileM = block.match(/inkFile:\s*"([\w/-]+)"/);
+		if (!fileM) continue;
+		const file = fileM[1] + ".ink";
 		const ids = new Set(REGISTERED.get(file) ?? []);
 		const endM = block.match(/endings:\s*\{([\s\S]*?)\n\t\t\}/);
 		if (endM) {
@@ -113,15 +108,21 @@ for (const f of files) {
 		continue;
 	}
 	const named = [...res.survivals].filter((s) => !s.startsWith("(未命名)"));
-	const reg = REGISTERED.get(f) ?? new Set();
-	const unregistered = named.filter((id) => !reg.has(id));
-	const unreachable = [...reg].filter((id) => !named.includes(id));
+	const reg = REGISTERED.get(f) ?? new Map();
+	const regIds = [...reg.keys()];
+	const unregistered = named.filter((id) => !regIds.includes(id));
+	const unreachable = regIds.filter((id) => !named.includes(id));
+	const linear = [...reg.values()].every((k) => k !== "if"); // 仅注册 canon 结局 → 线性序章/起源
 	sumSurv += res.survivals.size;
 	const problems = [];
-	if (res.survivals.size < 3) problems.push(`存活结局仅 ${res.survivals.size} 个（需≥3）`);
+	// 线性序章（起源/楔子）天然只有 1 个史实结局，豁免"≥3 结局"与"≥2 开放结局"要求；
+	// 常规故事仍须满足多结局标准。
+	if (!linear) {
+		if (res.survivals.size < 3) problems.push(`存活结局仅 ${res.survivals.size} 个（需≥3）`);
+		if (named.filter((id) => id !== "canon").length < 2)
+			problems.push(`开放结局不足 2 个（现 ${named.filter((id) => id !== "canon").length}）`);
+	}
 	if (!named.includes("canon")) problems.push(`缺史实结局 #ending:canon`);
-	if (named.filter((id) => id !== "canon").length < 2)
-		problems.push(`开放结局不足 2 个（现 ${named.filter((id) => id !== "canon").length}）`);
 	if (res.unnamed.length) problems.push(`${res.unnamed.length} 个存活结局缺 #ending 标签`);
 	if (unregistered.length) problems.push(`#ending 未注册: ${unregistered.join(",")}`);
 	if (unreachable.length) problems.push(`registry 结局不可达: ${unreachable.join(",")}`);

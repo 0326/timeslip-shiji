@@ -813,15 +813,15 @@
 	opacity: 0.5;
 }
 
-/* 左侧立绘容器：贴底顶天 */
+/* 左侧立绘容器：垂直居中 */
 .ad-stage.has-fullscene .ad-stage-art {
 	position: relative;
 	z-index: 2;
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: flex-start;
 	flex: 0 0 auto;
-	width: clamp(380px, 42vw, 560px);
+	width: clamp(320px, 36vw, 460px);
 	height: 100%;
 	min-height: 0;
 }
@@ -829,22 +829,27 @@
 /* 全身立绘根容器 */
 .ad-fullscene {
 	position: relative;
-	width: 100%;
-	height: 100%;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
 	overflow: hidden;
 	transform-style: preserve-3d;
-	/* 深色背景：为multiply混合提供底色 */
 	background: radial-gradient(120% 100% at 50% 40%, #2a2218 0%, #1a1612 70%, #0f0d0a 100%);
 	border-radius: 16px;
+	border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--color-ink-mid));
+	box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.15), 0 18px 50px rgba(0, 0, 0, 0.4);
 }
 
 .ad-fullscene-figure {
 	position: relative;
-	width: 100%;
-	height: 96%;
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
 	display: flex;
 	align-items: flex-end;
 	justify-content: center;
@@ -854,11 +859,12 @@
 }
 
 .ad-fullscene-img {
-	width: 100%;
-	height: 100%;
+	max-width: 100%;
+	max-height: calc(100vh - 136px);
+	width: auto;
+	height: auto;
 	object-fit: contain;
 	object-position: center bottom;
-	/* 全场景CG立绘：使用box-shadow替代drop-shadow，避免矩形阴影 */
 	border-radius: 12px;
 	transition: transform 0.35s ease-out, box-shadow 0.35s ease-out;
 }
@@ -925,6 +931,8 @@
 }
 
 .ad-stage.has-fullscene .ad-back {
+	top: 16px;
+	left: max(32px, calc((100% - 1280px) / 2));
 	color: var(--color-rice);
 	text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
@@ -1041,7 +1049,7 @@
 /* 前后切换：圆形图标钮（32px / radius-pill / ink-mid 描边） */
 .ad-nav-btn {
 	position: fixed;
-	top: 50%;
+	top: calc(50% + 28px);
 	transform: translateY(-50%);
 	width: 32px;
 	height: 32px;
@@ -1145,6 +1153,12 @@
 }
 
 /* ============ 生平历程抽屉（内容区，容器走 ui 的 <Drawer>） ============ */
+/* 抽屉宽度覆盖为页面 50% */
+.archive-detail-page .drawer {
+	width: 50vw;
+	max-width: 720px;
+}
+
 .ad-drawer-head {
 	position: sticky;
 	top: 0;

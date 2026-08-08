@@ -160,7 +160,7 @@ VAR jie = 0
 「可太史公记得。他在《游侠列传》里写你：『以不伐其功、不矜其能，人皆称之。』」 #speaker:青月 #hint:以不伐其功、不矜其能，人皆称之。
 #show:qingyue:solemn:float
 「有个邻居替你守了三天灵。他说：『朱家这个人，我跟他做了二十年邻居，只知他爱帮人，从不知他自己过得有多苦。他从来不提自己的事——从来不。』」 #speaker:青月
-「世上最深的水，是没有名字的河。朱家——侠义之首，无名侠骨。你把一切都给了别人，连名字都没给自己留。」 #ending:canon #speaker:青月
+「世上最深的水，是没有名字的河。朱家——侠义之首，无名侠骨。你把一切都给了别人，连名字都没给自己留。」 #ending:canon #achieve:zhuke_xiayizhi #speaker:青月
 #actclear:zhuke_qunxiang
 -> END
 

@@ -11,6 +11,7 @@ import { hanchuAchievements } from "./hanchu";
 import { qinAchievements } from "./qin";
 import { xizhouAchievements } from "./xizhou";
 import { zhuziAchievements } from "./zhuzi";
+import { qunxiangAchievements } from "./qunxiang";
 
 export const ACHIEVEMENTS: Record<string, Achievement> = {
 	...baseAchievements,
@@ -23,6 +24,7 @@ export const ACHIEVEMENTS: Record<string, Achievement> = {
 	...qinAchievements,
 	...xizhouAchievements,
 	...zhuziAchievements,
+	...qunxiangAchievements,
 };
 
 export const ACHIEVEMENT_LIST: Achievement[] = Object.values(ACHIEVEMENTS);

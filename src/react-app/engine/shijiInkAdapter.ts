@@ -22,6 +22,7 @@ import type {
 	Vars,
 } from "./types";
 import { bgmMatcher } from "../lib/bgmMatcher";
+import { parseActClearId } from "./actClear";
 
 /** Death registry entry: maps a deathId (from #death:ID tag) to full death info */
 export interface DeathEntry {
@@ -131,8 +132,7 @@ export class ShijiInkAdapter implements IStoryRunner {
 	// 最近一次呈现给玩家的选项（含 meta，用于严格模式判定与失败文案）
 	private lastChoices: RunnerChoice[] = [];
 
-	// 幕计数：遇到 #actclear 时递增
-	private actIndex = 0;
+	// 幕计数：遇到 #actclear 时递增（幕序号展示改为从技术 ID 解析，见 actClear.ts）
 	// 最近一次触发的幕间过场信息（buildState 消费后即清）
 	private pendingActClear: { actName: string; actIndex: number } | null = null;
 	// 本次结局是否是史实结局（带 #achieve）
@@ -425,7 +425,6 @@ export class ShijiInkAdapter implements IStoryRunner {
 		this.runner.restart();
 		this.lastChoiceSnapshot = null;
 		this.lastChoices = [];
-		this.actIndex = 0;
 		this.pendingActClear = null;
 		this.pendingMinigame = null;
 		this.pendingImpact = null;
@@ -509,8 +508,12 @@ export class ShijiInkAdapter implements IStoryRunner {
 	private consumeSegmentMeta(output: RunnerOutput): void {
 		for (const seg of output.segments) {
 			if (seg.meta.actclear && typeof seg.meta.actclear === "string") {
-				this.actIndex += 1;
-				this.pendingActClear = { actName: seg.meta.actclear, actIndex: this.actIndex };
+				// 幕卡标题用故事中文标题（config.title），幕序号从技术 ID 解析，
+				// 避免把 "tang_act1" 这类英文 ID 直接展示给玩家。
+				this.pendingActClear = {
+					actName: this.config.title || "",
+					actIndex: parseActClearId(seg.meta.actclear),
+				};
 			}
 			if (seg.meta.achieve && typeof seg.meta.achieve === "string") {
 				if (!this.probing) this.cb.onAchievement?.(seg.meta.achieve);

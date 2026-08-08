@@ -10,6 +10,15 @@ export const xizhouAchievements: Record<string, Achievement> = {
 		points: 250,
 		icon: "🎣",
 	},
+	taibo_rangguo: {
+		id: "taibo_rangguo",
+		name: "太伯 · 让国",
+		description: "走完古公亶父与太伯的让国之仁——迁岐避戎、三让天下，开周道之兴",
+		classicalQuote: "君子不以其所以养人者害人。",
+		type: "story",
+		points: 200,
+		icon: "🍃",
+	},
 	wenwang_shou_ming: {
 		id: "wenwang_shou_ming",
 		name: "文王 · 演易",

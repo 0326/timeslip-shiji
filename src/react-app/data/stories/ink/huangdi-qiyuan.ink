@@ -200,5 +200,5 @@ VAR mg_score = 0
 === c_chuanyue_end ===
 #show:qingyue:smile:float
 「呼——不管怎么选，你的路，都从这一刻开始了。」 #speaker:青月
-「记住：史书只给你一个名字，怎么走，全看你自己。」 #speaker:青月 #ending:canon #impact:impact_qiyuan_xuanyuan #quiz:graph_huangdi_xianding
+「记住：史书只给你一个名字，怎么走，全看你自己。」 #speaker:青月 #ending:canon #achieve:huangdi_qiyuan #impact:impact_qiyuan_xuanyuan #quiz:graph_huangdi_xianding
 -> END
