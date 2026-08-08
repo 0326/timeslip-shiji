@@ -326,8 +326,8 @@ export function ArchivePage() {
       // 资源清单可能比精灵注册表更新得更快；跳过缺少注册项的 ID，
       // 避免单个立绘缺失导致整个史鉴页面无法渲染。
       if (!sp) return null;
-      const localDynasty = SPRITE_DYNASTY_MAP[id] || "";
-      const localIdentity = SPRITE_IDENTITY_MAP[id] || "";
+      const localDynasty = SPRITE_DYNASTY_MAP[id] || "其他";
+      const localIdentity = SPRITE_IDENTITY_MAP[id] || "其他";
       return {
         id,
         name: sp.name,

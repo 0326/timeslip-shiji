@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { CHARACTER_MAP, getCharacterMerged } from "../../data/characters";
 import { RELATION_COLORS, RELATION_LABELS } from "../../data/relationColors";
+import { getSprite } from "../../data/sceneAssets";
 import type { Character, RelationType } from "../../types/character";
 
 interface GraphNode extends d3.SimulationNodeDatum {
@@ -35,7 +36,8 @@ function getGlyphAccent(id: string): { glyph: string; accent: string } {
 function resolveName(id: string): string {
   const c = CHARACTER_MAP[id];
   if (c && c.name && c.name !== id) return c.name;
-  return id;
+  const sprite = getSprite(id);
+  return sprite.name && sprite.name !== id ? sprite.name : id;
 }
 
 /**
