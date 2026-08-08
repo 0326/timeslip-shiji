@@ -1,3 +1,5 @@
+import { assetUrl } from "../lib/assetUrl";
+
 export type Mood =
 	| "solemn" | "danger" | "tension" | "sorrow"
 	| "triumph" | "court" | "battle" | "mystery"
@@ -245,7 +247,7 @@ const buildTracks = (): Record<string, BgmTrack> => {
 			tracks[key] = {
 				label: item.label,
 				mood: mood as Mood,
-				url: LOCAL + item.file,
+				url: assetUrl(LOCAL + item.file),
 			};
 		});
 		tracks[mood] = {
@@ -310,7 +312,7 @@ export function resolveBgm(id: string): BgmTrack {
 	return {
 		label: items[0].label,
 		mood: mood,
-		url: LOCAL + items[0].file,
+		url: assetUrl(LOCAL + items[0].file),
 	};
 }
 

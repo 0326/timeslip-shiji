@@ -3,6 +3,7 @@
 // 在此 import 合并进 SPRITES / BACKGROUNDS。
 import { baseBackgrounds, baseSprites } from "./base";
 import type { BgStyle, SpriteInfo } from "./base";
+import { assetUrl } from "../../lib/assetUrl";
 import { chuhanSprites, chuhanBackgrounds } from "./chuhan";
 import { shangSprites, shangBackgrounds } from "./shang";
 import { chunqiuSprites, chunqiuBackgrounds } from "./chunqiu";
@@ -45,6 +46,40 @@ export const SPRITES: Record<string, SpriteInfo> = {
 	...zhuziSprites,
 	...qunxiangSprites,
 };
+
+/* ───── 资源路径统一加 R2 前缀 ─────
+   所有背景/立绘的 image/images/video/avatar/bust/full/variants/archiveFull
+   字段均为本地相对路径（/assets/...），导出前统一转换为 R2 完整 URL。
+   这样 sceneAssets 下所有文件无需逐一改造。 */
+
+function absBg(bg: BgStyle): BgStyle {
+	const out: BgStyle = { ...bg };
+	if (out.image) out.image = assetUrl(out.image);
+	if (out.images) out.images = out.images.map(assetUrl);
+	if (out.video) out.video = assetUrl(out.video);
+	return out;
+}
+
+function absSprite(sp: SpriteInfo): SpriteInfo {
+	const out: SpriteInfo = { ...sp };
+	if (out.avatar) out.avatar = assetUrl(out.avatar);
+	if (out.bust) out.bust = assetUrl(out.bust);
+	if (out.full) out.full = assetUrl(out.full);
+	if (out.archiveFull) out.archiveFull = assetUrl(out.archiveFull);
+	if (out.variants) {
+		const v: Record<string, string> = {};
+		for (const [k, path] of Object.entries(out.variants)) v[k] = assetUrl(path);
+		out.variants = v;
+	}
+	return out;
+}
+
+for (const key of Object.keys(BACKGROUNDS)) {
+	BACKGROUNDS[key] = absBg(BACKGROUNDS[key]);
+}
+for (const key of Object.keys(SPRITES)) {
+	SPRITES[key] = absSprite(SPRITES[key]);
+}
 
 /**
  * Sprite ID → 朝代标签映射（用于图鉴筛选用）。

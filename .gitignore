@@ -222,6 +222,7 @@ docs/
 /*.txt
 /*.html
 
+public/assets
 ### 临时目录 ###
 /_temp_fix/
 /ink_structs/

@@ -7,8 +7,9 @@ import { AchievementToaster } from "../effects/AchievementToaster";
 import { AuthModal } from "../Auth/AuthModal";
 import { useUiStore } from "../../store/uiStore";
 import { sfx } from "../../lib/sfx";
+import { assetUrl } from "../../lib/assetUrl";
 
-const KV_BASE = import.meta.env.VITE_KV_BASE_URL || "/images/kv";
+const KV_BASE = import.meta.env.VITE_KV_BASE_URL || assetUrl("/images/kv");
 
 export function Layout() {
   const location = useLocation();

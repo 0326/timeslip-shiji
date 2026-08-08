@@ -18,6 +18,10 @@ export default defineConfig({
 		dedupe: ["react", "react-dom", "scheduler"],
 	},
 	build: {
+		// 静态资源已全部迁移至 R2（asset.timeslip.work），
+		// 不再复制 public/ 下的 4.1GB 图片/音频进产物，避免随 Worker 打包部署。
+		// 本地开发（vite dev）仍直接从 public/ 提供资源，不受影响。
+		copyPublicDir: false,
 		rollupOptions: {
 			output: {
 				// 第三方依赖拆成稳定 vendor chunk，主包只保留应用代码 + 共享运行时。

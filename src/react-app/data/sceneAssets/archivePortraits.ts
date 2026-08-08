@@ -7,6 +7,7 @@
  *
  * 文件路径约定：/assets/archive-figures/<id>/full-default.jpg
  */
+import { assetUrl } from "../../lib/assetUrl";
 
 /** 已生成精致厚涂CG立绘的角色ID集合（仅保留已确认新CG风格·旧风格动漫立绘一律剔除） */
 const ARCHIVE_CG_READY = new Set<string>([
@@ -101,7 +102,7 @@ export const ARCHIVE_PORTRAIT_LOCKED_IDS = new Set<string>([
  */
 export function getArchiveCGUrl(id: string): string | null {
 	if (ARCHIVE_CG_READY.has(id)) {
-		return `/assets/archive-figures/${id}/full-default.jpg?v=pr-head-be0c017-1786152251-all3`;
+		return assetUrl(`/assets/archive-figures/${id}/full-default.jpg?v=pr-head-be0c017-1786152251-all3`);
 	}
 	return null;
 }

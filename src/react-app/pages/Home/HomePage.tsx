@@ -12,9 +12,10 @@ import "./Home.css";
 import { AppNav } from "../../components/Layout/AppNav";
 import { useBgmPlayer } from "../../hooks/useBgmPlayer";
 import { useUiStore } from "../../store/uiStore";
+import { assetUrl } from "../../lib/assetUrl";
 
 /* ───────────── KV 图片基础路径 ───────────── */
-const KV_BASE = import.meta.env.VITE_KV_BASE_URL || "/images/kv";
+const KV_BASE = import.meta.env.VITE_KV_BASE_URL || assetUrl("/images/kv");
 
 /* ───────────── 游戏模式 ───────────── */
 const GAME_MODES = [

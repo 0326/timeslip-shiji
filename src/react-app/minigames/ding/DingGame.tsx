@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { MinigameProps } from "../types";
 import { CheckCircle2, RotateCcw, Clock, Eye, X } from "lucide-react";
 import { sfx } from "../../lib/sfx";
+import { assetUrl } from "../../lib/assetUrl";
 import "./ding.css";
 
 interface Piece {
@@ -69,7 +70,7 @@ export function DingGame({ param, onComplete, onSkip }: MinigameProps) {
 
 	const size = level.size;
 	const total = size * size;
-	const sceneUrl = `/assets/backgrounds/wudi/${level.sceneImg}`;
+	const sceneUrl = assetUrl(`/assets/backgrounds/wudi/${level.sceneImg}`);
 
 	const onCompleteRef = useRef(onComplete);
 	onCompleteRef.current = onComplete;
