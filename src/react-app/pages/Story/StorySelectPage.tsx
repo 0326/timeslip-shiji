@@ -1,9 +1,10 @@
 import { useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, Play, Sparkles, BookOpen } from "lucide-react";
+import { ArrowLeft, Play, Sparkles, BookOpen, Lock } from "lucide-react";
 import "./StorySelect.css";
 import { STORYLINES } from "../../data/storylines";
 import { useUserStore } from "../../store/userStore";
+import { useUiStore } from "../../store/uiStore";
 import { SERIES } from "../../data/series";
 import type { Storyline } from "../../types/story";
 
@@ -31,28 +32,20 @@ export function StorySelectPage() {
 	// 游戏模式（canon=正史 默认 / free=自由），随入口透传给 PlayPage
 	const mode = searchParams.get("mode") === "free" ? "free" : "canon";
 	const getPerspective = useUserStore((s) => s.getPerspective);
+	const pushToast = useUiStore((s) => s.pushToast);
 
-	// 按系列分组故事线（按 order 顺序解锁：需前一个有内容的系列全通关才开启下一个）
+	// 所有系列默认解锁
 	const storiesBySeries = useMemo(() => {
 		const sorted = [...SERIES].sort((a, b) => a.order - b.order);
 		const result = [];
-		// 首个有内容的系列默认解锁；此后每个系列需上一个"有内容"系列全通关
-		let prevPlayableCleared = true;
 		for (const series of sorted) {
 			const storylines = series.comingSoon
 				? []
 				: STORYLINES.filter((sl) => sl.series === series.id);
 			const progress = getSeriesProgress(storylines, getPerspective);
 			const hasStories = storylines.length > 0;
-			// 无内容（含 comingSoon）：显示"敬请期待"，真正禁用
 			const contentLocked = series.comingSoon || !hasStories;
-			// 顺序未解锁：有内容但前一个有内容系列尚未全通关 → 可点击给提示
-			const seqLocked = !contentLocked && !prevPlayableCleared;
-			const fullyCleared =
-				hasStories && progress.total > 0 && progress.completed === progress.total;
-			// 仅"有内容"的系列参与解锁链条（comingSoon 空档不打断顺序）
-			if (hasStories) prevPlayableCleared = fullyCleared;
-			result.push({ ...series, storylines, progress, contentLocked, seqLocked });
+			result.push({ ...series, storylines, progress, contentLocked, seqLocked: false });
 		}
 		return result;
 	}, [getPerspective]);
@@ -94,7 +87,7 @@ export function StorySelectPage() {
 				<div className="ss-series-grid">
 					{storiesBySeries.map((series, idx) => {
 						// 展示为锁定：无内容 或 顺序未解锁
-						const locked = series.contentLocked; // 全章节解锁：仅保留无内容禁用
+						const locked = series.contentLocked || series.seqLocked;
 						const progressPct =
 							series.progress.total > 0
 								? Math.round(
@@ -105,12 +98,21 @@ export function StorySelectPage() {
 						return (
 							<button
 								key={series.id}
-								className={`game-card ss-series-card ${locked ? "is-locked" : ""}`}
+								className={`game-card ss-series-card ${locked ? "is-locked" : ""} ${series.seqLocked ? "seq-locked" : ""}`}
 								onClick={() => {
 									if (series.contentLocked) return;
+									if (series.seqLocked) {
+										pushToast({
+											kind: "info",
+											title: "尚未解锁",
+											subtitle: "通关前一篇章后开启本篇",
+											icon: "🔒",
+										});
+										return;
+									}
 									openSeries(series.id);
 								}}
-								// 仅"敬请期待"真正禁用
+								// 顺序未解锁需可点击给提示，仅"敬请期待"真正禁用
 								disabled={series.contentLocked}
 								style={
 									{
@@ -126,21 +128,25 @@ export function StorySelectPage() {
 								<div className="ss-series-card-glow" />
 								<div className="ss-series-card-inner">
 									<div className="ss-series-card-header">
-									<div className="ss-series-card-glyph">{series.glyph}</div>
-									{series.comingSoon ? (
-										<span className="badge">敬请期待</span>
-									) : (
-										<span className="ss-series-count">
-											{series.progress.completed}/{series.progress.total} 篇章
-										</span>
-									)}
-								</div>
-								<div className="ss-series-card-body">
-									<h2 className="ss-series-card-name">{series.name}</h2>
-									<p className="ss-series-card-tagline">
-										{series.tagline}
-									</p>
-								</div>
+										<div className="ss-series-card-glyph">{series.glyph}</div>
+										{series.comingSoon ? (
+											<span className="badge">敬请期待</span>
+										) : series.seqLocked ? (
+											<span className="badge ss-lock-badge">
+												<Lock size={11} /> 未解锁
+											</span>
+										) : (
+											<span className="ss-series-count">
+												{series.progress.completed}/{series.progress.total} 篇章
+											</span>
+										)}
+									</div>
+									<div className="ss-series-card-body">
+										<h2 className="ss-series-card-name">{series.name}</h2>
+										<p className="ss-series-card-tagline">
+											{series.seqLocked ? "通关前一篇章后解锁" : series.tagline}
+										</p>
+									</div>
 									{!locked && (
 										<div className="ss-series-card-footer">
 											<div className="ss-progress">

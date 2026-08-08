@@ -1,4 +1,5 @@
 import type { UserProgress } from "../types/progress";
+import { CHARACTER_IDS } from "../data/characterGameMeta";
 
 function genId(): string {
 	return "u_" + Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
@@ -11,10 +12,10 @@ export function createInitialProgress(): UserProgress {
 		createdAt: now,
 		lastActiveAt: now,
 
-		// 初始资源：赠送 1 张抽卡券，保证新玩家能立刻体验
-		points: 0,
-		gachaTickets: 1,
-		fragments: 0,
+		// 预览模式：资源拉满
+		points: 9999,
+		gachaTickets: 999,
+		fragments: 999,
 
 		lastCheckIn: 0,
 		checkInStreak: 0,
@@ -22,7 +23,7 @@ export function createInitialProgress(): UserProgress {
 		gacha: {
 			totalPulls: 0,
 			pityCount: 0,
-			ownedCharacters: [],
+			ownedCharacters: [...CHARACTER_IDS], // 预览模式：全角色解锁
 			pullHistory: [],
 		},
 
