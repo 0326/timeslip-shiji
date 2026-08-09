@@ -45,40 +45,40 @@ export const chunqiuSprites: Record<string, SpriteInfo> = {
 	wushang: { name: "伍尚", glyph: "尚", accent: "#7a6e5c", full: "/assets/figures/wushang/classical/portrait/full-default.png" },
 	gongsunxiong: { name: "公孙雄", glyph: "雄", accent: "#6b7a5c", full: "/assets/figures/gongsunxiong/classical/portrait/full-default.png" },
 	// 春秋五霸·楚庄王
-	chuzhuangwang: { name: "楚庄王", glyph: "庄", accent: "#7a2f2f", full: "/assets/figures/chuzhuangwang/classical/portrait/full-default.png" },
+	chuzhuangwang: { name: "楚庄王", glyph: "庄", accent: "#7a2f2f", full: "/assets/archive-figures/chuzhuangwang/full-default.jpg" },
 	// 春秋五霸·宋襄公
-	songxianggong: { name: "宋襄公", glyph: "襄", accent: "#8a6f4a", full: "/assets/figures/songxianggong/classical/portrait/full-default.png" },
+	songxianggong: { name: "宋襄公", glyph: "襄", accent: "#8a6f4a", full: "/assets/archive-figures/songxianggong/full-default.jpg" },
 	// 齐国·晏婴
-	yanying: { name: "晏婴", glyph: "晏", accent: "#7a6e5c", full: "/assets/figures/yanying/classical/portrait/full-default.png" },
+	yanying: { name: "晏婴", glyph: "晏", accent: "#7a6e5c", full: "/assets/archive-figures/yanying/full-default.jpg" },
 	// 鲁国·柳下惠
-	liuxiahui: { name: "柳下惠", glyph: "柳", accent: "#5a8f6b", full: "/assets/figures/liuxiahui/classical/portrait/full-default.png" },
+	liuxiahui: { name: "柳下惠", glyph: "柳", accent: "#5a8f6b", full: "/assets/archive-figures/liuxiahui/full-default.jpg" },
 	// 吴国·阖闾（吴王，与 gongziguang=公子光 互补）
-	helu: { name: "吴王阖闾", glyph: "闾", accent: "#c0392b", full: "/assets/figures/helu/classical/portrait/full-default.png" },
+	helu: { name: "吴王阖闾", glyph: "闾", accent: "#c0392b", full: "/assets/archive-figures/helu/full-default.jpg" },
 	// 刺客·要离
-	yaoli: { name: "要离", glyph: "要", accent: "#a85d3a", full: "/assets/figures/yaoli/classical/portrait/full-default.png" },
+	yaoli: { name: "要离", glyph: "要", accent: "#a85d3a", full: "/assets/archive-figures/yaoli/full-default.jpg" },
 	// 吴国·孙武好友 伍子胥线（补充）
 	// 晋国·赵盾（赵氏孤儿前传）
-	"zhaodun-cq": { name: "赵盾", glyph: "盾", accent: "#6b5a48", full: "/assets/figures/zhaodun-cq/classical/portrait/full-default.png" },
+	"zhaodun-cq": { name: "赵盾", glyph: "盾", accent: "#6b5a48", full: "/assets/archive-figures/zhaodun-cq/full-default.jpg" },
 	// 晋国·屠岸贾（赵氏孤儿）
-	tuangujia: { name: "屠岸贾", glyph: "屠", accent: "#7a2f2f", full: "/assets/figures/tuangujia/classical/portrait/full-default.png" },
+	tuangujia: { name: "屠岸贾", glyph: "屠", accent: "#7a2f2f", full: "/assets/archive-figures/tuangujia/full-default.jpg" },
 	// 晋国·程婴（赵氏孤儿）
-	chengying: { name: "程婴", glyph: "婴", accent: "#5a7a8c", full: "/assets/figures/chengying/classical/portrait/full-default.png" },
+	chengying: { name: "程婴", glyph: "婴", accent: "#5a7a8c", full: "/assets/archive-figures/chengying/full-default.jpg" },
 	// 晋国·公孙杵臼（赵氏孤儿）
-	gongsunchujiu: { name: "公孙杵臼", glyph: "杵", accent: "#8a7a5c", full: "/assets/figures/gongsunchujiu/classical/portrait/full-default.png" },
+	gongsunchujiu: { name: "公孙杵臼", glyph: "杵", accent: "#8a7a5c", full: "/assets/archive-figures/gongsunchujiu/full-default.jpg" },
 	// 鲁国·曹沫（柯地之盟）
-	caomo: { name: "曹沫", glyph: "沫", accent: "#7a5c8a", full: "/assets/figures/caomo/classical/portrait/full-default.png" },
+	caomo: { name: "曹沫", glyph: "沫", accent: "#7a5c8a", full: "/assets/archive-figures/caomo/full-default.jpg" },
 	// 齐国·司马穰苴
-	simarangju: { name: "司马穰苴", glyph: "穰", accent: "#5a6b7a", full: "/assets/figures/simarangju/classical/portrait/full-default.png" },
+	simarangju: { name: "司马穰苴", glyph: "穰", accent: "#5a6b7a", full: "/assets/archive-figures/simarangju/full-default.jpg" },
 	// 越国·西施
-	xishi: { name: "西施", glyph: "施", accent: "#c96f8a", full: "/assets/figures/xishi/classical/portrait/full-default.png" },
+	xishi: { name: "西施", glyph: "施", accent: "#c96f8a", full: "/assets/archive-figures/xishi/full-default.jpg" },
 	// 鲁国·公输般（鲁班）互补
-	luban: { name: "鲁班", glyph: "鲁", accent: "#6b7a5c", full: "/assets/figures/luban/classical/portrait/full-default.png" },
+	luban: { name: "鲁班", glyph: "鲁", accent: "#6b7a5c", full: "/assets/archive-figures/luban/full-default.jpg" },
 	// 魏国·吴起（先仕魏后仕楚）
-	wuqi: { name: "吴起", glyph: "起", accent: "#8b2323", full: "/assets/figures/wuqi/classical/portrait/full-default.png" },
+	wuqi: { name: "吴起", glyph: "起", accent: "#8b2323", full: "/assets/archive-figures/wuqi/full-default.jpg" },
 	// 郑国·子产
-	zichan: { name: "子产", glyph: "产", accent: "#5a8f6b", full: "/assets/figures/zichan/classical/portrait/full-default.png" },
+	zichan: { name: "子产", glyph: "产", accent: "#5a8f6b", full: "/assets/archive-figures/zichan/full-default.jpg" },
 	// 孔门·子贡
-	zigong: { name: "子贡", glyph: "贡", accent: "#b8973a", full: "/assets/figures/zigong/classical/portrait/full-default.png" },
+	zigong: { name: "子贡", glyph: "贡", accent: "#b8973a", full: "/assets/archive-figures/zigong/full-default.jpg" },
 };
 
 export const chunqiuBackgrounds: Record<string, BgStyle> = {

@@ -193,7 +193,6 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "青月",
 		glyph: "月",
 		accent: "#7fd6e0",
-		avatar: "/assets/figures/qingyue/classical/avatar/default.jpg",
 		bust: "/assets/figures/qingyue/classical/portrait/bust-default.png",
 		full: "/assets/figures/qingyue/classical/portrait/full-default.png",
 		variants: {
@@ -207,7 +206,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "舜",
 		glyph: "舜",
 		accent: "#3fa796",
-		avatar: "/assets/figures/shun/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/shun/full-default.jpg",
 		bust: "/assets/figures/shun/classical/portrait/bust-default.png",
 		full: "/assets/figures/shun/classical/portrait/full-default.png",
 		variants: {
@@ -217,7 +216,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "尧",
 		glyph: "尧",
 		accent: "#c9a227",
-		avatar: "/assets/figures/yao/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/yao/full-default.jpg",
 		bust: "/assets/figures/yao/classical/portrait/bust-default.png",
 		full: "/assets/figures/yao/classical/portrait/full-default.png",
 		variants: {
@@ -226,14 +225,14 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "瞽叟",
 		glyph: "瞽",
 		accent: "#6b5a48",
-		avatar: "/assets/figures/gusou/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/gusou/full-default.jpg",
 		bust: "/assets/figures/gusou/classical/portrait/bust-default.png",
 		full: "/assets/figures/gusou/classical/portrait/full-default.png"},
 	xiang: {
 		name: "象",
 		glyph: "象",
 		accent: "#a85d3a",
-		avatar: "/assets/figures/xiang/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/xiang/full-default.jpg",
 		bust: "/assets/figures/xiang/classical/portrait/bust-default.png",
 		full: "/assets/figures/xiang/classical/portrait/full-default.png"},
 	huangdi: {
@@ -281,7 +280,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "羲和",
 		glyph: "羲",
 		accent: "#d98c3a",
-		avatar: "/assets/figures/xihe/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/xihe/full-default.jpg",
 		bust: "/assets/figures/xihe/classical/portrait/bust-default.png",
 		full: "/assets/figures/xihe/classical/portrait/full-default.png",
 		variants: {
@@ -291,7 +290,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "丹朱",
 		glyph: "丹",
 		accent: "#b8557a",
-		avatar: "/assets/figures/danzhu/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/danzhu/full-default.jpg",
 		bust: "/assets/figures/danzhu/classical/portrait/bust-default.png",
 		full: "/assets/figures/danzhu/classical/portrait/full-default.png",
 		variants: {
@@ -300,7 +299,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "共工",
 		glyph: "工",
 		accent: "#4a7a8c",
-		avatar: "/assets/figures/gonggong/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/gonggong/full-default.jpg",
 		bust: "/assets/figures/gonggong/classical/portrait/bust-default.png",
 		full: "/assets/figures/gonggong/classical/portrait/full-default.png",
 		variants: {
@@ -309,7 +308,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "鲧",
 		glyph: "鲧",
 		accent: "#55707a",
-		avatar: "/assets/figures/gun/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/gun/full-default.jpg",
 		bust: "/assets/figures/gun/classical/portrait/bust-default.png",
 		full: "/assets/figures/gun/classical/portrait/full-default.png",
 		variants: {
@@ -318,7 +317,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "四岳",
 		glyph: "岳",
 		accent: "#7a8a5c",
-		avatar: "/assets/figures/siyue/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/siyue/full-default.jpg",
 		bust: "/assets/figures/siyue/classical/portrait/bust-default.png",
 		full: "/assets/figures/siyue/classical/portrait/full-default.png",
 		variants: {
@@ -327,7 +326,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "娥皇",
 		glyph: "娥",
 		accent: "#c96f8a",
-		avatar: "/assets/figures/ehuang/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/ehuang/full-default.jpg",
 		bust: "/assets/figures/ehuang/classical/portrait/bust-default.png",
 		full: "/assets/figures/ehuang/classical/portrait/full-default.png",
 		variants: {
@@ -337,7 +336,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "女英",
 		glyph: "英",
 		accent: "#7a8fc9",
-		avatar: "/assets/figures/nvying/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/nvying/full-default.jpg",
 		bust: "/assets/figures/nvying/classical/portrait/bust-default.png",
 		full: "/assets/figures/nvying/classical/portrait/full-default.png",
 		variants: {
@@ -347,14 +346,14 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "皋陶",
 		glyph: "皋",
 		accent: "#3a4a6b",
-		avatar: "/assets/figures/gaoyao/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/gaoyao/full-default.jpg",
 		bust: "/assets/figures/gaoyao/classical/portrait/bust-default.png",
 		full: "/assets/figures/gaoyao/classical/portrait/full-default.png"},
 	yu: {
 		name: "禹",
 		glyph: "禹",
 		accent: "#3a6ea5",
-		avatar: "/assets/figures/yu/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/yu/full-default.jpg",
 		bust: "/assets/figures/yu/classical/portrait/bust-default.png",
 		full: "/assets/figures/yu/classical/portrait/full-default.png",
 		variants: {
@@ -363,28 +362,28 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "后稷",
 		glyph: "稷",
 		accent: "#b8973a",
-		avatar: "/assets/figures/houji/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/houji/full-default.jpg",
 		bust: "/assets/figures/houji/classical/portrait/bust-default.png",
 		full: "/assets/figures/houji/classical/portrait/full-default.png"},
 	xie: {
 		name: "契",
 		glyph: "契",
 		accent: "#8a6f4a",
-		avatar: "/assets/figures/xie/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/xie/full-default.jpg",
 		bust: "/assets/figures/xie/classical/portrait/bust-default.png",
 		full: "/assets/figures/xie/classical/portrait/full-default.png"},
 	kui: {
 		name: "夔",
 		glyph: "夔",
 		accent: "#7a5c8a",
-		avatar: "/assets/figures/kui/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/kui/full-default.jpg",
 		bust: "/assets/figures/kui/classical/portrait/bust-default.png",
 		full: "/assets/figures/kui/classical/portrait/full-default.png"},
 	shangjun: {
 		name: "商均",
 		glyph: "均",
 		accent: "#8a7a5c",
-		avatar: "/assets/figures/shangjun/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/shangjun/full-default.jpg",
 		bust: "/assets/figures/shangjun/classical/portrait/bust-default.png",
 		full: "/assets/figures/shangjun/classical/portrait/full-default.png"},
 	tushan: {
@@ -398,7 +397,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "启",
 		glyph: "启",
 		accent: "#b8873a",
-		avatar: "/assets/figures/qi/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/qi/full-default.jpg",
 		bust: "/assets/figures/qi/classical/portrait/bust-default.png",
 		full: "/assets/figures/qi/classical/portrait/full-default.png",
 		variants: {
@@ -408,14 +407,14 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "伯益",
 		glyph: "益",
 		accent: "#5a8f6b",
-		avatar: "/assets/figures/yi/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/yi/full-default.jpg",
 		bust: "/assets/figures/yi/classical/portrait/bust-default.png",
 		full: "/assets/figures/yi/classical/portrait/full-default.png"},
 	youhu: {
 		name: "有扈氏",
 		glyph: "扈",
 		accent: "#7a2f2f",
-		avatar: "/assets/figures/youhu/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/youhu/full-default.jpg",
 		bust: "/assets/figures/youhu/classical/portrait/bust-default.png",
 		full: "/assets/figures/youhu/classical/portrait/full-default.png",
 		variants: {
@@ -424,7 +423,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "桀",
 		glyph: "桀",
 		accent: "#8a3324",
-		avatar: "/assets/figures/jie/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/jie/full-default.jpg",
 		bust: "/assets/figures/jie/classical/portrait/bust-default.png",
 		full: "/assets/figures/jie/classical/portrait/full-default.png",
 		variants: {
@@ -448,7 +447,7 @@ export const baseSprites: Record<string, SpriteInfo> = {
 		name: "汤",
 		glyph: "汤",
 		accent: "#3f7a5c",
-		avatar: "/assets/figures/tang/classical/avatar/default.jpg",
+		avatar: "/assets/archive-figures/tang/full-default.jpg",
 		bust: "/assets/figures/tang/classical/portrait/bust-default.png",
 		full: "/assets/figures/tang/classical/portrait/full-default.png",
 		variants: {
@@ -524,8 +523,8 @@ export const baseSprites: Record<string, SpriteInfo> = {
 	piaomu: { name: "漂母", glyph: "漂", accent: "#5a8f6b", full: "/assets/figures/piaomu/classical/portrait/full-default.png" },
 	kuaitong: { name: "蒯通", glyph: "蒯", accent: "#8a6f4a", full: "/assets/figures/kuaitong/classical/portrait/full-default.png" },
 	// 夏末·妹喜
-	meixi: { name: "妹喜", glyph: "喜", accent: "#b8557a", full: "/assets/figures/meixi/classical/portrait/full-default.png" },
+	meixi: { name: "妹喜", glyph: "喜", accent: "#b8557a", full: "/assets/archive-figures/meixi/full-default.jpg" },
 	// 商末·叔齐（与伯夷同列）
-	shuqi: { name: "叔齐", glyph: "齐", accent: "#5a7a8a", full: "/assets/figures/shuqi/classical/portrait/full-default.png" },
+	shuqi: { name: "叔齐", glyph: "齐", accent: "#5a7a8a", full: "/assets/archive-figures/shuqi/full-default.jpg" },
 };
 

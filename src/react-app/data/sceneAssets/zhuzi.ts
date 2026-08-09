@@ -23,7 +23,7 @@ export const zhuziSprites: Record<string, SpriteInfo> = {
 	yanhui: { name: "颜回", glyph: "回", accent: "#5a8f6b", full: "/assets/figures/yanhui/classical/portrait/full-default.png" },
 	jihuanzi: { name: "季桓子", glyph: "季", accent: "#7a6e5c", full: "/assets/figures/jihuanzi/classical/portrait/full-default.png" },
 	// 孔门·曾子
-	zengzi: { name: "曾参", glyph: "曾", accent: "#7a8a5c", full: "/assets/figures/zengzi/classical/portrait/full-default.png" },
+	zengzi: { name: "曾参", glyph: "曾", accent: "#7a8a5c", full: "/assets/archive-figures/zengzi/full-default.jpg" },
 };
 
 export const zhuziBackgrounds: Record<string, BgStyle> = {
